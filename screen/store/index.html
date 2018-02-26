@@ -29,8 +29,8 @@
                 <router-link :to="{ name: 'category', params: { productCategoryId: 'DEMO_CAT' }}">Category DEMO_CAT</router-link>
             </div>
             <div>
-                <router-link :to="{ name: 'product', params: { productId: 'DEMO_PROD1' }}">Category DEMO_PROD1</router-link>
-                <router-link :to="{ name: 'product', params: { productId: 'DEMO_PROD2' }}">Category DEMO_PROD2</router-link>
+                <router-link :to="{ name: 'product', params: { productId: 'DEMO_PROD1' }}">Product DEMO_PROD1</router-link>
+                <router-link :to="{ name: 'product', params: { productId: 'DEMO_PROD2' }}">Product DEMO_PROD2</router-link>
             </div>
 
             <div class="card">
@@ -43,9 +43,6 @@
         <!-- TODO: common footer -->
     </div>
 
-    <script type="text/x-template" id="HomeTemplate">
-        <h2>Home Page</h2>
-    </script>
     <!-- JavaScript Libraries -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -67,13 +64,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.js"></script>
     -->
 
-    <!-- Page/Route Component Scripts -->
+    <!-- Configuration and Tools -->
+    <script src="/store/resource/utilities.js"></script>
+    <script src="/store/resource/config.js"></script>
 
+    <!-- Page/Route Components -->
     <script src="/store/resource/MainComponents.js"></script>
     <script src="/store/resource/OrderComponents.js"></script>
     <script src="/store/resource/ProductComponents.js"></script>
     <script src="/store/resource/ProfileComponents.js"></script>
 
-    <!-- Main Store App Script -->
+    <!-- Main Store App Init -->
     <script src="/store/resource/store.js"></script>
 </body>
