@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+<!--
+General Order Placement and eCommerce Usage
+
+| create customer | PartyServices.create#Account |
+| create/update/delete customer address | ContactServices.create#PostalAddress, .update#PartyPostalAddress |
+| create/update/delete customer phone | ContactServices.create#TelecomNumber, .update#PartyTelecomNumber |
+| create/update/delete customer credit card | PaymentMethodServices.create#CreditCard, .update#CreditCard |
+
+| login: merge with previous open | merge#OrderItems |
+
+| init cart (auto on add to cart) | create#Order |
+| add to cart                     | add#OrderProductQuantity, create#OrderItem |
+| change cart quantity            | update#OrderProductQuantity, update#OrderItem |
+| remove from cart                | delete#OrderItem |
+| set billing and shipping info   | set#OrderBillingShippingInfo |
+| split order                     | create#OrderPart |
+| confirm/complete order          | place#Order |
+
+| create order from shopping list (or other existing order) | clone#Order |
+
+-->
+
+    <service verb="get" noun="CartInfo">
+        <out-parameters>
+
+        </out-parameters>
+        <actions>
+            <!-- TODO -->
+        </actions>
+    </service>
+
+    <service verb="add" noun="Product">
+        <implements service="popstore.CartServices.get#CartInfo"/>
+        <in-parameters>
+            <parameter name="productId" required="true"/>
+            <parameter name="quantity" type="BigDecimal" default="1.0"/>
+        </in-parameters>
+        <actions>
+            <!-- TODO -->
+            <set field="defaultOrderParameters" from="[orderId:cartOrderId, customerPartyId:customerPartyId, currencyUomId:currencyUomId,
+                productStoreId:productStoreId, salesChannelEnumId:'ScWeb']"/>
+
+            <service-call name="popstore.CartServices.get#CartInfo" out-map="context"/>
+        </actions>
+    </service>
+</services>

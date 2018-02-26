@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+    <!-- Login and Register for eCommerce -->
+
+    <service verb="login" noun="Customer" authenticate="anonymous-all">
+        <in-parameters>
+            <parameter name="username" required="true"/>
+            <parameter name="password" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="api_key"/>
+        </out-parameters>
+        <actions>
+            <script>ec.user.loginUser(username, password)</script>
+
+            <if condition="ec.user.userAccount != null">
+                <!-- see if there is an open order for user and get that ID into session -->
+                <entity-find entity-name="mantle.order.OrderHeaderAndPart" list="existingOrderList">
+                    <econdition field-name="statusId" value="OrderOpen"/>
+                    <econdition field-name="customerPartyId" from="ec.user.userAccount.partyId"/>
+                    <select-field field-name="orderId"/><select-field field-name="orderPartSeqId"/>
+                    <order-by field-name="-entryDate"/><!-- get most recent open order -->
+                </entity-find>
+                <if condition="existingOrderList"><then>
+                    <if condition="ec.web.sessionAttributes.cartOrderId">
+                        <!-- if a cartOrderId is in the session, merge its items into the existing order -->
+                        <service-call name="mantle.order.OrderServices.merge#OrderItems"
+                                in-map="[orderId:existingOrderList[0].orderId, fromOrderId:ec.web.sessionAttributes.cartOrderId]"/>
+                    </if>
+                    <!-- whether there was one in the session or not always set the existing orderId there -->
+                    <set field="ec.web.sessionAttributes.cartOrderId" from="existingOrderList[0].orderId"/>
+                </then><else>
+                    <!-- no existing open order, if a cartOrderId is in the session set the logged in user as the customer -->
+                    <if condition="ec.web.sessionAttributes.cartOrderId">
+                        <entity-find entity-name="OrderPart" list="orderPartList">
+                            <econdition field-name="orderId" from="ec.web.sessionAttributes.cartOrderId"/></entity-find>
+                        <if condition="orderPartList">
+                            <set field="orderPart" from="orderPartList[0]"/>
+                            <set field="orderPart.customerPartyId" from="ec.user.userAccount.partyId"/>
+                            <entity-update value-field="orderPart"/>
+                        </if>
+                    </if>
+                </else></if>
+
+                <!-- create the login key to return -->
+                <set field="api_key" from="ec.user.getLoginKey()"/>
+            </if>
+        </actions>
+    </service>
+    <service verb="register" noun="Customer" authenticate="anonymous-all">
+        <in-parameters>
+            <parameter name="firstName" required="true"/><parameter name="middleName"/><parameter name="lastName" required="true"/>
+
+            <parameter name="emailAddress" required="true"><text-email/></parameter>
+            <parameter name="username" default="emailAddress"/>
+            <parameter name="newPassword" required="true"/>
+            <parameter name="newPasswordVerify" required="true"/>
+
+            <parameter name="currencyUomId"/><parameter name="locale"/><parameter name="timeZone"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="userId"/>
+            <parameter name="partyId"/>
+            <parameter name="emailContactMechId"/>
+            <parameter name="api_key"/>
+        </out-parameters>
+        <actions>
+            <!-- create account and login -->
+            <service-call name="mantle.party.PartyServices.create#Account" in-map="context + [roleTypeId:'Customer']"/>
+
+            <if condition="ec.user.userAccount != null">
+                <!-- if a cartOrderId is in the session set the logged in user as the customer -->
+                <if condition="ec.web.sessionAttributes.cartOrderId">
+                    <entity-find entity-name="OrderPart" list="orderPartList">
+                        <econdition field-name="orderId" from="ec.web.sessionAttributes.cartOrderId"/></entity-find>
+                    <if condition="orderPartList">
+                        <set field="orderPart" from="orderPartList[0]"/>
+                        <set field="orderPart.customerPartyId" from="ec.user.userAccount.partyId"/>
+                        <entity-update value-field="orderPart"/>
+                    </if>
+                </if>
+
+                <!-- create the login key to return -->
+                <set field="api_key" from="ec.user.getLoginKey()"/>
+            </if>
+        </actions>
+    </service>
+
+    <!-- General Customer Info -->
+
+    <service verb="get" noun="CustomerInfo">
+        <out-parameters>
+            <parameter name="userId"/><parameter name="partyId"/><parameter name="username"/>
+            <parameter name="firstName"/><parameter name="middleName"/><parameter name="lastName"/>
+            <parameter name="locale"/><parameter name="timeZone"/>
+            <parameter name="disabled"/>
+            <parameter name="emailAddress"/>
+        </out-parameters>
+        <actions>
+            <set field="userId" from="ec.user.userId"/>
+            <if condition="!userId"><return error="true" message="No customer logged in"/></if>
+            <set field="partyId" from="ec.user.userAccount?.partyId"/>
+            <if condition="!partyId"><return error="true" message="No customer logged in"/></if>
+
+            <entity-find-one entity-name="mantle.party.PersonAndUserAccount" value-field="personAndUserAccount"/>
+            <script>context.putAll(personAndUserAccount)</script>
+
+            <service-call name="mantle.party.ContactServices.get#PrimaryEmailAddress" in-map="[partyId:partyId]" out-map="primaryEmail"/>
+            <if condition="primaryEmail.emailAddress"><set field="emailAddress" from="primaryEmail.emailAddress"/></if>
+        </actions>
+    </service>
+
+    <!-- Payment Methods -->
+
+    <service verb="get" noun="PaymentMethods">
+        <out-parameters>
+            <parameter name="methodInfoList" type="List"><parameter name="methodInfo" type="Map"/></parameter>
+        </out-parameters>
+        <actions>
+            <set field="partyId" from="ec.user.userAccount?.partyId"/>
+            <if condition="!partyId"><return error="true" message="No customer logged in"/></if>
+            <service-call name="mantle.account.PaymentMethodServices.get#PartyPaymentMethodInfoList"
+                    in-map="[partyId:partyId]" out-map="context"/>
+        </actions>
+    </service>
+
+    <!-- Shipping Addresses -->
+
+    <service verb="get" noun="ShippingAddresses">
+        <out-parameters>
+            <parameter name="postalAddressList" type="List"><parameter name="postalAddressInfo" type="Map"/></parameter>
+        </out-parameters>
+        <actions>
+            <set field="partyId" from="ec.user.userAccount?.partyId"/>
+            <if condition="!partyId"><return error="true" message="No customer logged in"/></if>
+            <service-call name="mantle.party.ContactServices.get#PartyContactInfoList" out-map="shippingContactListInfo"
+                    in-map="[partyId:partyId, postalContactMechPurposeId:'PostalShippingDest']"/>
+        </actions>
+    </service>
+</services>

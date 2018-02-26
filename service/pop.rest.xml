@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+
+<!-- General Guideline Verbs: GET=find, POST=create/do, PUT=store (create or update), PATCH=update, DELETE=delete  -->
+
+<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/rest-api-2.1.xsd"
+        name="pop" displayName="POP REST Store API" version="1.0.0" description="Services for eCommerce">
+
+    <!-- Login and Register -->
+
+    <resource name="login" require-authentication="anonymous-all">
+        <method type="post"><service name="popstore.CustomerServices.login#Customer"/></method></resource>
+    <resource name="register" require-authentication="anonymous-all">
+        <method type="post"><service name="popstore.CustomerServices.register#Customer"/></method></resource>
+
+    <!-- Product Information -->
+
+    <resource name="products" require-authentication="anonymous-view">
+        <id name="productId"><method type="get"><service name="popstore.ProductServices.get#ProductInfo"/></method></id>
+        <resource name="search"><method type="get"><service name="popstore.ProductServices.search#Products"/></method></resource>
+    </resource>
+    <resource name="categories" require-authentication="anonymous-view">
+        <id name="productCategoryId">
+            <resource name="products">
+                <method type="get"><service name="popstore.ProductServices.get#CategoryProducts"/></method>
+            </resource>
+        </id>
+    </resource>
+
+    <!-- Cart and Checkout -->
+
+    <resource name="cart" require-authentication="anonymous-all">
+        <resource name="info">
+            <method type="get"><service name="popstore.CartServices.get#CartInfo"/></method>
+        </resource>
+        <resource name="add">
+            <method type="post"><service name="popstore.CartServices.add#Product"/></method>
+        </resource>
+    </resource>
+
+    <!-- Customer Profile and Order History -->
+
+    <resource name="customer">
+        <resource name="info">
+            <method type="get"><service name="popstore.CustomerServices.get#CustomerInfo"/></method>
+        </resource>
+        <resource name="paymentMethods">
+            <method type="get"><service name="popstore.CustomerServices.get#PaymentMethods"/></method>
+        </resource>
+        <resource name="shippingAddresses">
+            <method type="get"><service name="popstore.CustomerServices.get#ShippingAddresses"/></method>
+        </resource>
+    </resource>
+</resource>

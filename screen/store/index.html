@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Store</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous"/>
+    <!-- only if needed beyond glyphicons: <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+
+    <!-- if select2 is used:
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" rel="stylesheet" type="text/css">
+    -->
+
+    <link rel="stylesheet" href="/store/resource/store.css"/>
+</head>
+<body>
+    <!-- root element of the main Vue component, everything under this is a Vue template -->
+    <div id="store-app">
+        <!-- TODO: common header -->
+
+        <div class="container-fluid">
+            <h1>Hello World</h1>
+
+            <div>
+                <router-link to="/">Home</router-link>
+                <router-link to="/foo">Foo (invalid)</router-link>
+                <router-link :to="{ name: 'category', params: { productCategoryId: 'DEMO_CAT' }}">Category DEMO_CAT</router-link>
+            </div>
+            <div>
+                <router-link :to="{ name: 'product', params: { productId: 'DEMO_PROD1' }}">Category DEMO_PROD1</router-link>
+                <router-link :to="{ name: 'product', params: { productId: 'DEMO_PROD2' }}">Category DEMO_PROD2</router-link>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <router-view></router-view>
+                </div>
+            </div>
+        </div>
+
+        <!-- TODO: common footer -->
+    </div>
+
+    <!-- JavaScript Libraries -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha256-5+02zu5UULQkO7w1GIr6vftCgMfFdZcAHeDtFnKZsBs=" crossorigin="anonymous"></script>
+
+    <!-- Vue JS, see: https://vuejs.org/v2/guide/ -->
+    <!-- NOTE: change to vue.min.js for production, using vue.js for now while in initial development -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js" integrity="sha256-1Q2q5hg2YXp9fYlM++sIEXOcUb8BRSDUsQ1zXvLBqmA=" crossorigin="anonymous"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js" integrity="sha256-pU9euBaEcVl8Gtg+FRYCtin2vKLN8sx5/4npZDmY2VA=" crossorigin="anonymous"></script>
+    <!-- Vue Router, see: https://router.vuejs.org/en/ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.min.js" integrity="sha256-yEB9jUlD51i5kxJZlzgzfR6XmVKI76Nl1WRA1aqIilU=" crossorigin="anonymous"></script>
+
+    <!-- handy widgets used elsewhere in Moqui, need to test each for compatibility with latest jquery, bootstrap, etc:
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.1/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.1/additional-methods.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.js"></script>
+    -->
+
+    <!-- Page/Route Component Scripts -->
+
+    <script src="/store/resource/MainComponents.js"></script>
+    <script src="/store/resource/OrderComponents.js"></script>
+    <script src="/store/resource/ProductComponents.js"></script>
+    <script src="/store/resource/ProfileComponents.js"></script>
+
+    <!-- Main Store App Script -->
+    <script src="/store/resource/store.js"></script>
+</body>
