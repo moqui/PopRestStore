@@ -33,6 +33,7 @@ var moqui = {
         };
     }
 };
+
 moqui.templateCache = new moqui.LruMap(20);
 moqui.handleLoadError = function (jqXHR, textStatus, errorThrown) {
     // TODO: use a growl notification like in WebrootVue.js handleAjaxError()

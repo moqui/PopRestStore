@@ -1,9 +1,9 @@
 /* This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. */
 
-
 // see https://router.vuejs.org/en/essentials/history-mode.html
 // for route path expressions see https://router.vuejs.org/en/essentials/dynamic-matching.html AND https://github.com/vuejs/vue-router/blob/dev/examples/route-matching/app.js
-const storeRouter = new VueRouter({ base: storeConfig.base, mode: 'history',
+const storeRouter = new VueRouter({
+    base: storeConfig.basePath, mode: 'history',
     routes: [
         { path: '/', name: 'home', component: HomeComponent },
         { path: '/category/:productCategoryId/:extra?', name: 'category', component: CategoryComponent, props: true },
