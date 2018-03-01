@@ -17,7 +17,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <transition name="attachment" read-only="true"><actions>
         <set field="extraPathNameList" from="new ArrayList(sri.screenUrlInfo.extraPathNameList)"/>
-        <if condition="!extraPathNameList"><script>ec.web.response.sendError(404)</script></if>
+        <if condition="!extraPathNameList"><script>ec.web.sendError(404, null, null)</script></if>
         <set field="filename" from="extraPathNameList.remove(extraPathNameList.size()-1)"/>
         <service-call name="org.moqui.impl.WikiServices.get#WikiPageAttachment" out-map="context"
                       in-map="[wikiSpaceId:wikiSpaceId, pagePath:extraPathNameList?.join('/'), filename:filename]"/>
@@ -33,7 +33,7 @@ along with this software (see the LICENSE.md file). If not, see
                 <field-map field-name="productContentId"/></entity-find-one>
             <if condition="productContent == null"><then>
                 <!-- NOTE: consider returning a default image instead of 404 -->
-                <script>ec.web.response.sendError(404)</script>
+                <script>ec.web.sendError(404, null, null)</script>
             </then><else>
                 <script>ec.web.sendResourceResponse(productContent.contentLocation, true)</script>
             </else></if>
