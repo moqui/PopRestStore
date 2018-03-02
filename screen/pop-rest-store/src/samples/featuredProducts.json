@@ -1,0 +1,52 @@
+{
+  "products": [
+    {
+      "name": "Men's T-shirt",
+      "rating": 3,
+      "numberOfRatings": 11,
+      "value": 19.99,
+      "originalValue": 29.99,
+      "imageUrl": "./assets/sample-pic.png"
+    },
+    {
+      "name": "Men's T-shirt",
+      "rating": 3,
+      "numberOfRatings": 11,
+      "value": 19.99,
+      "originalValue": 29.99,
+      "imageUrl": "./assets/sample-pic.png"
+    },
+    {
+      "name": "Men's T-shirt",
+      "rating": 3,
+      "numberOfRatings": 11,
+      "value": 19.99,
+      "originalValue": 29.99,
+      "imageUrl": "./assets/sample-pic.png"
+    },
+    {
+      "name": "Men's T-shirt",
+      "rating": 3,
+      "numberOfRatings": 11,
+      "value": 19.99,
+      "originalValue": 29.99,
+      "imageUrl": "./assets/sample-pic.png"
+    },
+    {
+      "name": "Men's T-shirt",
+      "rating": 3,
+      "numberOfRatings": 11,
+      "value": 19.99,
+      "originalValue": 29.99,
+      "imageUrl": "./assets/sample-pic.png"
+    },
+    {
+      "name": "Men's T-shirt",
+      "rating": 3,
+      "numberOfRatings": 11,
+      "value": 19.99,
+      "originalValue": 29.99,
+      "imageUrl": "./assets/sample-pic.png"
+    }
+  ]
+}
