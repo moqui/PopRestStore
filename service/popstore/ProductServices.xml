@@ -75,7 +75,8 @@ along with this software (see the LICENSE.md file). If not, see
             </entity-find>
             <if condition="locale">
                 <!-- filter after by locale to streamline cached find -->
-                <set field="contentList" from="contentList.findAll({ it.locale == null || it.locale == locale })"/>
+                <set field="langLocale" from="locale.contains('_') ? locale.substring(locale.indexOf('_')) : null"/>
+                <set field="contentList" from="contentList.findAll({ it.locale == null || it.locale == locale || it.locale == langLocale })"/>
             </if>
             <!-- some content types may have more than one record, long description just has one -->
             <set field="descLongLocation" from="contentList.find({ 'PcntDescriptionLong' == it.productContentTypeEnumId })?.contentLocation"/>
@@ -120,17 +121,19 @@ along with this software (see the LICENSE.md file). If not, see
             </parameter></parameter>
         </out-parameters>
         <actions>
-            <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory"/>
+            <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory" cache="true"/>
             <if condition="productCategory == null"><return error="true" message="Category not found with ID ${productCategoryId}"/></if>
-            <script>context.putAll(product)</script>
+            <script>context.putAll(productCategory)</script>
 
             <if condition="productStoreId">
-                <entity-find-one entity-name="mantle.product.store.ProductStore" value-field="productStore"/>
+                <entity-find-one entity-name="mantle.product.store.ProductStore" value-field="productStore" cache="true"/>
                 <if condition="!priceUomId"><set field="priceUomId" from="productStore?.defaultCurrencyUomId"/></if>
                 <set field="vendorPartyId" from="productStore?.organizationPartyId"/>
             </if>
             <set field="customerPartyId" from="ec.user.userAccount?.partyId"/>
 
+            <!-- TODO: change to plain cached ProductCategoryMember query, separate cached query for Product for cache size efficiency -->
+            <!-- TODO: support pagination parameters in (pageIndex, pageSize, etc) and out (...) -->
             <entity-find entity-name="ProductCategoryMemberProduct" list="pcmpList" cache="true">
                 <date-filter/><econdition field-name="productCategoryId"/>
                 <order-by field-name="sequenceNum"/><order-by field-name="productName"/>
@@ -148,7 +151,8 @@ along with this software (see the LICENSE.md file). If not, see
                 </entity-find>
                 <if condition="locale">
                     <!-- filter after by locale to streamline cached find -->
-                    <set field="smallImageList" from="smallImageList.findAll({ it.locale == null || it.locale == locale })"/>
+                    <set field="langLocale" from="locale.contains('_') ? locale.substring(locale.indexOf('_')) : null"/>
+                    <set field="smallImageList" from="smallImageList.findAll({ it.locale == null || it.locale == locale || it.locale == langLocale })"/>
                 </if>
 
                 <script>productList.add([productId:pcmp.productId, productName:pcmp.productName, description:pcmp.description,

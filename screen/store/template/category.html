@@ -1,4 +1,7 @@
-<div>
-    <h2>This is the category page {{productCategoryId}}</h2>
-    <category-product product-id="TEST1"></category-product>
+<div v-if="categoryInfo">
+    <h2>{{categoryInfo.categoryName}}</h2>
+    <p v-if="categoryInfo.description">{{categoryInfo.description}}</p>
+    <span v-for="productInfo in productList">
+        <category-product :product-id="productInfo.productId" :product-info="productInfo"></category-product>
+    </span>
 </div>

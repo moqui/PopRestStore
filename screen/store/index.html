@@ -14,6 +14,27 @@
     -->
 
     <link rel="stylesheet" href="/store/resource/store.css"/>
+
+    <script>
+        // default store configuration, settings may be reset by script returned by /content/settings.js (transition that calls StoreServices.get#StoreInfo)
+        var storeConfig = {
+            // base path for the router, by default the app page should load from '/store'
+            basePath: "/store/",
+            // REST API base location, default on the same server
+            // if the Moqui server is running on a different server use something like "https://api.domain.com/rest/s1/pop"
+            restApiLocation: "/rest/s1/pop/",
+            // Content base location for server administered content, points to the content.xml screen
+            // this may be a path on the same server or for production preferably a full URL that goes through a caching proxy like CloudFlare
+            contentLocation: "/content/",
+            contentAttachmentLocation: "/content/attachment/",
+            productImageLocation: "/content/productImage/",
+            // page/etc template locations (may be path or full URL)
+            homeTemplate: "/store/template/home.html",
+            categoryTemplate: "/store/template/category.html",
+            categoryProductTemplate: "/store/template/category_product.html",
+            productTemplate: "/store/template/product.html"
+        };
+    </script>
 </head>
 <body>
     <!-- root element of the main Vue component, everything under this is a Vue template -->
@@ -21,16 +42,16 @@
         <!-- TODO: common header -->
 
         <div class="container-fluid">
-            <h1>Hello World</h1>
+            <!-- use v-html instead of mustache {{}} syntax so doesn't show on initial page load; something to consider for everything here -->
+            <h1 v-html="storeConfig.storeName"></h1>
 
             <div>
                 <router-link to="/">Home</router-link>
                 <router-link to="/foo">Foo (invalid)</router-link>
-                <router-link :to="{ name: 'category', params: { productCategoryId: 'DEMO_CAT' }}">Category DEMO_CAT</router-link>
-            </div>
-            <div>
-                <router-link :to="{ name: 'product', params: { productId: 'DEMO_PROD1' }}">Product DEMO_PROD1</router-link>
-                <router-link :to="{ name: 'product', params: { productId: 'DEMO_PROD2' }}">Product DEMO_PROD2</router-link>
+                
+                <router-link v-if="storeInfo.categoryByType.PsctHomePage" :to="{ name: 'category', params: { productCategoryId: storeInfo.categoryByType.PsctHomePage.productCategoryId }}" v-html="storeInfo.categoryByType.PsctHomePage.categoryName"></router-link>
+                <router-link v-if="storeInfo.categoryByType.PsctBrowseRoot" :to="{ name: 'category', params: { productCategoryId: storeInfo.categoryByType.PsctBrowseRoot.productCategoryId }}" v-html="storeInfo.categoryByType.PsctBrowseRoot.categoryName"></router-link>
+                <router-link v-if="storeInfo.categoryByType.PsctViewAllow" :to="{ name: 'category', params: { productCategoryId: storeInfo.categoryByType.PsctViewAllow.productCategoryId }}" v-html="storeInfo.categoryByType.PsctViewAllow.categoryName"></router-link>
             </div>
 
             <div class="card">
@@ -55,8 +76,10 @@
     <!-- Vue Router, see: https://router.vuejs.org/en/ -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.min.js" integrity="sha256-yEB9jUlD51i5kxJZlzgzfR6XmVKI76Nl1WRA1aqIilU=" crossorigin="anonymous"></script>
 
+    <!-- Growl style notify -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js" integrity="sha256-LlN0a0J3hMkDLO1mhcMwy+GIMbIRV7kvKHx4oCxNoxI=" crossorigin="anonymous"></script>
+
     <!-- handy widgets used elsewhere in Moqui, need to test each for compatibility with latest jquery, bootstrap, etc:
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.1/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.1/additional-methods.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js"></script>
@@ -64,13 +87,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.js"></script>
     -->
 
-    <!-- Configuration and Tools -->
+    <!-- Configuration settings built dynamically but fetched by script element so in place before store component loads and renders -->
+    <script src="/content/config.js"></script>
+    <!-- Utilities -->
     <script src="/store/resource/utilities.js"></script>
-    <script src="/store/resource/config.js"></script>
-
     <!-- Page/Route Components -->
     <script src="/store/resource/PageComponents.js"></script>
-
     <!-- Main Store App Init -->
     <script src="/store/resource/store.js"></script>
 </body>

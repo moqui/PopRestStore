@@ -15,9 +15,32 @@ along with this software (see the LICENSE.md file). If not, see
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
         require-authentication="anonymous-view" allow-extra-path="true" default-menu-include="false" standalone="true">
 
+    <always-actions>
+        <!-- TODO: make this configurable, perhaps through a productStoreGroupId constant instead of productStoreId constant -->
+        <set field="productStoreId" value="POPC_DEFAULT"/>
+        <entity-find-one entity-name="mantle.product.store.ProductStore" value-field="productStore" cache="true"/>
+        <set field="wikiSpaceId" from="productStore?.wikiSpaceId"/>
+    </always-actions>
+
+    <transition name="config.js" read-only="true">
+        <parameter name="productStoreId"/>
+        <actions>
+            <service-call name="popstore.StoreServices.get#StoreInfo" in-map="[productStoreId:productStoreId]" out-map="storeInfo"/>
+            <script><![CDATA[
+                String storeInfoJson = ec.web.jacksonMapper.writeValueAsString(storeInfo)
+                String jsText = """
+var storeInfo = ${storeInfoJson};
+\$.extend(storeConfig, storeInfo.productStore, storeInfo.settings);
+"""
+                ec.web.sendTextResponse(jsText, "application/javascript", null)
+            ]]></script>
+        </actions>
+        <default-response type="none"/>
+    </transition>
+    
     <transition name="attachment" read-only="true"><actions>
         <set field="extraPathNameList" from="new ArrayList(sri.screenUrlInfo.extraPathNameList)"/>
-        <if condition="!extraPathNameList"><script>ec.web.response.sendError(404)</script></if>
+        <if condition="!extraPathNameList"><script>ec.web.sendError(404, null, null)</script></if>
         <set field="filename" from="extraPathNameList.remove(extraPathNameList.size()-1)"/>
         <service-call name="org.moqui.impl.WikiServices.get#WikiPageAttachment" out-map="context"
                       in-map="[wikiSpaceId:wikiSpaceId, pagePath:extraPathNameList?.join('/'), filename:filename]"/>
@@ -33,7 +56,7 @@ along with this software (see the LICENSE.md file). If not, see
                 <field-map field-name="productContentId"/></entity-find-one>
             <if condition="productContent == null"><then>
                 <!-- NOTE: consider returning a default image instead of 404 -->
-                <script>ec.web.response.sendError(404)</script>
+                <script>ec.web.sendError(404, null, null)</script>
             </then><else>
                 <script>ec.web.sendResourceResponse(productContent.contentLocation, true)</script>
             </else></if>
