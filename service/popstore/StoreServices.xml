@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a 
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+    <service verb="get" noun="StoreInfo">
+        <in-parameters>
+            <parameter name="productStoreId" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productStore" type="Map"/>
+
+            <parameter name="categoryList" type="List"><parameter name="categoryInfo" type="Map"/></parameter>
+            <parameter name="categoryByType" type="Map"><parameter name="categoryInfo" type="Map"/></parameter>
+
+            <parameter name="settings" type="Map"/>
+        </out-parameters>
+        <actions>
+            <entity-find-one entity-name="mantle.product.store.ProductStore" value-field="productStore" cache="true"/>
+            <if condition="productStore == null"><return error="true" message="Store not found with ID ${productStoreId}"/></if>
+
+            <set field="categoryList" from="[]"/>
+            <set field="categoryByType" from="[:]"/>
+            <entity-find entity-name="mantle.product.store.ProductStoreCategory" list="storeCategoryList" cache="true">
+                <date-filter/><econdition field-name="productStoreId"/><order-by field-name="sequenceNum,-fromDate"/></entity-find>
+            <iterate list="storeCategoryList" entry="storeCategory">
+                <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory" cache="true">
+                    <field-map field-name="productCategoryId" from="storeCategory.productCategoryId"/></entity-find-one>
+                <set field="categoryInfo" from="storeCategory.getMap()"/>
+                <script>
+                    categoryInfo.putAll(productCategory)
+                    categoryList.add(categoryInfo)
+                    if (categoryByType.get(categoryInfo.productCategoryId) == null)
+                        categoryByType.put(categoryInfo.productCategoryId, categoryInfo)
+                </script>
+            </iterate>
+
+            <set field="settings" from="[:]"/>
+            <entity-find entity-name="mantle.product.store.ProductStoreSetting" list="storeSettingList" cache="true">
+                <date-filter/><econdition field-name="productStoreId"/><order-by field-name="-fromDate"/></entity-find>
+            <iterate list="storeSettingList" entry="storeSetting">
+                <if condition="!storeSetting.settingValue"><continue/></if>
+                <set field="typeEnum" from="storeSetting.type"/>
+                <set field="settingKey" from="typeEnum?.enumCode ?: storeSetting.settingTypeEnumId"/>
+                <script>if (settings.get(settingKey) == null) settings.put(settingKey, storeSetting.settingValue)</script>
+            </iterate>
+        </actions>
+    </service>
+</services>

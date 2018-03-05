@@ -7,16 +7,18 @@ storeComps.HomeComponent = { template: '<route-placeholder :location="$root.stor
 
 /* Product Category Page */
 
+storeComps.CategoryProductProperties = { productId:{type:String,required:true}, productInfo:Object };
 storeComps.CategoryProductOptions = {
-    props: { productId:{type:String,required:true}, productInfo:Object }
+    props: storeComps.CategoryProductProperties
 };
 Vue.component('category-product', {
-    props: { productId:{type:String,required:true}, productInfo:Object },
+    props: storeComps.CategoryProductProperties,
     template: '<route-placeholder :location="$root.storeConfig.categoryProductTemplate" :options="$root.storeComps.CategoryProductOptions" :properties="$props"></route-placeholder>'
 });
 
+storeComps.CategoryProperties = { productCategoryId:{type:String,required:true} };
 storeComps.CategoryOptions = {
-    props: { productCategoryId:{type:String,required:true} },
+    props: storeComps.CategoryProperties,
     data: function() { return { categoryInfo:null, productList:[] } },
     methods: {
         fetchProducts: function() {
@@ -39,16 +41,17 @@ storeComps.CategoryOptions = {
     mounted: function() { this.fetchProducts(); }
 };
 storeComps.CategoryComponent = {
-    props: { productCategoryId:String },
+    props: storeComps.CategoryProperties,
     template: '<route-placeholder :location="$root.storeConfig.categoryTemplate" :options="$root.storeComps.CategoryOptions" :properties="$props"></route-placeholder>'
 };
 
 /* Product Detail Page */
 
+storeComps.ProductProperties = { productId:{type:String,required:true} };
 storeComps.ProductOptions = {
-    props: { productId:String }
+    props: storeComps.ProductProperties
 };
 storeComps.ProductComponent = {
-    props: { productId:String },
+    props: storeComps.ProductProperties,
     template: '<route-placeholder :location="$root.storeConfig.productTemplate" :options="$root.storeComps.ProductOptions" :properties="$props"></route-placeholder>'
 };

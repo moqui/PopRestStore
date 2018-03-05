@@ -24,4 +24,3 @@ var storeConfig = {
     productTemplate: "/store/template/product.html"
 };
 
-var storeComps = {};
