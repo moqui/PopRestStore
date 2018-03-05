@@ -26,11 +26,8 @@
             <div>
                 <router-link to="/">Home</router-link>
                 <router-link to="/foo">Foo (invalid)</router-link>
-                <router-link :to="{ name: 'category', params: { productCategoryId: 'DEMO_CAT' }}">Category DEMO_CAT</router-link>
-            </div>
-            <div>
-                <router-link :to="{ name: 'product', params: { productId: 'DEMO_PROD1' }}">Product DEMO_PROD1</router-link>
-                <router-link :to="{ name: 'product', params: { productId: 'DEMO_PROD2' }}">Product DEMO_PROD2</router-link>
+                <router-link :to="{ name: 'category', params: { productCategoryId: 'PopcHome' }}">Category PopcHome</router-link>
+                <router-link :to="{ name: 'category', params: { productCategoryId: 'PopcAllProducts' }}">Category PopcAllProducts</router-link>
             </div>
 
             <div class="card">
@@ -55,8 +52,10 @@
     <!-- Vue Router, see: https://router.vuejs.org/en/ -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.min.js" integrity="sha256-yEB9jUlD51i5kxJZlzgzfR6XmVKI76Nl1WRA1aqIilU=" crossorigin="anonymous"></script>
 
+    <!-- Growl style notify -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js" integrity="sha256-LlN0a0J3hMkDLO1mhcMwy+GIMbIRV7kvKHx4oCxNoxI=" crossorigin="anonymous"></script>
+
     <!-- handy widgets used elsewhere in Moqui, need to test each for compatibility with latest jquery, bootstrap, etc:
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.1/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.1/additional-methods.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js"></script>

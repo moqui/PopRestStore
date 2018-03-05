@@ -75,7 +75,8 @@ along with this software (see the LICENSE.md file). If not, see
             </entity-find>
             <if condition="locale">
                 <!-- filter after by locale to streamline cached find -->
-                <set field="contentList" from="contentList.findAll({ it.locale == null || it.locale == locale })"/>
+                <set field="langLocale" from="locale.contains('_') ? locale.substring(locale.indexOf('_')) : null"/>
+                <set field="contentList" from="contentList.findAll({ it.locale == null || it.locale == locale || it.locale == langLocale })"/>
             </if>
             <!-- some content types may have more than one record, long description just has one -->
             <set field="descLongLocation" from="contentList.find({ 'PcntDescriptionLong' == it.productContentTypeEnumId })?.contentLocation"/>
@@ -122,7 +123,7 @@ along with this software (see the LICENSE.md file). If not, see
         <actions>
             <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory"/>
             <if condition="productCategory == null"><return error="true" message="Category not found with ID ${productCategoryId}"/></if>
-            <script>context.putAll(product)</script>
+            <script>context.putAll(productCategory)</script>
 
             <if condition="productStoreId">
                 <entity-find-one entity-name="mantle.product.store.ProductStore" value-field="productStore"/>
@@ -148,7 +149,8 @@ along with this software (see the LICENSE.md file). If not, see
                 </entity-find>
                 <if condition="locale">
                     <!-- filter after by locale to streamline cached find -->
-                    <set field="smallImageList" from="smallImageList.findAll({ it.locale == null || it.locale == locale })"/>
+                    <set field="langLocale" from="locale.contains('_') ? locale.substring(locale.indexOf('_')) : null"/>
+                    <set field="smallImageList" from="smallImageList.findAll({ it.locale == null || it.locale == locale || it.locale == langLocale })"/>
                 </if>
 
                 <script>productList.add([productId:pcmp.productId, productName:pcmp.productName, description:pcmp.description,

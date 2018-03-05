@@ -9,11 +9,13 @@ var storeConfig = {
 
     // REST API base location, default on the same server
     // if the Moqui server is running on a different server use something like "https://api.domain.com/rest/s1/pop"
-    restApiLocation: "/rest/s1/pop",
+    restApiLocation: "/rest/s1/pop/",
 
     // Content base location for server administered content, points to the content.xml screen
     // this may be a path on the same server or for production preferably a full URL that goes through a caching proxy like CloudFlare
-    contentLocation: "/content",
+    contentLocation: "/content/",
+    contentAttachmentLocation: "/content/attachment/",
+    productImageLocation: "/content/productImage/",
 
     // page/etc template locations (may be path or full URL)
     homeTemplate: "/store/template/home.html",
@@ -21,3 +23,5 @@ var storeConfig = {
     categoryProductTemplate: "/store/template/category_product.html",
     productTemplate: "/store/template/product.html"
 };
+
+var storeComps = {};
