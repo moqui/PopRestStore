@@ -41,8 +41,8 @@ along with this software (see the LICENSE.md file). If not, see
                 <script>
                     categoryInfo.putAll(productCategory)
                     categoryList.add(categoryInfo)
-                    if (categoryByType.get(categoryInfo.productCategoryId) == null)
-                        categoryByType.put(categoryInfo.productCategoryId, categoryInfo)
+                    if (categoryByType.get(categoryInfo.storeCategoryTypeEnumId) == null)
+                        categoryByType.put(categoryInfo.storeCategoryTypeEnumId, categoryInfo)
                 </script>
             </iterate>
 

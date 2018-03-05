@@ -42,13 +42,16 @@
         <!-- TODO: common header -->
 
         <div class="container-fluid">
+            <!-- use v-html instead of mustache {{}} syntax so doesn't show on initial page load; something to consider for everything here -->
             <h1 v-html="storeConfig.storeName"></h1>
 
             <div>
                 <router-link to="/">Home</router-link>
                 <router-link to="/foo">Foo (invalid)</router-link>
-                <router-link :to="{ name: 'category', params: { productCategoryId: 'PopcHome' }}">Category PopcHome</router-link>
-                <router-link :to="{ name: 'category', params: { productCategoryId: 'PopcAllProducts' }}">Category PopcAllProducts</router-link>
+                
+                <router-link v-if="storeInfo.categoryByType.PsctHomePage" :to="{ name: 'category', params: { productCategoryId: storeInfo.categoryByType.PsctHomePage.productCategoryId }}" v-html="storeInfo.categoryByType.PsctHomePage.categoryName"></router-link>
+                <router-link v-if="storeInfo.categoryByType.PsctBrowseRoot" :to="{ name: 'category', params: { productCategoryId: storeInfo.categoryByType.PsctBrowseRoot.productCategoryId }}" v-html="storeInfo.categoryByType.PsctBrowseRoot.categoryName"></router-link>
+                <router-link v-if="storeInfo.categoryByType.PsctViewAllow" :to="{ name: 'category', params: { productCategoryId: storeInfo.categoryByType.PsctViewAllow.productCategoryId }}" v-html="storeInfo.categoryByType.PsctViewAllow.categoryName"></router-link>
             </div>
 
             <div class="card">
