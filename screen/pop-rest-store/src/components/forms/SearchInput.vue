@@ -1,25 +1,25 @@
 <template>
 
   <div class="search-input">
-    <input type="text" v-bind:placeholder="placeholder">
+    <input type="text" :placeholder="placeholder">
     <button class="search-button">
-        {{icons.magnifyingGlass}}
+        <icon name="search"/>
+            
     </button>
   </div>
 
 </template>
 
 <script>
-import icons from "glyphicons";
-console.log(icons)
+import Icon from "vue-awesome/components/Icon";
+
 export default {
   name: "search-input",
   data() {
-    return {
-        icons
-    };
+    return {};
   },
-  props: ["placeholder"]
+  props: ["placeholder"],
+  components: { Icon }
 };
 </script>
 
@@ -27,14 +27,28 @@ export default {
 <style lang="scss" rel="stylesheet/scss" scoped>
 @import "../../scss/main";
 .search-input {
+  width: 100%;
+  position: relative;
   input {
     border: none;
-    border-radius: 5px;
-    padding: 3px;
+    border-radius: 10px;
+    padding: 10px;
+    width:100%;
   }
 
   .search-button {
     background: map-get($theme-colors, primary);
+    border: none;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    height: 100%;
+    padding: 3px 15px;
+    margin-left: -4px;
+    color: #fff;
+    position: absolute;
+    top:0;
+    right: 0;
+    font-size: 2em;
   }
 }
 </style>
