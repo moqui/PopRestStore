@@ -9,11 +9,13 @@ const storeRouter = new VueRouter({
         { path: '/category/:productCategoryId/:extra?', name: 'category', component: storeComps.CategoryComponent, props: true },
         { path: '/product/:productId/:extra?', name: 'product', component: storeComps.ProductComponent, props: true },
         { path: '/content/*', name: 'content', component: storeComps.ContentComponent },
+        { path: '/profile', name: 'profile', component: storeComps.ProfileComponent },
+        { path: '/login', name: 'login', component: storeComps.LoginComponent },
         { path: '*', component: moqui.NotFoundComponent }
     ]
 });
 
-const storeApp = new Vue({
+var storeApp = new Vue({
     el: '#store-app', router: storeRouter,
     data: {
         storeComps: storeComps,

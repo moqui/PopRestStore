@@ -87,3 +87,32 @@ storeComps.ContentComponent = {
     watch: { '$route': function (to, from) { this.fetchContent(); } },
     mounted: function () { this.fetchContent(); }
 };
+
+/* ========== Profile and Order History ========== */
+
+storeComps.LoginOptions = {
+};
+storeComps.LoginComponent = {
+    template: '<route-placeholder :location="$root.storeConfig.loginTemplate" :options="$root.storeComps.LoginOptions"></route-placeholder>'
+};
+
+storeComps.ProfileOptions = {
+    data: function () { return { customerInfo:null }; },
+    methods: {
+        fetchInfo: function() {
+            var url = this.$root.storeConfig.restApiLocation + "customer/info";
+            console.info("Loading profile info from " + url);
+            var vm = this;
+            $.ajax({ type:"GET", url:url, dataType:"json", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
+                success: function(infoObj, status, jqXHR) { if (infoObj) {
+                    console.log(infoObj);
+                    vm.customerInfo = infoObj;
+                } }
+            });
+        }
+    },
+    mounted: function () { this.fetchInfo(); }
+};
+storeComps.ProfileComponent = {
+    template: '<route-placeholder :location="$root.storeConfig.profileTemplate" :options="$root.storeComps.ProfileOptions"></route-placeholder>'
+};
