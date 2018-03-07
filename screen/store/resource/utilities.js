@@ -129,6 +129,7 @@ Vue.component('route-placeholder', {
     mounted: function() {
         var vm = this;
         var jsCompObj = this.options || {};
+        // NOTE on cache: on initial load if there are multiple of the same component (like category-product) will load template multiple times, consider some sort of lock/wait
         var cachedComponent = moqui.componentCache.get(this.location);
         if (cachedComponent) {
             vm.activeComponent = cachedComponent;

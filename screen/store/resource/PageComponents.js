@@ -19,26 +19,38 @@ Vue.component('category-product', {
 storeComps.CategoryProperties = { productCategoryId:{type:String,required:true} };
 storeComps.CategoryOptions = {
     props: storeComps.CategoryProperties,
-    data: function() { return { categoryInfo:null, productList:[] } },
+    data: function() { return { categoryInfo:null, subCategoryList:[], productList:[], pageIndex:0, pageSize:20 } },
     methods: {
+        goPage: function (pageNum) { this.pageIndex = pageNum; },
+        fetchInfo: function() {
+            var url = this.$root.storeConfig.restApiLocation + "categories/" + this.productCategoryId + "/info";
+            var searchObj = { productStoreId:this.$root.storeConfig.productStoreId };
+            console.info("Loading category info from " + url + " params " + JSON.stringify(searchObj));
+            var vm = this;
+            $.ajax({ type:"GET", url:url, data:searchObj, dataType:"json", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
+                success: function(infoObj, status, jqXHR) { if (infoObj) {
+                    // console.log(infoObj);
+                    vm.categoryInfo = infoObj;
+                    vm.subCategoryList = infoObj.subCategoryList;
+                } }
+            });
+        },
         fetchProducts: function() {
             var url = this.$root.storeConfig.restApiLocation + "categories/" + this.productCategoryId + "/products";
-            console.info("Loading category info from " + url);
+            var searchObj = { productStoreId:this.$root.storeConfig.productStoreId, pageIndex:this.pageIndex, pageSize:this.pageSize };
+            console.info("Loading category products from " + url + " params " + JSON.stringify(searchObj));
             var vm = this;
-            $.ajax({ type:"GET", url:url, dataType:"json", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
-                success: function(infoObj, status, jqXHR) {
-                    // console.info(infoObj);
-                    if (infoObj) {
-                        vm.categoryInfo = infoObj;
-                        if (infoObj.productList) vm.productList = infoObj.productList;
-                    }
-                }
-            });
+            $.ajax({ type:"GET", url:url, data:searchObj, dataType:"json", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
+                success: function(infoObj, status, jqXHR) { if (infoObj) { vm.productList = infoObj.productList; } } });
         }
     },
-    // needed because same component instance is used when going from one category to another, faster this way too
-    watch: { productCategoryId: function() { this.fetchProducts(); } },
-    mounted: function() { this.fetchProducts(); }
+    watch: {
+        // needed because same component instance is used when going from one category to another, faster this way too
+        productCategoryId: function() { this.fetchInfo(); this.fetchProducts(); },
+        pageIndex: function() { this.fetchProducts(); },
+        pageSize: function() { this.fetchProducts(); }
+    },
+    mounted: function() { this.fetchInfo(); this.fetchProducts(); }
 };
 storeComps.CategoryComponent = {
     props: storeComps.CategoryProperties,

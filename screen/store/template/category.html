@@ -1,6 +1,13 @@
 <div v-if="categoryInfo">
     <h2>{{categoryInfo.categoryName}}</h2>
     <p v-if="categoryInfo.description">{{categoryInfo.description}}</p>
+
+    <h4 v-if="subCategoryList && subCategoryList.length">Sub Categories</h4>
+    <span v-for="categoryInfo in subCategoryList">
+        <div><router-link :to="{ name: 'category', params: { productCategoryId: categoryInfo.productCategoryId }}" v-html="categoryInfo.categoryName"></router-link></div>
+    </span>
+
+    <h4 v-if="productList && productList.length">Products</h4>
     <span v-for="productInfo in productList">
         <category-product :product-id="productInfo.productId" :product-info="productInfo"></category-product>
     </span>

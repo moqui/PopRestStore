@@ -27,7 +27,7 @@ along with this software (see the LICENSE.md file). If not, see
         <actions>
             <service-call name="popstore.StoreServices.get#StoreInfo" in-map="[productStoreId:productStoreId]" out-map="storeInfo"/>
             <script><![CDATA[
-                String storeInfoJson = ec.web.jacksonMapper.writeValueAsString(storeInfo)
+                String storeInfoJson = groovy.json.JsonOutput.toJson(storeInfo)
                 String jsText = """
 var storeInfo = ${storeInfoJson};
 \$.extend(storeConfig, storeInfo.productStore, storeInfo.settings);
