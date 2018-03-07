@@ -80,7 +80,7 @@ export default {
 .features {
   background: map-get($theme-colors, primary);
   color: #fff;
-    padding-top: 10px;
+  padding-top: 10px;
   .feature {
     display: flex;
     .feature-icon {

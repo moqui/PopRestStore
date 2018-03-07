@@ -3,7 +3,7 @@ import axios from "axios";
 export default {
   getFeaturedProducts: () => {
     return axios
-      .get("http://localhost:8080/rest/s1/pop/categories/PopcAllProducts/products")
+      .get("/rest/s1/pop/categories/PopcAllProducts/products")
       .then(res => {
         return res.data.productList;
       });
