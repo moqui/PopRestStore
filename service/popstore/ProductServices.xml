@@ -90,14 +90,55 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="term"/>
             <parameter name="productCategoryId"/>
             <parameter name="productFeatureIds" type="List"><parameter name="productFeatureId"/></parameter>
+
+            <parameter name="orderByFields" type="List"><parameter name="orderByField"/></parameter>
+            <parameter name="pageIndex" type="Integer" default="0"/>
+            <parameter name="pageSize" type="Integer" default="20"/>
         </in-parameters>
         <out-parameters>
-            <parameter name="products" type="List"><parameter name="productInfo" type="Map">
-
-            </parameter></parameter>
+            <parameter name="productList" type="List"><parameter name="productInfo" type="Map"/></parameter>
+            <parameter name="productListCount" type="Integer"><description>The total count of hits, not just the
+                limited number returned.</description></parameter>
+            <parameter name="productListPageIndex" type="Integer"/>
+            <parameter name="productListPageSize" type="Integer"/>
+            <parameter name="productListPageMaxIndex" type="Integer"/>
+            <parameter name="productListPageRangeLow" type="Integer"/>
+            <parameter name="productListPageRangeHigh" type="Integer"/>
         </out-parameters>
         <actions>
             <!-- TODO -->
+        </actions>
+    </service>
+
+    <service verb="get" noun="CategoryInfo">
+        <in-parameters>
+            <parameter name="productCategoryId" required="true"/>
+            <parameter name="productStoreId"/>
+            <parameter name="locale"/>
+        </in-parameters>
+        <out-parameters>
+            <auto-parameters entity-name="mantle.product.category.ProductCategory" include="nonpk"/>
+            <parameter name="subCategoryList" type="List"><parameter name="categoryInfo" type="Map"/></parameter>
+        </out-parameters>
+        <actions>
+            <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory" cache="true"/>
+            <if condition="productCategory == null"><return error="true" message="Category not found with ID ${productCategoryId}"/></if>
+            <script>context.putAll(productCategory)</script>
+
+            <entity-find entity-name="mantle.product.category.ProductCategoryRollup" list="rollupList" cache="true">
+                <date-filter/><econdition field-name="parentProductCategoryId" from="productCategoryId"/>
+                <order-by field-name="sequenceNum"/>
+            </entity-find>
+
+            <set field="subCategoryList" from="[]"/>
+            <iterate list="rollupList" entry="rollup">
+                <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory" cache="true">
+                    <field-map field-name="productCategoryId" from="rollup.productCategoryId"/></entity-find-one>
+                <!-- TODO: ProductCategoryContent -->
+                <script>subCategoryList.add([productCategoryId:productCategory.productCategoryId, pseudoId:productCategory.pseudoId,
+                        categoryName:productCategory.categoryName, description:productCategory.description,
+                        smallImageList:smallImageList, sequenceNum:rollup.sequenceNum])</script>
+            </iterate>
         </actions>
     </service>
 
@@ -107,24 +148,30 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="productStoreId"/>
             <parameter name="priceUomId"/>
             <parameter name="locale"/>
+            <parameter name="orderBy" default-value="sequenceNum"/>
+            <parameter name="pageIndex" type="Integer" default="0"/>
+            <parameter name="pageSize" type="Integer" default="20"/>
         </in-parameters>
         <out-parameters>
-            <auto-parameters entity-name="mantle.product.category.ProductCategory" include="nonpk"/>
-
             <parameter name="productList" type="List"><parameter name="productInfo" type="Map">
-                <parameter name="productId"/><parameter name="productName"/><parameter name="description"/>
+                <parameter name="productId"/><parameter name="pseudoId"/><parameter name="productName"/><parameter name="description"/>
                 <parameter name="price" type="BigDecimal"/><parameter name="listPrice" type="BigDecimal"/><parameter name="priceUomId"/>
+                <parameter name="sequenceNum"/>
                 <parameter name="smallImageList" type="List"><parameter name="smallImage" type="Map">
                     <parameter name="productContentId"/><parameter name="productContentTypeEnumId"/>
                     <parameter name="description"/><parameter name="sequenceNum"/>
                 </parameter></parameter>
             </parameter></parameter>
+            <parameter name="productList" type="List"><parameter name="document" type="Map"/></parameter>
+            <parameter name="productListCount" type="Integer"><description>The total count of hits, not just the
+                limited number returned.</description></parameter>
+            <parameter name="productListPageIndex" type="Integer"/>
+            <parameter name="productListPageSize" type="Integer"/>
+            <parameter name="productListPageMaxIndex" type="Integer"/>
+            <parameter name="productListPageRangeLow" type="Integer"/>
+            <parameter name="productListPageRangeHigh" type="Integer"/>
         </out-parameters>
         <actions>
-            <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory" cache="true"/>
-            <if condition="productCategory == null"><return error="true" message="Category not found with ID ${productCategoryId}"/></if>
-            <script>context.putAll(productCategory)</script>
-
             <if condition="productStoreId">
                 <entity-find-one entity-name="mantle.product.store.ProductStore" value-field="productStore" cache="true"/>
                 <if condition="!priceUomId"><set field="priceUomId" from="productStore?.defaultCurrencyUomId"/></if>
@@ -132,14 +179,19 @@ along with this software (see the LICENSE.md file). If not, see
             </if>
             <set field="customerPartyId" from="ec.user.userAccount?.partyId"/>
 
-            <!-- TODO: change to plain cached ProductCategoryMember query, separate cached query for Product for cache size efficiency -->
-            <!-- TODO: support pagination parameters in (pageIndex, pageSize, etc) and out (...) -->
-            <entity-find entity-name="ProductCategoryMemberProduct" list="pcmpList" cache="true">
+            <!-- get entire cached list then paginate, for huge numbers of products in a category this is a bad approach (such sites should probably be purely search based) -->
+            <!-- use the name 'productList' so pagination out-parameters are created automatically -->
+            <entity-find entity-name="mantle.product.category.ProductCategoryMember" list="productList" cache="true">
+                <search-form-inputs default-order-by="${orderBy}"/>
                 <date-filter/><econdition field-name="productCategoryId"/>
-                <order-by field-name="sequenceNum"/><order-by field-name="productName"/>
             </entity-find>
+            <set field="pcmList" from="productList"/>
+
             <set field="productList" from="[]"/>
-            <iterate list="pcmpList" entry="pcmp">
+            <iterate list="pcmList" entry="pcmp">
+                <entity-find-one entity-name="mantle.product.Product" value-field="product" cache="true">
+                    <field-map field-name="productId" from="pcmp.productId"/></entity-find-one>
+
                 <service-call name="mantle.product.PriceServices.get#ProductPrice" out-map="priceMap"
                         in-map="[productId:pcmp.productId, priceUomId:priceUomId, productStoreId:productStoreId,
                                 vendorPartyId:vendorPartyId, customerPartyId:customerPartyId]"/>
@@ -155,9 +207,9 @@ along with this software (see the LICENSE.md file). If not, see
                     <set field="smallImageList" from="smallImageList.findAll({ it.locale == null || it.locale == locale || it.locale == langLocale })"/>
                 </if>
 
-                <script>productList.add([productId:pcmp.productId, productName:pcmp.productName, description:pcmp.description,
+                <script>productList.add([productId:pcmp.productId, pseudoId:product.pseudoId, productName:product.productName, description:product.description,
                         price:priceMap.price, listPrice:priceMap.listPrice, priceUomId:priceMap.priceUomId,
-                        smallImageList:smallImageList])</script>
+                        smallImageList:smallImageList, sequenceNum:pcmp.sequenceNum])</script>
             </iterate>
         </actions>
     </service>

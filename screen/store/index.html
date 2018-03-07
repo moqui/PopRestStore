@@ -28,11 +28,18 @@
             contentLocation: "/content/",
             contentAttachmentLocation: "/content/attachment/",
             productImageLocation: "/content/productImage/",
-            // page/etc template locations (may be path or full URL)
-            homeTemplate: "/store/template/home.html",
-            categoryTemplate: "/store/template/category.html",
-            categoryProductTemplate: "/store/template/category_product.html",
-            productTemplate: "/store/template/product.html"
+            // browse page/etc template locations (may be path or full URL)
+            homeTemplate: "/store/template/HomeTemplate.html",
+            searchTemplate: "/store/template/SearchTemplate.html",
+            categoryTemplate: "/store/template/CategoryTemplate.html",
+            categoryProductTemplate: "/store/template/CategoryProductTemplate.html",
+            productTemplate: "/store/template/ProductTemplate.html",
+            // buy page/etc template locations (may be path or full URL)
+            loginTemplate: "/store/template/LoginTemplate.html",
+            profileTemplate: "/store/template/ProfileTemplate.html",
+            orderHistoryTemplate: "/store/template/OrderHistoryTemplate.html",
+            orderDetailTemplate: "/store/template/OrderDetailTemplate.html",
+            cartTemplate: "/store/template/CartTemplate.html"
         };
     </script>
 </head>
@@ -47,6 +54,7 @@
 
             <div>
                 <router-link to="/">Home</router-link>
+                <router-link to="/profile">Profile</router-link>
                 <router-link to="/foo">Foo (invalid)</router-link>
                 
                 <router-link v-if="storeInfo.categoryByType.PsctHomePage" :to="{ name: 'category', params: { productCategoryId: storeInfo.categoryByType.PsctHomePage.productCategoryId }}" v-html="storeInfo.categoryByType.PsctHomePage.categoryName"></router-link>
@@ -58,6 +66,11 @@
                 <div class="card-body">
                     <router-view></router-view>
                 </div>
+            </div>
+
+            <div>
+                <router-link to="/content/about_alias">About Us</router-link>
+                <router-link to="/content/contact">Contact Us</router-link>
             </div>
         </div>
 

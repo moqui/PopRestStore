@@ -97,20 +97,23 @@ moqui.handleAjaxError = function(jqXHR, textStatus, errorThrown) {
     try { respObj = JSON.parse(resp); } catch (e) { /* ignore error, don't always expect it to be JSON */ }
     console.warn('ajax ' + textStatus + ' (' + jqXHR.status + '), message ' + errorThrown /*+ '; response: ' + resp*/);
     // console.error('respObj: ' + JSON.stringify(respObj));
-    var notified = false;
-    if (respObj && moqui.isPlainObject(respObj)) { notified = moqui.notifyMessages(respObj.messageInfos, respObj.errors, respObj.validationErrors); }
-    else if (resp && moqui.isString(resp) && resp.length) { notified = moqui.notifyMessages(resp); }
 
-    if (jqXHR.status === 401) {
-        // TODO: handle login required but user not logged in
+    if (jqXHR.status === 401 && window.storeApp) {
+        // handle login required but user not logged in, route to login
+        window.storeApp.$router.push('/login');
     } else if (jqXHR.status === 0) {
         if (errorThrown.indexOf('abort') < 0) {
             var msg = 'Could not connect to server';
             $.notify({ message:msg }, moqui.notifyOptsError);
         }
-    } else if (!notified) {
-        var errMsg = 'Error: ' + errorThrown + ' (' + textStatus + ')';
-        $.notify({ message:errMsg }, moqui.notifyOptsError);
+    } else {
+        var notified = false;
+        if (respObj && moqui.isPlainObject(respObj)) { notified = moqui.notifyMessages(respObj.messageInfos, respObj.errors, respObj.validationErrors); }
+        else if (resp && moqui.isString(resp) && resp.length) { notified = moqui.notifyMessages(resp); }
+        if (!notified) {
+            var errMsg = 'Error: ' + errorThrown + ' (' + textStatus + ')';
+            $.notify({ message:errMsg }, moqui.notifyOptsError);
+        }
     }
 };
 
@@ -129,6 +132,7 @@ Vue.component('route-placeholder', {
     mounted: function() {
         var vm = this;
         var jsCompObj = this.options || {};
+        // NOTE on cache: on initial load if there are multiple of the same component (like category-product) will load template multiple times, consider some sort of lock/wait
         var cachedComponent = moqui.componentCache.get(this.location);
         if (cachedComponent) {
             vm.activeComponent = cachedComponent;

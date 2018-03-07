@@ -19,26 +19,38 @@ Vue.component('category-product', {
 storeComps.CategoryProperties = { productCategoryId:{type:String,required:true} };
 storeComps.CategoryOptions = {
     props: storeComps.CategoryProperties,
-    data: function() { return { categoryInfo:null, productList:[] } },
+    data: function () { return { categoryInfo:null, subCategoryList:[], productList:[], pageIndex:0, pageSize:20 } },
     methods: {
-        fetchProducts: function() {
-            var url = this.$root.storeConfig.restApiLocation + "categories/" + this.productCategoryId + "/products";
-            console.info("Loading category info from " + url);
+        goPage: function (pageNum) { this.pageIndex = pageNum; },
+        fetchInfo: function() {
+            var url = this.$root.storeConfig.restApiLocation + "categories/" + this.productCategoryId + "/info";
+            var searchObj = { productStoreId:this.$root.storeConfig.productStoreId };
+            console.info("Loading category info from " + url + " params " + JSON.stringify(searchObj));
             var vm = this;
-            $.ajax({ type:"GET", url:url, dataType:"json", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
-                success: function(infoObj, status, jqXHR) {
-                    // console.info(infoObj);
-                    if (infoObj) {
-                        vm.categoryInfo = infoObj;
-                        if (infoObj.productList) vm.productList = infoObj.productList;
-                    }
-                }
+            $.ajax({ type:"GET", url:url, data:searchObj, dataType:"json", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
+                success: function(infoObj, status, jqXHR) { if (infoObj) {
+                    // console.log(infoObj);
+                    vm.categoryInfo = infoObj;
+                    vm.subCategoryList = infoObj.subCategoryList;
+                } }
             });
+        },
+        fetchProducts: function () {
+            var url = this.$root.storeConfig.restApiLocation + "categories/" + this.productCategoryId + "/products";
+            var searchObj = { productStoreId:this.$root.storeConfig.productStoreId, pageIndex:this.pageIndex, pageSize:this.pageSize };
+            console.info("Loading category products from " + url + " params " + JSON.stringify(searchObj));
+            var vm = this;
+            $.ajax({ type:"GET", url:url, data:searchObj, dataType:"json", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
+                success: function(infoObj, status, jqXHR) { if (infoObj) { vm.productList = infoObj.productList; } } });
         }
     },
-    // needed because same component instance is used when going from one category to another, faster this way too
-    watch: { productCategoryId: function() { this.fetchProducts(); } },
-    mounted: function() { this.fetchProducts(); }
+    watch: {
+        // needed because same component instance is used when going from one category to another, faster this way too
+        productCategoryId: function () { this.fetchInfo(); this.fetchProducts(); },
+        pageIndex: function () { this.fetchProducts(); },
+        pageSize: function () { this.fetchProducts(); }
+    },
+    mounted: function () { this.fetchInfo(); this.fetchProducts(); }
 };
 storeComps.CategoryComponent = {
     props: storeComps.CategoryProperties,
@@ -54,4 +66,53 @@ storeComps.ProductOptions = {
 storeComps.ProductComponent = {
     props: storeComps.ProductProperties,
     template: '<route-placeholder :location="$root.storeConfig.productTemplate" :options="$root.storeComps.ProductOptions" :properties="$props"></route-placeholder>'
+};
+
+/* Content Display */
+
+storeComps.ContentComponent = {
+    data: function () { return { contentHtml:null }; },
+    template: '<div v-html="contentHtml"></div>',
+    methods: {
+        fetchContent: function () {
+            var contentPath = this.$route.params[0];
+            var url = this.$root.storeConfig.contentLocation + contentPath;
+
+            var vm = this;
+            $.ajax({ type:"GET", url:url, dataType:"html", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
+                success: function(responseHtml, status, jqXHR) { vm.contentHtml = responseHtml; }
+            });
+        }
+    },
+    watch: { '$route': function (to, from) { this.fetchContent(); } },
+    mounted: function () { this.fetchContent(); }
+};
+
+/* ========== Profile and Order History ========== */
+
+storeComps.LoginOptions = {
+};
+storeComps.LoginComponent = {
+    template: '<route-placeholder :location="$root.storeConfig.loginTemplate" :options="$root.storeComps.LoginOptions"></route-placeholder>'
+};
+
+storeComps.ProfileOptions = {
+    data: function () { return { customerInfo:null }; },
+    methods: {
+        fetchInfo: function() {
+            var url = this.$root.storeConfig.restApiLocation + "customer/info";
+            console.info("Loading profile info from " + url);
+            var vm = this;
+            $.ajax({ type:"GET", url:url, dataType:"json", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
+                success: function(infoObj, status, jqXHR) { if (infoObj) {
+                    console.log(infoObj);
+                    vm.customerInfo = infoObj;
+                } }
+            });
+        }
+    },
+    mounted: function () { this.fetchInfo(); }
+};
+storeComps.ProfileComponent = {
+    template: '<route-placeholder :location="$root.storeConfig.profileTemplate" :options="$root.storeComps.ProfileOptions"></route-placeholder>'
 };
