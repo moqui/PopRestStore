@@ -8,6 +8,7 @@ const storeRouter = new VueRouter({
         { path: '/', name: 'home', component: storeComps.HomeComponent },
         { path: '/category/:productCategoryId/:extra?', name: 'category', component: storeComps.CategoryComponent, props: true },
         { path: '/product/:productId/:extra?', name: 'product', component: storeComps.ProductComponent, props: true },
+        { path: '/content/*', name: 'content', component: storeComps.ContentComponent },
         { path: '*', component: moqui.NotFoundComponent }
     ]
 });

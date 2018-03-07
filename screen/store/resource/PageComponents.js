@@ -19,7 +19,7 @@ Vue.component('category-product', {
 storeComps.CategoryProperties = { productCategoryId:{type:String,required:true} };
 storeComps.CategoryOptions = {
     props: storeComps.CategoryProperties,
-    data: function() { return { categoryInfo:null, subCategoryList:[], productList:[], pageIndex:0, pageSize:20 } },
+    data: function () { return { categoryInfo:null, subCategoryList:[], productList:[], pageIndex:0, pageSize:20 } },
     methods: {
         goPage: function (pageNum) { this.pageIndex = pageNum; },
         fetchInfo: function() {
@@ -35,7 +35,7 @@ storeComps.CategoryOptions = {
                 } }
             });
         },
-        fetchProducts: function() {
+        fetchProducts: function () {
             var url = this.$root.storeConfig.restApiLocation + "categories/" + this.productCategoryId + "/products";
             var searchObj = { productStoreId:this.$root.storeConfig.productStoreId, pageIndex:this.pageIndex, pageSize:this.pageSize };
             console.info("Loading category products from " + url + " params " + JSON.stringify(searchObj));
@@ -46,11 +46,11 @@ storeComps.CategoryOptions = {
     },
     watch: {
         // needed because same component instance is used when going from one category to another, faster this way too
-        productCategoryId: function() { this.fetchInfo(); this.fetchProducts(); },
-        pageIndex: function() { this.fetchProducts(); },
-        pageSize: function() { this.fetchProducts(); }
+        productCategoryId: function () { this.fetchInfo(); this.fetchProducts(); },
+        pageIndex: function () { this.fetchProducts(); },
+        pageSize: function () { this.fetchProducts(); }
     },
-    mounted: function() { this.fetchInfo(); this.fetchProducts(); }
+    mounted: function () { this.fetchInfo(); this.fetchProducts(); }
 };
 storeComps.CategoryComponent = {
     props: storeComps.CategoryProperties,
@@ -66,4 +66,24 @@ storeComps.ProductOptions = {
 storeComps.ProductComponent = {
     props: storeComps.ProductProperties,
     template: '<route-placeholder :location="$root.storeConfig.productTemplate" :options="$root.storeComps.ProductOptions" :properties="$props"></route-placeholder>'
+};
+
+/* Content Display */
+
+storeComps.ContentComponent = {
+    data: function () { return { contentHtml:null }; },
+    template: '<div v-html="contentHtml"></div>',
+    methods: {
+        fetchContent: function () {
+            var contentPath = this.$route.params[0];
+            var url = this.$root.storeConfig.contentLocation + contentPath;
+
+            var vm = this;
+            $.ajax({ type:"GET", url:url, dataType:"html", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
+                success: function(responseHtml, status, jqXHR) { vm.contentHtml = responseHtml; }
+            });
+        }
+    },
+    watch: { '$route': function (to, from) { this.fetchContent(); } },
+    mounted: function () { this.fetchContent(); }
 };
