@@ -38,11 +38,11 @@ var moqui = {
 
 /* ========== Notify and Error Handling ========== */
 
-moqui.notifyOpts = { delay:1500, timer:250, offset:{x:20,y:120}, placement:{from:'top',align:'right'}, z_index:1100, type:'success',
+moqui.notifyOpts = { delay:2000, offset:{x:20,y:120}, placement:{from:'top',align:'right'}, z_index:1100, type:'success',
     animate:{ enter:'animated fadeInDown', exit:'' } }; // no animate on exit: animated fadeOutUp
-moqui.notifyOptsInfo = { delay:3000, timer:250, offset:{x:20,y:120}, placement:{from:'top',align:'right'}, z_index:1100, type:'info',
+moqui.notifyOptsInfo = { delay:3000, offset:{x:20,y:120}, placement:{from:'top',align:'right'}, z_index:1100, type:'info',
     animate:{ enter:'animated fadeInDown', exit:'' } }; // no animate on exit: animated fadeOutUp
-moqui.notifyOptsError = { delay:5000, timer:250, offset:{x:20,y:120}, placement:{from:'top',align:'right'}, z_index:1100, type:'danger',
+moqui.notifyOptsError = { delay:20000, offset:{x:20,y:120}, placement:{from:'top',align:'right'}, z_index:1100, type:'danger',
     animate:{ enter:'animated fadeInDown', exit:'' } }; // no animate on exit: animated fadeOutUp
 moqui.notifyMessages = function(messages, errors, validationErrors) {
     var notified = false;
@@ -99,6 +99,7 @@ moqui.handleAjaxError = function(jqXHR, textStatus, errorThrown) {
     // console.error('respObj: ' + JSON.stringify(respObj));
 
     if (jqXHR.status === 401 && window.storeApp) {
+        window.storeApp.preLoginRoute = window.storeApp.$router.currentRoute;
         // handle login required but user not logged in, route to login
         window.storeApp.$router.push('/login');
     } else if (jqXHR.status === 0) {

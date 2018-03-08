@@ -23,7 +23,7 @@ storeComps.CategoryOptions = {
     methods: {
         goPage: function (pageNum) { this.pageIndex = pageNum; },
         fetchInfo: function() {
-            var url = this.$root.storeConfig.restApiLocation + "categories/" + this.productCategoryId + "/info";
+            var url = this.$root.storeConfig.restApiLocation + "s1/pop/categories/" + this.productCategoryId + "/info";
             var searchObj = { productStoreId:this.$root.storeConfig.productStoreId };
             console.info("Loading category info from " + url + " params " + JSON.stringify(searchObj));
             var vm = this;
@@ -36,7 +36,7 @@ storeComps.CategoryOptions = {
             });
         },
         fetchProducts: function () {
-            var url = this.$root.storeConfig.restApiLocation + "categories/" + this.productCategoryId + "/products";
+            var url = this.$root.storeConfig.restApiLocation + "s1/pop/categories/" + this.productCategoryId + "/products";
             var searchObj = { productStoreId:this.$root.storeConfig.productStoreId, pageIndex:this.pageIndex, pageSize:this.pageSize };
             console.info("Loading category products from " + url + " params " + JSON.stringify(searchObj));
             var vm = this;
@@ -91,27 +91,65 @@ storeComps.ContentComponent = {
 /* ========== Profile and Order History ========== */
 
 storeComps.LoginOptions = {
+    data: function () { return {
+        activeTab:"login",
+        // TODO: remove these, should only have in initial dev for easier testing
+        username:"john.doe", password:"moqui", newPassword:"", newPasswordVerify:"",
+        firstName:"", lastName:"", emailAddress:""
+    }; },
+    methods: {
+        setTab: function (tabName) { this.activeTab = tabName || 'login'; },
+        submitLogin: function () {
+            var url = this.$root.storeConfig.restApiLocation + "s1/pop/login";
+            var dataObj = { username:this.username, password:this.password, cartOrderId:this.$root.cartOrderId };
+            console.info("Login " + url + " username " + dataObj.username + " cartOrderId " + dataObj.cartOrderId);
+            var vm = this;
+            $.ajax({ type:"POST", url:url, data:dataObj, dataType:"json", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
+                success: function(respObj, status, jqXHR) { if (respObj) {
+                    // console.log(respObj);
+                    vm.$root.apiKey = respObj.apiKey;
+                    vm.$root.customerInfo = respObj.customerInfo;
+                    if (respObj.cartOrderId && respObj.cartOrderId.length) vm.$root.cartOrderId = respObj.cartOrderId;
+                    if (vm.$root.preLoginRoute) {
+                        console.log("pushing " + vm.$root.preLoginRoute.fullPath);
+                        vm.$root.$router.push(vm.$root.preLoginRoute.fullPath);
+                        vm.$root.preLoginRoute = null;
+                    } else {
+                        vm.$root.$router.push("/");
+                    }
+                } }
+            });
+        },
+        submitReset: function () {
+
+        },
+        submitChange: function () {
+
+        },
+        submitRegister: function () {
+
+        }
+    }
 };
 storeComps.LoginComponent = {
     template: '<route-placeholder :location="$root.storeConfig.loginTemplate" :options="$root.storeComps.LoginOptions"></route-placeholder>'
 };
 
 storeComps.ProfileOptions = {
-    data: function () { return { customerInfo:null }; },
+    data: function () { return { methodInfoList:null, postalAddressList:null }; },
     methods: {
         fetchInfo: function() {
-            var url = this.$root.storeConfig.restApiLocation + "customer/info";
-            console.info("Loading profile info from " + url);
-            var vm = this;
-            $.ajax({ type:"GET", url:url, dataType:"json", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
-                success: function(infoObj, status, jqXHR) { if (infoObj) {
-                    console.log(infoObj);
-                    vm.customerInfo = infoObj;
-                } }
-            });
+            // TODO get methodInfoList, postalAddressList
         }
     },
-    mounted: function () { this.fetchInfo(); }
+    mounted: function () {
+        if (this.$root.customerInfo) {
+            this.fetchInfo();
+        } else {
+            this.$root.preLoginRoute = this.$root.$router.currentRoute;
+            this.$root.$router.push('/login');
+        }
+    }
 };
 storeComps.ProfileComponent = {
     template: '<route-placeholder :location="$root.storeConfig.profileTemplate" :options="$root.storeComps.ProfileOptions"></route-placeholder>'

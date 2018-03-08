@@ -20,9 +20,12 @@ along with this software (see the LICENSE.md file). If not, see
         <in-parameters>
             <parameter name="username" required="true"/>
             <parameter name="password" required="true"/>
+            <parameter name="cartOrderId"/>
         </in-parameters>
         <out-parameters>
-            <parameter name="api_key"/>
+            <parameter name="apiKey"/>
+            <parameter name="customerInfo" type="Map"/>
+            <parameter name="cartOrderId"/>
         </out-parameters>
         <actions>
             <script>ec.user.loginUser(username, password)</script>
@@ -36,18 +39,22 @@ along with this software (see the LICENSE.md file). If not, see
                     <order-by field-name="-entryDate"/><!-- get most recent open order -->
                 </entity-find>
                 <if condition="existingOrderList"><then>
-                    <if condition="ec.web.sessionAttributes.cartOrderId">
+                    <if condition="cartOrderId">
                         <!-- if a cartOrderId is in the session, merge its items into the existing order -->
+                        <!-- TODO: make sure cartOrder has no customerPartyId before merging -->
                         <service-call name="mantle.order.OrderServices.merge#OrderItems"
-                                in-map="[orderId:existingOrderList[0].orderId, fromOrderId:ec.web.sessionAttributes.cartOrderId]"/>
+                                in-map="[orderId:existingOrderList[0].orderId, fromOrderId:cartOrderId]"/>
                     </if>
                     <!-- whether there was one in the session or not always set the existing orderId there -->
-                    <set field="ec.web.sessionAttributes.cartOrderId" from="existingOrderList[0].orderId"/>
+                    <set field="cartOrderId" from="existingOrderList[0].orderId"/>
                 </then><else>
                     <!-- no existing open order, if a cartOrderId is in the session set the logged in user as the customer -->
-                    <if condition="ec.web.sessionAttributes.cartOrderId">
+                    <if condition="cartOrderId">
+                        <!-- NOTE: make sure cartOrder has no customerPartyId, ie only find those with null to avoid order takeover -->
                         <entity-find entity-name="OrderPart" list="orderPartList">
-                            <econdition field-name="orderId" from="ec.web.sessionAttributes.cartOrderId"/></entity-find>
+                            <econdition field-name="orderId" from="cartOrderId"/>
+                            <econdition field-name="customerPartyId" operator="is-null"/>
+                        </entity-find>
                         <if condition="orderPartList">
                             <set field="orderPart" from="orderPartList[0]"/>
                             <set field="orderPart.customerPartyId" from="ec.user.userAccount.partyId"/>
@@ -57,7 +64,10 @@ along with this software (see the LICENSE.md file). If not, see
                 </else></if>
 
                 <!-- create the login key to return -->
-                <set field="api_key" from="ec.user.getLoginKey()"/>
+                <set field="apiKey" from="ec.user.getLoginKey()"/>
+
+                <!-- get customer info for convenience -->
+                <service-call name="popstore.CustomerServices.get#CustomerInfo" out-map="customerInfo"/>
             </if>
         </actions>
     </service>
@@ -71,12 +81,15 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="newPasswordVerify" required="true"/>
 
             <parameter name="currencyUomId"/><parameter name="locale"/><parameter name="timeZone"/>
+
+            <parameter name="cartOrderId"/>
         </in-parameters>
         <out-parameters>
             <parameter name="userId"/>
             <parameter name="partyId"/>
             <parameter name="emailContactMechId"/>
-            <parameter name="api_key"/>
+            <parameter name="apiKey"/>
+            <parameter name="customerInfo" type="Map"/>
         </out-parameters>
         <actions>
             <!-- create account and login -->
@@ -84,9 +97,12 @@ along with this software (see the LICENSE.md file). If not, see
 
             <if condition="ec.user.userAccount != null">
                 <!-- if a cartOrderId is in the session set the logged in user as the customer -->
-                <if condition="ec.web.sessionAttributes.cartOrderId">
+                <if condition="cartOrderId">
+                    <!-- NOTE: make sure cartOrder has no customerPartyId, ie only find those with null to avoid order takeover -->
                     <entity-find entity-name="OrderPart" list="orderPartList">
-                        <econdition field-name="orderId" from="ec.web.sessionAttributes.cartOrderId"/></entity-find>
+                        <econdition field-name="orderId" from="cartOrderId"/>
+                        <econdition field-name="customerPartyId" operator="is-null"/>
+                    </entity-find>
                     <if condition="orderPartList">
                         <set field="orderPart" from="orderPartList[0]"/>
                         <set field="orderPart.customerPartyId" from="ec.user.userAccount.partyId"/>
@@ -95,7 +111,10 @@ along with this software (see the LICENSE.md file). If not, see
                 </if>
 
                 <!-- create the login key to return -->
-                <set field="api_key" from="ec.user.getLoginKey()"/>
+                <set field="apiKey" from="ec.user.getLoginKey()"/>
+
+                <!-- get customer info for convenience -->
+                <service-call name="popstore.CustomerServices.get#CustomerInfo" out-map="customerInfo"/>
             </if>
         </actions>
     </service>
