@@ -21,8 +21,8 @@
             // base path for the router, by default the app page should load from '/store'
             basePath: "/store/",
             // REST API base location, default on the same server
-            // if the Moqui server is running on a different server use something like "https://api.domain.com/rest/s1/pop"
-            restApiLocation: "/rest/s1/pop/",
+            // if the Moqui server is running on a different server use something like "https://api.domain.com/rest/"
+            restApiLocation: "/rest/",
             // Content base location for server administered content, points to the content.xml screen
             // this may be a path on the same server or for production preferably a full URL that goes through a caching proxy like CloudFlare
             contentLocation: "/content/",
@@ -51,6 +51,9 @@
         <div class="container-fluid">
             <!-- use v-html instead of mustache {{}} syntax so doesn't show on initial page load; something to consider for everything here -->
             <h1 v-html="storeConfig.storeName"></h1>
+
+            <p v-if="customerInfo">Welcome {{customerInfo.firstName}} {{customerInfo.lastName}} ({{customerInfo.emailAddress}})</p>
+            <button v-if="apiKey && apiKey.length" @click.prevent="logoutUser()" class="btn btn-danger">Logout</button>
 
             <div>
                 <router-link to="/">Home</router-link>
