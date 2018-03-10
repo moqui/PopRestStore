@@ -38,6 +38,7 @@ var moqui = {
 
 /* ========== Notify and Error Handling ========== */
 
+// TODO: adjust offset for final header height to stay just below the bottom of the header
 moqui.notifyOpts = { delay:2000, offset:{x:20,y:120}, placement:{from:'top',align:'right'}, z_index:1100, type:'success',
     animate:{ enter:'animated fadeInDown', exit:'' } }; // no animate on exit: animated fadeOutUp
 moqui.notifyOptsInfo = { delay:3000, offset:{x:20,y:120}, placement:{from:'top',align:'right'}, z_index:1100, type:'info',

@@ -26,7 +26,7 @@ var storeApp = new Vue({
         apiKey: null,
         // userInfo null unless user is logged in, then has response from /customer/info
         customerInfo: null,
-        cartOrderId: null, cartInfo:{}
+        cartInfo:null
     },
     methods: {
         getAjaxHeaders: function () {
@@ -43,15 +43,13 @@ var storeApp = new Vue({
             $.ajax({ type:"GET", url:(this.storeConfig.restApiLocation + "logout"), dataType:"text",
                 error: function (jqXHR, textStatus, errorThrown) { console.log("Logout " + textStatus + " " + jqXHR.responseText); },
                 success: function(respText, status, jqXHR) {
-                    vm.apiKey = null; vm.customerInfo = null;
-                    vm.cartOrderId = null; vm.cartInfo = null;
+                    vm.apiKey = null; vm.customerInfo = null; vm.cartInfo = null;
                     vm.$router.push("/");
                 }
             });
         }
     },
     watch: {
-        cartOrderId: function () { /* TODO: get cartInfo from cartOrderId */ }
     },
     mounted: function () {
         var vm = this;

@@ -101,15 +101,14 @@ storeComps.LoginOptions = {
         setTab: function (tabName) { this.activeTab = tabName || 'login'; },
         submitLogin: function () {
             var url = this.$root.storeConfig.restApiLocation + "s1/pop/login";
-            var dataObj = { username:this.username, password:this.password, cartOrderId:this.$root.cartOrderId };
-            console.info("Login " + url + " username " + dataObj.username + " cartOrderId " + dataObj.cartOrderId);
+            var dataObj = { username:this.username, password:this.password };
+            console.info("Login " + url + " username " + dataObj.username);
             var vm = this;
             $.ajax({ type:"POST", url:url, data:dataObj, dataType:"json", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
                 success: function(respObj, status, jqXHR) { if (respObj) {
                     // console.log(respObj);
                     vm.$root.apiKey = respObj.apiKey;
                     vm.$root.customerInfo = respObj.customerInfo;
-                    if (respObj.cartOrderId && respObj.cartOrderId.length) vm.$root.cartOrderId = respObj.cartOrderId;
                     if (vm.$root.preLoginRoute) {
                         console.log("pushing " + vm.$root.preLoginRoute.fullPath);
                         vm.$root.$router.push(vm.$root.preLoginRoute.fullPath);
