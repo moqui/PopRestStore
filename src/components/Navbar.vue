@@ -28,9 +28,9 @@
                     <template slot="button-content">
                         <em>Shop</em>
                     </template>
-                    <b-dropdown-item href="#">Clothing</b-dropdown-item>
-                    <b-dropdown-item href="#">Office Supplies</b-dropdown-item>
-                    <b-dropdown-item href="#">Other</b-dropdown-item>
+                    <b-dropdown-item href="#" v-for="category in categories" :key="category.productCategoryId">
+                        {{category.categoryName}}
+                    </b-dropdown-item>
                 </b-nav-item-dropdown>
 
               
@@ -67,14 +67,18 @@
 
 <script>
 import SearchInput from "./forms/SearchInput";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "navbar",
   props: ["subBar"],
   components: {
     "search-input": SearchInput
   },
-  data() {
-    return {};
+  computed: mapGetters({
+    categories: "categories"
+  }),
+  created () {
+    this.$store.dispatch("getAllCategories");
   }
 };
 </script>
@@ -83,11 +87,9 @@ export default {
 <style lang="scss" rel="stylesheet/scss" scoped>
 .moqui-navbar {
   width: 100%;
-  .main-navbar {
-  }
 
   .moqui-logo {
-    width: 100px;
+    width: 101px;
   }
 }
 </style>

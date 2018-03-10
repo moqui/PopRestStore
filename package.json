@@ -8,7 +8,7 @@
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
-    "watch": "./node_modules/.bin/webpack --progress --colors --watch --config build/webpack.prod.conf.js"
+    "watch": "./node_modules/.bin/webpack --progress --colors --watch --config build/webpack.dev.conf.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -19,7 +19,8 @@
     "vue": "^2.5.2",
     "vue-awesome": "^2.3.5",
     "vue-carousel": "^0.6.9",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
