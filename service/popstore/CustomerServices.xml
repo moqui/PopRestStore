@@ -20,33 +20,36 @@ along with this software (see the LICENSE.md file). If not, see
         <in-parameters>
             <parameter name="username" required="true"/>
             <parameter name="password" required="true"/>
-            <parameter name="cartOrderId"/>
         </in-parameters>
         <out-parameters>
             <parameter name="apiKey"/>
             <parameter name="customerInfo" type="Map"/>
-            <parameter name="cartOrderId"/>
         </out-parameters>
         <actions>
             <script>ec.user.loginUser(username, password)</script>
 
             <if condition="ec.user.userAccount != null">
+                <set field="customerPartyId" from="ec.user.userAccount.partyId"/>
+                <!-- NOTE: use the web session for attributes such as cartOrderId for security; this won't work in a stateless mode or outside a web session -->
+                <set field="sessionAttributes" from="ec.web.sessionAttributes"/>
+                <set field="sessionAttributes.customerPartyId" from="customerPartyId"/>
+                <set field="cartOrderId" from="ec.web.sessionAttributes.cartOrderId"/>
+
                 <!-- see if there is an open order for user and get that ID into session -->
                 <entity-find entity-name="mantle.order.OrderHeaderAndPart" list="existingOrderList">
                     <econdition field-name="statusId" value="OrderOpen"/>
-                    <econdition field-name="customerPartyId" from="ec.user.userAccount.partyId"/>
+                    <econdition field-name="customerPartyId"/>
                     <select-field field-name="orderId"/><select-field field-name="orderPartSeqId"/>
                     <order-by field-name="-entryDate"/><!-- get most recent open order -->
                 </entity-find>
                 <if condition="existingOrderList"><then>
                     <if condition="cartOrderId">
                         <!-- if a cartOrderId is in the session, merge its items into the existing order -->
-                        <!-- TODO: make sure cartOrder has no customerPartyId before merging -->
                         <service-call name="mantle.order.OrderServices.merge#OrderItems"
                                 in-map="[orderId:existingOrderList[0].orderId, fromOrderId:cartOrderId]"/>
                     </if>
                     <!-- whether there was one in the session or not always set the existing orderId there -->
-                    <set field="cartOrderId" from="existingOrderList[0].orderId"/>
+                    <set field="sessionAttributes.cartOrderId" from="existingOrderList[0].orderId"/>
                 </then><else>
                     <!-- no existing open order, if a cartOrderId is in the session set the logged in user as the customer -->
                     <if condition="cartOrderId">
@@ -57,7 +60,7 @@ along with this software (see the LICENSE.md file). If not, see
                         </entity-find>
                         <if condition="orderPartList">
                             <set field="orderPart" from="orderPartList[0]"/>
-                            <set field="orderPart.customerPartyId" from="ec.user.userAccount.partyId"/>
+                            <set field="orderPart.customerPartyId" from="customerPartyId"/>
                             <entity-update value-field="orderPart"/>
                         </if>
                     </if>
@@ -81,12 +84,8 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="newPasswordVerify" required="true"/>
 
             <parameter name="currencyUomId"/><parameter name="locale"/><parameter name="timeZone"/>
-
-            <parameter name="cartOrderId"/>
         </in-parameters>
         <out-parameters>
-            <parameter name="userId"/>
-            <parameter name="partyId"/>
             <parameter name="emailContactMechId"/>
             <parameter name="apiKey"/>
             <parameter name="customerInfo" type="Map"/>
@@ -96,6 +95,12 @@ along with this software (see the LICENSE.md file). If not, see
             <service-call name="mantle.party.PartyServices.create#Account" in-map="context + [roleTypeId:'Customer']"/>
 
             <if condition="ec.user.userAccount != null">
+                <set field="customerPartyId" from="ec.user.userAccount.partyId"/>
+                <!-- NOTE: use the web session for attributes such as cartOrderId for security; this won't work in a stateless mode or outside a web session -->
+                <set field="sessionAttributes" from="ec.web.sessionAttributes"/>
+                <set field="sessionAttributes.customerPartyId" from="customerPartyId"/>
+                <set field="cartOrderId" from="sessionAttributes.cartOrderId"/>
+
                 <!-- if a cartOrderId is in the session set the logged in user as the customer -->
                 <if condition="cartOrderId">
                     <!-- NOTE: make sure cartOrder has no customerPartyId, ie only find those with null to avoid order takeover -->
@@ -105,7 +110,7 @@ along with this software (see the LICENSE.md file). If not, see
                     </entity-find>
                     <if condition="orderPartList">
                         <set field="orderPart" from="orderPartList[0]"/>
-                        <set field="orderPart.customerPartyId" from="ec.user.userAccount.partyId"/>
+                        <set field="orderPart.customerPartyId" from="customerPartyId"/>
                         <entity-update value-field="orderPart"/>
                     </if>
                 </if>
@@ -130,10 +135,12 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="emailAddress"/>
         </out-parameters>
         <actions>
+            <!-- NOTE: use the web session for attributes such as customerPartyId for security; this won't work in a stateless mode or outside a web session -->
+            <set field="sessionAttributes" from="ec.web.sessionAttributes"/>
+
             <set field="userId" from="ec.user.userId"/>
-            <if condition="!userId"><return error="true" message="No customer logged in"/></if>
-            <set field="partyId" from="ec.user.userAccount?.partyId"/>
-            <if condition="!partyId"><return error="true" message="No customer logged in"/></if>
+            <set field="partyId" from="ec.user.userAccount?.partyId ?: sessionAttributes.customerPartyId"/>
+            <if condition="!partyId"><return error="true" message="No active customer"/></if>
 
             <entity-find-one entity-name="mantle.party.PersonAndUserAccount" value-field="personAndUserAccount"/>
             <script>context.putAll(personAndUserAccount)</script>
@@ -150,8 +157,11 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="methodInfoList" type="List"><parameter name="methodInfo" type="Map"/></parameter>
         </out-parameters>
         <actions>
-            <set field="partyId" from="ec.user.userAccount?.partyId"/>
-            <if condition="!partyId"><return error="true" message="No customer logged in"/></if>
+            <!-- NOTE: use the web session for attributes such as customerPartyId for security; this won't work in a stateless mode or outside a web session -->
+            <set field="sessionAttributes" from="ec.web.sessionAttributes"/>
+
+            <set field="partyId" from="ec.user.userAccount?.partyId ?: sessionAttributes.customerPartyId"/>
+            <if condition="!partyId"><return error="true" message="No active customer"/></if>
             <service-call name="mantle.account.PaymentMethodServices.get#PartyPaymentMethodInfoList"
                     in-map="[partyId:partyId]" out-map="context"/>
         </actions>
@@ -164,8 +174,11 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="postalAddressList" type="List"><parameter name="postalAddressInfo" type="Map"/></parameter>
         </out-parameters>
         <actions>
-            <set field="partyId" from="ec.user.userAccount?.partyId"/>
-            <if condition="!partyId"><return error="true" message="No customer logged in"/></if>
+            <!-- NOTE: use the web session for attributes such as customerPartyId for security; this won't work in a stateless mode or outside a web session -->
+            <set field="sessionAttributes" from="ec.web.sessionAttributes"/>
+
+            <set field="partyId" from="ec.user.userAccount?.partyId ?: sessionAttributes.customerPartyId"/>
+            <if condition="!partyId"><return error="true" message="No active customer"/></if>
             <service-call name="mantle.party.ContactServices.get#PartyContactInfoList" out-map="shippingContactListInfo"
                     in-map="[partyId:partyId, postalContactMechPurposeId:'PostalShippingDest']"/>
         </actions>
