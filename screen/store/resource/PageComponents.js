@@ -139,6 +139,7 @@ storeComps.ProfileOptions = {
     methods: {
         fetchInfo: function() {
             // TODO get methodInfoList, postalAddressList
+            // TODO: expecting updates on this screen so make sure session token is fresh by calling handleAjaxResponse(jqXHR) in AJAX success
         }
     },
     mounted: function () {
