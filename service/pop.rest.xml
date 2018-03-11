@@ -55,6 +55,10 @@ along with this software (see the LICENSE.md file). If not, see
         <resource name="add">
             <method type="post"><service name="popstore.CartServices.add#Product"/></method>
         </resource>
+        <resource name="promoCode">
+            <method type="post"><service name="mantle.product.PromotionServices.add#OrderPromoCode"/></method>
+            <method type="delete"><service name="mantle.product.PromotionServices.remove#OrderPromoCode"/></method>
+        </resource>
     </resource>
 
     <!-- Customer Profile and Order History -->
