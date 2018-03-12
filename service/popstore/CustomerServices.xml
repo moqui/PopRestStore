@@ -210,6 +210,8 @@ along with this software (see the LICENSE.md file). If not, see
             <!-- TODO: if no customerPartyId call service to create one now and set in session (no user account aka 'anonymous') -->
 
             <service-call name="mantle.account.PaymentMethodServices.store#PaymentMethodInfo" in-map="context" out-map="context"/>
+
+            <!-- TODO: for CIM setups do anything here for CIM storage failure? -->
         </actions>
     </service>
 
@@ -264,6 +266,8 @@ along with this software (see the LICENSE.md file). If not, see
             <!-- TODO: if no customerPartyId call service to create one now and set in session (no user account aka 'anonymous') -->
 
             <service-call name="mantle.party.ContactServices.store#PartyContactInfo" in-map="context" out-map="context"/>
+
+            <!-- TODO: if address verification/validation available call explicitly so customer knows of potential issues right away -->
         </actions>
     </service>
 </services>

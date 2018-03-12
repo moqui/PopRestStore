@@ -66,6 +66,10 @@ along with this software (see the LICENSE.md file). If not, see
         <resource name="billingShipping">
             <method type="post"><service name="popstore.CartServices.set#BillingShippingInfo"/></method>
         </resource>
+
+        <resource name="place">
+            <method type="post"><service name="popstore.CartServices.place#CartOrder"/></method>
+        </resource>
     </resource>
 
     <!-- Customer Profile and Order History -->

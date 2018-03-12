@@ -246,6 +246,36 @@ General Order Placement and eCommerce Usage
         </actions>
     </service>
 
+    <service verb="place" noun="CartOrder">
+        <implements service="popstore.CartServices.interface#OrderInfo"/>
+        <in-parameters>
+            <parameter name="cardSecurityCodeByPaymentId" type="Map"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="oldStatusId"/>
+            <parameter name="statusChanged" type="Boolean"/>
+        </out-parameters>
+        <actions>
+            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
+            <if condition="!cartOrderId"><return message="Cart is empty" public="true" type="warning"/></if>
+            <set field="orderId" from="cartOrderId"/>
+
+            <!-- TODO: check shipping and payment info -->
+
+            <!-- authorize CC/etc payment(s), calling place#Order will trigger this, but do in advance to better support CC edits before placed -->
+            <service-call name="mantle.account.PaymentServices.authorize#OrderPayments" in-map="context" out-map="authResult"/>
+            <!-- if any don't authorize return message here... or optionally allow place anyway? -->
+            <if condition="authResult.authFailed"><return message="Payment authorize failed" public="true" type="danger"/></if>
+
+            <!-- place order -->
+            <service-call name="mantle.order.OrderServices.place#Order" in-map="[orderId:orderId]" out-map="context"/>
+            <!-- get order info to return for confirmation -->
+            <service-call name="popstore.CartServices.get#OrderInfoInternal" in-map="[orderId:orderId]" out-map="context"/>
+            <!-- if all is well we're done with this cart order -->
+            <script>ec.web.sessionAttributes.remove("cartOrderId")</script>
+        </actions>
+    </service>
+
     <service verb="get" noun="ActiveOrderAndCustomer">
         <description>Get active cart order, for internal (server-side) use only</description>
         <out-parameters>
