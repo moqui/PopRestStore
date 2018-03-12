@@ -23,14 +23,18 @@ along with this software (see the LICENSE.md file). If not, see
     </always-actions>
 
     <transition name="config.js" read-only="true">
-        <parameter name="productStoreId"/>
         <actions>
             <script><![CDATA[
+                // set productStoreId in the session
+                ec.web.sessionAttributes.productStoreId = productStoreId
+                // get store info
                 Map storeInfo = ec.service.sync().name("popstore.StoreServices.get#StoreInfo").parameter("productStoreId", productStoreId).call()
+                // add apiKey and moquiSessionToken for current user and session
                 if (ec.user.username) { try { storeInfo.apiKey = ec.user.getLoginKey() } catch (Exception e) { } }
                 storeInfo.moquiSessionToken = ec.web.sessionToken
                 String partyId = (ec.user.username ? ec.user.userAccount?.partyId : null) ?: ec.web.sessionAttributes.customerPartyId
                 if (partyId) { storeInfo.customerInfo = ec.service.sync().name("popstore.CustomerServices.get#CustomerInfo").call() }
+                // generate and send the JS response
                 String storeInfoJson = groovy.json.JsonOutput.toJson(storeInfo)
                 String jsText = """
 var storeInfo = ${storeInfoJson};

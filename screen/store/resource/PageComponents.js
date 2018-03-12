@@ -24,7 +24,7 @@ storeComps.CategoryOptions = {
         goPage: function (pageNum) { this.pageIndex = pageNum; },
         fetchInfo: function() {
             var url = this.$root.storeConfig.restApiLocation + "s1/pop/categories/" + this.productCategoryId + "/info";
-            var searchObj = { productStoreId:this.$root.storeConfig.productStoreId };
+            var searchObj = { };
             console.info("Loading category info from " + url + " params " + JSON.stringify(searchObj));
             var vm = this;
             $.ajax({ type:"GET", url:url, data:searchObj, dataType:"json", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
@@ -37,7 +37,7 @@ storeComps.CategoryOptions = {
         },
         fetchProducts: function () {
             var url = this.$root.storeConfig.restApiLocation + "s1/pop/categories/" + this.productCategoryId + "/products";
-            var searchObj = { productStoreId:this.$root.storeConfig.productStoreId, pageIndex:this.pageIndex, pageSize:this.pageSize };
+            var searchObj = { pageIndex:this.pageIndex, pageSize:this.pageSize };
             console.info("Loading category products from " + url + " params " + JSON.stringify(searchObj));
             var vm = this;
             $.ajax({ type:"GET", url:url, data:searchObj, dataType:"json", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,

@@ -17,7 +17,6 @@ along with this software (see the LICENSE.md file). If not, see
     <service verb="get" noun="ProductInfo">
         <in-parameters>
             <parameter name="productId" required="true"/>
-            <parameter name="productStoreId"/>
             <parameter name="priceUomId"/>
             <parameter name="locale"/>
         </in-parameters>
@@ -43,15 +42,15 @@ along with this software (see the LICENSE.md file). If not, see
             <if condition="product == null"><return error="true" message="Product not found with ID ${productId}"/></if>
             <script>context.putAll(product)</script>
 
+            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
             <if condition="productStoreId">
                 <entity-find-one entity-name="mantle.product.store.ProductStore" value-field="productStore"/>
                 <if condition="!priceUomId"><set field="priceUomId" from="productStore?.defaultCurrencyUomId"/></if>
                 <set field="vendorPartyId" from="productStore?.organizationPartyId"/>
             </if>
-            <set field="customerPartyId" from="ec.user.userAccount?.partyId"/>
             <service-call name="mantle.product.PriceServices.get#ProductPrice" out-map="priceMap"
                     in-map="[productId:productId, priceUomId:priceUomId, productStoreId:productStoreId,
-                    vendorPartyId:vendorPartyId, customerPartyId:customerPartyId]"/>
+                        vendorPartyId:vendorPartyId, customerPartyId:customerPartyId]"/>
             <set field="price" from="priceMap.price"/>
             <set field="listPrice" from="priceMap.listPrice"/>
             <set field="priceUomId" from="priceMap.priceUomId"/>
@@ -106,6 +105,9 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="productListPageRangeHigh" type="Integer"/>
         </out-parameters>
         <actions>
+            <set field="productStoreId" from="sessionAttributes.productStoreId"/>
+            <!-- TODO: if no productStoreId lookup somehow? should be set from initial call to content/config.js transition -->
+
             <!-- TODO -->
         </actions>
     </service>
@@ -113,7 +115,6 @@ along with this software (see the LICENSE.md file). If not, see
     <service verb="get" noun="CategoryInfo">
         <in-parameters>
             <parameter name="productCategoryId" required="true"/>
-            <parameter name="productStoreId"/>
             <parameter name="locale"/>
         </in-parameters>
         <out-parameters>
@@ -121,6 +122,8 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="subCategoryList" type="List"><parameter name="categoryInfo" type="Map"/></parameter>
         </out-parameters>
         <actions>
+            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
+
             <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory" cache="true"/>
             <if condition="productCategory == null"><return error="true" message="Category not found with ID ${productCategoryId}"/></if>
             <script>context.putAll(productCategory)</script>
@@ -145,7 +148,6 @@ along with this software (see the LICENSE.md file). If not, see
     <service verb="get" noun="CategoryProducts">
         <in-parameters>
             <parameter name="productCategoryId" required="true"/>
-            <parameter name="productStoreId"/>
             <parameter name="priceUomId"/>
             <parameter name="locale"/>
             <parameter name="orderBy" default-value="sequenceNum"/>
@@ -172,12 +174,12 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="productListPageRangeHigh" type="Integer"/>
         </out-parameters>
         <actions>
+            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
             <if condition="productStoreId">
                 <entity-find-one entity-name="mantle.product.store.ProductStore" value-field="productStore" cache="true"/>
                 <if condition="!priceUomId"><set field="priceUomId" from="productStore?.defaultCurrencyUomId"/></if>
                 <set field="vendorPartyId" from="productStore?.organizationPartyId"/>
             </if>
-            <set field="customerPartyId" from="ec.user.userAccount?.partyId"/>
 
             <!-- get entire cached list then paginate, for huge numbers of products in a category this is a bad approach (such sites should probably be purely search based) -->
             <!-- use the name 'productList' so pagination out-parameters are created automatically -->
@@ -192,7 +194,7 @@ along with this software (see the LICENSE.md file). If not, see
                 <entity-find-one entity-name="mantle.product.Product" value-field="product" cache="true">
                     <field-map field-name="productId" from="pcmp.productId"/></entity-find-one>
 
-                <service-call name="mantle.product.PriceServices.get#ProductPrice" out-map="priceMap"
+                <service-call name="mantle.product.PriceServices.get#ProductPrice" out-map="priceMap" out-map-add-to-existing="false"
                         in-map="[productId:pcmp.productId, priceUomId:priceUomId, productStoreId:productStoreId,
                                 vendorPartyId:vendorPartyId, customerPartyId:customerPartyId]"/>
 
