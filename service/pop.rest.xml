@@ -55,20 +55,37 @@ along with this software (see the LICENSE.md file). If not, see
         <resource name="add">
             <method type="post"><service name="popstore.CartServices.add#Product"/></method>
         </resource>
+        <resource name="promoCode">
+            <method type="post"><service name="mantle.product.PromotionServices.add#OrderPromoCode"/></method>
+            <method type="delete"><service name="mantle.product.PromotionServices.remove#OrderPromoCode"/></method>
+        </resource>
+
+        <resource name="shippingOptions">
+            <method type="get"><service name="popstore.CartServices.get#ShippingOptions"/></method>
+        </resource>
+        <resource name="billingShipping">
+            <method type="post"><service name="popstore.CartServices.set#BillingShippingInfo"/></method>
+        </resource>
+
+        <resource name="place">
+            <method type="post"><service name="popstore.CartServices.place#CartOrder"/></method>
+        </resource>
     </resource>
 
     <!-- Customer Profile and Order History -->
 
-    <resource name="customer" require-authentication="true">
-        <!-- TODO: consider allowing more in current session with customerPartyId server side for customers with no UserAccount (current session only) -->
+    <resource name="customer">
+        <!-- NOTE: allows current session with customerPartyId server side for customers with no UserAccount (current session only), so auth not required -->
         <resource name="info">
             <method type="get"><service name="popstore.CustomerServices.get#CustomerInfo"/></method>
         </resource>
         <resource name="paymentMethods">
             <method type="get"><service name="popstore.CustomerServices.get#PaymentMethods"/></method>
+            <method type="put"><service name="popstore.CustomerServices.store#CreditCard"/></method>
         </resource>
         <resource name="shippingAddresses">
             <method type="get"><service name="popstore.CustomerServices.get#ShippingAddresses"/></method>
+            <method type="put"><service name="popstore.CustomerServices.store#ShippingAddress"/></method>
         </resource>
 
         <resource name="orders">

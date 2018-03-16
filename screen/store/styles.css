@@ -1,0 +1,77 @@
+/* $theme-colors: ( 
+    "primary": #05c3d5,
+    "danger": #de6232,
+    "dark": #333333
+); */
+
+#app {
+    font-family: "Aveni", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 166px;
+}
+
+.moqui-navbar {
+    width: 100%;
+    background: #333333;
+}
+
+.moqui-navbar .moqui-logo {
+    width: 101px;
+}
+
+.search-input {
+    width: 100%;
+    position: relative;
+}
+
+.search-input input {
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+}
+
+.search-input .search-button {
+    background: #05c3d5;
+    border: none;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    height: 100%;
+    padding: 3px 15px;
+    margin-left: -4px;
+    color: #fff;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 2em;
+    line-height: 0;
+}
+
+.features {
+    background: #05c3d5;
+    color: #fff;
+    padding-top: 10px;
+}
+
+.features .feature {
+    display: flex;
+}
+
+.features .feature .feature-icon {
+    font-size: 3em;
+}
+
+.features .feature .feature-info {
+    padding: 5px;
+}
+
+.features .feature .feature-info .subtitle {
+    font-size: 0.8em;
+}
+
+.landing-product {
+    color: #05c3d5
+}

@@ -140,7 +140,7 @@ along with this software (see the LICENSE.md file). If not, see
 
             <set field="userId" from="ec.user.userId"/>
             <set field="partyId" from="ec.user.userAccount?.partyId ?: sessionAttributes.customerPartyId"/>
-            <if condition="!partyId"><return error="true" message="No active customer"/></if>
+            <if condition="!partyId"><return message="No active customer"/></if>
 
             <entity-find-one entity-name="mantle.party.PersonAndUserAccount" value-field="personAndUserAccount"/>
             <script>context.putAll(personAndUserAccount)</script>
@@ -159,11 +159,59 @@ along with this software (see the LICENSE.md file). If not, see
         <actions>
             <!-- NOTE: use the web session for attributes such as customerPartyId for security; this won't work in a stateless mode or outside a web session -->
             <set field="sessionAttributes" from="ec.web.sessionAttributes"/>
-
             <set field="partyId" from="ec.user.userAccount?.partyId ?: sessionAttributes.customerPartyId"/>
-            <if condition="!partyId"><return error="true" message="No active customer"/></if>
+            <if condition="!partyId"><return message="No active customer"/></if>
+
             <service-call name="mantle.account.PaymentMethodServices.get#PartyPaymentMethodInfoList"
                     in-map="[partyId:partyId]" out-map="context"/>
+        </actions>
+    </service>
+    <service verb="store" noun="CreditCard">
+        <in-parameters>
+            <auto-parameters entity-name="mantle.account.method.PaymentMethod" include="nonpk"/>
+            <parameter name="paymentMethodId"/>
+            <parameter name="paymentMethodTypeEnumId" default-value="PmtCreditCard"/>
+
+            <parameter name="cardNumber"><credit-card/></parameter><!-- not required because often empty on update, ie for public facing masked cards -->
+            <parameter name="validateSecurityCode"><description>Not persisted, just passed through so available to SECA rules for validation by gateway, etc</description></parameter>
+            <parameter name="expireMonth"/>
+            <parameter name="expireYear"/>
+            <parameter name="expireDate" default-value="${expireMonth?:''}/${expireYear?:''}">
+                <time-range after="now" format="MM/yyyy"/></parameter>
+
+            <parameter name="postalContactMechId"/>
+            <parameter name="postalContactMechPurposeId" default-value="PostalBilling"/>
+            <auto-parameters entity-name="mantle.party.contact.PostalAddress" include="nonpk"/>
+            <parameter name="toName" default="companyNameOnAccount ?: (firstNameOnAccount ? firstNameOnAccount + ' ' + lastNameOnAccount : null)"/>
+            <parameter name="attnName" default="companyNameOnAccount &amp;&amp; firstNameOnAccount ? firstNameOnAccount + ' ' + lastNameOnAccount : null"/>
+
+            <parameter name="telecomContactMechId"/>
+            <parameter name="telecomContactMechPurposeId" default-value="PhoneBilling"/>
+            <auto-parameters entity-name="mantle.party.contact.TelecomNumber" include="nonpk"/>
+            <parameter name="areaCode"><text-digits/></parameter>
+            <parameter name="contactNumber"><matches regexp="^\d\d[-\. \d]*\d\d$" message="Please enter a valid phone number"/></parameter>
+
+            <parameter name="emailContactMechId"/>
+            <parameter name="emailContactMechPurposeId" default-value="EmailBilling"/>
+            <parameter name="emailAddress"><text-email/></parameter>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="paymentMethodId"/>
+            <parameter name="postalContactMechId"/>
+            <parameter name="telecomContactMechId"/>
+            <parameter name="emailContactMechId"/>
+        </out-parameters>
+        <actions>
+            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
+            <if condition="!customerPartyId"><return message="No active customer"/></if>
+            <set field="partyId" from="customerPartyId"/>
+            <set field="orderId" from="cartOrderId"/>
+
+            <!-- TODO: if no customerPartyId call service to create one now and set in session (no user account aka 'anonymous') -->
+
+            <service-call name="mantle.account.PaymentMethodServices.store#PaymentMethodInfo" in-map="context" out-map="context"/>
+
+            <!-- TODO: for CIM setups do anything here for CIM storage failure? -->
         </actions>
     </service>
 
@@ -176,11 +224,50 @@ along with this software (see the LICENSE.md file). If not, see
         <actions>
             <!-- NOTE: use the web session for attributes such as customerPartyId for security; this won't work in a stateless mode or outside a web session -->
             <set field="sessionAttributes" from="ec.web.sessionAttributes"/>
-
             <set field="partyId" from="ec.user.userAccount?.partyId ?: sessionAttributes.customerPartyId"/>
-            <if condition="!partyId"><return error="true" message="No active customer"/></if>
+            <if condition="!partyId"><return message="No active customer"/></if>
+
             <service-call name="mantle.party.ContactServices.get#PartyContactInfoList" out-map="shippingContactListInfo"
                     in-map="[partyId:partyId, postalContactMechPurposeId:'PostalShippingDest']"/>
+        </actions>
+    </service>
+    <service verb="store" noun="ShippingAddress">
+        <in-parameters>
+            <parameter name="postalContactMechId"/>
+            <parameter name="postalContactMechPurposeId" default-value="PostalShippingDest"/>
+            <auto-parameters entity-name="mantle.party.contact.PostalAddress" include="nonpk"/>
+            <parameter name="address1" required="true"/>
+            <parameter name="postalCode" required="true"/>
+
+            <parameter name="telecomContactMechId"/>
+            <parameter name="telecomContactMechPurposeId"/>
+            <auto-parameters entity-name="mantle.party.contact.TelecomNumber" include="nonpk"/>
+            <parameter name="countryCode"><text-digits/></parameter>
+            <parameter name="areaCode"><text-digits/></parameter>
+            <parameter name="contactNumber"><matches regexp="^\d\d[-\. \d]*\d\d$" message="Please enter a valid phone number"/></parameter>
+            <parameter name="telecomExtension"><text-digits/></parameter>
+            <parameter name="telecomAllowSolicitation"/>
+
+            <parameter name="emailContactMechId"/>
+            <parameter name="emailContactMechPurposeId"/>
+            <parameter name="emailAddress"><text-email/></parameter>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="postalContactMechId"/>
+            <parameter name="telecomContactMechId"/>
+            <parameter name="emailContactMechId"/>
+        </out-parameters>
+        <actions>
+            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
+            <if condition="!customerPartyId"><return message="No active customer"/></if>
+            <set field="partyId" from="customerPartyId"/>
+            <set field="orderId" from="cartOrderId"/>
+
+            <!-- TODO: if no customerPartyId call service to create one now and set in session (no user account aka 'anonymous') -->
+
+            <service-call name="mantle.party.ContactServices.store#PartyContactInfo" in-map="context" out-map="context"/>
+
+            <!-- TODO: if address verification/validation available call explicitly so customer knows of potential issues right away -->
         </actions>
     </service>
 </services>

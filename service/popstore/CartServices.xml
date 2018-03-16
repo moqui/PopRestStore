@@ -87,11 +87,11 @@ General Order Placement and eCommerce Usage
         </in-parameters>
         <actions>
             <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
-            <if condition="!customerPartyId"><return error="true" message="No active customer, cannot view order"/></if>
+            <if condition="!customerPartyId"><return message="No active customer, cannot view order" public="true" type="danger"/></if>
 
             <entity-find entity-name="OrderPart" list="orderPartList">
                 <econdition field-name="orderId"/><econdition field-name="customerPartyId"/></entity-find>
-            <if condition="!orderPartList"><return error="true" message="Order ${orderId} not found or not owned by active customer"/></if>
+            <if condition="!orderPartList"><return message="Order ${orderId} not found or not owned by active customer" public="true" type="danger"/></if>
 
             <service-call name="popstore.CartServices.get#OrderInfoInternal" in-map="[orderId:orderId]" out-map="context"/>
         </actions>
@@ -105,7 +105,7 @@ General Order Placement and eCommerce Usage
         </in-parameters>
         <actions>
             <entity-find-one entity-name="mantle.order.OrderHeader" value-field="orderHeader"/>
-            <if condition="orderHeader == null"><return error="true" message="Order not found with ID ${orderId}"/></if>
+            <if condition="orderHeader == null"><return message="Order not found with ID ${orderId}" public="true" type="danger"/></if>
 
             <entity-find-related value-field="orderHeader" relationship-name="mantle.order.OrderPart" list="orderPartList"/>
             <set field="orderPart" from="orderPartList ? orderPartList[0] : null"/>
@@ -174,7 +174,7 @@ General Order Placement and eCommerce Usage
         </out-parameters>
         <actions>
             <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
-            <if condition="!customerPartyId"><return error="true" message="No active customer, cannot get orders"/></if>
+            <if condition="!customerPartyId"><return message="No active customer, cannot get orders" public="true" type="warning"/></if>
 
             <entity-find entity-name="mantle.order.OrderHeaderAndPart" list="existingOrderList">
                 <econdition field-name="customerPartyId"/>
@@ -190,7 +190,6 @@ General Order Placement and eCommerce Usage
     <service verb="add" noun="Product">
         <implements service="popstore.CartServices.get#CartInfo"/>
         <in-parameters>
-            <parameter name="productStoreId" required="true"/>
             <parameter name="productId" required="true"/>
             <parameter name="quantity" type="BigDecimal" default="1.0"/>
             <parameter name="currencyUomId"/>
@@ -209,9 +208,78 @@ General Order Placement and eCommerce Usage
         </actions>
     </service>
 
+    <service verb="get" noun="ShippingOptions">
+        <actions>
+            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
+            <if condition="!cartOrderId"><return message="Cart is empty" public="true" type="warning"/></if>
+
+            <service-call name="mantle.product.StoreServices.get#StoreShippingOptions" in-map="context" out-map="context"/>
+        </actions>
+    </service>
+    <service verb="set" noun="BillingShippingInfo">
+        <in-parameters>
+            <parameter name="orderPartSeqId"/>
+
+            <parameter name="paymentId"><description>Specify when there is more than one Payment per order;
+                is checked server side to make sure associated with order</description></parameter>
+            <parameter name="paymentInstrumentEnumId"/>
+            <parameter name="paymentMethodId"/>
+            <parameter name="finAccountId"/>
+
+            <parameter name="shippingPostalContactMechId"/>
+            <parameter name="shippingTelecomContactMechId"/>
+            <parameter name="carrierAndShipmentMethod"/>
+            <parameter name="carrierPartyId"/>
+            <parameter name="shipmentMethodEnumId"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="paymentId"/>
+        </out-parameters>
+        <actions>
+            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
+            <if condition="!cartOrderId"><return message="Cart is empty" public="true" type="warning"/></if>
+            <set field="orderId" from="cartOrderId"/>
+
+            <!-- TODO: if no customerPartyId call service to create one now and set in session (no user account aka 'anonymous') -->
+
+            <service-call name="mantle.order.OrderServices.set#OrderBillingShippingInfo" in-map="context" out-map="context"/>
+        </actions>
+    </service>
+
+    <service verb="place" noun="CartOrder">
+        <implements service="popstore.CartServices.interface#OrderInfo"/>
+        <in-parameters>
+            <parameter name="cardSecurityCodeByPaymentId" type="Map"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="oldStatusId"/>
+            <parameter name="statusChanged" type="Boolean"/>
+        </out-parameters>
+        <actions>
+            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
+            <if condition="!cartOrderId"><return message="Cart is empty" public="true" type="warning"/></if>
+            <set field="orderId" from="cartOrderId"/>
+
+            <!-- TODO: check shipping and payment info -->
+
+            <!-- authorize CC/etc payment(s), calling place#Order will trigger this, but do in advance to better support CC edits before placed -->
+            <service-call name="mantle.account.PaymentServices.authorize#OrderPayments" in-map="context" out-map="authResult"/>
+            <!-- if any don't authorize return message here... or optionally allow place anyway? -->
+            <if condition="authResult.authFailed"><return message="Payment authorize failed" public="true" type="danger"/></if>
+
+            <!-- place order -->
+            <service-call name="mantle.order.OrderServices.place#Order" in-map="[orderId:orderId]" out-map="context"/>
+            <!-- get order info to return for confirmation -->
+            <service-call name="popstore.CartServices.get#OrderInfoInternal" in-map="[orderId:orderId]" out-map="context"/>
+            <!-- if all is well we're done with this cart order -->
+            <script>ec.web.sessionAttributes.remove("cartOrderId")</script>
+        </actions>
+    </service>
+
     <service verb="get" noun="ActiveOrderAndCustomer">
         <description>Get active cart order, for internal (server-side) use only</description>
         <out-parameters>
+            <parameter name="productStoreId"/>
             <parameter name="cartOrderId"/>
             <parameter name="customerPartyId"/>
         </out-parameters>
@@ -219,6 +287,9 @@ General Order Placement and eCommerce Usage
             <!-- NOTE: use the web session for attributes such as cartOrderId for security; this won't work in a stateless mode or outside a web session -->
             <set field="sessionAttributes" from="ec.web.sessionAttributes"/>
             <set field="cartOrderId" from="sessionAttributes.cartOrderId"/>
+
+            <set field="productStoreId" from="sessionAttributes.productStoreId"/>
+            <!-- TODO: if no productStoreId lookup somehow? should be set from initial call to content/config.js transition -->
 
             <set field="customerPartyId" from="ec.user.userAccount?.partyId ?: sessionAttributes.customerPartyId"/>
             <set field="sessionAttributes.customerPartyId" from="customerPartyId"/>
