@@ -11,3 +11,5 @@ var LoginPage = {
   }),
   methods: Vuex.mapActions(["login"])
 };
+
+var LoginPageTemplate = getPlaceholderRoute("./LoginPage.html", "LoginPage")

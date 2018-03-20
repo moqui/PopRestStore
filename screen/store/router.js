@@ -13,7 +13,12 @@ var router = new VueRouter({
     {
       path: "/login",
       name: "login",
-      component: LoginPage
+      component: LoginPageTemplate
+    },
+    {
+      path: "/product/:productId",
+      name: "Product",
+      component: ProductPageTemplate
     }
   ]
 });

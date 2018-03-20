@@ -15,7 +15,7 @@ var LandingPage = {
     landingProduct: LandingProductTemplate,
     carousel: VueCarousel.Carousel,
     slide: VueCarousel.Slide,
-    starRating: StarRatingTemplate,
+    starRating: StarRatingTemplate
   }
 };
 

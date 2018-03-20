@@ -1,6 +1,12 @@
 <div class="landing-product">
     <figure class="figure">
-        <img class="figure-img img-fluid " :src="product.imageUrl" alt="">
+        <img 
+            class="figure-img img-fluid"
+            v-if="product.smallImageList.length" 
+            v-for="smallImageInfo in product.smallImageList" 
+            :src="getProductImageSrc(smallImageInfo)"
+            :alt="smallImageInfo.description ? smallImageInfo.description : 'Small Image'"
+        >
         <figcaption class="text-primary text-left figure-caption">{{product.productName}}</figcaption>
         <figcaption class="text-primary text-left figure-caption">
             <star-rating :rating="product.rating" />
@@ -9,7 +15,7 @@
         <figcaption class="text-primary text-left figure-caption">
             <span class="text-danger">${{product.price}}</span>
             <span class="text-dark">
-                <del>${{product.listPrice}}</del>
+                <del v-if="product.listPrice">${{product.listPrice}}</del>
             </span>
         </figcaption>
     </figure>
