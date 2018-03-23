@@ -1,3 +1,70 @@
-<div>
-	works
-</div>
+<b-container>
+  <b-row v-for="item in productsInCart.orderItemList" :key="item.productId">
+   <b-col>
+   	 Item
+   	 <br>
+     {{item.itemDescription }}
+   </b-col>
+   <b-col>
+   	 Quantity
+     <b-form-input id="quantity"
+       type="text"
+       v-model="item.quantity">
+     </b-form-input>
+   </b-col>
+   <b-col>
+   	 Price
+   	 <br>
+     ${{item.unitAmount}}
+    </b-col>
+  </b-row>
+  <div>
+    <b-form>
+      <br>
+      <b-form-input id="postalcode"
+                      type="text"
+                      v-model="shippingAddress.askForName"
+                      required
+                      placeholder="Name">
+       </b-form-input> 
+       <b-form-input id="postalcode"
+                      type="text"
+                      v-model="shippingAddress.askForName"
+                      required
+                      placeholder="Postal Code">
+       </b-form-input>
+       <b-form-input id="adress1"
+                      type="text"
+                      v-model="shippingAddress.address1"
+                      required
+                      placeholder="Adress 1">
+       </b-form-input>
+       <b-form-input id="adress2"
+                      type="text"
+                      v-model="shippingAddress.address2"
+                      required
+                      placeholder="Adress 2">
+       </b-form-input>
+       <b-form-input id="country"
+                      type="text"
+                      v-model="shippingAddress.countryGeoId"
+                      required
+                      placeholder="Country">
+       </b-form-input>
+       <b-form-input id="state"
+                      type="text"
+                      v-model="shippingAddress.stateProvinceGeoId"
+                      required
+                      placeholder="State">
+       </b-form-input>
+       <b-form-input id="city"
+                      type="text"
+                      v-model="shippingAddress.city"
+                      required
+                      placeholder="City">
+       </b-form-input>
+  <b-button @click="addShippingAddress" variant="primary">Add</b-button>
+    </b-form>
+  </div>
+</b-container>
+  
