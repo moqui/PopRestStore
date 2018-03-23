@@ -2,10 +2,7 @@ var CheckOutPage = {
   name: "checkout-page",
   data() {
     return {
-      productsInCart: [],
-      fields: {
-      itemDescription
-      }
+      productsInCart: []
     };
   },
   methods: {
