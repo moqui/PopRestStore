@@ -15,16 +15,24 @@ var ProductPage = {
   },
   methods: {
     getProductImageSrc(imageInfo) {
-      if (!imageInfo || !imageInfo.productContentId) return null;
-      return storeConfig.productImageLocation + imageInfo.productContentId;
+    if (!imageInfo || !imageInfo.productContentId) return null;
+    return storeConfig.productImageLocation + imageInfo.productContentId;
     },
     addProductCart (evt) {
-     evt.preventDefault();
-       this.productCart.productId = this.product.pseudoId;
-       this.productCart.currencyUomId = this.product.priceUomId;
-     ProductService.addProductCart(this.productCart).then(data => {
-       console.log(data);
-    });
+      evt.preventDefault();
+      this.productCart.productId = this.product.pseudoId;
+      this.productCart.currencyUomId = this.product.priceUomId;
+      let axiosConfig = {
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          "Access-Control-Allow-Origin": "*",
+          "api_key":"0AthvoPH5WZHwuYpBWQYFELYBXguxjOgKDSIvXUL",
+          "moquiSessionToken":"i4xpJWD1IDc--sh47S5E"
+        }
+      };
+      ProductService.addProductCart(this.productCart,axiosConfig).then(data => {
+        console.log(data);
+      });
     },
   },
   mounted() {

@@ -19,6 +19,11 @@ var router = new VueRouter({
       path: "/product/:productId",
       name: "Product",
       component: ProductPageTemplate
+    },
+    {
+      path: "/checkout",
+      name: "checkout",
+      component: CheckOutPageTemplate
     }
   ]
 });

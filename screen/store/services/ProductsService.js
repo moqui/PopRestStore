@@ -14,8 +14,13 @@ var ProductService = {
       return res.data;
     });
   },
-  addProductCart(product){
-     return axios.post("/rest/s1/pop/cart/add",product).then(res => {
+  addProductCart(product,headers) {
+    return axios.post("/rest/s1/pop/cart/add",product,headers).then(res => {
+      return res.data;
+    });
+  },
+  getProductsInCart(headers){
+    return axios.get("/rest/s1/pop/cart/info",headers).then(res => {
       return res.data;
     });
   }
