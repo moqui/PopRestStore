@@ -9,22 +9,22 @@ var CheckOutPage = {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
           "Access-Control-Allow-Origin": "*",
-          "api_key":"0AthvoPH5WZHwuYpBWQYFELYBXguxjOgKDSIvXUL",
-          "moquiSessionToken":"i4xpJWD1IDc--sh47S5E"
+          "api_key":storeInfo.apiKey,
+          "moquiSessionToken":storeInfo.moquiSessionToken
         }
       }
     };
   },
   methods: {
     addShippingAddress(){
-      CustomerService.addShippingAddress(shippingAddress,this.axiosConfig).then(data => {
-        console.log(data);
+      console.log(this.shippingAddress);
+      CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(data => {
+      console.log(data);
       });
     }
   },
   mounted() {
     ProductService.getProductsInCart(this.axiosConfig).then(data => {
-      console.log(data);
       this.productsInCart = data;
     });
     CustomerService.getShippingAddresses(this.axiosConfig).then(data => {

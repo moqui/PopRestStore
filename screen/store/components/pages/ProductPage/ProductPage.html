@@ -1,27 +1,33 @@
-<div>
-  <img width="100px" height="100px" 
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <img width="100px" height="100px" 
             class="figure-img img-fluid"
             v-if="product.contentList.length" 
             v-for="smallImageInfo in product.contentList" 
             :src="getProductImageSrc(smallImageInfo)"
             :alt="smallImageInfo.description ? smallImageInfo.description : 'Small Image'"> 
-    {{product.productName}}
-  <div v-html="product.descriptionLong">
+    </div>
+    <div class="col-sm">
+      {{product.productName}}
+      <div v-html="product.descriptionLong">
+      </div>
+      <star-rating :rating="product.rating" />
+    </div>
+    <div class="col-sm">
+      <form>
+        <span class="text-dark">
+        {{product.price}}
+        <del v-if="product.listPrice">${{product.listPrice}}</del>
+        </span>
+        <label class="mr-sm-2" for="quantity">Quantity</label>
+        <select :value="product.quantity" id="quantity">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+        <b-button @click="addProductCart" variant="primary">Add to Cart</b-button>
+      </form>
+    </div>
   </div>
-  
-     <span class="text-dark">
-     	  {{product.price}}
-     <del v-if="product.listPrice">${{product.listPrice}}</del>
-     </span>
-     <star-rating :rating="product.rating" />
-
-  <b-form inline>
-	<label class="mr-sm-2" for="quantity">Quantity</label>
-      <b-form-select class="mb-2 mr-sm-2 mb-sm-0"
-                     :value="productCart.quantity"
-                     :options="{ '1': '1', '2': '2', '3': '3' }"
-                     id="quantity">
-      </b-form-select>
-      <b-button @click="addProductCart" variant="primary">Add to Cart</b-button>
-  </b-form>
 </div>

@@ -26,11 +26,12 @@ var ProductPage = {
         headers: {
           'Content-Type': 'application/json;charset=UTF-8',
           "Access-Control-Allow-Origin": "*",
-          "api_key":"0AthvoPH5WZHwuYpBWQYFELYBXguxjOgKDSIvXUL",
-          "moquiSessionToken":"i4xpJWD1IDc--sh47S5E"
+          "api_key":storeInfo.apiKey,
+          "moquiSessionToken":storeInfo.moquiSessionToken
         }
       };
       ProductService.addProductCart(this.productCart,axiosConfig).then(data => {
+        console.log(axiosConfig);
         console.log(data);
       });
     },

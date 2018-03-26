@@ -1,5 +1,5 @@
 <b-container>
-  <b-row v-for="item in productsInCart.orderItemList" :key="item.productId">
+  <b-row v-for="item in productsInCart.orderItemList" :key="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'">
    <b-col>
    	 Item
    	 <br>
@@ -19,52 +19,94 @@
     </b-col>
   </b-row>
   <div>
-    <b-form>
-      <br>
-      <b-form-input id="postalcode"
+    <a v-b-modal.modal1>Add a New Address</a>
+
+    <!-- Modal Component -->
+    <b-modal id="modal1" title="Add an Address" hide-footer>
+      <b-form>
+        <div class="form-group row">
+          <label for="name" class="col-sm-3 col-form-label">Name *</label>
+          <div class="col-sm-9">
+            <b-form-input id="name"
                       type="text"
                       v-model="shippingAddress.askForName"
-                      required
-                      placeholder="Name">
-       </b-form-input> 
-       <b-form-input id="postalcode"
-                      type="text"
-                      v-model="shippingAddress.askForName"
-                      required
-                      placeholder="Postal Code">
-       </b-form-input>
-       <b-form-input id="adress1"
-                      type="text"
-                      v-model="shippingAddress.address1"
-                      required
-                      placeholder="Adress 1">
-       </b-form-input>
-       <b-form-input id="adress2"
-                      type="text"
-                      v-model="shippingAddress.address2"
-                      required
-                      placeholder="Adress 2">
-       </b-form-input>
-       <b-form-input id="country"
+                      required>
+            </b-form-input> 
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="country" class="col-sm-3 col-form-label">Country *</label>
+          <div class="col-sm-9">
+            <b-form-input id="country"
                       type="text"
                       v-model="shippingAddress.countryGeoId"
-                      required
-                      placeholder="Country">
-       </b-form-input>
-       <b-form-input id="state"
-                      type="text"
-                      v-model="shippingAddress.stateProvinceGeoId"
-                      required
-                      placeholder="State">
-       </b-form-input>
-       <b-form-input id="city"
+                      required>
+            </b-form-input>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="city" class="col-sm-3 col-form-label">City *</label>
+          <div class="col-sm-9">
+            <b-form-input id="city"
                       type="text"
                       v-model="shippingAddress.city"
-                      required
-                      placeholder="City">
-       </b-form-input>
-  <b-button @click="addShippingAddress" variant="primary">Add</b-button>
-    </b-form>
+                      required>
+            </b-form-input>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="adress1" class="col-sm-3 col-form-label">Address *</label>
+          <div class="col-sm-9">
+            <b-form-input id="adress1"
+                      type="text"
+                      v-model="shippingAddress.address1"
+                      required>
+            </b-form-input>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="adress2" class="col-sm-3 col-form-label"></label>
+          <div class="col-sm-9">
+            <b-form-input id="adress2"
+                      type="text"
+                      v-model="shippingAddress.address2"
+                      required>
+            </b-form-input>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="state" class="col-sm-3 col-form-label">State *</label>
+          <div class="col-sm-9">
+            <b-form-input id="state"
+                      type="text"
+                      v-model="shippingAddress.stateProvinceGeoId"
+                      required>
+            </b-form-input>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="postalcode" class="col-sm-3 col-form-label">Zip Code</label>
+          <div class="col-sm-9">
+            <b-form-input id="postalcode"
+                      type="text"
+                      v-model="shippingAddress.postalCode"
+                      required>
+            </b-form-input>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="contactnumber" class="col-sm-3 col-form-label">Phone Number</label>
+          <div class="col-sm-9">
+            <b-form-input id="contactnumber"
+                      type="text"
+                      v-model="shippingAddress.contactNumber"
+                      required>
+            </b-form-input>
+          </div>
+        </div>
+        <b-button @click="addShippingAddress" variant="primary">Add Address</b-button>
+      </b-form>
+    </b-modal>
   </div>
 </b-container>
   
