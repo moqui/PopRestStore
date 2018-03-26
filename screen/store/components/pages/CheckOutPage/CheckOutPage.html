@@ -24,6 +24,15 @@
     <div class="col col-lg-6">
       <p class="text-success">Shipping Address</p>
       <hr>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          {{listShippingAddress.toName}}
+          {{listShippingAddress.address1}}
+          {{listShippingAddress.city}}
+          {{listShippingAddress.contactNumber}}
+        </li>
+      </ul>
+      <br>
       <a v-b-modal.modal1 class="btn btn-link text-primary">Add a New Address</a>
     </div>
   </div>

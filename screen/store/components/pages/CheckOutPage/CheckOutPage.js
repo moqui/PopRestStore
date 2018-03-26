@@ -19,7 +19,7 @@ var CheckOutPage = {
     addShippingAddress() {
       console.log(this.shippingAddress);
       CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(data => {
-      console.log(data);
+        console.log(data);
       });
     },
     hideModal() {
@@ -28,11 +28,14 @@ var CheckOutPage = {
   },
   mounted() {
     ProductService.getProductsInCart(this.axiosConfig).then(data => {
+      //Test to get adddress
+      this.listShippingAddress = data.postalAddress;
       this.productsInCart = data;
+      console.log(this.listShippingAddress);
     });
     CustomerService.getShippingAddresses(this.axiosConfig).then(data => {
-      console.log(data);
-      this.listShippingAddress = data;
+      //console.log(data);
+      //this.listShippingAddress = data;
     });
   }
 };

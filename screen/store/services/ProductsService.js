@@ -23,5 +23,10 @@ var ProductService = {
     return axios.get("/rest/s1/pop/cart/info",headers).then(res => {
       return res.data;
     });
+  },
+  addAddressToCart(headers){
+    return axios.get("/rest/s1/pop/cart/billingShipping",headers).then(res => {
+      return res.data;
+    });
   }
 };
