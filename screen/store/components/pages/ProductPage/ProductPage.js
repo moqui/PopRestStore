@@ -3,10 +3,14 @@ var ProductPage = {
   data() {
     return {
       product: {},
-      productCart: {
-        productId:"",
-        quantity:1,
-        currencyUomId:""
+      quantity: '1',
+      axiosConfig: {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+          "Access-Control-Allow-Origin": "*",
+          "api_key":storeInfo.apiKey,
+          "moquiSessionToken":storeInfo.moquiSessionToken
+        }
       }
     };
   },
@@ -20,18 +24,12 @@ var ProductPage = {
     },
     addProductCart (evt) {
       evt.preventDefault();
-      this.productCart.productId = this.product.pseudoId;
-      this.productCart.currencyUomId = this.product.priceUomId;
-      let axiosConfig = {
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8',
-          "Access-Control-Allow-Origin": "*",
-          "api_key":storeInfo.apiKey,
-          "moquiSessionToken":storeInfo.moquiSessionToken
-        }
+      var productCart = {
+        "productId":this.product.pseudoId,
+        "currencyUomId":this.product.priceUomId,
+        "quantity":this.quantity
       };
-      ProductService.addProductCart(this.productCart,axiosConfig).then(data => {
-        console.log(axiosConfig);
+      ProductService.addProductCart(productCart,this.axiosConfig).then(data => {
         console.log(data);
       });
     },

@@ -1,28 +1,34 @@
-<b-container>
-  <b-row v-for="item in productsInCart.orderItemList" :key="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'">
-   <b-col>
-   	 Item
-   	 <br>
-     {{item.itemDescription }}
-   </b-col>
-   <b-col>
-   	 Quantity
-     <b-form-input id="quantity"
-       type="text"
-       v-model="item.quantity">
-     </b-form-input>
-   </b-col>
-   <b-col>
-   	 Price
-   	 <br>
-     ${{item.unitAmount}}
-    </b-col>
-  </b-row>
+<div class="container">
+  <br>
+  <div class="row">
+    <div class="col col-lg-6">
+      Item Quantity Price
+      <hr>
+      <b-row v-for="item in productsInCart.orderItemList" :key="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'">
+        <b-col>
+          <p class="text-primary">{{item.itemDescription}}</p>
+        </b-col>
+        <b-col>
+          <b-form-input id="quantity" type="text" v-model="item.quantity">
+          </b-form-input>
+        </b-col>
+        <b-col>
+          <p class="text-success">${{item.unitAmount}}</p>
+        </b-col>
+      </b-row>
+      <hr>
+      <div class="col col-lg-6">
+        Subtotal ${{productsInCart.totalUnpaid}}
+      </div>
+    </div>
+    <div class="col col-lg-6">
+      <p class="text-success">Shipping Address</p>
+      <hr>
+      <a v-b-modal.modal1 class="btn btn-link text-primary">Add a New Address</a>
+    </div>
+  </div>
   <div>
-    <a v-b-modal.modal1>Add a New Address</a>
-
-    <!-- Modal Component -->
-    <b-modal id="modal1" title="Add an Address" hide-footer>
+    <b-modal ref="modal1" id="modal1" title="Add an Address" hide-footer>
       <b-form>
         <div class="form-group row">
           <label for="name" class="col-sm-3 col-form-label">Name *</label>
@@ -37,11 +43,9 @@
         <div class="form-group row">
           <label for="country" class="col-sm-3 col-form-label">Country *</label>
           <div class="col-sm-9">
-            <b-form-input id="country"
-                      type="text"
-                      v-model="shippingAddress.countryGeoId"
-                      required>
-            </b-form-input>
+            <select v-model="shippingAddress.countryGeoId" class="form-control">
+              <option value="USA">United States</option>
+            </select>
           </div>
         </div>
         <div class="form-group row">
@@ -77,11 +81,9 @@
         <div class="form-group row">
           <label for="state" class="col-sm-3 col-form-label">State *</label>
           <div class="col-sm-9">
-            <b-form-input id="state"
-                      type="text"
-                      v-model="shippingAddress.stateProvinceGeoId"
-                      required>
-            </b-form-input>
+            <select v-model="shippingAddress.stateProvinceGeoId" class="form-control">
+              <option value="AKA">Alaska</option>
+            </select>
           </div>
         </div>
         <div class="form-group row">
@@ -105,8 +107,10 @@
           </div>
         </div>
         <b-button @click="addShippingAddress" variant="primary">Add Address</b-button>
+        <br>
+        <a @click="hideModal" class="btn btn-link">Or Cancel</a>
       </b-form>
     </b-modal>
   </div>
-</b-container>
+</div>
   

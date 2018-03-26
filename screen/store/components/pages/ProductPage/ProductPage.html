@@ -21,7 +21,7 @@
         <del v-if="product.listPrice">${{product.listPrice}}</del>
         </span>
         <label class="mr-sm-2" for="quantity">Quantity</label>
-        <select :value="product.quantity" id="quantity">
+        <select v-model="quantity" id="quantity">
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>

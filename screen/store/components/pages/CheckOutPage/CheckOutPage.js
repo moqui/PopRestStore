@@ -16,11 +16,14 @@ var CheckOutPage = {
     };
   },
   methods: {
-    addShippingAddress(){
+    addShippingAddress() {
       console.log(this.shippingAddress);
       CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(data => {
       console.log(data);
       });
+    },
+    hideModal() {
+      this.$refs.modal1.hide();
     }
   },
   mounted() {
