@@ -19,22 +19,31 @@ var CheckOutPage = {
   },
   methods: {
     addShippingAddress() {
-      console.log(this.shippingAddress);
       CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(data => {
         console.log(data);
         ProductService.addAddressToCart(data,this.axiosConfig).then(data => {
           this.shippingAddress = {};
-          this.hideModal();
+          this.hideModal('modal1');
         });
       });
     },
     addCustomerPaymentMethod() {
+      this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
+      this.paymentMethod.paymentGatewayConfigId = "FinancialAccountLocal";
       CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(data => {
         console.log(data);
+        this.hideModal("modal2");
+        this.paymentMethod = {};
+        this.getCustomerPaymentMethods();
       });
     },
-    hideModal() {
-      this.$refs.modal1.hide();
+    getCustomerPaymentMethods() {
+      CustomerService.getPaymentMethods(this.axiosConfig).then(data => {
+        this.listPaymentMethods = data.methodInfoList;
+      });
+    },
+    hideModal(modalid) {
+      this.$root.$emit('bv::hide::modal',modalid);
     }
   },
   mounted() {
@@ -43,9 +52,7 @@ var CheckOutPage = {
       this.listShippingAddress = data.postalAddress;
       this.productsInCart = data;
     });
-    CustomerService.getPaymentMethods(this.axiosConfig).then(data => {
-      this.listPaymentMethods = data.methodInfoList;
-    });
+    this.getCustomerPaymentMethods();
   }
 };
 var CheckOutPageTemplate = getPlaceholderRoute(

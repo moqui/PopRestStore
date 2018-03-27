@@ -69,15 +69,45 @@
           </div>
         </div>
         <div class="form-group row">
-          <label for="expiry" class="col-sm-3 col-form-label">Expiry Date *</label>
+          <label class="col-sm-3 col-form-label">Expiry Date *</label>
+          <div class="form-group col-sm-4">
+            <select v-model="paymentMethod.expireMonth" class="form-control">
+              <option value="01">01</option>
+              <option value="02">02</option>
+              <option value="03">03</option>
+              <option value="04">04</option>
+              <option value="05">05</option>
+              <option value="06">06</option>
+              <option value="07">07</option>
+              <option value="08">08</option>
+              <option value="09">09</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+          </div>
+          <div class="form-group col-sm-5">
+            <select v-model="paymentMethod.expireYear" class="form-control">
+              <option value="" selected disabled>Year</option>
+              <option value="2018">2018</option>
+              <option value="2019">2019</option>
+              <option value="2020">2020</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="security" class="col-sm-3 col-form-label">Card Security Code*</label>
           <div class="col-sm-9">
-            <b-form-input id="expiry"
+            <b-form-input id="security"
                       type="text"
-                      v-model="paymentMethod.expireYear"
-                      placeholder="Year" required>
+                      v-model="paymentMethod.validateSecurityCode"
+                      placeholder="3 or 4 Digits" required>
             </b-form-input> 
           </div>
         </div>
+        <b-button @click="addCustomerPaymentMethod" variant="primary">Add Credit Card</b-button>
+        <br>
+        <a @click="hideModal('modal2')" class="btn btn-link">Or Cancel</a>
       </b-form>
     </b-modal>
     <b-modal ref="modal1" id="modal1" title="Add an Address" hide-footer>
@@ -160,7 +190,7 @@
         </div>
         <b-button @click="addShippingAddress" variant="primary">Add Address</b-button>
         <br>
-        <a @click="hideModal" class="btn btn-link">Or Cancel</a>
+        <a @click="hideModal('modal1')" class="btn btn-link">Or Cancel</a>
       </b-form>
     </b-modal>
   </div>
