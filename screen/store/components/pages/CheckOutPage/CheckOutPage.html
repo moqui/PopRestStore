@@ -34,9 +34,52 @@
       </ul>
       <br>
       <a v-b-modal.modal1 class="btn btn-link text-primary">Add a New Address</a>
+      <hr>
+      <p class="text-success">Shipping Address</p>
+      <ul class="list-group list-group-flush">
+        <li v-for="item in listPaymentMethods"  class="list-group-item">
+          {{item.paymentMethod.description}}
+          {{item.paymentMethod.titleOnAccount}}
+        </li>
+      </ul>
+      <a  v-b-modal.modal2 class="btn btn-link text-primary">Add a Credit Card</a>
     </div>
   </div>
   <div>
+    <b-modal ref="modal2" id="modal2" title="Add a Credit Card" hide-footer>
+      <b-form>
+        <div class="form-group row">
+          <label for="card" class="col-sm-3 col-form-label">Card Number *</label>
+          <div class="col-sm-9">
+            <b-form-input id="card"
+                      type="text"
+                      v-model="paymentMethod.cardNumber"
+                      placeholder="13 to 16 digits Spaces are optional" required>
+            </b-form-input> 
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="nameCard" class="col-sm-3 col-form-label">Name on Card *</label>
+          <div class="col-sm-9">
+            <b-form-input id="nameCard"
+                      type="text"
+                      v-model="paymentMethod.titleOnAccount"
+                      placeholder="The name printed on the front of the card" required>
+            </b-form-input> 
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="expiry" class="col-sm-3 col-form-label">Expiry Date *</label>
+          <div class="col-sm-9">
+            <b-form-input id="expiry"
+                      type="text"
+                      v-model="paymentMethod.expireYear"
+                      placeholder="Year" required>
+            </b-form-input> 
+          </div>
+        </div>
+      </b-form>
+    </b-modal>
     <b-modal ref="modal1" id="modal1" title="Add an Address" hide-footer>
       <b-form>
         <div class="form-group row">
@@ -91,7 +134,7 @@
           <label for="state" class="col-sm-3 col-form-label">State *</label>
           <div class="col-sm-9">
             <select v-model="shippingAddress.stateProvinceGeoId" class="form-control">
-              <option value="AKA">Alaska</option>
+              <option value="USA_AK">Alaska</option>
             </select>
           </div>
         </div>

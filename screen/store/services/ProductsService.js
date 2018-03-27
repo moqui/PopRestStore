@@ -24,8 +24,8 @@ var ProductService = {
       return res.data;
     });
   },
-  addAddressToCart(headers){
-    return axios.get("/rest/s1/pop/cart/billingShipping",headers).then(res => {
+  addAddressToCart(addressId,headers){
+    return axios.post("/rest/s1/pop/cart/billingShipping",addressId,headers).then(res => {
       return res.data;
     });
   }

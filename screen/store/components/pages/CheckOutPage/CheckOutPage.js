@@ -4,7 +4,9 @@ var CheckOutPage = {
     return {
       productsInCart: [],
       shippingAddress: {},
+      paymentMethod: {},
       listShippingAddress: [],
+      listPaymentMethods: [],
       axiosConfig: {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
@@ -20,6 +22,15 @@ var CheckOutPage = {
       console.log(this.shippingAddress);
       CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(data => {
         console.log(data);
+        ProductService.addAddressToCart(data,this.axiosConfig).then(data => {
+          this.shippingAddress = {};
+          this.hideModal();
+        });
+      });
+    },
+    addCustomerPaymentMethod() {
+      CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(data => {
+        console.log(data);
       });
     },
     hideModal() {
@@ -31,11 +42,9 @@ var CheckOutPage = {
       //Test to get adddress
       this.listShippingAddress = data.postalAddress;
       this.productsInCart = data;
-      console.log(this.listShippingAddress);
     });
-    CustomerService.getShippingAddresses(this.axiosConfig).then(data => {
-      //console.log(data);
-      //this.listShippingAddress = data;
+    CustomerService.getPaymentMethods(this.axiosConfig).then(data => {
+      this.listPaymentMethods = data.methodInfoList;
     });
   }
 };
