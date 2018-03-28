@@ -11,6 +11,10 @@ var LandingProduct = {
     getProductImageSrc(imageInfo) {
       if (!imageInfo || !imageInfo.productContentId) return null;
       return storeConfig.productImageLocation + imageInfo.productContentId;
+    },
+    getProductSimgleImg(smallImageList){
+      if (!smallImageList[0] || !smallImageList[0].productContentId) return null;
+      return storeConfig.productImageLocation + smallImageList[0].productContentId;
     }
   },
   mounted() {}
