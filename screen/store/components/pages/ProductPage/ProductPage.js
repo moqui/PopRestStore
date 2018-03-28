@@ -4,6 +4,7 @@ var ProductPage = {
     return {
       product: {},
       quantity: '1',
+      productImgRoute: '',
       axiosConfig: {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
@@ -19,8 +20,18 @@ var ProductPage = {
   },
   methods: {
     getProductImageSrc(imageInfo) {
-    if (!imageInfo || !imageInfo.productContentId) return null;
-    return storeConfig.productImageLocation + imageInfo.productContentId;
+      if (!imageInfo || !imageInfo.productContentId) return null;
+      if(this.productImgRoute === ''){
+        this.productImgRoute = storeConfig.productImageLocation + imageInfo.productContentId;
+      }
+      return storeConfig.productImageLocation + imageInfo.productContentId;
+    },
+    isProductImage(imageInfo) {
+      if(!imageInfo || imageInfo.productContentTypeEnumId === 'PcntDescriptionLong') return false;
+      return true;
+    },
+    setProductImge(route) {
+      this.productImgRoute = route;
     },
     addProductCart (evt) {
       evt.preventDefault();

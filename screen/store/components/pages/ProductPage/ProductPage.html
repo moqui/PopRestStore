@@ -1,15 +1,22 @@
 <div class="container container-text">
   <br>
   <div class="row">
-    <div class="col col-lg-4">
-      <img width="100px" height="100px" 
-            class="figure-img img-fluid"
+    <div class="col col-lg-2">
+      <div class="col col-lg-12">
+         <img width="100px" height="150px" 
+            class="figure-img img-fluid product-img"
             v-if="product.contentList.length" 
+            v-show="isProductImage(smallImageInfo)"
             v-for="smallImageInfo in product.contentList" 
             :src="getProductImageSrc(smallImageInfo)"
-            :alt="smallImageInfo.description ? smallImageInfo.description : 'Small Image'"> 
+            :alt="smallImageInfo.description ? smallImageInfo.description : 'Small Image'"
+            @click="setProductImge(getProductImageSrc(smallImageInfo))"> 
+      </div>
     </div>
-    <div class="col col-lg-5 product-description">
+    <div class="col col-lg-3">
+      <img class="product-img-select" :src="productImgRoute">
+    </div>
+    <div class="col col-lg-4 product-description">
       <p>
         <span class="product-tittle">
           {{product.productName}}
@@ -17,7 +24,7 @@
         <br>
         <star-rating class="product-star" :rating="product.rating" />
       </p>
-      <div v-html="product.descriptionLong">
+      <div style="color:#666666 !important; font-size: 0.8em;" v-html="product.descriptionLong">
       </div>
     </div>
     <div class="col col-lg-3">
