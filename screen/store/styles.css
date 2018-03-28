@@ -4,6 +4,7 @@
     "dark": #333333
 ); */
 
+
 #app {
     font-family: "Aveni", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -16,6 +17,10 @@
 .moqui-navbar {
     width: 100%;
     background: #333333;
+}
+
+.bg-dark {
+    background: #333333 !important;
 }
 
 .moqui-navbar .moqui-logo {
@@ -78,4 +83,40 @@
 
 .star-rating {
     color: #ffed00;
+}
+
+.container-text {
+    text-align: left;
+}
+
+.product-tittle {
+    color: #666666;
+    font-size: 2em;
+}
+
+.product-star {
+    margin-top: -30px;
+}
+
+.cart-div {
+    background-color: #e7e7e7;
+    border: none;
+}
+
+.cart-form-price {
+    text-align: left;
+    margin-top: 15px;
+    overflow: hidden;
+    color: #686868;
+}
+
+.price-text {
+    color: #de7045;
+    font-size: 1.6em;
+}
+
+.cart-form-btn {
+    background-color: var(--orange);
+    color: #fff;
+    margin-top: 10px;
 }
