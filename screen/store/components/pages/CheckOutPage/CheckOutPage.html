@@ -35,7 +35,18 @@
       <br>
       <a v-b-modal.modal1 class="btn btn-link text-primary">Add a New Address</a>
       <hr>
-      <p class="text-success">Shipping Address</p>
+      <p class="text-success">Shipping Method</p>
+      
+      <div v-for="(option, index) in listShippingOptions">
+        <input type="radio" class="radio-button" :value="option.carrierPartyId + ':' + option.shipmentMethodEnumId" v-model="shippingOption" />
+        <label for="r1">
+          {{option.carrierPartyId == '_NA_' ? '' : (option.carrierName + ' - ')}}
+          {{option.shipmentMethodDescription}}
+          ${{option.shippingTotal.toFixed(2)}}
+        </label>
+      </div>
+      <hr>
+      <p class="text-success">Payment Methods</p>
       <ul class="list-group list-group-flush">
         <li v-for="item in listPaymentMethods"  class="list-group-item">
           {{item.paymentMethod.description}}

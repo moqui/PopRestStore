@@ -7,6 +7,8 @@ var CheckOutPage = {
       paymentMethod: {},
       listShippingAddress: [],
       listPaymentMethods: [],
+      shippingOption: "",
+      listShippingOptions: [],
       axiosConfig: {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
@@ -24,7 +26,13 @@ var CheckOutPage = {
         ProductService.addAddressToCart(data,this.axiosConfig).then(data => {
           this.shippingAddress = {};
           this.hideModal('modal1');
+          this.getCartShippingOptions();
         });
+      });
+    },
+    getCartShippingOptions() {
+      ProductService.getCartShippingOptions(this.axiosConfig).then(data => {
+        this.listShippingOptions = data.shippingOptions;
       });
     },
     addCustomerPaymentMethod() {
@@ -47,12 +55,14 @@ var CheckOutPage = {
     }
   },
   mounted() {
-    ProductService.getProductsInCart(this.axiosConfig).then(data => {
+    ProductService.getCartInfo(this.axiosConfig).then(data => {
       //Test to get adddress
       this.listShippingAddress = data.postalAddress;
+      this.shippingOption = data.orderPart.carrierPartyId ? data.orderPart.carrierPartyId + ':' + data.orderPart.shipmentMethodEnumId : '';
       this.productsInCart = data;
     });
     this.getCustomerPaymentMethods();
+    this.getCartShippingOptions();
   }
 };
 var CheckOutPageTemplate = getPlaceholderRoute(
