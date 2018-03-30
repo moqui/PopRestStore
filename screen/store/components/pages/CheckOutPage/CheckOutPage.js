@@ -20,6 +20,11 @@ var CheckOutPage = {
     };
   },
   methods: {
+    getCustomerShippingAddresses() {
+      CustomerService.getShippingAddresses(this.axiosConfig).then(data => {
+        console.log(data);
+      });
+    },
     addShippingAddress() {
       CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(data => {
         console.log(data);
@@ -61,6 +66,7 @@ var CheckOutPage = {
       this.shippingOption = data.orderPart.carrierPartyId ? data.orderPart.carrierPartyId + ':' + data.orderPart.shipmentMethodEnumId : '';
       this.productsInCart = data;
     });
+    this.getCustomerShippingAddresses();
     this.getCustomerPaymentMethods();
     this.getCartShippingOptions();
   }
