@@ -19,18 +19,23 @@ var ProductService = {
       return res.data;
     });
   },
-  getCartInfo(headers){
+  getCartInfo(headers) {
     return axios.get("/rest/s1/pop/cart/info",headers).then(res => {
       return res.data;
     });
   },
-  addAddressToCart(addressId,headers){
-    return axios.post("/rest/s1/pop/cart/billingShipping",addressId,headers).then(res => {
+  addCartBillingShipping(data,headers) {
+    return axios.post("/rest/s1/pop/cart/billingShipping",data,headers).then(res => {
       return res.data;
     });
   },
-  getCartShippingOptions(headers){
+  getCartShippingOptions(headers) {
     return axios.get("/rest/s1/pop/cart/shippingOptions", headers).then(res => {
+      return res.data;
+    });
+  },
+  setCartPlace(data,headers) {
+    return axios.post("/rest/s1/pop/cart/place",data,headers).then(res => {
       return res.data;
     });
   }

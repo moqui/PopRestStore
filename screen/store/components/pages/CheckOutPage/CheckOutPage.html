@@ -24,22 +24,25 @@
     <div class="col col-lg-6">
       <p class="text-success">Shipping Address</p>
       <hr>
-      <ul class="list-group list-group-flush" v-if="listShippingAddress">
-        <li class="list-group-item">
-          {{listShippingAddress.toName}}
-          {{listShippingAddress.address1}}
-          {{listShippingAddress.city}}
-          {{listShippingAddress.contactNumber}}
-        </li>
-      </ul>
+      <div v-for="(option, index) in listShippingAddress">
+        <input :id="index + 'r1'" type="radio" class="radio-button" :value="option.postalContactMechId + ':' +
+        option.telecomContactMechId" v-model="addressOption" />
+        <label :for="index + 'r1'">
+          {{option.postalAddress.toName}}
+          {{option.postalAddress.address1}}
+          {{option.postalAddress.address2}}
+          {{option.postalAddress.city}}
+          {{option.telecomNumber.contactNumber}}
+        </label>
+      </div>
       <br>
       <a v-b-modal.modal1 class="btn btn-link text-primary">Add a New Address</a>
       <hr>
       <p class="text-success">Shipping Method</p>
       
       <div v-for="(option, index) in listShippingOptions">
-        <input type="radio" class="radio-button" :value="option.carrierPartyId + ':' + option.shipmentMethodEnumId" v-model="shippingOption" />
-        <label for="r1">
+        <input :id="index + 'r2'" type="radio" class="radio-button" :value="option.carrierPartyId + ':' + option.shipmentMethodEnumId" v-model="shippingOption" />
+        <label :for="index + 'r2'">
           {{option.carrierPartyId == '_NA_' ? '' : (option.carrierName + ' - ')}}
           {{option.shipmentMethodDescription}}
           ${{option.shippingTotal.toFixed(2)}}
@@ -47,13 +50,16 @@
       </div>
       <hr>
       <p class="text-success">Payment Methods</p>
-      <ul class="list-group list-group-flush">
-        <li v-for="item in listPaymentMethods"  class="list-group-item">
+      <div v-for="(item,index) in listPaymentMethods">
+        <input :id="index + 'r3'" type="radio" class="radio-button" :value="item.paymentMethodId" v-model="paymentOption" />
+        <label  :for="index + 'r3'">
           {{item.paymentMethod.description}}
           {{item.paymentMethod.titleOnAccount}}
-        </li>
-      </ul>
+          {{item.creditCard.expireDate}}
+        </label>
+      </div>
       <a  v-b-modal.modal2 class="btn btn-link text-primary">Add a Credit Card</a>
+      <button class="btn" @click="addCartBillingShipping">Continue</button>
     </div>
   </div>
   <div>
@@ -199,7 +205,7 @@
             </b-form-input>
           </div>
         </div>
-        <b-button @click="addShippingAddress" variant="primary">Add Address</b-button>
+        <b-button @click="addCustomerShippingAddress" variant="primary">Add Address</b-button>
         <br>
         <a @click="hideModal('modal1')" class="btn btn-link">Or Cancel</a>
       </b-form>
