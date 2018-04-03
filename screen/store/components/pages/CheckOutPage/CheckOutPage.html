@@ -22,44 +22,69 @@
       </div>
     </div>
     <div class="col col-lg-6">
-      <p class="text-success">Shipping Address</p>
-      <hr>
-      <div v-for="(option, index) in listShippingAddress">
-        <input :id="index + 'r1'" type="radio" class="radio-button" :value="option.postalContactMechId + ':' +
-        option.telecomContactMechId" v-model="addressOption" />
-        <label :for="index + 'r1'">
-          {{option.postalAddress.toName}}
-          {{option.postalAddress.address1}}
-          {{option.postalAddress.address2}}
-          {{option.postalAddress.city}}
-          {{option.telecomNumber.contactNumber}}
-        </label>
-      </div>
+      <p v-b-toggle.collapse1 class="tittle-check-text">
+        <span class="circle">1</span>
+        <span class="text-address">Shipping Address</span>
+      </p>
+      <hr class="hr">
+      <b-collapse visible id="collapse1">
+        <div v-for="(option, index) in listShippingAddress">
+          <b-card>
+            <input :id="index + 'r1'" type="radio" class="radio-button" :value="option.postalContactMechId + ':' +
+            option.telecomContactMechId" v-model="addressOption" />
+            <label :for="index + 'r1'">
+              {{option.postalAddress.toName}}
+              {{option.postalAddress.address1}}
+              {{option.postalAddress.address2}}
+              {{option.postalAddress.city}}
+              {{option.telecomNumber.contactNumber}}
+            </label>
+          </b-card>
+        </div>
+        <br>   
+        <a v-b-modal.modal1 class="text-add col-4 offset-lg-5">Add a New Address</a>
+        <button class="btn btn-continue">Continue</button>
+      </b-collapse>
       <br>
-      <a v-b-modal.modal1 class="btn btn-link text-primary">Add a New Address</a>
-      <hr>
-      <p class="text-success">Shipping Method</p>
-      
-      <div v-for="(option, index) in listShippingOptions">
-        <input :id="index + 'r2'" type="radio" class="radio-button" :value="option.carrierPartyId + ':' + option.shipmentMethodEnumId" v-model="shippingOption" />
-        <label :for="index + 'r2'">
-          {{option.carrierPartyId == '_NA_' ? '' : (option.carrierName + ' - ')}}
-          {{option.shipmentMethodDescription}}
-          ${{option.shippingTotal.toFixed(2)}}
-        </label>
-      </div>
-      <hr>
-      <p class="text-success">Payment Methods</p>
-      <div v-for="(item,index) in listPaymentMethods">
-        <input :id="index + 'r3'" type="radio" class="radio-button" :value="item.paymentMethodId" v-model="paymentOption" />
-        <label  :for="index + 'r3'">
-          {{item.paymentMethod.description}}
-          {{item.paymentMethod.titleOnAccount}}
-          {{item.creditCard.expireDate}}
-        </label>
-      </div>
+      <p v-b-toggle.collapse2 class="tittle-check-text">
+        <span class="circle">2</span>
+        <span class="text-address">Shipping Method</span>
+      </p>
+      <hr class="hr">
+      <b-collapse id="collapse2">
+        <div v-for="(option, index) in listShippingOptions">
+          <b-card>
+            <input :id="index + 'r2'" type="radio" class="radio-button" :value="option.carrierPartyId + ':' + option.shipmentMethodEnumId" v-model="shippingOption" />
+            <label :for="index + 'r2'">
+              {{option.carrierPartyId == '_NA_' ? '' : (option.carrierName + ' - ')}}
+              {{option.shipmentMethodDescription}}
+              ${{option.shippingTotal.toFixed(2)}}
+            </label>
+          </b-card>
+        </div>
+        <br>
+        <button class="btn btn-continue col-4 offset-lg-8">Continue</button>
+      </b-collapse>
+      <p v-b-toggle.collapse3 class="tittle-check-text">
+        <span class="circle">3</span>
+        <span class="text-address">Payment Methods</span>
+      </p>
+      <hr class="hr">
+      <b-collapse id="collapse3">
+        <div v-for="(item,index) in listPaymentMethods">
+          <b-card>
+            <input :id="index + 'r3'" type="radio" class="radio-button" :value="item.paymentMethodId" v-model="paymentOption" />
+            <label  :for="index + 'r3'">
+              {{item.paymentMethod.description}}
+              {{item.paymentMethod.titleOnAccount}}
+              {{item.creditCard.expireDate}}
+            </label>
+          </b-card>
+        </div>
+      </b-collapse>
       <a  v-b-modal.modal2 class="btn btn-link text-primary">Add a Credit Card</a>
       <button class="btn" @click="addCartBillingShipping">Continue</button>
+      <button class="btn" @click="setCartPlace">Place Order</button>
     </div>
   </div>
   <div>

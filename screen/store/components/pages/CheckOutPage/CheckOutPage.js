@@ -10,6 +10,7 @@ var CheckOutPage = {
       shippingOption: "",
       addressOption: "",
       paymentOption: "",
+      paymentId: {},
       listShippingOptions: [],
       axiosConfig: {
         headers: {
@@ -38,9 +39,18 @@ var CheckOutPage = {
         this.listShippingOptions = data.shippingOptions;
       });
     },
+    getCartInfo() {
+      ProductService.getCartInfo(this.axiosConfig).then(data => {
+        if(!data){
+          this.addressOption = data.postalAddress ? data.postalAddress.contactMechId + ':' + data.postalAddress.telecomContactMechId : '';
+          this.shippingOption = data.orderPart.carrierPartyId ? data.orderPart.carrierPartyId + ':' + data.orderPart.shipmentMethodEnumId : '';
+          this.paymentOption = data.paymentInfoList[0] ? data.paymentInfoList[0].payment.paymentMethodId : '';
+        }
+        this.productsInCart = data;
+      });
+    },
     addCustomerPaymentMethod() {
       this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
-      this.paymentMethod.paymentGatewayConfigId = "FinancialAccountLocal";
       CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(data => {
         console.log(data);
         this.hideModal("modal2");
@@ -57,7 +67,7 @@ var CheckOutPage = {
         "shipmentMethodEnumId":this.shippingOption.split(':')[1]
       };
      ProductService.addCartBillingShipping(info,this.axiosConfig).then(data => {
-       console.log(data);   
+       this.paymentId = data;   
      });
     },
     getCustomerPaymentMethods() {
@@ -65,12 +75,13 @@ var CheckOutPage = {
         this.listPaymentMethods = data.methodInfoList;
       });
     },
-    setCartPlace(paymentId) {
+    setCartPlace() {
       var data = {
-        "cardSecurityCodeByPaymentId": paymentId
+        "cardSecurityCodeByPaymentId": this.paymentId
       };
       ProductService.setCartPlace(data,this.axiosConfig).then(data => {
         console.log(data);
+        this.getCartInfo();
       });
     },
     hideModal(modalid) {
@@ -78,12 +89,7 @@ var CheckOutPage = {
     }
   },
   mounted() {
-    ProductService.getCartInfo(this.axiosConfig).then(data => {
-      this.addressOption = data.postalAddress ? data.postalAddress.contactMechId + ':' + data.postalAddress.telecomContactMechId : '';
-      this.shippingOption = data.orderPart.carrierPartyId ? data.orderPart.carrierPartyId + ':' + data.orderPart.shipmentMethodEnumId : '';
-      this.paymentOption = data.paymentInfoList ? data.paymentInfoList[0].payment.paymentMethodId : '';
-      this.productsInCart = data;
-    });
+    this.getCartInfo();
     this.getCustomerShippingAddresses();
     this.getCustomerPaymentMethods();
     this.getCartShippingOptions();

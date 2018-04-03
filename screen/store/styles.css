@@ -9,7 +9,6 @@
     font-family: "Aveni", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
     color: #2c3e50;
     margin-top: 166px;
 }
@@ -17,6 +16,7 @@
 .moqui-navbar {
     width: 100%;
     background: #333333;
+    text-align: center;
 }
 
 .bg-dark {
@@ -138,4 +138,48 @@
 
 .tittle-product-text {
     color:#10c6d7;
+}
+
+.tittle-check-text {
+    cursor: pointer;
+}
+
+.circle {
+    color: #fff;
+    background-color: #dd6231;
+    width: 25px;
+    height: 25px; 
+    position: absolute;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.text-address {
+    margin-left: 30px;
+    color: #dd6231;
+    font-size: 1.2em;
+}
+
+.hr {
+    background-color: #dd6231;
+    height: 1px;
+    margin-top: -10px;
+}
+
+.div-add {
+    float: right;
+}
+
+.text-add {
+    color: #3ad0de !important;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+.btn-continue {
+    background-color: #04c3d5;
+    color: #fff;
+    height: 45px;
+    width: 150px;
 }
