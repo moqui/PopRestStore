@@ -11,6 +11,7 @@ var CheckOutPage = {
       addressOption: "",
       paymentOption: "",
       paymentId: {},
+      isShippingMethod:false,
       listShippingOptions: [],
       axiosConfig: {
         headers: {

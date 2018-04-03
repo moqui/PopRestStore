@@ -142,9 +142,10 @@
 
 .tittle-check-text {
     cursor: pointer;
+    margin-top: 15px;
 }
 
-.circle {
+.method .circle {
     color: #fff;
     background-color: #dd6231;
     width: 25px;
@@ -152,15 +153,38 @@
     position: absolute;
     text-align: center;
     border-radius: 50%;
+    border: none;
 }
 
-.text-address {
+.method .text-address {
     margin-left: 30px;
     color: #dd6231;
     font-size: 1.2em;
 }
 
+.circle {
+    color: #666666;
+    width: 25px;
+    height: 25px; 
+    position: absolute;
+    text-align: center;
+    border-radius: 50%;
+    border: 1px solid #666666;
+}
+
+.text-address {
+    margin-left: 30px;
+    color: #666666;
+    font-size: 1.2em;
+}
+
 .hr {
+    background-color: #666666;
+    height: 1px;
+    margin-top: -10px;
+}
+
+.hr2 {
     background-color: #dd6231;
     height: 1px;
     margin-top: -10px;
@@ -182,4 +206,9 @@
     color: #fff;
     height: 45px;
     width: 150px;
+}
+
+.btn-place-order {
+    background-color: #dd6231;
+    color: #fff;
 }

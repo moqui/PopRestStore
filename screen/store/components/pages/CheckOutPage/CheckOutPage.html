@@ -22,11 +22,11 @@
       </div>
     </div>
     <div class="col col-lg-6">
-      <p v-b-toggle.collapse1 class="tittle-check-text">
+      <p v-b-toggle.collapse1 class="tittle-check-text method">
         <span class="circle">1</span>
         <span class="text-address">Shipping Address</span>
       </p>
-      <hr class="hr">
+      <hr class="hr2">
       <b-collapse visible id="collapse1">
         <div v-for="(option, index) in listShippingAddress">
           <b-card>
@@ -46,11 +46,11 @@
         <button class="btn btn-continue">Continue</button>
       </b-collapse>
       <br>
-      <p v-b-toggle.collapse2 class="tittle-check-text">
+      <p v-b-toggle.collapse2 class="tittle-check-text"  v-bind:class="{ 'method': isShippingMethod }">
         <span class="circle">2</span>
         <span class="text-address">Shipping Method</span>
       </p>
-      <hr class="hr">
+      <hr class="hr" v-bind:class="{ 'hr1': isShippingMethod }">
       <b-collapse id="collapse2">
         <div v-for="(option, index) in listShippingOptions">
           <b-card>
@@ -63,8 +63,9 @@
           </b-card>
         </div>
         <br>
-        <button class="btn btn-continue col-4 offset-lg-8">Continue</button>
+        <button class="btn btn-continue float-right">Continue</button>
       </b-collapse>
+      <br>
       <p v-b-toggle.collapse3 class="tittle-check-text">
         <span class="circle">3</span>
         <span class="text-address">Payment Methods</span>
@@ -81,10 +82,21 @@
             </label>
           </b-card>
         </div>
+        <br>
+        <a  v-b-modal.modal2 class="text-add col-4 offset-lg-5">Add a Credit Card</a>
+        <button class="btn btn-continue" @click="addCartBillingShipping">Continue</button>
       </b-collapse>
-      <a  v-b-modal.modal2 class="btn btn-link text-primary">Add a Credit Card</a>
-      <button class="btn" @click="addCartBillingShipping">Continue</button>
-      <button class="btn" @click="setCartPlace">Place Order</button>
+      <br>
+      <p v-b-toggle.collapse4 class="tittle-check-text">
+        <span class="circle">4</span>
+        <span class="text-address">Complete Purchase</span>
+      </p>
+      <hr class="hr">
+      <b-collapse id="collapse4">
+        <p>YOUR TOTAL IS: <span>$32.47</span></p>
+        <p>Place order below to complete your purchase</p>
+        <button class="btn btn-place-order col col-lg-12" @click="setCartPlace">Place Order</button>
+      </b-collapse>
     </div>
   </div>
   <div>
