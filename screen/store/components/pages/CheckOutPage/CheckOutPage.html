@@ -2,31 +2,39 @@
   <br>
   <div class="row">
     <div class="col col-lg-6">
-      Item Quantity Price
-      <hr>
-      <b-row v-for="item in productsInCart.orderItemList" :key="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'">
-        <b-col>
-          <p class="text-primary">{{item.itemDescription}}</p>
-        </b-col>
-        <b-col>
+      <p class="tittle-cart-item row">
+        <span class="col col-lg-6">Item</span>
+        <span class="col col-lg-3 offset-lg-1">Quantity</span> 
+        <span class="col col-lg-1">Price</span>
+      </p>
+      <hr class="hr">
+      <div class="row" v-for="item in productsInCart.orderItemList" :key="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'">
+        <div class="col col-lg-6">
+          <p class="item-text-desc">{{item.itemDescription}}</p>
+        </div>
+        <div class="col col-lg-2 offset-lg-1">
           <b-form-input id="quantity" type="text" v-model="item.quantity">
           </b-form-input>
-        </b-col>
-        <b-col>
-          <p class="text-success">${{item.unitAmount}}</p>
-        </b-col>
-      </b-row>
+        </div>
+        <div class="col col-lg-1 offset-lg-1">
+          <p class="place-order-total">${{item.unitAmount}}</p>
+        </div>
+      </div>
       <hr>
       <div class="col col-lg-6">
-        Subtotal ${{productsInCart.totalUnpaid}}
+        <p>Subtotal ${{productsInCart.paymentsTotal}}</p>
+        <p>Total <span class="place-order-total">${{productsInCart.paymentsTotal}}</span></p>
       </div>
     </div>
-    <div class="col col-lg-6">
-      <p v-b-toggle.collapse1 class="tittle-check-text method">
-        <span class="circle">1</span>
+    <div class="col col-lg-5 offset-lg-1">
+      <p class="tittle-check-text" v-bind:class="{ 'state': stateShippingAddress == 1, 'state1': stateShippingAddress == 2}">
+        <span v-if="stateShippingAddress == 2" class="circle">
+          <i class="fa fa-check"></i>
+        </span>
+        <span v-if="stateShippingAddress != 2" class="circle">1</span>
         <span class="text-address">Shipping Address</span>
       </p>
-      <hr class="hr2">
+      <hr class="hr" v-bind:class="{ 'hr1': stateShippingAddress == 1, 'hr2':stateShippingAddress == 2 }">
       <b-collapse visible id="collapse1">
         <div v-for="(option, index) in listShippingAddress">
           <b-card>
@@ -42,15 +50,19 @@
           </b-card>
         </div>
         <br>   
-        <a v-b-modal.modal1 class="text-add col-4 offset-lg-5">Add a New Address</a>
-        <button class="btn btn-continue">Continue</button>
+        <button v-b-toggle.collapse1.collapse2 @click="addCartBillingShipping(1)" class="btn btn-continue float-right">Continue
+        </button>
+        <a v-b-modal.modal1 class="text-add float-right">Add a New Address</a>
       </b-collapse>
       <br>
-      <p v-b-toggle.collapse2 class="tittle-check-text"  v-bind:class="{ 'method': isShippingMethod }">
-        <span class="circle">2</span>
+      <p class="tittle-check-text"  v-bind:class="{ 'state': stateShippingMethod == 1, 'state1': stateShippingMethod == 2 }">
+        <span v-if="stateShippingMethod == 2" class="circle">
+          <i class="fa fa-check"></i>
+        </span>
+        <span v-if="stateShippingMethod != 2" class="circle">2</span>
         <span class="text-address">Shipping Method</span>
       </p>
-      <hr class="hr" v-bind:class="{ 'hr1': isShippingMethod }">
+      <hr class="hr" v-bind:class="{ 'hr1': stateShippingMethod == 1, 'hr2':stateShippingMethod == 2 }">
       <b-collapse id="collapse2">
         <div v-for="(option, index) in listShippingOptions">
           <b-card>
@@ -63,14 +75,17 @@
           </b-card>
         </div>
         <br>
-        <button class="btn btn-continue float-right">Continue</button>
+        <button v-b-toggle.collapse2.collapse3 @click="addCartBillingShipping(2)" class="btn btn-continue float-right">Continue</button>
       </b-collapse>
       <br>
-      <p v-b-toggle.collapse3 class="tittle-check-text">
-        <span class="circle">3</span>
+      <p class="tittle-check-text" v-bind:class="{ 'state': statePaymentMethod == 1, 'state1': statePaymentMethod == 2 }">
+        <span v-if="statePaymentMethod == 2" class="circle">
+          <i class="fa fa-check"></i>
+        </span>
+        <span v-if="statePaymentMethod != 2" class="circle">3</span>
         <span class="text-address">Payment Methods</span>
       </p>
-      <hr class="hr">
+      <hr class="hr" v-bind:class="{ 'hr1': statePaymentMethod == 1, 'hr2':statePaymentMethod == 2 }">
       <b-collapse id="collapse3">
         <div v-for="(item,index) in listPaymentMethods">
           <b-card>
@@ -83,18 +98,20 @@
           </b-card>
         </div>
         <br>
-        <a  v-b-modal.modal2 class="text-add col-4 offset-lg-5">Add a Credit Card</a>
-        <button class="btn btn-continue" @click="addCartBillingShipping">Continue</button>
+        <a  v-b-modal.modal2 class="text-add col-4 offset-lg-3">Add a Credit Card</a>
+        <button v-b-toggle.collapse3.collapse4  class="btn btn-continue" @click="addCartBillingShipping(3)">Continue</button>
       </b-collapse>
       <br>
-      <p v-b-toggle.collapse4 class="tittle-check-text">
+      <p class="tittle-check-text">
         <span class="circle">4</span>
         <span class="text-address">Complete Purchase</span>
       </p>
       <hr class="hr">
       <b-collapse id="collapse4">
-        <p>YOUR TOTAL IS: <span>$32.47</span></p>
-        <p>Place order below to complete your purchase</p>
+        <div class="div-place-order">
+          <p class="text-center">YOUR TOTAL IS: <span class="place-order-total">${{productsInCart.paymentsTotal}}</span></p>
+          <p class="text-center place-order-text">Place order below to complete your purchase</p>
+        </div>
         <button class="btn btn-place-order col col-lg-12" @click="setCartPlace">Place Order</button>
       </b-collapse>
     </div>

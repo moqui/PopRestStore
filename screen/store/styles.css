@@ -145,7 +145,13 @@
     margin-top: 15px;
 }
 
-.method .circle {
+.tittle-cart-item {
+    color: #666666 !important;
+    margin-top: 15px;
+    font-size: 1.2em;
+}
+
+.state .circle {
     color: #fff;
     background-color: #dd6231;
     width: 25px;
@@ -156,9 +162,26 @@
     border: none;
 }
 
-.method .text-address {
+.state .text-address {
     margin-left: 30px;
     color: #dd6231;
+    font-size: 1.2em;
+}
+
+.state1 .circle {
+    color: #fff;
+    background-color: #04c3d5;
+    width: 25px;
+    height: 25px; 
+    position: absolute;
+    text-align: center;
+    border-radius: 50%;
+    border: none;
+}
+
+.state1 .text-address {
+    margin-left: 30px;
+    color: #04c3d5;
     font-size: 1.2em;
 }
 
@@ -178,14 +201,24 @@
     font-size: 1.2em;
 }
 
+.item-text-desc {
+    color: #04c3d5;
+}
+
 .hr {
     background-color: #666666;
     height: 1px;
     margin-top: -10px;
 }
 
-.hr2 {
+.hr1 {
     background-color: #dd6231;
+    height: 1px;
+    margin-top: -10px;
+}
+
+.hr2 {
+    background-color: #04c3d5;
     height: 1px;
     margin-top: -10px;
 }
@@ -199,6 +232,7 @@
     cursor: pointer;
     font-size: 0.9em;
     margin-top: 10px;
+    margin-right: 17px;
 }
 
 .btn-continue {
@@ -211,4 +245,17 @@
 .btn-place-order {
     background-color: #dd6231;
     color: #fff;
+}
+
+.div-place-order {
+    color: #666666 !important;
+    margin-top: 50px;
+}
+
+.place-order-total {
+    color: #dd6231 !important;
+}
+
+.place-order-text {
+    margin-top: -15px;
 }

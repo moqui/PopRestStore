@@ -11,7 +11,9 @@ var CheckOutPage = {
       addressOption: "",
       paymentOption: "",
       paymentId: {},
-      isShippingMethod:false,
+      stateShippingAddress:1,
+      stateShippingMethod:0,
+      statePaymentMethod:0,
       listShippingOptions: [],
       axiosConfig: {
         headers: {
@@ -31,6 +33,7 @@ var CheckOutPage = {
     },
     addCustomerShippingAddress() {
       CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(data => {
+        this.shippingAddress = {};
         this.getCustomerShippingAddresses();
         this.hideModal("modal1");
       });
@@ -42,7 +45,7 @@ var CheckOutPage = {
     },
     getCartInfo() {
       ProductService.getCartInfo(this.axiosConfig).then(data => {
-        if(!data){
+        if(data){
           this.addressOption = data.postalAddress ? data.postalAddress.contactMechId + ':' + data.postalAddress.telecomContactMechId : '';
           this.shippingOption = data.orderPart.carrierPartyId ? data.orderPart.carrierPartyId + ':' + data.orderPart.shipmentMethodEnumId : '';
           this.paymentOption = data.paymentInfoList[0] ? data.paymentInfoList[0].payment.paymentMethodId : '';
@@ -59,7 +62,7 @@ var CheckOutPage = {
         this.getCustomerPaymentMethods();
       });
     },
-    addCartBillingShipping(){
+    addCartBillingShipping(option){
       var info = {
         "shippingPostalContactMechId":this.addressOption.split(':')[0],
         "shippingTelecomContactMechId":this.addressOption.split(':')[1],
@@ -67,9 +70,23 @@ var CheckOutPage = {
         "carrierPartyId":this.shippingOption.split(':')[0],
         "shipmentMethodEnumId":this.shippingOption.split(':')[1]
       };
-     ProductService.addCartBillingShipping(info,this.axiosConfig).then(data => {
-       this.paymentId = data;   
-     });
+      switch(option){
+        case 1: 
+          this.stateShippingAddress = 2;
+          this.stateShippingMethod = 1;
+          break;
+        case 2:
+          this.stateShippingMethod = 2;
+          this.statePaymentMethod = 1;  
+          break;
+        case 3:
+          this.statePaymentMethod = 2;  
+          break;
+       }
+      ProductService.addCartBillingShipping(info,this.axiosConfig).then(data => {
+        this.paymentId = data;   
+        this.getCartInfo();
+      });
     },
     getCustomerPaymentMethods() {
       CustomerService.getPaymentMethods(this.axiosConfig).then(data => {
