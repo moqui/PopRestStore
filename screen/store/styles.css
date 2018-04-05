@@ -191,6 +191,10 @@
     height: 25px; 
     position: absolute;
     text-align: center;
+    justify-content: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 50%;
     border: 1px solid #666666;
 }
@@ -258,4 +262,87 @@
 
 .place-order-text {
     margin-top: -15px;
+}
+
+.modal-title {
+    color: #666666;
+    font-size: 2em;
+}
+
+.modal-text {
+    color: #666666;
+}
+
+.modal-text-required {
+    color: #e4845e;
+}
+
+.div-checkmark {
+    background-color: #e7e7e7;
+    border-radius: 5px;
+}
+
+.container-input {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    margin-top: 2px;
+    color: #666666;
+    cursor: pointer;
+    font-size: 1em;
+    user-select: none;
+}
+
+.container-input input {
+    position: absolute;
+    opacity: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 3px;
+    left: 10px;
+    height: 15px;
+    width: 15px;
+    background-color: #fff;
+    border: 1px solid #666666;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-input:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+.container-input input:checked ~ .checkmark {
+    background-color: #e7e7e7;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.container-input input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.container-input .checkmark:after {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #666666;
+}
+
+
+.input-quantity {
+    text-align:center;
+}
+
+.div-total {
+    color: #666666;
 }
