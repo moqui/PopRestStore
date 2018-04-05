@@ -346,3 +346,13 @@
 .div-total {
     color: #666666;
 }
+
+.span-description {
+    display: block;
+    margin-top: -5px;
+}
+
+.change-info {
+    font-size: 0.9em !important;
+    margin-top: 7px;
+}

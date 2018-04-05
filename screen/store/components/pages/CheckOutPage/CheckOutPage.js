@@ -5,6 +5,7 @@ var CheckOutPage = {
       productsInCart: [],
       shippingAddress: {},
       paymentMethod: {},
+      shippingMethod: {},
       listShippingAddress: [],
       listPaymentMethods: [],
       shippingOption: "",
@@ -104,6 +105,15 @@ var CheckOutPage = {
     },
     hideModal(modalid) {
       this.$root.$emit('bv::hide::modal',modalid);
+    },
+    changeShippingAddress(data) {
+      this.shippingAddress = data.postalAddress;
+      this.shippingAddress.contactNumber = data.telecomNumber.contactNumber; 
+    }, 
+    changePaymentMethod(data) {
+      this.paymentMethod = data.paymentMethod;
+      this.paymentMethod.expireMonth = data.expireMonth; 
+      this.paymentMethod.expireYear = data.expireYear;
     }
   },
   mounted() {

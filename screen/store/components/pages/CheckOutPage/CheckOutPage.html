@@ -37,21 +37,33 @@
         </span>
         <span v-if="stateShippingAddress != 2" class="circle">1</span>
         <span class="text-address">Shipping Address</span>
+        <span v-b-toggle.collapse1 v-if="stateShippingAddress == 2" class="text-address change-info float-right">Change</span>
       </p>
       <hr class="hr" v-bind:class="{ 'hr1': stateShippingAddress == 1, 'hr2':stateShippingAddress == 2 }">
+      <div v-if="stateShippingAddress == 2" class="div-total">
+        <span class="span-description">{{shippingAddress.toName}}</span>
+        <span class="span-description">{{shippingAddress.address1}} {{shippingAddress.address2}}</span>
+        <span class="span-description">{{shippingAddress.city}}</span>
+        <span class="span-description">
+          <i class="fa fa-phone"></i>
+          {{shippingAddress.contactNumber}}
+        </span>
+      </div>
       <b-collapse visible id="collapse1">
         <div v-for="(option, index) in listShippingAddress">
           <div v-bind:class="{ 'div-checkmark': addressOption == option.postalContactMechId + ':' +
                 option.telecomContactMechId }">
             <label :for="index + 'r1'" class="container-input">
               <input :id="index + 'r1'" type="radio" :value="option.postalContactMechId + ':' +
-                option.telecomContactMechId" v-model="addressOption"/>
+                option.telecomContactMechId" v-model="addressOption" @click="changeShippingAddress(option)"/>
               <span class="checkmark"></span>
-               {{option.postalAddress.toName}}
-               {{option.postalAddress.address1}} 
-               {{option.postalAddress.address2}}
-               {{option.postalAddress.city}}
-               <i class="fa fa-phone"></i>{{option.telecomNumber.contactNumber}}
+              <span class="span-description">{{option.postalAddress.toName}}</span>
+              <span class="span-description">{{option.postalAddress.address1}} {{option.postalAddress.address2}}</span>
+              <span class="span-description">{{option.postalAddress.city}}</span>
+              <span class="span-description">
+                <i class="fa fa-phone"></i>
+                {{option.telecomNumber.contactNumber}}
+              </span>
             </label>
           </div>
         </div>
@@ -67,13 +79,20 @@
         </span>
         <span v-if="stateShippingMethod != 2" class="circle">2</span>
         <span class="text-address">Shipping Method</span>
+        <span v-b-toggle.collapse2 v-if="stateShippingMethod == 2" class="text-address change-info float-right">Change</span>
       </p>
       <hr class="hr" v-bind:class="{ 'hr1': stateShippingMethod == 1, 'hr2':stateShippingMethod == 2 }">
+      <div v-if="stateShippingMethod == 2" class="div-total">
+        <span class="span-description">
+          {{shippingMethod.shipmentMethodDescription}}
+          <span class="float-right">${{shippingMethod.shippingTotal.toFixed(2)}}</span>
+        </span>    
+      </div>
       <b-collapse id="collapse2">
         <div v-for="(option, index) in listShippingOptions">
           <div v-bind:class="{ 'div-checkmark': shippingOption == option.carrierPartyId + ':' + option.shipmentMethodEnumId }">
             <label :for="index + 'r2'" class="container-input">
-              <input :id="index + 'r2'" type="radio" :value="option.carrierPartyId + ':' + option.shipmentMethodEnumId" v-model="shippingOption" />
+              <input :id="index + 'r2'" type="radio" :value="option.carrierPartyId + ':' + option.shipmentMethodEnumId" v-model="shippingOption" @click="shippingMethod = option" />
               <span class="checkmark"></span>
               {{option.carrierPartyId == '_NA_' ? '' : (option.carrierName + ' - ')}}
               {{option.shipmentMethodDescription}}
@@ -91,17 +110,23 @@
         </span>
         <span v-if="statePaymentMethod != 2" class="circle">3</span>
         <span class="text-address">Payment Methods</span>
+        <span v-b-toggle.collapse3 v-if="statePaymentMethod == 2" class="text-address change-info float-right">Change</span>
       </p>
       <hr class="hr" v-bind:class="{ 'hr1': statePaymentMethod == 1, 'hr2':statePaymentMethod == 2 }">
+      <div v-if="statePaymentMethod == 2" class="div-total">
+        <span class="span-description">{{paymentMethod.description}}</span>
+        <span class="span-description">{{paymentMethod.titleOnAccount}}</span>
+        <span class="span-description">{{paymentMethod.expireMonth}}/{{paymentMethod.expireYear}}</span>
+      </div>
       <b-collapse id="collapse3">
         <div v-for="(item,index) in listPaymentMethods">
           <div v-bind:class="{ 'div-checkmark': paymentOption == item.paymentMethodId }">
             <label  :for="index + 'r3'" class="container-input">
-              <input :id="index + 'r3'" type="radio" :value="item.paymentMethodId" v-model="paymentOption" />
+              <input :id="index + 'r3'" type="radio" :value="item.paymentMethodId" v-model="paymentOption" @click="changePaymentMethod(item)"/>
               <span class="checkmark"></span>
-              {{item.paymentMethod.description}}
-              {{item.paymentMethod.titleOnAccount}}
-              {{item.creditCard.expireDate}}
+              <span class="span-description">{{item.paymentMethod.description}}</span>
+              <span class="span-description">{{item.paymentMethod.titleOnAccount}}</span>
+              <span class="span-description">Expires on {{item.creditCard.expireDate}}</span>
             </label>
           </div>
         </div>
@@ -197,7 +222,7 @@
           <div class="col-sm-9">
             <b-form-input id="name"
                       type="text"
-                      v-model="shippingAddress.askForName"
+                      v-model="shippingAddress.toName"
                       required>
             </b-form-input> 
           </div>
