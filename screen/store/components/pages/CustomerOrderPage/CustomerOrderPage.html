@@ -1,0 +1,62 @@
+<div class="container">
+  <span class="row"></span>
+  <div class="row mt-2">
+    <span class="order-tittle">Thank You For Your Purchase</span>
+  </div>
+  <div class="row mt-4" v-if="orderList.orderHeader">
+  	<span class="col col-lg-2 order-link-text">Order #{{orderList.orderHeader.orderId}}</span>
+  	<span class="col col-lg-3 order-text-color">Order Status: <span class="order-status">{{orderList.orderHeader.statusId}}</span></span>
+  	<span class="col col-lg-3 order-text-color">Order Date: {{formatDate(orderList.orderHeader.placedDate)}}</span>
+  	<span class="col col-lg-3 order-text-color">Expected Arrival: 7 April, 2018</span>
+  </div>
+  <div class="row mt-5">
+  	<div class="col col-lg-8">
+  	  <div class="row item-tittle-text">
+  	  	<span class="col col-lg-8 order-link-text">Item</span>	
+  	    <span class="col col-lg-2 order-text-color text-center">Quantity</span>
+  	    <span class="col col-lg-2 order-text-color text-center">Price</span>
+  	  </div>
+  	  <hr class="order-hr">
+  	  <div class="row">
+  	  	<template v-for="(item, index) in orderList.orderItemList">
+  	  	  <template v-if="item.itemTypeEnumId == 'ItemProduct'">
+  	  	    <span class="col col-lg-8 order-link-text">{{item.itemDescription}}</span>
+  	  	    <span class="col col-lg-2 order-text-color text-center">{{item.quantity}}</span>
+  	  	    <span class="col col-lg-2 order-text-color text-center">${{item.unitAmount}}</span>	
+  	  	  </template>
+  	    </template>
+  	  </div>
+  	  <hr>
+  	  <div class="row order-text-color">
+  	    <span class="col col-lg-3 offset-lg-6 ">SubTotal</span>
+  	    <span class="col col-lg-2 offset-lg-1 text-center">${{orderList.orderPart.partTotal}}</span>
+  	    <span class="col col-lg-3 offset-lg-6 mt-4">Delivery</span>
+  	    <span class="col col-lg-2 offset-lg-1 mt-4 text-center">$0.00</span>
+  	    <span class="col col-lg-3 offset-lg-6 mt-4">TOTAL</span>
+  	    <span class="col col-lg-2 offset-lg-1 mt-4 text-center">${{orderList.orderHeader.grandTotal}}</span>
+  	    <span class="col col-lg-6 offset-lg-6"><hr></span>
+  	  </div>
+  	</div>
+  	<div class="col col-lg-3 order-text-color offset-lg-1 order-address">
+  	  <div>
+  	    <span class="col col-lg-3">Delivery Address</span>
+  	    <hr class="order-hr">
+  	    <span class="col col-lg-3">{{orderList.postalAddress.toName}}</span>
+  	    <span class="col col-lg-3">{{orderList.postalAddress.toName}}</span>
+  	    <span class="col col-lg-3">{{orderList.postalAddress.address1}}</span>
+  	    <span class="col col-lg-3">{{orderList.postalAddress.city}} {{orderList.postalAddress.address2}}</span>
+  	    <span class="col col-lg-3"><i class="fa fa-phone"></i> {{orderList.telecomNumber.contactNumber}}</span>
+  	  </div>
+  	  <div class="order-billing-address">
+  	    <span class="col col-lg-3">Billing Address</span>
+  	    <hr class="order-hr">
+  	    <span class="col col-lg-3">{{orderList.postalAddress.toName}}</span>
+  	    <span class="col col-lg-3">{{orderList.postalAddress.toName}}</span>
+  	    <span class="col col-lg-3">{{orderList.postalAddress.address1}}</span>
+  	    <span class="col col-lg-3">{{orderList.postalAddress.city}} {{orderList.postalAddress.address2}}</span>
+  	    <span class="col col-lg-3"><i class="fa fa-phone"></i> {{orderList.telecomNumber.contactNumber}}</span>
+  	  </div>
+  	</div>
+  	<button class="mt-5 btn btn-continue col col-lg-5 offset-lg-6">Keep Shopping</button>
+  </div>
+</div>

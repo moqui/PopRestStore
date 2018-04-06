@@ -18,5 +18,15 @@ var CustomerService = {
     return axios.put("/rest/s1/pop/customer/paymentMethods",paymentMethod,headers).then(res => {
       return res.data;
     });
+  },
+  getCustomerOrders(headers) {
+    return axios.get("/rest/s1/pop/customer/orders",headers).then(res => {
+      return res.data;
+    })
+  },
+  getCustomerOrderById(orderId,headers) {
+    return axios.get("/rest/s1/pop/customer/orders/"+orderId,headers).then(res => {
+      return res.data;
+    });
   }
 };

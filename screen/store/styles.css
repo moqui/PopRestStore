@@ -356,3 +356,37 @@
     font-size: 0.9em !important;
     margin-top: 7px;
 }
+
+.order-tittle {
+    font-size: 1.6em;
+    color: #666666;
+}
+
+.order-link-text {
+    color: #04c3d5;
+    cursor: pointer;
+}
+
+.order-text-color {
+    color: #666666;
+}
+
+.order-status {
+    color: #dd6231;
+}
+
+.item-tittle-text {
+    font-size: 0.8em;
+}
+
+.order-hr {
+    margin-top: -1px;
+}
+
+.order-address {
+    margin-top: -5px !important;
+}
+
+.order-billing-address {
+    margin-top: 30px;
+}

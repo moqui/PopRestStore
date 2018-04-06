@@ -7,5 +7,6 @@ var storeComps = {
   LoginPage,
   WikiPage,
   ProductPage,
-  CheckOutPage
+  CheckOutPage,
+  CustomerOrderPage
 };
