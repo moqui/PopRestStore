@@ -26,7 +26,7 @@ var router = new VueRouter({
       component: CheckOutPageTemplate
     },
     {
-      path: "/orders",
+      path: "/orders/:orderId",
       name: "orders",
       component: CustomerOrderPageTemplate
     }

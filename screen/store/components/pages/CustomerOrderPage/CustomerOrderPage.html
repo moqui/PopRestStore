@@ -1,9 +1,9 @@
-<div class="container">
+<div class="container" v-if="orderList.orderPart">
   <span class="row"></span>
   <div class="row mt-2">
     <span class="order-tittle">Thank You For Your Purchase</span>
   </div>
-  <div class="row mt-4" v-if="orderList.orderHeader">
+  <div class="row mt-4">
   	<span class="col col-lg-2 order-link-text">Order #{{orderList.orderHeader.orderId}}</span>
   	<span class="col col-lg-3 order-text-color">Order Status: <span class="order-status">{{orderList.orderHeader.statusId}}</span></span>
   	<span class="col col-lg-3 order-text-color">Order Date: {{formatDate(orderList.orderHeader.placedDate)}}</span>
@@ -57,6 +57,6 @@
   	    <span class="col col-lg-3"><i class="fa fa-phone"></i> {{orderList.telecomNumber.contactNumber}}</span>
   	  </div>
   	</div>
-  	<button class="mt-5 btn btn-continue col col-lg-5 offset-lg-6">Keep Shopping</button>
+  	<router-link class="mt-5 btn btn-continue col col-lg-5 offset-lg-6" :to="'/'" tag="button">Keep Shopping</router-link>
   </div>
 </div>

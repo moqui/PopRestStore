@@ -21,7 +21,7 @@ var CustomerOrderPage = {
       });
     },
     getCustomerOrderById() {
-      CustomerService.getCustomerOrderById("100000",this.axiosConfig).then(data => {
+      CustomerService.getCustomerOrderById(this.$route.params.orderId,this.axiosConfig).then(data => {
         this.orderList = data;
       });
     },

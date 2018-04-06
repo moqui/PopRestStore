@@ -99,8 +99,8 @@ var CheckOutPage = {
         "cardSecurityCodeByPaymentId": this.paymentId
       };
       ProductService.setCartPlace(data,this.axiosConfig).then(data => {
-        console.log(data);
         this.getCartInfo();
+        this.$router.push({ name: 'orders', params: { orderId: data.orderHeader.orderId }});
       });
     },
     hideModal(modalid) {
