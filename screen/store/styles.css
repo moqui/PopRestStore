@@ -390,3 +390,46 @@
 .order-billing-address {
     margin-top: 30px;
 }
+
+.order-navbar {
+    height: 85px;
+}
+
+.order-navbar-tittle {
+    margin-top: 20px;
+    display: inline-block;
+    font-size: 2.3em;
+    color: #fff;
+    margin-left: -25px;
+    font-weight: bold;
+}
+
+.order-navbar-circle {
+    width: 40px;
+    height: 40px;
+    color: #999999;
+    border: 1px solid #999999;
+    border-radius: 50%;
+    text-align: center; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+}
+
+.order-navbar-hr {
+    background-color: #666666;
+    height: 1px;
+    margin-top: 1.2rem;
+}
+
+.order-navbar-text {
+    position: absolute;
+    margin-top: 39px;
+    margin-left: -30px;
+    font-size: 0.6em;
+}
+
+.checkout-container {
+    margin-top: -70px;
+}

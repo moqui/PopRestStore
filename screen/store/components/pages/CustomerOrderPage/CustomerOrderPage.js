@@ -39,6 +39,9 @@ var CustomerOrderPage = {
       return day + ' ' + monthNames[monthIndex] + ', ' + year;
     }
   },
+  components: {
+    "placeorder-navbar": PlaceOrderNavbarTemplate
+  },
   mounted() {
     this.getCustomerOrderById();
   }

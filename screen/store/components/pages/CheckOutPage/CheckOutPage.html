@@ -1,5 +1,5 @@
-<div class="container">
-  <br>
+<div class="container checkout-container">
+  <placeorder-navbar />
   <div class="row">
     <div class="col col-lg-6 col-sm-12 col-12">
       <p class="tittle-cart-item row">
@@ -23,11 +23,13 @@
       <hr>
       <div class="row div-total">
         <span class="col col-lg-6">Subtotal</span>
-        <span class="col col-lg-1 offset-lg-4">${{productsInCart.paymentsTotal}}</span>
+        <span class="col col-lg-1 offset-lg-4" v-if="productsInCart.orderPart">${{productsInCart.orderPart.partTotal}}</span>
         <span class="col col-lg-6 mt-4">Shipping</span>
-        <span class="place-order-total col col-lg-1 offset-lg-4 mt-4">$0.00</span>
+        <span class="place-order-total col col-lg-1 offset-lg-4 mt-4">
+          <span v-if="shippingMethod.shippingTotal != undefined">${{shippingMethod.shippingTotal.toFixed(2)}}</span>
+        </span>
         <span class="col col-lg-6 mt-4">Total</span>
-        <span class="place-order-total col col-lg-1 offset-lg-4 mt-4">${{productsInCart.paymentsTotal}}</span>
+        <span class="place-order-total col col-lg-1 offset-lg-4 mt-4" v-if="productsInCart.orderHeader">${{productsInCart.orderHeader.grandTotal}}</span>
       </div>
     </div>
     <div class="col col-lg-5 offset-lg-1 col-sm-12 col-12">
@@ -122,7 +124,7 @@
         <div v-for="(item,index) in listPaymentMethods">
           <div v-bind:class="{ 'div-checkmark': paymentOption == item.paymentMethodId }">
             <label  :for="index + 'r3'" class="container-input">
-              <input :id="index + 'r3'" type="radio" :value="item.paymentMethodId" v-model="paymentOption" @click="changePaymentMethod(item)"/>
+              <input :id="index + 'r3'"  type="radio" :value="item.paymentMethodId" v-model="paymentOption" @click="changePaymentMethod(item)"/>
               <span class="checkmark"></span>
               <span class="span-description">{{item.paymentMethod.description}}</span>
               <span class="span-description">{{item.paymentMethod.titleOnAccount}}</span>

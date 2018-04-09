@@ -2,7 +2,6 @@ var App = {
   name: "app",
   template: `
     <div id="app">
-        <navbar sub-bar="true"/>
         <router-view></router-view>
     </div>
   `,
@@ -10,6 +9,5 @@ var App = {
     return {};
   },
   components: {
-    navbar: NavbarTemplate
   }
 };

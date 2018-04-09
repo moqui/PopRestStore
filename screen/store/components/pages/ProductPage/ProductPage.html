@@ -1,9 +1,11 @@
-<div class="container container-text">
-  <br>
-  <div class="row">
-    <div class="col col-lg-2">
-      <div class="col col-lg-12">
-         <img width="100px" height="150px" 
+<div>
+  <navbar sub-bar="true"/>
+  <div class="container container-text">
+    <br>
+    <div class="row">
+      <div class="col col-lg-2">
+        <div class="col col-lg-12">
+          <img width="100px" height="150px" 
             class="figure-img img-fluid product-img"
             v-if="product.contentList.length" 
             v-show="isProductImage(smallImageInfo)"
@@ -11,56 +13,57 @@
             :src="getProductImageSrc(smallImageInfo)"
             :alt="smallImageInfo.description ? smallImageInfo.description : 'Small Image'"
             @click="setProductImge(getProductImageSrc(smallImageInfo))"> 
+        </div>
       </div>
-    </div>
-    <div class="col col-lg-3">
-      <img class="product-img-select" :src="productImgRoute">
-    </div>
-    <div class="col col-lg-4 product-description">
-      <p>
-        <span class="product-tittle">
+      <div class="col col-lg-3">
+        <img class="product-img-select" :src="productImgRoute">
+      </div>
+      <div class="col col-lg-4 product-description">
+        <p>
+          <span class="product-tittle">
           {{product.productName}}
-        </span>
-        <br>
-        <star-rating class="product-star" :rating="product.rating" />
-      </p>
-      <div style="color:#666666 !important; font-size: 0.8em;" v-html="product.descriptionLong">
+          </span>
+          <br>
+          <star-rating class="product-star" :rating="product.rating" />
+        </p>
+        <div style="color:#666666 !important; font-size: 0.8em;" v-html="product.descriptionLong">
+        </div>
       </div>
-    </div>
-    <div class="col col-lg-3">
-      <div class="card cart-div">
-        <form>
-          <div class="form-group col">
-            <div class="cart-form-price">
-              <p>
-                <span class="price-text">
-                  ${{product.price}}
-                </span> 
-                was
-                <span>
-                  <del v-if="product.listPrice">
-                    ${{product.listPrice}}
-                  </del>
-                </span>
-              </p> 
+      <div class="col col-lg-3">
+        <div class="card cart-div">
+          <form>
+            <div class="form-group col">
+              <div class="cart-form-price">
+                <p>
+                  <span class="price-text">
+                    ${{product.price}}
+                  </span> 
+                  was
+                  <span>
+                    <del v-if="product.listPrice">
+                      ${{product.listPrice}}
+                    </del>
+                  </span>
+                </p> 
+              </div>
+              <hr>
             </div>
-            <hr>
-          </div>
-          <div class="form-group col">
-            <p align="left">Quantity:</p>
-            <select v-model="quantity" class="form-control">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
-          </div>
-        </form>
-        <br>
-      </div>
-      <button @click="addProductCart" class="btn cart-form-btn col"> 
+            <div class="form-group col">
+              <p align="left">Quantity:</p>
+              <select v-model="quantity" class="form-control">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+            </div>
+          </form>
+          <br>
+        </div>
+        <button @click="addProductCart" class="btn cart-form-btn col"> 
           <i class="fa fa-shopping-cart"></i>
           Add to Cart
         </button>
+      </div>
     </div>
   </div>
 </div>

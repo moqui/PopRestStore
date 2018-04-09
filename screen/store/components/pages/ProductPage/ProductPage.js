@@ -16,7 +16,8 @@ var ProductPage = {
     };
   },
   components: {
-    StarRating: StarRatingTemplate
+    StarRating: StarRatingTemplate,
+    navbar: NavbarTemplate
   },
   methods: {
     getProductImageSrc(imageInfo) {

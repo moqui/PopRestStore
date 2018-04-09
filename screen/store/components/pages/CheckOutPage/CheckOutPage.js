@@ -9,7 +9,7 @@ var CheckOutPage = {
       listShippingAddress: [],
       listPaymentMethods: [],
       shippingOption: "",
-      addressOption: "",
+      addressOption: {},
       paymentOption: "",
       paymentId: {},
       stateShippingAddress:1,
@@ -46,12 +46,32 @@ var CheckOutPage = {
     },
     getCartInfo() {
       ProductService.getCartInfo(this.axiosConfig).then(data => {
-        if(data){
-          this.addressOption = data.postalAddress ? data.postalAddress.contactMechId + ':' + data.postalAddress.telecomContactMechId : '';
-          this.shippingOption = data.orderPart.carrierPartyId ? data.orderPart.carrierPartyId + ':' + data.orderPart.shipmentMethodEnumId : '';
-          this.paymentOption = data.paymentInfoList[0] ? data.paymentInfoList[0].payment.paymentMethodId : '';
-        }
-        this.productsInCart = data;
+          if(data.postalAddress != undefined) {
+            this.addressOption = data.postalAddress.contactMechId + ':' + data.postalAddress.telecomContactMechId;
+            this.shippingAddress = data.postalAddress;
+            this.shippingAddress.contactNumber = data.telecomNumber.contactNumber;
+          }
+          if(data.orderPart.carrierPartyId != undefined) {
+            this.shippingOption = data.orderPart.carrierPartyId + ':' + data.orderPart.shipmentMethodEnumId;
+            for(var x in this.listShippingOptions) {
+              if(this.shippingOption === this.listShippingOptions[x].carrierPartyId +':'+ this.listShippingOptions[x].shipmentMethodEnumId) {
+                this.shippingMethod = this.listShippingOptions[x];
+                break;
+              }
+            }
+          }
+          if(data.paymentInfoList[0] != null) {
+            this.paymentOption = data.paymentInfoList[0].payment.paymentMethodId;
+            for(var x in this.listPaymentMethods) {
+              if(this.paymentOption === this.listPaymentMethods[x].paymentMethodId) {
+                this.paymentMethod = this.listPaymentMethods[x].paymentMethod;
+                this.paymentMethod.expireMonth = this.listPaymentMethods[x].expireMonth; 
+                this.paymentMethod.expireYear = this.listPaymentMethods[x].expireYear;
+                break;
+              }
+            }
+          }
+          this.productsInCart = data;
       });
     },
     addCustomerPaymentMethod() {
@@ -116,11 +136,14 @@ var CheckOutPage = {
       this.paymentMethod.expireYear = data.expireYear;
     }
   },
+  components: {
+    "placeorder-navbar": PlaceOrderNavbarTemplate
+  },
   mounted() {
+    this.getCartShippingOptions();
     this.getCartInfo();
     this.getCustomerShippingAddresses();
     this.getCustomerPaymentMethods();
-    this.getCartShippingOptions();
   }
 };
 var CheckOutPageTemplate = getPlaceholderRoute(
