@@ -1,8 +1,8 @@
-<div class="container" v-if="orderList.orderPart">
-  <placeorder-navbar />
+<div class="container checkout-container" v-if="orderList.orderPart">
+  <placeorder-navbar :option="'5'" />
   <span class="row"></span>
   <div class="row">
-    <span class="order-tittle">Thank You For Your Purchase</span>
+    <span class="order-title">Thank You For Your Purchase</span>
   </div>
   <div class="row mt-4">
   	<span class="col col-lg-2 order-link-text">Order #{{orderList.orderHeader.orderId}}</span>
@@ -12,7 +12,7 @@
   </div>
   <div class="row mt-5">
   	<div class="col col-lg-8">
-  	  <div class="row item-tittle-text">
+  	  <div class="row item-title-text">
   	  	<span class="col col-lg-8 order-link-text">Item</span>	
   	    <span class="col col-lg-2 order-text-color text-center">Quantity</span>
   	    <span class="col col-lg-2 order-text-color text-center">Price</span>

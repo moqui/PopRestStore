@@ -16,6 +16,7 @@ var CheckOutPage = {
       stateShippingMethod:0,
       statePaymentMethod:0,
       listShippingOptions: [],
+      optionNavbar:1,
       axiosConfig: {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
@@ -108,6 +109,9 @@ var CheckOutPage = {
         this.paymentId = data;   
         this.getCartInfo();
       });
+    },
+    setOptionNavbar(option) {
+      this.optionNavbar = option; 
     },
     getCustomerPaymentMethods() {
       CustomerService.getPaymentMethods(this.axiosConfig).then(data => {

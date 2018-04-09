@@ -5,7 +5,7 @@
             v-if="product.smallImageList.length" 
             :src="getProductSimgleImg(product.smallImageList)"
         >
-        <figcaption class="text-left tittle-product-text figure-caption">{{product.productName}}</figcaption>
+        <figcaption class="text-left title-product-text figure-caption">{{product.productName}}</figcaption>
         <figcaption class="text-left figure-caption">
             <star-rating :rating="product.rating" />
             <span class="text-dark">{{product.numberOfRatings}}</span>

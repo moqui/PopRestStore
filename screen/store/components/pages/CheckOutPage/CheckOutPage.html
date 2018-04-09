@@ -1,8 +1,8 @@
 <div class="container checkout-container">
-  <placeorder-navbar />
+  <placeorder-navbar :option="optionNavbar"/>
   <div class="row">
     <div class="col col-lg-6 col-sm-12 col-12">
-      <p class="tittle-cart-item row">
+      <p class="title-cart-item row">
         <span class="col col-lg-6">Item</span>
         <span class="col col-lg-3 offset-lg-1">Quantity</span> 
         <span class="col col-lg-1">Price</span>
@@ -33,13 +33,13 @@
       </div>
     </div>
     <div class="col col-lg-5 offset-lg-1 col-sm-12 col-12">
-      <p class="tittle-check-text" v-bind:class="{ 'state': stateShippingAddress == 1, 'state1': stateShippingAddress == 2}">
+      <p class="title-check-text" v-bind:class="{ 'state': stateShippingAddress == 1, 'state1': stateShippingAddress == 2}">
         <span v-if="stateShippingAddress == 2" class="circle">
           <i class="fa fa-check"></i>
         </span>
         <span v-if="stateShippingAddress != 2" class="circle">1</span>
         <span class="text-address">Shipping Address</span>
-        <span v-b-toggle.collapse1 v-if="stateShippingAddress == 2" class="text-address change-info float-right">Change</span>
+        <span v-b-toggle.collapse1 v-if="stateShippingAddress == 2" class="text-address change-info float-right" @click="setOptionNavbar(1)">Change</span>
       </p>
       <hr class="hr" v-bind:class="{ 'hr1': stateShippingAddress == 1, 'hr2':stateShippingAddress == 2 }">
       <div v-if="stateShippingAddress == 2" class="div-total">
@@ -70,12 +70,12 @@
           </div>
         </div>
         <br>   
-        <button v-b-toggle.collapse1.collapse2 @click="addCartBillingShipping(1)" class="btn btn-continue float-right">Continue
+        <button v-b-toggle.collapse1.collapse2 @click="addCartBillingShipping(1),setOptionNavbar(2)" class="btn btn-continue float-right">Continue
         </button>
         <a v-b-modal.modal1 class="text-add float-right">Add a New Address</a>
       </b-collapse>
       <br>
-      <p class="tittle-check-text"  v-bind:class="{ 'state': stateShippingMethod == 1, 'state1': stateShippingMethod == 2 }">
+      <p class="title-check-text"  v-bind:class="{ 'state': stateShippingMethod == 1, 'state1': stateShippingMethod == 2 }">
         <span v-if="stateShippingMethod == 2" class="circle">
           <i class="fa fa-check"></i>
         </span>
@@ -103,10 +103,10 @@
           </div>
         </div>
         <br>
-        <button v-b-toggle.collapse2.collapse3 @click="addCartBillingShipping(2)" class="btn btn-continue float-right">Continue</button>
+        <button v-b-toggle.collapse2.collapse3 @click="addCartBillingShipping(2),setOptionNavbar(3)" class="btn btn-continue float-right">Continue</button>
       </b-collapse>
       <br>
-      <p class="tittle-check-text" v-bind:class="{ 'state': statePaymentMethod == 1, 'state1': statePaymentMethod == 2 }">
+      <p class="title-check-text" v-bind:class="{ 'state': statePaymentMethod == 1, 'state1': statePaymentMethod == 2 }">
         <span v-if="statePaymentMethod == 2" class="circle">
           <i class="fa fa-check"></i>
         </span>
@@ -134,10 +134,10 @@
         </div>
         <br>
         <a  v-b-modal.modal2 class="text-add col-4 offset-lg-3">Add a Credit Card</a>
-        <button v-b-toggle.collapse3.collapse4  class="btn btn-continue" @click="addCartBillingShipping(3)">Continue</button>
+        <button v-b-toggle.collapse3.collapse4  class="btn btn-continue" @click="addCartBillingShipping(3),setOptionNavbar(4)">Continue</button>
       </b-collapse>
       <br>
-      <p class="tittle-check-text">
+      <p class="title-check-text">
         <span class="circle">4</span>
         <span class="text-address">Complete Purchase</span>
       </p>
