@@ -17,7 +17,8 @@ var ProductPage = {
   },
   components: {
     StarRating: StarRatingTemplate,
-    navbar: NavbarTemplate
+    navbar: NavbarTemplate,
+    "footer-page": FooterPageTemplate
   },
   methods: {
     getProductImageSrc(imageInfo) {

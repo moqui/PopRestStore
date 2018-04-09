@@ -3,6 +3,7 @@ var storeComps = {
   StarRating,
   Navbar,
   OrderNavbar,
+  FooterPage,
   LandingPage,
   LandingProduct,
   LoginPage,

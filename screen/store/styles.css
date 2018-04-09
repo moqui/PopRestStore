@@ -453,3 +453,34 @@
 .checkout-container {
     margin-top: -70px;
 }
+
+.footer {
+    background-color: #666666;
+    color: #fff;
+    font-weight: lighter;
+    padding: 30px;
+}
+
+.footer p {
+    font-size: 0.8em;
+    color: #04c3d5;
+}
+
+.footer-ul {
+    list-style-type: none;
+    font-size: 0.8em;
+}
+
+.footer-ul li {
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.footer-follow-text {
+    color: #8d8d8d;
+}
+
+.footer-icons {
+    font-size: 1.9em;
+    margin-right: 10px;
+}
