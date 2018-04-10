@@ -16,7 +16,7 @@
 .moqui-navbar {
     width: 100%;
     background: #333333;
-    text-align: center;
+    text-align: center !important;
 }
 
 .bg-dark {
@@ -27,8 +27,12 @@
     width: 101px;
 }
 
+.navbar-dark .navbar-nav .nav-link {
+    color: white;
+}
+
 .search-input {
-    width: 100%;
+    width: 50%;
     position: relative;
 }
 
@@ -483,4 +487,9 @@
 .footer-icons {
     font-size: 1.9em;
     margin-right: 10px;
+}
+
+.link-text {
+    font-size: 0.9em;
+    color: #666666;
 }

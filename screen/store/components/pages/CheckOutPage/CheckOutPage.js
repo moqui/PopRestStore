@@ -141,7 +141,8 @@ var CheckOutPage = {
     }
   },
   components: {
-    "placeorder-navbar": PlaceOrderNavbarTemplate
+    "placeorder-navbar": PlaceOrderNavbarTemplate,
+    "footer-page": FooterPageTemplate
   },
   mounted() {
     this.getCartShippingOptions();
