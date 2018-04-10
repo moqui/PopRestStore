@@ -32,10 +32,10 @@
         </div>
     </div>
     <div class="container">
-        <div class="text-left">
+        <div class="text-left mt-3 modal-text">
             This Week's deals
         </div>
-        <carousel :per-page="4" :navigationEnabled="true">
+        <carousel class="mt-4" :per-page="4" :navigationEnabled="true">
             <slide v-for="product in products" :key="product.productId">
                 <router-link :to="'product/' + product.productId">
                     <landing-product :product="product" />
