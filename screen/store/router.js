@@ -27,8 +27,13 @@ var router = new VueRouter({
     },
     {
       path: "/orders/:orderId",
-      name: "orders",
+      name: "order",
       component: CustomerOrderPageTemplate
+    },
+    {
+      path: "/orders",
+      name: "orders",
+      component: CustomerOrdersPageTemplate
     }
   ]
 });

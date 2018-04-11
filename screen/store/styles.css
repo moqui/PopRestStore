@@ -635,3 +635,68 @@
 .phone-icon {
     transform: rotate(100deg);
 }
+
+.customer-menu {
+   color: #1ec9d9;
+   border: 1px solid #999999;
+   border-radius: 10px;
+   width: 180px;
+   height: 235px;
+   padding: 15px;
+}
+
+.customer-orders-ul {
+    list-style-type: none;
+    font-size: 1em;
+    margin-left: -20px;
+}
+
+.customer-orders-ul li {
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.customer-orders-tittle {
+    font-size: 2.5em;
+    color: #666666;
+}
+
+.customer-orders-subtitle {
+    font-size: 1.5em;
+    color: #666666;
+    display: inline-block;
+    margin-top: 30px;
+}
+
+.customer-roders-hr {
+    margin-top: -2px;
+}
+
+.customer-orders-id {
+    border-radius: 10px 0px 0px 10px;
+    background-color: #e7e7e7;
+    height: 90px;
+    width: 180px;
+    padding-top: 5px;
+    padding-left: 15px;
+}
+
+.customer-orders-text {
+    font-size: 1em;
+    color: #1ec9d9;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.customer-text-date {
+    display: inline-block;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.order-product-description {
+    display: inline-block;
+    color: #373737;
+    font-size: 0.9em;
+    font-weight: bold;
+}
