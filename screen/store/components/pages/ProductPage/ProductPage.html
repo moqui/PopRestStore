@@ -35,7 +35,7 @@
       </div>
       <div class="col col-lg-3">
         <div class="card cart-div">
-          <span class="save-circle">
+          <span class="save-circle" v-if="product.listPrice">
             <span class="save-circle-title">SAVE</span>
             <span class="save-circle-text">${{(product.listPrice - product.price).toFixed(2)}}</span>
           </span>
@@ -74,6 +74,8 @@
         </button>
       </div>
     </div>
+    <hr>
   </div>
+  <product-review />
   <footer-page class="mt-5" :infoLink="true"/>
 </div>

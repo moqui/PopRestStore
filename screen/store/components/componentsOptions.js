@@ -9,6 +9,7 @@ var storeComps = {
   LoginPage,
   WikiPage,
   ProductPage,
+  ProductReview,
   CheckOutPage,
   CustomerOrderPage
 };

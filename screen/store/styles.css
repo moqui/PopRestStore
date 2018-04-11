@@ -569,3 +569,26 @@
 .product-cate-text {
     color: #1ec9d9;
 }
+
+.review {
+    margin-top: 30px;
+}
+
+.review-text-size {
+    font-size: 0.9em;
+}
+
+.review-date {
+    color: #999999;
+}
+
+.review-text {
+    margin-top: 5px;
+    display: inline-block;
+    color: #666666;
+}
+
+.review-btn {
+    margin-top: 30px;
+    width: 180px;
+}
