@@ -5,6 +5,7 @@ var ProductPage = {
       product: {},
       quantity: '1',
       productImgRoute: '',
+      isSuccessAddCart:false,
       axiosConfig: {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
@@ -44,7 +45,7 @@ var ProductPage = {
         "quantity":this.quantity
       };
       ProductService.addProductCart(productCart,this.axiosConfig).then(data => {
-        console.log(data);
+        this.isSuccessAddCart = true;
       });
     },
   },

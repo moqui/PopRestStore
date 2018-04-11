@@ -43,20 +43,22 @@
   	    <div>
   	      <span class="col col-lg-3">Delivery Address</span>
   	      <hr class="order-hr">
-  	      <span class="col col-lg-3">{{orderList.postalAddress.toName}}</span>
-  	      <span class="col col-lg-3">{{orderList.postalAddress.toName}}</span>
-  	      <span class="col col-lg-3">{{orderList.postalAddress.address1}}</span>
-  	      <span class="col col-lg-3">{{orderList.postalAddress.city}} {{orderList.postalAddress.address2}}</span>
-  	      <span class="col col-lg-3"><i class="fa fa-phone"></i> {{orderList.telecomNumber.contactNumber}}</span>
+  	      <ul class="ul-custumer-order">
+            <li>{{orderList.postalAddress.toName}}</li>
+            <li>{{orderList.postalAddress.address1}}</li>
+            <li>{{orderList.postalAddress.city}} {{orderList.postalAddress.address2}}</li>
+            <li><i class="fa fa-phone phone-icon"></i> {{orderList.telecomNumber.contactNumber}}</li>
+          </ul>
   	    </div>
   	    <div class="order-billing-address">
   	      <span class="col col-lg-3">Billing Address</span>
   	      <hr class="order-hr">
-  	      <span class="col col-lg-3">{{orderList.postalAddress.toName}}</span>
-  	      <span class="col col-lg-3">{{orderList.postalAddress.toName}}</span>
-  	      <span class="col col-lg-3">{{orderList.postalAddress.address1}}</span>
-  	      <span class="col col-lg-3">{{orderList.postalAddress.city}} {{orderList.postalAddress.address2}}</span>
-  	      <span class="col col-lg-3"><i class="fa fa-phone"></i> {{orderList.telecomNumber.contactNumber}}</span>
+          <ul class="ul-custumer-order">
+            <li>{{orderList.postalAddress.toName}}</li>
+            <li>{{orderList.postalAddress.address1}}</li>
+            <li>{{orderList.postalAddress.city}} {{orderList.postalAddress.address2}}</li>
+            <li><i class="fa fa-phone phone-icon"></i> {{orderList.telecomNumber.contactNumber}}</li>
+          </ul>
   	    </div>
   	  </div>
   	  <router-link class="mt-5 btn btn-continue col col-lg-5 offset-lg-6" :to="'/'" tag="button">Keep Shopping</router-link>

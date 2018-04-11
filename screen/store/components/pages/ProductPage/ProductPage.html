@@ -6,6 +6,15 @@
   <span class="product-cate-text">Office Supplies</span>
   </div>
   <div class="container container-text">
+    <div v-if="isSuccessAddCart">
+      <span class="product-succes-text">
+        <i class="far fa-check-square"></i>
+        <i class="fa fa-check-square-o" aria-hidden="true"></i>
+        You added a {{product.productName}} to your shopping cart.
+      </span>
+      <router-link class="float-right product-checkout-text" :to="'/checkout'" tag="span">Go to Checkout
+        <i class="fas fa-arrow-right"></i></router-link>
+    </div>
     <div class="row">
       <div class="col col-lg-1">
         <div>
