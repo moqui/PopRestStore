@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <entity-facade-xml>
     <mantle.product.ProductContent fromDate="1523388900000" lastUpdatedStamp="1523388907143" productContentId="100051" productId="DEMO_1_2" sequenceNum="1" productContentTypeEnumId="PcntImageSmall" description="TShirt woman front" contentLocation="dbresource://mantle/content/product/DEMO_1_2/content_100051/img_TShirtWomanFront.jpg" userId="EX_JOHN_DOE"/>
     <mantle.product.ProductContent fromDate="1523388900000" lastUpdatedStamp="1523388932524" productContentId="100052" productId="DEMO_1_2" sequenceNum="2" productContentTypeEnumId="PcntImageSmall" description="TShirt woman back" contentLocation="dbresource://mantle/content/product/DEMO_1_2/content_100052/img_TShirtWomanBack.jpg" userId="EX_JOHN_DOE"/>
