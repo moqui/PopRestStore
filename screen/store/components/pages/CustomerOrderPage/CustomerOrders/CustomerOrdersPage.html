@@ -2,7 +2,7 @@
   <navbar sub-bar="true"/>
   <div class="container">
   	<div class="row">
-  	  <div class="col col-lg-2">
+  	  <div class="col col-lg-2 col-12">
   	   <div class="customer-menu">
   	   	<span>Account Settings</span>
   	   	<ul class="customer-orders-ul">
@@ -17,27 +17,54 @@
   	   	</ul>
   	   </div>
   	  </div>
-  	  <div class="col col-lg-9 offset-lg-1">
+  	  <div class="col col-lg-9 offset-lg-1 col-12">
   	    <span class="customer-orders-tittle">My Orders</span>
   	    <br>
   	    <span class="customer-orders-subtitle">Current Orders</span>
   	    <hr class="customer-roders-hr">
   	    <div class="row">
   	      <template v-for="(item,index) in ordersList">
-  	      	<div class="col col-lg-3">
+  	      	<div class="col col-lg-3 col-12 order-list mb-4" >
   	      	  <div class="customer-orders-id">
   	      	  	<span class="customer-orders-text">Order #{{item.orderId}}</span>
   	      	    <span class="customer-text-date">{{formatDate(item.placedDate)}}</span>
   	      	  </div>
   	      	</div>
-  	      	<div class="col col-lg-4">
-  	      	  <template v-for="(product, index) in getCustomerOrderById(item.orderId)">
-  	      	    <span v-if="product.itemTypeEnumId != 'ItemProduct'" class="order-product-description">{{product.itemDescription}}</span>
+  	      	<div class="col col-lg-4 col-12">
+  	      	  <template v-for="(productList, index) in listProduct">
+  	      	    <template v-if="productList.orderId == item.orderId && product.itemTypeEnumId=='ItemProduct'" v-for="product in productList.listProduct">
+  	      	      <span class="order-product-description">{{product.itemDescription}}</span>
+  	      	    </template>
   	      	  </template>
-  	      	  <span>{{item.partStatusId}}</span>
+  	      	  <p class="order-product-status">{{item.partStatusId}}</p>
   	      	</div>
-  	      	<div class="col col-lg-2 offset-lg-3">
-  	      	  <span>${{item.grandTotal}}</span>
+  	      	<div class="col col-lg-2 offset-lg-3 col-12">
+  	      	  <span class="order-product-total">${{item.grandTotal}}</span>
+  	      	</div>
+  	      </template>
+  	    </div>
+  	    <br>
+  	    <span class="customer-orders-subtitle">Order History</span>
+  	    <span class="orders-back-text">Back to Top</span>
+  	    <hr class="customer-roders-hr">
+  	    <div class="row">
+  	      <template v-for="(item,index) in ordersList">
+  	      	<div class="col col-lg-3 col-12 order-list mb-4" >
+  	      	  <div class="customer-orders-id">
+  	      	  	<span class="customer-orders-text">Order #{{item.orderId}}</span>
+  	      	    <span class="customer-text-date">{{formatDate(item.placedDate)}}</span>
+  	      	  </div>
+  	      	</div>
+  	      	<div class="col col-lg-4 col-12">
+  	      	  <template v-for="(productList, index) in listProduct">
+  	      	    <template v-if="productList.orderId == item.orderId && product.itemTypeEnumId=='ItemProduct'" v-for="product in productList.listProduct">
+  	      	      <span class="order-product-description">{{product.itemDescription}}</span>
+  	      	    </template>
+  	      	  </template>
+  	      	  <p class="order-product-status">{{item.partStatusId}}</p>
+  	      	</div>
+  	      	<div class="col col-lg-2 offset-lg-3 col-12">
+  	      	  <span class="order-product-total">${{item.grandTotal}}</span>
   	      	</div>
   	      </template>
   	    </div>

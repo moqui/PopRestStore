@@ -3,7 +3,7 @@ var CustomerOrdersPage = {
   data() {
   	return {
       ordersList:[],
-      listProduct:[],
+      listProduct: [],
       axiosConfig: {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
@@ -18,13 +18,20 @@ var CustomerOrdersPage = {
     getCustomerOrders() {
       CustomerService.getCustomerOrders(this.axiosConfig).then(data => {
         this.ordersList = data.orderInfoList;
+        this.getCustomerOrderById();
       });
     },
-    getCustomerOrderById(orderId) {
-      CustomerService.getCustomerOrderById(orderId,this.axiosConfig).then(data => {
-        this.listProduct = data.orderItemList;
-      });
-      return this.listProduct;
+    getCustomerOrderById() {
+      for(var x in this.ordersList) {
+        console.log(x);
+        CustomerService.getCustomerOrderById(this.ordersList[x].orderId,this.axiosConfig).then(data => {
+          var product = {
+            "orderId":data.orderItemList[0].orderId,
+            "listProduct":data.orderItemList
+          };
+          this.listProduct.push(product);
+        });
+      }
     },
     formatDate(date) {
       var monthNames = [

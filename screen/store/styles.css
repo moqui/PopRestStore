@@ -661,7 +661,7 @@
     color: #666666;
 }
 
-.customer-orders-subtitle {
+.customer-orders-sufbtitle {
     font-size: 1.5em;
     color: #666666;
     display: inline-block;
@@ -699,4 +699,35 @@
     color: #373737;
     font-size: 0.9em;
     font-weight: bold;
+    margin-left: -20px;
+}
+
+.order-product-status {
+    color: #dd6231;
+    font-size: 0.9em;
+    margin-left: -20px;
+}
+
+.order-product-total {
+    display: inline-block;
+    color: #373737;
+    font-weight: 500;
+    position: absolute;
+    right: 25px;
+    bottom: 50px;
+}
+
+.customer-orders-subtitle {
+    color: #6a6a6a;
+    font-size: 1.5em;
+    display: inline-block;
+    margin-top: 30px;
+}
+
+.orders-back-text {
+    color: #1ec9d9;
+    float: right;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-top: 45px;
 }
