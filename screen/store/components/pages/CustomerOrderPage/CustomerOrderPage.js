@@ -40,7 +40,7 @@ var CustomerOrderPage = {
     }
   },
   components: {
-    "placeorder-navbar": PlaceOrderNavbarTemplate,
+    navbar: NavbarTemplate,
     "footer-page": FooterPageTemplate
   },
   mounted() {

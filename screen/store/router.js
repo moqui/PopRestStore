@@ -26,6 +26,11 @@ var router = new VueRouter({
       component: CheckOutPageTemplate
     },
     {
+      path: "/checkout/:orderId",
+      name: "successcheckout",
+      component: SuccessCheckOutTemplate
+    },
+    {
       path: "/orders/:orderId",
       name: "order",
       component: CustomerOrderPageTemplate

@@ -48,7 +48,7 @@
         <span class="span-description">{{shippingAddress.address1}} {{shippingAddress.address2}}</span>
         <span class="span-description">{{shippingAddress.city}}</span>
         <span class="span-description">
-          <i class="fa fa-phone"></i>
+          <i class="fa fa-phone phone-icon"></i>
           {{shippingAddress.contactNumber}}
         </span>
       </div>
@@ -64,7 +64,7 @@
               <span class="span-description">{{option.postalAddress.address1}} {{option.postalAddress.address2}}</span>
               <span class="span-description">{{option.postalAddress.city}}</span>
               <span class="span-description">
-                <i class="fa fa-phone"></i>
+                <i class="fa fa-phone phone-icon"></i>
                 {{option.telecomNumber.contactNumber}}
               </span>
             </label>
@@ -305,6 +305,6 @@
   </div>
   <span class="link-text">Forgot something? <router-link :to="'/'" tag="span" class="text-add">Head back to the shop.</router-link></span>
 </div>
-<footer-page class="mt-5 navbar-fixed-bottom footer-checkout" :infoLink="false" />
+<footer-page class="mt-5 navbar-fixed-bottom" :infoLink="false" />
 </div>
   
