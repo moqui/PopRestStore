@@ -12,5 +12,6 @@ var storeComps = {
   ProductReview,
   CheckOutPage,
   CustomerOrderPage,
-  CustomerOrdersPage
+  CustomerOrdersPage,
+  SuccessCheckOut
 };
