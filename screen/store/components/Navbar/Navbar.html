@@ -58,9 +58,11 @@
                     <b-dropdown-item href="#">Profile</b-dropdown-item>
                     <b-dropdown-item href="#">Signout</b-dropdown-item>
                 </b-nav-item-dropdown>
-                <b-nav-item href="index2.html#/checkout">
-                  <i class="fa fa-shopping-cart"></i>  
-                  Cart
+                <b-nav-item href="#">
+                    <router-link :to="'/checkout'" tag="span">
+                        <i class="fa fa-shopping-cart"></i>  
+                        Cart
+                    </router-link>
                 </b-nav-item>
              </b-navbar-nav>
 

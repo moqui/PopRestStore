@@ -23,7 +23,6 @@ var CustomerOrdersPage = {
     },
     getCustomerOrderById() {
       for(var x in this.ordersList) {
-        console.log(x);
         CustomerService.getCustomerOrderById(this.ordersList[x].orderId,this.axiosConfig).then(data => {
           var product = {
             "orderId":data.orderItemList[0].orderId,

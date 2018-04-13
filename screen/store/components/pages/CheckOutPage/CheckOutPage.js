@@ -124,7 +124,7 @@ var CheckOutPage = {
       };
       ProductService.setCartPlace(data,this.axiosConfig).then(data => {
         this.getCartInfo();
-        this.$router.push({ name: 'checkout', params: { orderId: data.orderHeader.orderId }});
+        this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
       });
     },
     hideModal(modalid) {

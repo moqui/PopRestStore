@@ -1,10 +1,14 @@
 <div>
   <navbar sub-bar="true"/>
   <div class="container" v-if="orderList.orderPart">
-    <div class="container" style="margin-top: -15px;">
-      <span class="product-cate-text">Home <i class="fas fa-angle-right"></i></span>
-      <span class="product-cate-text">My Orders <i class="fas fa-angle-right"></i></span>
-      <span class="order-text-color">#{{orderList.orderHeader.orderId}}</span>
+    <div class="container mt-2">
+      <router-link class="customer-link" :to="'/'" tag="span">
+        Home <i class="fas fa-angle-right"></i>
+      </router-link>
+      <router-link class="customer-link" :to="'/orders'" tag="span">
+        My Orders <i class="fas fa-angle-right"></i>
+      </router-link>
+      <span class="modal-text">#{{orderList.orderHeader.orderId}}</span>
     </div>
     <div class="row mt-4">
       <div class="col col-lg-2 col-12">
@@ -15,7 +19,9 @@
             <li>Delivery Address</li>
             <li>Payment Method</li>
           </ul>
-          <span style="color: #797979;">My Orders</span>
+          <router-link class="customer-link" :to="'/orders'" tag="span">
+            My Orders
+          </router-link>
           <ul class="customer-orders-ul">
             <li>Current Orders</li>
             <li>Order History</li>
@@ -23,7 +29,7 @@
         </div>
       </div>
       <div class="col col-lg-9 offset-lg-1 col-12">
-        <span class="customer-orders-tittle">Order #{{orderList.orderHeader.orderId}}</span>
+        <span class="customer-orders-title">Order #{{orderList.orderHeader.orderId}}</span>
         <br>
         <div class="mt-4">
           <span class="order-text-color mr-5">Order Status: <span class="order-status">{{orderList.orderHeader.statusId}}</span></span>
@@ -52,11 +58,11 @@
             <hr>
             <div class="row order-text-color">
               <span class="col col-lg-3 offset-lg-6 ">SubTotal</span>
-              <span class="col col-lg-2 offset-lg-1 text-center">${{orderList.orderPart.partTotal}}</span>
+              <span class="col col-lg-2 offset-lg-1 text-center">${{orderList.orderPart.partTotal.toFixed(2)}}</span>
               <span class="col col-lg-3 offset-lg-6 mt-4">Delivery</span>
               <span class="col col-lg-2 offset-lg-1 mt-4 text-center">$0.00</span>
               <span class="col col-lg-3 offset-lg-6 mt-4">TOTAL</span>
-              <span class="col col-lg-2 offset-lg-1 mt-4 text-center">${{orderList.orderHeader.grandTotal}}</span>
+              <span class="col col-lg-2 offset-lg-1 mt-4 text-center">${{orderList.orderHeader.grandTotal.toFixed(2)}}</span>
               <span class="col col-lg-6 offset-lg-6"><hr></span>
             </div>
           </div>

@@ -39,6 +39,11 @@ var router = new VueRouter({
       path: "/orders",
       name: "orders",
       component: CustomerOrdersPageTemplate
+    },
+    {
+      path: "/deals",
+      name: "deals",
+      component: DealsPageTemplate
     }
   ]
 });

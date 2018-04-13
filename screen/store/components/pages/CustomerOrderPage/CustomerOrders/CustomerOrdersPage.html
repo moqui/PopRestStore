@@ -1,6 +1,12 @@
 <div>
   <navbar sub-bar="true"/>
   <div class="container">
+    <router-link class="customer-link" :to="'/'" tag="span">
+      Home <i class="fas fa-angle-right"></i>
+    </router-link>
+    <span class="modal-text">My Orders</span>
+  </div>
+  <div class="container mt-4">
   	<div class="row">
   	  <div class="col col-lg-2 col-12">
   	   <div class="customer-menu">
@@ -18,7 +24,7 @@
   	   </div>
   	  </div>
   	  <div class="col col-lg-9 offset-lg-1 col-12">
-  	    <span class="customer-orders-tittle">My Orders</span>
+  	    <span class="customer-orders-title">My Orders</span>
   	    <br>
   	    <span class="customer-orders-subtitle">Current Orders</span>
   	    <hr class="customer-roders-hr">
@@ -39,7 +45,7 @@
   	      	  <p class="order-product-status">{{item.partStatusId}}</p>
   	      	</div>
   	      	<div class="col col-lg-2 offset-lg-3 col-12">
-  	      	  <span class="order-product-total">${{item.grandTotal}}</span>
+  	      	  <span class="order-product-total">${{item.grandTotal.toFixed(2)}}</span>
   	      	</div>
   	      </template>
   	    </div>
@@ -64,7 +70,7 @@
   	      	  <p class="order-product-status">{{item.partStatusId}}</p>
   	      	</div>
   	      	<div class="col col-lg-2 offset-lg-3 col-12">
-  	      	  <span class="order-product-total">${{item.grandTotal}}</span>
+  	      	  <span class="order-product-total">${{item.grandTotal.toFixed(2)}}</span>
   	      	</div>
   	      </template>
   	    </div>

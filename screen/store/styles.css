@@ -655,7 +655,7 @@
     cursor: pointer;
 }
 
-.customer-orders-tittle {
+.customer-orders-title {
     font-size: 2.5em;
     color: #666666;
 }
@@ -729,4 +729,56 @@
     cursor: pointer;
     font-size: 0.9em;
     margin-top: 45px;
+}
+
+.orders-title {
+    color: #797979;
+}
+
+.customer-link {
+    color: #1ec9d9;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.customer-link i {
+   margin-left: 10px;
+   color: #e7e7e7;
+}
+
+.deals-ul {
+    list-style-type: none;
+    font-size: 1em;
+    margin-left: -40px;
+}
+
+.deals-ul li {
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.deals-ul i {
+    margin-right: 5px;
+}
+
+.deals-subtitle {
+    color: #a3a3a3;
+    font-size: 0.8em;
+}
+
+.deals-sellers {
+    background-color: #ccf2f6;
+    height: 40px;
+    align-items: center;
+    display: flex;
+    border-radius: 5px;
+}
+
+.deals-sortby-text {
+    color: #666666;
+}
+
+.deals-sortby-text i {
+    margin-right: 10px;
+    font-size: 1.2em;
 }
