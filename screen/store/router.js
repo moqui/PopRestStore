@@ -41,9 +41,14 @@ var router = new VueRouter({
       component: CustomerOrdersPageTemplate
     },
     {
-      path: "/deals",
+      path: "/deals/:categoryId",
       name: "deals",
       component: DealsPageTemplate
+    },
+    {
+      path: "/account",
+      name: "account",
+      component: AccountPageTemplate
     }
   ]
 });

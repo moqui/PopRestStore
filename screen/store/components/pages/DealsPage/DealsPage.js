@@ -2,14 +2,26 @@ var DealsPage = {
   name: "deals-page",
   data () {
   	return {
-      products: []
+      products: [],
+      category: {}
     };
   },
   methods: {
     getProductsList() {
-      ProductService.getFeaturedProducts().then(data => {
+      ProductService.getProductsByCategory(this.$route.params.categoryId).then(data => {
         this.products = data;
       });
+    },
+    getCategoryInfoById() {
+      ProductService.getCategoryInfoById(this.$route.params.categoryId).then(data => {
+        this.category = data;
+      });
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      this.getProductsList();
+      this.getCategoryInfoById();
     }
   },
   components: {
@@ -19,6 +31,7 @@ var DealsPage = {
   },
   mounted() {
     this.getProductsList();
+    this.getCategoryInfoById();
   }
 };
 var DealsPageTemplate = getPlaceholderRoute(

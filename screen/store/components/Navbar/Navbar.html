@@ -31,7 +31,9 @@
                         <em>Shop</em>
                     </template>
                     <b-dropdown-item href="#" v-for="category in categories" :key="category.productCategoryId">
-                        {{category.categoryName}}
+                        <router-link :to="'/deals/'+category.productCategoryId" tag="span">
+                          {{category.categoryName}}
+                        </router-link>
                     </b-dropdown-item>
                 </b-nav-item-dropdown>
 
@@ -56,6 +58,11 @@
                         <em>User</em>
                     </template>
                     <b-dropdown-item href="#">Profile</b-dropdown-item>
+                    <b-dropdown-item href="#">
+                      <router-link :to="'/orders'" tag="span">
+                          My Orders
+                      </router-link>
+                    </b-dropdown-item>
                     <b-dropdown-item href="#">Signout</b-dropdown-item>
                 </b-nav-item-dropdown>
                 <b-nav-item href="#">

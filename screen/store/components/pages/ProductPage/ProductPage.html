@@ -1,11 +1,14 @@
 <div>
   <navbar sub-bar="true"/>
   <div class="container" style="margin-top: -15px;">
-  <span class="product-cate-text">Home <i class="fas fa-angle-right"></i></span>
-  <span class="product-cate-text">All Products <i class="fas fa-angle-right"></i></span>
-  <span class="product-cate-text">Office Supplies</span>
+    <router-link class="customer-link" :to="'/'" tag="span">
+        Home 
+        <i class="fas fa-angle-right"></i>
+    </router-link>
+    <span class="customer-link">All Products <i class="fas fa-angle-right"></i></span>
+    <span class="customer-link">Office Supplies</span>
   </div>
-  <div class="container container-text">
+  <div class="container container-text mt-4">
     <div v-if="isSuccessAddCart">
       <span class="product-succes-text">
         <i class="far fa-check-square"></i>

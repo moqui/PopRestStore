@@ -4,6 +4,16 @@ var ProductService = {
       return res.data.productList;
     });
   },
+  getProductsByCategory(categoryId) {
+    return axios.get("/rest/s1/pop/categories/"+categoryId+"/products").then(res => {
+      return res.data.productList;
+    });
+  },
+  getCategoryInfoById(categoryId) {
+    return axios.get("/rest/s1/pop/categories/"+categoryId+"/info").then(res => {
+      return res.data;
+    });
+  },
   getCategories() {
     return axios.get("/rest/s1/pop/categories/PopcBrowseRoot/info").then(res => {
       return res.data.subCategoryList;

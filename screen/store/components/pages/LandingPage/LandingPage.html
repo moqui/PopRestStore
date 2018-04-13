@@ -42,6 +42,16 @@
                 </router-link>
             </slide>
         </carousel>
+        <div class="text-left mt-3 modal-text">
+            Best Sellers
+        </div>
+        <carousel class="mt-4" :per-page="4" :navigationEnabled="true">
+            <slide v-for="product in products" :key="product.productId">
+                <router-link :to="'product/' + product.productId">
+                    <landing-product :product="product" />
+                </router-link>
+            </slide>
+        </carousel>
     </div>
     <footer-page :infoLink="true"/>
 </div>
