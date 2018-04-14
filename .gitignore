@@ -1,7 +1,7 @@
 # gradle/build files
-build/
 .gradle
-
+node_modules
+static
 # IntelliJ IDEA files
 .idea/
 out/

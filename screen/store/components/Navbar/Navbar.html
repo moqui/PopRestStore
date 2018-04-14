@@ -1,0 +1,78 @@
+<b-navbar class="" fixed="top" toggleable="md" type="dark" variant="dark">
+    <div class="d-flex flex-column moqui-navbar">
+        <div class="container d-flex flex-row main-navbar">
+            <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+
+            <b-navbar-brand href="#">
+                <img height="60px" class="moqui-logo" src="./assets/moqui-logo.svg" alt="">
+            </b-navbar-brand>
+            <b-navbar-brand href="#">
+                <router-link class="text-left font-italic navbar-title" :to="'/'" tag="span">POP Shop</router-link>
+            </b-navbar-brand>
+
+            <b-collapse is-nav id="nav_collapse">
+                <search-input placeholder="Search..." />
+                <!-- Right aligned nav items -->
+                <b-navbar-nav class="ml-auto">
+                    <div class="text-secondary">
+                        <span class="navbar-pop-title">Official POP Merchandise</span>
+                        <span class="text-center navbar-pop-subtitle">Quality 100% Guaranted</span>
+                    </div>
+
+                </b-navbar-nav>
+
+            </b-collapse>
+        </div>
+        <div v-if="subBar" class="container d-flex flex-row">
+            <b-navbar-nav>
+
+                <b-nav-item-dropdown>
+                    <template slot="button-content">
+                        <em>Shop</em>
+                    </template>
+                    <b-dropdown-item href="#" v-for="category in categories" :key="category.productCategoryId">
+                        <router-link :to="'/deals/'+category.productCategoryId" tag="span">
+                          {{category.categoryName}}
+                        </router-link>
+                    </b-dropdown-item>
+                </b-nav-item-dropdown>
+
+
+                <a class="nav-link">Deals</a>
+
+                <b-nav-item-dropdown>
+                    <template slot="button-content">
+                        <em>Customer Service</em>
+                    </template>
+                    <b-dropdown-item href="#">Profile</b-dropdown-item>
+                    <b-dropdown-item href="#">Signout</b-dropdown-item>
+                </b-nav-item-dropdown>
+            </b-navbar-nav>
+
+
+            <!-- Right aligned nav items -->
+            <b-navbar-nav class="ml-auto">
+                <b-nav-item-dropdown right>
+                    <!-- Using button-content slot -->
+                    <template slot="button-content">
+                        <em>User</em>
+                    </template>
+                    <b-dropdown-item href="#">Profile</b-dropdown-item>
+                    <b-dropdown-item href="#">
+                      <router-link :to="'/orders'" tag="span">
+                          My Orders
+                      </router-link>
+                    </b-dropdown-item>
+                    <b-dropdown-item href="#">Signout</b-dropdown-item>
+                </b-nav-item-dropdown>
+                <b-nav-item href="#">
+                    <router-link :to="'/checkout'" tag="span">
+                        <i class="fa fa-shopping-cart"></i>  
+                        Cart
+                    </router-link>
+                </b-nav-item>
+             </b-navbar-nav>
+
+        </div>
+    </div>
+</b-navbar>

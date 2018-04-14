@@ -106,7 +106,6 @@ storeComps.LoginOptions = {
             var vm = this;
             $.ajax({ type:"POST", url:url, data:dataObj, dataType:"json", headers:this.$root.getAjaxHeaders(), error:moqui.handleAjaxError,
                 success: function(respObj, status, jqXHR) { if (respObj) {
-                    // console.log(respObj);
                     vm.$root.apiKey = respObj.apiKey;
                     vm.$root.customerInfo = respObj.customerInfo;
                     if (vm.$root.preLoginRoute) {

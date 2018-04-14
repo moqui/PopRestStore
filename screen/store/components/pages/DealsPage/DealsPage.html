@@ -1,0 +1,47 @@
+<div>
+  <navbar sub-bar="true"/>
+  <div class="container">
+    <div class="container">
+      <router-link class="customer-link" :to="'/'" tag="span">
+        Home 
+        <i class="fas fa-angle-right"></i>
+      </router-link>
+      <span class="modal-text">{{category.categoryName}}</span>
+    </div>
+    <div class="row mt-4">
+      <div class="col col-lg-2 col-12">
+        <div class="customer-menu">
+          <ul class="deals-ul">
+            <router-link :to="'/deals/PopcAllProducts'" tag="li">
+              <i class="fas fa-th"></i> All
+            </router-link>
+            <li><i class="fas fa-tag"></i> New</li>
+            <li><i class="fa fa-fire" aria-hidden="true"></i> Deals</li>
+          </ul>
+          <span class="deals-subtitle">Categories</span>
+          <ul class="deals-ul">
+            <li>Clothing</li>
+            <li>Office Supplies</li>
+            <li>Other</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col col-lg-9 offset-lg-1 col-12">
+        <span class="customer-orders-title">{{category.categoryName}}</span>
+        <br>
+        <div class="col col-lg-12 col-12 deals-sellers">
+          <span class="deals-sortby-text col col-lg-4">{{products.length}} results</span>
+          <span class="deals-sortby-text col col-lg-3 offset-lg-5">Sort by Best Sellers <i class="fas fa-angle-down"></i></span>
+        </div>
+        <div class="row mt-5">
+          <div class="col col-lg-4" v-for="(product, index) in products">
+            <router-link :to="'/product/' + product.productId">
+              <landing-product :product="product" />
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer-page class="mt-5" :infoLink="true" />
+</div>

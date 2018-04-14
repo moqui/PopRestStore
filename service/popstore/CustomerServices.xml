@@ -229,6 +229,9 @@ along with this software (see the LICENSE.md file). If not, see
 
             <service-call name="mantle.party.ContactServices.get#PartyContactInfoList" out-map="shippingContactListInfo"
                     in-map="[partyId:partyId, postalContactMechPurposeId:'PostalShippingDest']"/>
+
+            
+            <set field="postalAddressList" from="shippingContactListInfo.postalAddressList"/>
         </actions>
     </service>
     <service verb="store" noun="ShippingAddress">

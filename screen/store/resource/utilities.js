@@ -2,6 +2,8 @@
 
 var storeComps = {};
 
+
+
 var moqui = {
     isString: function(obj) { return typeof obj === 'string'; },
     isBoolean: function(obj) { return typeof obj === 'boolean'; },
@@ -128,7 +130,14 @@ moqui.handleLoadError = function (jqXHR, textStatus, errorThrown) {
 };
 
 Vue.component('route-placeholder', {
-    props: { location:{type:String,required:true}, options:Object, properties:Object },
+    props: { 
+        location: {
+            type: String,
+            required: true
+        }, 
+        options: Object, 
+        properties: Object 
+    },
     data: function() { return { activeComponent:moqui.EmptyComponent } },
     template: '<component :is="activeComponent" v-bind="properties"></component>',
     mounted: function() {
