@@ -31,6 +31,7 @@ along with this software (see the LICENSE.md file). If not, see
                 Map storeInfo = ec.service.sync().name("popstore.StoreServices.get#StoreInfo").parameter("productStoreId", productStoreId).call()
                 // add apiKey and moquiSessionToken for current user and session
                 if (ec.user.username) { try { storeInfo.apiKey = ec.user.getLoginKey() } catch (Exception e) { } }
+                else storeInfo.apiKey = null
                 storeInfo.moquiSessionToken = ec.web.sessionToken
                 String partyId = (ec.user.username ? ec.user.userAccount?.partyId : null) ?: ec.web.sessionAttributes.customerPartyId
                 if (partyId) { storeInfo.customerInfo = ec.service.sync().name("popstore.CustomerServices.get#CustomerInfo").call() }

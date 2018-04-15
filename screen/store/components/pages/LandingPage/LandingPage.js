@@ -21,4 +21,4 @@ var LandingPage = {
   }
 };
 
-var LandingPageTemplate = getPlaceholderRoute("./LandingPage.html", "LandingPage");
+var LandingPageTemplate = getPlaceholderRoute("/store/components/pages/LandingPage/LandingPage.html", "LandingPage");

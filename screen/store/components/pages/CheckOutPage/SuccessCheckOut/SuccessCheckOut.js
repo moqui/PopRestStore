@@ -48,6 +48,6 @@ var SuccessCheckOut = {
   }
 };
 var SuccessCheckOutTemplate = getPlaceholderRoute(
-  "./components/pages/CheckOutPage/SuccessCheckOut/SuccessCheckOut.html",
+  "/store/components/pages/CheckOutPage/SuccessCheckOut/SuccessCheckOut.html",
   "SuccessCheckOut"
 );

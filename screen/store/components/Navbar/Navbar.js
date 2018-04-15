@@ -12,4 +12,4 @@ var Navbar = {
   }
 };
 
-var NavbarTemplate = getPlaceholderRoute("./Navbar.html", "Navbar", Navbar.props);
+var NavbarTemplate = getPlaceholderRoute("/store/components/Navbar/Navbar.html", "Navbar", Navbar.props);

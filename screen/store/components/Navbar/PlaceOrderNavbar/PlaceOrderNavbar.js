@@ -6,4 +6,4 @@ var OrderNavbar = {
   props: ["option"]
 };
 
-var PlaceOrderNavbarTemplate = getPlaceholderRoute("./PlaceOrderNavbar.html", "OrderNavbar",OrderNavbar.props);
+var PlaceOrderNavbarTemplate = getPlaceholderRoute("/store/components/Navbar/PlaceOrderNavbar/PlaceOrderNavbar.html", "OrderNavbar", OrderNavbar.props);

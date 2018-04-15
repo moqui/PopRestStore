@@ -22,4 +22,4 @@ var StarRating = {
     }
   }
 };
-var StarRatingTemplate = getPlaceholderRoute("./StarRating.html", "StarRating", StarRating.props);
+var StarRatingTemplate = getPlaceholderRoute("/store/components/forms/StarRating/StarRating.html", "StarRating", StarRating.props);

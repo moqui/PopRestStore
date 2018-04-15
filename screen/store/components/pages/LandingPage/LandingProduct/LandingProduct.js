@@ -20,7 +20,7 @@ var LandingProduct = {
   mounted() {}
 };
 var LandingProductTemplate = getPlaceholderRoute(
-  "./components/pages/LandingPage/LandingProduct/LandingProduct.html",
+  "/store/components/pages/LandingPage/LandingProduct/LandingProduct.html",
   "LandingProduct",
   LandingProduct.props
 );

@@ -12,6 +12,6 @@ var AccountPage = {
   }
 };
 var AccountPageTemplate = getPlaceholderRoute(
-  "./components/pages/AccountPage/AccountPage.html",
+  "/store/components/pages/AccountPage/AccountPage.html",
   "AccountPage"
 );

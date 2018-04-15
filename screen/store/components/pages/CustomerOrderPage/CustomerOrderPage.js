@@ -48,6 +48,6 @@ var CustomerOrderPage = {
   }
 };
 var CustomerOrderPageTemplate = getPlaceholderRoute(
-  "./components/pages/CustomerOrderPage/CustomerOrderPage.html",
+  "/store/components/pages/CustomerOrderPage/CustomerOrderPage.html",
   "CustomerOrderPage"
 );

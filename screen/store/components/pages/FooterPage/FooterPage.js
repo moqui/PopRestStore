@@ -6,6 +6,6 @@ var FooterPage = {
   props: ["infoLink"]
 };
 var FooterPageTemplate = getPlaceholderRoute(
-  "./components/pages/FooterPage/FooterPage.html",
+  "/store/components/pages/FooterPage/FooterPage.html",
   "FooterPage",FooterPage.props
 );

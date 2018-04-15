@@ -9,5 +9,5 @@ var ProductReview = {
   props: ["reviews"]
 };
 var ProductReviewTemplate = getPlaceholderRoute(
-  "./components/pages/ProductPage/ProductReview/ProductReview.html","ProductReview",ProductReview.props
+  "/store/components/pages/ProductPage/ProductReview/ProductReview.html","ProductReview",ProductReview.props
 );

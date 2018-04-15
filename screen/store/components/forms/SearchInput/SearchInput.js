@@ -6,4 +6,4 @@ var SearchInput = {
   props: ["placeholder"]
 };
 
-var SearchInputTemplate = getPlaceholderRoute("./SearchInput.html", "SearchInput");
+var SearchInputTemplate = getPlaceholderRoute("/store/components/forms/SearchInput/SearchInput.html", "SearchInput");

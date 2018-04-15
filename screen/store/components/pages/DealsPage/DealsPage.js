@@ -35,6 +35,6 @@ var DealsPage = {
   }
 };
 var DealsPageTemplate = getPlaceholderRoute(
-  "./components/pages/DealsPage/DealsPage.html",
+  "/store/components/pages/DealsPage/DealsPage.html",
   "DealsPage"
 );

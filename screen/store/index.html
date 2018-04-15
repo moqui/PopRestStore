@@ -4,14 +4,14 @@
 <head>
     <meta charset="utf-8">
     <title>pop-rest-store</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20="
-        crossorigin="anonymous" />
-    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css">
+    <link rel="stylesheet" href="/store/styles.css">
     <script>
         // default store configuration, settings may be reset by script returned by /content/settings.js (transition that calls StoreServices.get#StoreInfo)
         var storeConfig = {
+            apiKey: null, moquiSessionToken: null,
             // base path for the router, by default the app page should load from '/store'
             basePath: "/store/",
             // REST API base location, default on the same server
@@ -40,50 +40,48 @@
 
 <body>
     <div id="app"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha256-5+02zu5UULQkO7w1GIr6vftCgMfFdZcAHeDtFnKZsBs="
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.15/dist/vue.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.min.js" integrity="sha256-yEB9jUlD51i5kxJZlzgzfR6XmVKI76Nl1WRA1aqIilU="
-        crossorigin="anonymous"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js" integrity="sha256-LlN0a0J3hMkDLO1mhcMwy+GIMbIRV7kvKHx4oCxNoxI="
-        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha256-5+02zu5UULQkO7w1GIr6vftCgMfFdZcAHeDtFnKZsBs=" crossorigin="anonymous"></script>
+    <!-- TODO: before production/release change to vue.min.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.js" integrity="sha256-CMMTrj5gGwOAXBeFi7kNokqowkzbeL8ydAJy39ewjkQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.min.js" integrity="sha256-yEB9jUlD51i5kxJZlzgzfR6XmVKI76Nl1WRA1aqIilU=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js" integrity="sha256-LlN0a0J3hMkDLO1mhcMwy+GIMbIRV7kvKHx4oCxNoxI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.0.1/vuex.min.js" integrity="sha256-1QlN0ckC4jlz91DZixPZxTv9vYpcBmS7sK7HA8xFmFA=" crossorigin="anonymous"></script>
+
     <script src="https://ssense.github.io/vue-carousel/js/vue-carousel.min.js"></script>
-    <script src="https://unpkg.com/vuex"></script>
     <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+
     <script src="/content/config.js"></script>
-    <script src="./resource/utilities.js"></script>
-    <script src="./store.js"></script>
-    <script src="./services/ContentService.js"></script>
-    <script src="./services/LoginService.js"></script>
-    <script src="./services/ProductsService.js"></script>
-    <script src="./services/CustomerService.js"></script>
-    <script src="./components/RoutePlaceholder.js"></script>
-    <script src="./components/forms/SearchInput/SearchInput.js"></script>
-    <script src="./components/forms/StarRating/StarRating.js"></script>
-    <script src="./components/Navbar/Navbar.js"></script>
-    <script src="./components/Navbar/PlaceOrderNavbar/PlaceOrderNavbar.js"></script>
-    <script src="./components/pages/FooterPage/FooterPage.js"></script>
-    <script src="./components/pages/LandingPage/LandingProduct/LandingProduct.js"></script>
-    <script src="./components/pages/LandingPage/LandingPage.js"></script>
-    <script src="./components/pages/ProductPage/ProductReview/ProductReview.js"></script>
-    <script src="./components/pages/ProductPage/ProductPage.js"></script>
-    <script src="./components/pages/LoginPage/LoginPage.js"></script>
-    <script src="./components/pages/WikiPage/WikiPage.js"></script>
-    <script src="./components/pages/CheckOutPage/CheckOutPage.js"></script>
-    <script src="./components/pages/CheckOutPage/SuccessCheckOut/SuccessCheckOut.js"></script>
-    <script src="./components/pages/CustomerOrderPage/CustomerOrderPage.js"></script>
-    <script src="./components/pages/CustomerOrderPage/CustomerOrders/CustomerOrdersPage.js"></script>
-    <script src="./components/pages/DealsPage/DealsPage.js"></script>
-    <script src="./components/pages/AccountPage/AccountPage.js"></script>
-    <script src="./router.js"></script>
-    <script src="./App.js"></script>
-    <script src="./components/componentsOptions.js"></script>
-    <script src="./main.js"></script>
-
+    <script src="/store/resource/utilities.js"></script>
+    <script src="/store/store.js"></script>
+    <script src="/store/services/ContentService.js"></script>
+    <script src="/store/services/LoginService.js"></script>
+    <script src="/store/services/ProductsService.js"></script>
+    <script src="/store/services/CustomerService.js"></script>
+    <script src="/store/components/RoutePlaceholder.js"></script>
+    <script src="/store/components/forms/SearchInput/SearchInput.js"></script>
+    <script src="/store/components/forms/StarRating/StarRating.js"></script>
+    <script src="/store/components/Navbar/Navbar.js"></script>
+    <script src="/store/components/Navbar/PlaceOrderNavbar/PlaceOrderNavbar.js"></script>
+    <script src="/store/components/pages/FooterPage/FooterPage.js"></script>
+    <script src="/store/components/pages/LandingPage/LandingProduct/LandingProduct.js"></script>
+    <script src="/store/components/pages/LandingPage/LandingPage.js"></script>
+    <script src="/store/components/pages/ProductPage/ProductReview/ProductReview.js"></script>
+    <script src="/store/components/pages/ProductPage/ProductPage.js"></script>
+    <script src="/store/components/pages/LoginPage/LoginPage.js"></script>
+    <script src="/store/components/pages/WikiPage/WikiPage.js"></script>
+    <script src="/store/components/pages/CheckOutPage/CheckOutPage.js"></script>
+    <script src="/store/components/pages/CheckOutPage/SuccessCheckOut/SuccessCheckOut.js"></script>
+    <script src="/store/components/pages/CustomerOrderPage/CustomerOrderPage.js"></script>
+    <script src="/store/components/pages/CustomerOrderPage/CustomerOrders/CustomerOrdersPage.js"></script>
+    <script src="/store/components/pages/DealsPage/DealsPage.js"></script>
+    <script src="/store/components/pages/AccountPage/AccountPage.js"></script>
+    <script src="/store/router.js"></script>
+    <script src="/store/App.js"></script>
+    <script src="/store/components/componentsOptions.js"></script>
+    <script src="/store/main.js"></script>
 </body>
-
 </html>

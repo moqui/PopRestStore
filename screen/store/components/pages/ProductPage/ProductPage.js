@@ -44,6 +44,7 @@ var ProductPage = {
         "currencyUomId":this.product.priceUomId,
         "quantity":this.quantity
       };
+      console.log(this.axiosConfig);
       ProductService.addProductCart(productCart,this.axiosConfig).then(data => {
         this.isSuccessAddCart = true;
       });
@@ -56,6 +57,6 @@ var ProductPage = {
   }
 };
 var ProductPageTemplate = getPlaceholderRoute(
-  "./components/pages/ProductPage/ProductPage.html",
+  "/store/components/pages/ProductPage/ProductPage.html",
   "ProductPage"
 );

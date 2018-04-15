@@ -152,6 +152,6 @@ var CheckOutPage = {
   }
 };
 var CheckOutPageTemplate = getPlaceholderRoute(
-  "./components/pages/CheckOutPage/CheckOutPage.html",
+  "/store/components/pages/CheckOutPage/CheckOutPage.html",
   "CheckOutPage"
 );
