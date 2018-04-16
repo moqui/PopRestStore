@@ -36,7 +36,6 @@
     display: inline-block;
     font-size: 2em;
     color: #fff;
-    margin-left: -25px;
     font-weight: bold;
 }
 
@@ -54,7 +53,7 @@
 }
 
 .search-input {
-    width: 80%;
+    width: 70%;
     margin-left: 45px;
     position: relative;
 }
