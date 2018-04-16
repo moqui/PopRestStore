@@ -5,8 +5,6 @@
         <screen location="component://webroot/screen/webroot.xml">
             <subscreens-item name="store" menu-title="POP REST Store" menu-include="false"
                     location="component://PopRestStore/screen/store.xml"/>
-            <subscreens-item name="content" menu-title="POPRS Content Endpoint" menu-include="false"
-                    location="component://PopRestStore/screen/content.xml"/>
         </screen>
     </screen-facade>
 </moqui-conf>

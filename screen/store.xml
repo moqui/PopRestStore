@@ -15,7 +15,41 @@ along with this software (see the LICENSE.md file). If not, see
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
         standalone="true" require-authentication="anonymous-view" allow-extra-path="true">
 
-    <subscreens always-use-full-path="true"/>
+    <always-actions>
+        <!-- TODO: make this configurable, perhaps through a productStoreGroupId constant instead of productStoreId constant -->
+        <set field="productStoreId" value="POPC_DEFAULT"/>
+        <entity-find-one entity-name="mantle.product.store.ProductStore" value-field="productStore" cache="true"/>
+        <set field="wikiSpaceId" from="productStore?.wikiSpaceId"/>
+    </always-actions>
 
-    <widgets><render-mode><text type="html" location="component://PopRestStore/screen/store/index.html"/></render-mode></widgets>
+    <transition name="config.js" read-only="true">
+        <actions>
+            <script><![CDATA[
+                // set productStoreId in the session
+                ec.web.sessionAttributes.productStoreId = productStoreId
+                // get store info
+                Map storeInfo = ec.service.sync().name("popstore.StoreServices.get#StoreInfo").parameter("productStoreId", productStoreId).call()
+                // add apiKey and moquiSessionToken for current user and session
+                if (ec.user.username) { try { storeInfo.apiKey = ec.user.getLoginKey() } catch (Exception e) { } }
+                else storeInfo.apiKey = null
+                storeInfo.moquiSessionToken = ec.web.sessionToken
+                String partyId = (ec.user.username ? ec.user.userAccount?.partyId : null) ?: ec.web.sessionAttributes.customerPartyId
+                if (partyId) { storeInfo.customerInfo = ec.service.sync().name("popstore.CustomerServices.get#CustomerInfo").call() }
+                // generate and send the JS response
+                String storeInfoJson = groovy.json.JsonOutput.toJson(storeInfo)
+                String jsText = """
+var storeInfo = ${storeInfoJson};
+\$.extend(storeConfig, storeInfo.productStore, storeInfo.settings);
+"""
+                ec.web.sendTextResponse(jsText, "application/javascript", null)
+            ]]></script>
+        </actions>
+        <default-response type="none"/>
+    </transition>
+
+    <subscreens default-item="home" always-use-full-path="true"/>
+
+    <widgets>
+        <render-mode><text type="html" location="component://PopRestStore/template/store/root.html.ftl"/></render-mode>
+    </widgets>
 </screen>
