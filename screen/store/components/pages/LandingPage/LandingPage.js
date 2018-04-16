@@ -6,9 +6,9 @@ var LandingPage = {
     };
   },
   beforeCreate() {
-    ProductService.getFeaturedProducts().then(data => {
-      this.products = data;
-    });
+    ProductService.getFeaturedProducts().then(res => {
+      this.products = res;
+    })
   },
   methods: {},
   components: {

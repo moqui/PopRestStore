@@ -96,13 +96,16 @@ var CheckOutPage = {
         case 1: 
           this.stateShippingAddress = 2;
           this.stateShippingMethod = 1;
+          $('#collapse2').collapse("show");
           break;
         case 2:
           this.stateShippingMethod = 2;
-          this.statePaymentMethod = 1;  
+          this.statePaymentMethod = 1;
+          $('#collapse3').collapse("show");  
           break;
         case 3:
           this.statePaymentMethod = 2;  
+          $('#collapse4').collapse("show");
           break;
        }
       ProductService.addCartBillingShipping(info,this.axiosConfig).then(data => {
@@ -128,7 +131,7 @@ var CheckOutPage = {
       });
     },
     hideModal(modalid) {
-      this.$root.$emit('bv::hide::modal',modalid);
+      $('#'+modalid).modal('hide');
     },
     changeShippingAddress(data) {
       this.shippingAddress = data.postalAddress;

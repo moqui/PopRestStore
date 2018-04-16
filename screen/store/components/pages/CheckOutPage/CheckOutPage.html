@@ -14,8 +14,7 @@
           <p class="item-text-desc">{{item.itemDescription}}</p>
         </div>
         <div class="col col-lg-2 offset-lg-1">
-          <b-form-input class="input-quantity" id="quantity" type="text" v-model="item.quantity">
-          </b-form-input>
+          <input class="input-quantity form-control" id="quantity" type="text" v-model="item.quantity"/>
         </div>
         <div class="col col-lg-1 offset-lg-1">
           <p class="place-order-total">${{item.unitAmount}}</p>
@@ -40,7 +39,7 @@
         </span>
         <span v-if="stateShippingAddress != 2" class="circle">1</span>
         <span class="text-address">Shipping Address</span>
-        <span v-b-toggle.collapse1 v-if="stateShippingAddress == 2" class="text-address change-info float-right" @click="setOptionNavbar(1)">Change</span>
+        <span data-toggle="collapse" data-target="#collapse1" v-if="stateShippingAddress == 2" class="text-address change-info float-right" @click="setOptionNavbar(1)">Change</span>
       </p>
       <hr class="hr" v-bind:class="{ 'hr1': stateShippingAddress == 1, 'hr2':stateShippingAddress == 2 }">
       <div v-if="stateShippingAddress == 2" class="div-total">
@@ -52,7 +51,7 @@
           {{shippingAddress.contactNumber}}
         </span>
       </div>
-      <b-collapse visible id="collapse1">
+      <div id="collapse1" class="collapse show">
         <div v-for="(option, index) in listShippingAddress">
           <div v-bind:class="{ 'div-checkmark': addressOption == option.postalContactMechId + ':' +
                 option.telecomContactMechId }">
@@ -71,10 +70,10 @@
           </div>
         </div>
         <br>   
-        <button v-b-toggle.collapse1.collapse2 @click="addCartBillingShipping(1),setOptionNavbar(2)" class="btn btn-continue float-right">Continue
+        <button data-toggle="collapse" data-target="#collapse1" @click="addCartBillingShipping(1),setOptionNavbar(2)" class="btn btn-continue float-right">Continue
         </button>
-        <a v-b-modal.modal1 class="text-add float-right">Add a New Address</a>
-      </b-collapse>
+        <a data-toggle="modal" data-target="#modal1" class="text-add float-right">Add a New Address</a>
+      </div>
       <br>
       <p class="title-check-text"  v-bind:class="{ 'state': stateShippingMethod == 1, 'state1': stateShippingMethod == 2 }">
         <span v-if="stateShippingMethod == 2" class="circle">
@@ -82,7 +81,7 @@
         </span>
         <span v-if="stateShippingMethod != 2" class="circle">2</span>
         <span class="text-address">Shipping Method</span>
-        <span v-b-toggle.collapse2 v-if="stateShippingMethod == 2" class="text-address change-info float-right">Change</span>
+        <span data-toggle="collapse" data-target="#collapse2" v-if="stateShippingMethod == 2" class="text-address change-info float-right">Change</span>
       </p>
       <hr class="hr" v-bind:class="{ 'hr1': stateShippingMethod == 1, 'hr2':stateShippingMethod == 2 }">
       <div v-if="stateShippingMethod == 2" class="div-total">
@@ -91,7 +90,7 @@
           <span class="float-right">${{shippingMethod.shippingTotal.toFixed(2)}}</span>
         </span>    
       </div>
-      <b-collapse id="collapse2">
+      <div id="collapse2" class="collapse">
         <div v-for="(option, index) in listShippingOptions">
           <div v-bind:class="{ 'div-checkmark': shippingOption == option.carrierPartyId + ':' + option.shipmentMethodEnumId }">
             <label :for="index + 'r2'" class="container-input">
@@ -104,8 +103,8 @@
           </div>
         </div>
         <br>
-        <button v-b-toggle.collapse2.collapse3 @click="addCartBillingShipping(2),setOptionNavbar(3)" class="btn btn-continue float-right">Continue</button>
-      </b-collapse>
+        <button data-toggle="collapse" data-target="#collapse2"  @click="addCartBillingShipping(2),setOptionNavbar(3)" class="btn btn-continue float-right">Continue</button>
+      </div>
       <br>
       <p class="title-check-text" v-bind:class="{ 'state': statePaymentMethod == 1, 'state1': statePaymentMethod == 2 }">
         <span v-if="statePaymentMethod == 2" class="circle">
@@ -113,7 +112,7 @@
         </span>
         <span v-if="statePaymentMethod != 2" class="circle">3</span>
         <span class="text-address">Payment Methods</span>
-        <span v-b-toggle.collapse3 v-if="statePaymentMethod == 2" class="text-address change-info float-right">Change</span>
+        <span data-toggle="collapse" data-target="#collapse3" v-if="statePaymentMethod == 2" class="text-address change-info float-right">Change</span>
       </p>
       <hr class="hr" v-bind:class="{ 'hr1': statePaymentMethod == 1, 'hr2':statePaymentMethod == 2 }">
       <div v-if="statePaymentMethod == 2" class="div-total">
@@ -121,7 +120,7 @@
         <span class="span-description">{{paymentMethod.titleOnAccount}}</span>
         <span class="span-description">{{paymentMethod.expireMonth}}/{{paymentMethod.expireYear}}</span>
       </div>
-      <b-collapse id="collapse3">
+      <div id="collapse3" class="collapse">
         <div v-for="(item,index) in listPaymentMethods">
           <div v-bind:class="{ 'div-checkmark': paymentOption == item.paymentMethodId }">
             <label  :for="index + 'r3'" class="container-input">
@@ -134,177 +133,188 @@
           </div>
         </div>
         <br>
-        <a  v-b-modal.modal2 class="text-add col-4 offset-lg-3">Add a Credit Card</a>
-        <button v-b-toggle.collapse3.collapse4  class="btn btn-continue" @click="addCartBillingShipping(3),setOptionNavbar(4)">Continue</button>
-      </b-collapse>
+        <a data-toggle="modal" data-target="#modal1" class="text-add col-4 offset-lg-3">Add a Credit Card</a>
+        <button data-toggle="collapse" data-target="#collapse3"  class="btn btn-continue" @click="addCartBillingShipping(3),setOptionNavbar(4)">Continue</button>
+      </div>
       <br>
       <p class="title-check-text">
         <span class="circle">4</span>
         <span class="text-address">Complete Purchase</span>
       </p>
       <hr class="hr">
-      <b-collapse id="collapse4">
+      <div id="collapse4" class="collapse">
         <div class="div-place-order">
           <p class="text-center">YOUR TOTAL IS: <span class="place-order-total">${{productsInCart.paymentsTotal}}</span></p>
           <p class="text-center place-order-text">Place order below to complete your purchase</p>
         </div>
         <button class="btn btn-place-order col col-lg-12" @click="setCartPlace">Place Order</button>
-      </b-collapse>
+      </div>
     </div>
   </div>
   <div>
-    <b-modal ref="modal2" id="modal2" title="Add a Credit Card" hide-footer>
-      <b-form>
-        <div class="form-group row">
-          <label for="card" class="col-sm-3 col-form-label modal-text">Card Number <span class="modal-text-required">*</span></label>
-          <div class="col-sm-9">
-            <b-form-input id="card"
+    <div class="modal fade" id="modal2">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Add a Credit Card</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row">
+              <label for="card" class="col-sm-3 col-form-label modal-text">Card Number <span class="modal-text-required">*</span></label>
+              <div class="col-sm-9">
+                <input class="form-control" id="card"
                       type="text"
                       v-model="paymentMethod.cardNumber"
-                      placeholder="13 to 16 digits Spaces are optional" required>
-            </b-form-input> 
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="nameCard" class="col-sm-3 col-form-label">Name on Card *</label>
-          <div class="col-sm-9">
-            <b-form-input id="nameCard"
+                      placeholder="13 to 16 digits Spaces are optional" required/>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="nameCard" class="col-sm-3 col-form-label">Name on Card *</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="nameCard"
                       type="text"
                       v-model="paymentMethod.titleOnAccount"
-                      placeholder="The name printed on the front of the card" required>
-            </b-form-input> 
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-3 col-form-label">Expiry Date *</label>
-          <div class="form-group col-sm-4">
-            <select v-model="paymentMethod.expireMonth" class="form-control">
-              <option value="01">01</option>
-              <option value="02">02</option>
-              <option value="03">03</option>
-              <option value="04">04</option>
-              <option value="05">05</option>
-              <option value="06">06</option>
-              <option value="07">07</option>
-              <option value="08">08</option>
-              <option value="09">09</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-            </select>
-          </div>
-          <div class="form-group col-sm-5">
-            <select v-model="paymentMethod.expireYear" class="form-control">
-              <option value="" selected disabled>Year</option>
-              <option value="2018">2018</option>
-              <option value="2019">2019</option>
-              <option value="2020">2020</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="security" class="col-sm-3 col-form-label">Card Security Code*</label>
-          <div class="col-sm-9">
-            <b-form-input id="security"
+                      placeholder="The name printed on the front of the card" required/>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Expiry Date *</label>
+              <div class="form-group col-sm-4">
+                <select v-model="paymentMethod.expireMonth" class="form-control">
+                  <option value="01">01</option>
+                  <option value="02">02</option>
+                  <option value="03">03</option>
+                  <option value="04">04</option>
+                  <option value="05">05</option>
+                  <option value="06">06</option>
+                  <option value="07">07</option>
+                  <option value="08">08</option>
+                  <option value="09">09</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+              </div>
+              <div class="form-group col-sm-5">
+                <select v-model="paymentMethod.expireYear" class="form-control">
+                  <option value="" selected disabled>Year</option>
+                  <option value="2018">2018</option>
+                  <option value="2019">2019</option>
+                  <option value="2020">2020</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="security" class="col-sm-3 col-form-label">Card Security Code*</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="security"
                       type="text"
                       v-model="paymentMethod.validateSecurityCode"
-                      placeholder="3 or 4 Digits" required>
-            </b-form-input> 
+                      placeholder="3 or 4 Digits" required/>
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <button @click="addCustomerPaymentMethod" class="btn btn-continue col col-sm-6 offset-sm-1">Add Credit Card</button>
+              <a @click="hideModal('modal2')" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
+            </div>
           </div>
         </div>
-        <div class="row justify-content-center">
-          <button @click="addCustomerPaymentMethod" class="btn btn-continue col col-sm-6 offset-sm-1">Add Credit Card</button>
-          <a @click="hideModal('modal2')" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
-        </div>
-      </b-form>
-    </b-modal>
-    <b-modal ref="modal1" id="modal1" title="Add an Address" hide-footer>
-      <b-form>
-        <div class="form-group row">
-          <label for="name" class="col-sm-3 col-form-label modal-text">Name <span class="modal-text-required">*</span></label>
-          <div class="col-sm-9">
-            <b-form-input id="name"
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal1">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add an Address</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row">
+              <label for="name" class="col-sm-3 col-form-label modal-text">Name <span class="modal-text-required">*</span></label>
+              <div class="col-sm-9">
+                <input class="form-control" id="name"
                       type="text"
                       v-model="shippingAddress.toName"
-                      required>
-            </b-form-input> 
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="country" class="col-sm-3 col-form-label modal-text">Country <span class="modal-text-required">*</span></label>
-          <div class="col-sm-9">
-            <select v-model="shippingAddress.countryGeoId" class="form-control">
-              <option value="USA">United States</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="city" class="col-sm-3 col-form-label modal-text">City <span class="modal-text-required">*</span></label>
-          <div class="col-sm-9">
-            <b-form-input id="city"
+                      required/>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="country" class="col-sm-3 col-form-label modal-text">Country <span class="modal-text-required">*</span></label>
+              <div class="col-sm-9">
+                <select v-model="shippingAddress.countryGeoId" class="form-control">
+                  <option value="USA">United States</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="city" class="col-sm-3 col-form-label modal-text">City <span class="modal-text-required">*</span></label>
+              <div class="col-sm-9">
+                <input class="form-control" id="city"
                       type="text"
                       v-model="shippingAddress.city"
-                      required>
-            </b-form-input>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="adress1" class="col-sm-3 col-form-label modal-text">Address <span class="modal-text-required">*</span></label>
-          <div class="col-sm-9">
-            <b-form-input id="adress1"
+                      required/>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="adress1" class="col-sm-3 col-form-label modal-text">Address <span class="modal-text-required">*</span></label>
+              <div class="col-sm-9">
+                <input class="form-control" id="adress1"
                       type="text"
                       v-model="shippingAddress.address1"
-                      required>
-            </b-form-input>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="adress2" class="col-sm-3 col-form-label"></label>
-          <div class="col-sm-9">
-            <b-form-input id="adress2"
+                      required/>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="adress2" class="col-sm-3 col-form-label"></label>
+              <div class="col-sm-9">
+                <input class="form-control" id="adress2"
                       type="text"
                       v-model="shippingAddress.address2"
-                      required>
-            </b-form-input>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="state" class="col-sm-3 col-form-label modal-text">State <span class="modal-text-required">*</span></label>
-          <div class="col-sm-9">
-            <select v-model="shippingAddress.stateProvinceGeoId" class="form-control">
-              <option value="USA_AK">Alaska</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="postalcode" class="col-sm-3 col-form-label modal-text">Zip Code</label>
-          <div class="col-sm-9">
-            <b-form-input id="postalcode"
+                      required/>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="state" class="col-sm-3 col-form-label modal-text">State <span class="modal-text-required">*</span></label>
+              <div class="col-sm-9">
+                <select v-model="shippingAddress.stateProvinceGeoId" class="form-control">
+                  <option value="USA_AK">Alaska</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="postalcode" class="col-sm-3 col-form-label modal-text">Zip Code</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="postalcode"
                       type="text"
                       v-model="shippingAddress.postalCode"
-                      required>
-            </b-form-input>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="contactnumber" class="col-sm-3 col-form-label modal-text">Phone Number <span class="modal-text-required">*</span></label>
-          <div class="col-sm-9">
-            <b-form-input id="contactnumber"
+                      required/>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="contactnumber" class="col-sm-3 col-form-label modal-text">Phone Number <span class="modal-text-required">*</span></label>
+              <div class="col-sm-9">
+                <input class="form-control" id="contactnumber"
                       type="text"
                       v-model="shippingAddress.contactNumber"
-                      required>
-            </b-form-input>
+                      required/>
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <button @click="addCustomerShippingAddress" class="btn btn-continue col col-sm-6 offset-sm-1">Add Address</button>
+              <a @click="hideModal('modal1')" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
+            </div>
           </div>
         </div>
-        <div class="row justify-content-center">
-          <button @click="addCustomerShippingAddress" class="btn btn-continue col col-sm-6 offset-sm-1">Add Address</button>
-          <a @click="hideModal('modal1')" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
-        </div>
-      </b-form>
-    </b-modal>
+      </div>
+    </div>
   </div>
   <span class="link-text">Forgot something? <router-link :to="'/'" tag="span" class="text-add">Head back to the shop.</router-link></span>
 </div>
 <footer-page class="mt-5 navbar-fixed-bottom" :infoLink="false" />
 </div>
-  

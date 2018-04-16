@@ -16,12 +16,12 @@ var SuccessCheckOut = {
   },
   methods: {
     getCustomerOrders() {
-      CustomerService.getCustomerOrders(this.axiosConfig).then(data => {
+      CustomerService.getCustomerOrders(this.axiosConfig).then(function (data) {
         this.ordersList = data.orderInfoList;
       });
     },
     getCustomerOrderById() {
-      CustomerService.getCustomerOrderById(this.$route.params.orderId,this.axiosConfig).then(data => {
+      CustomerService.getCustomerOrderById(this.$route.params.orderId,this.axiosConfig).then(function (data) {
         this.orderList = data;
       });
     },

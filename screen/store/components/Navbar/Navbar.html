@@ -4,8 +4,11 @@
 
             <a class="navbar-brand" href="#">
                 <img height="60px" class="moqui-logo" src="./assets/moqui-logo.svg" alt="">
-                <router-link class="font-italic navbar-title" :to="'/'" tag="span">POP Shop</router-link>
+                <router-link class="font-italic navbar-title" :to="'/'" tag="a">POP Shop</router-link>
             </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav_collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
             <div  id="nav_collapse" class="navbar-collapse collapse">
                 <search-input placeholder="Search..." />
