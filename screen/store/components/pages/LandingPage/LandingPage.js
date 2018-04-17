@@ -6,10 +6,9 @@ var LandingPage = {
     };
   },
   beforeCreate() {
-    const that = this;
     ProductService.getFeaturedProducts().then(function (response) {
-      that.products = response;
-    });
+      this.products = response;
+    }.bind(this));
   },
   components: {
     landingProduct: LandingProductTemplate,

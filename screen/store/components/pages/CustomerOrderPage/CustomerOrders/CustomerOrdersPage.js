@@ -16,22 +16,20 @@ var CustomerOrdersPage = {
   },
   methods: {
     getCustomerOrders() {
-      const that = this;
       CustomerService.getCustomerOrders(this.axiosConfig).then(function (data) {
-        that.ordersList = data.orderInfoList;
-        that.getCustomerOrderById();
-      });
+        this.ordersList = data.orderInfoList;
+        this.getCustomerOrderById();
+      }.bind(this));
     },
     getCustomerOrderById() {
-      const that = this;
       for(var x in this.ordersList) {
         CustomerService.getCustomerOrderById(this.ordersList[x].orderId,this.axiosConfig).then(function (data) {
           var product = {
             "orderId":data.orderItemList[0].orderId,
             "listProduct":data.orderItemList
           };
-          that.listProduct.push(product);
-        });
+          this.listProduct.push(product);
+        }.bind(this));
       }
     },
     formatDate(date) {

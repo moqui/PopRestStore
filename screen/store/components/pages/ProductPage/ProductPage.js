@@ -38,7 +38,6 @@ var ProductPage = {
       this.productImgRoute = route;
     },
     addProductCart (evt) {
-      const that = this;
       evt.preventDefault();
       var productCart = {
         "productId":this.product.pseudoId,
@@ -47,15 +46,14 @@ var ProductPage = {
       };
       console.log(this.axiosConfig);
       ProductService.addProductCart(productCart,this.axiosConfig).then(function (data) {
-        that.isSuccessAddCart = true;
-      });
+        this.isSuccessAddCart = true;
+      }.bind(this));
     },
   },
   mounted() {
-    const that = this;
     ProductService.getProduct(this.$route.params.productId).then(function (data) {
-      that.product = data;
-    });
+      this.product = data;
+    }.bind(this));
   }
 };
 var ProductPageTemplate = getPlaceholderRoute(

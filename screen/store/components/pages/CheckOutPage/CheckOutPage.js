@@ -29,68 +29,62 @@ var CheckOutPage = {
   },
   methods: {
     getCustomerShippingAddresses() {
-      const that = this;
       CustomerService.getShippingAddresses(this.axiosConfig).then(function (data) {
-        that.listShippingAddress = data.postalAddressList;
-      });
+        this.listShippingAddress = data.postalAddressList;
+      }.bind(this));
     },
     addCustomerShippingAddress() {
-      const that = this;
       CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(function (data) {
-        that.shippingAddress = {};
-        that.getCustomerShippingAddresses();
-        that.hideModal("modal1");
-      });
+        this.shippingAddress = {};
+        this.getCustomerShippingAddresses();
+        this.hideModal("modal1");
+      }.bind(this));
     },
     getCartShippingOptions() {
-      const that = this;
       ProductService.getCartShippingOptions(this.axiosConfig).then(function (data) {
-        that.listShippingOptions = data.shippingOptions;
-      });
+        this.listShippingOptions = data.shippingOptions;
+      }.bind(this));
     },
     getCartInfo() {
-      const that = this;
       ProductService.getCartInfo(this.axiosConfig).then(function (data) {
           if(data.postalAddress != undefined) {
-            that.addressOption = data.postalAddress.contactMechId + ':' + data.postalAddress.telecomContactMechId;
-            that.shippingAddress = data.postalAddress;
-            that.shippingAddress.contactNumber = data.telecomNumber.contactNumber;
+            this.addressOption = data.postalAddress.contactMechId + ':' + data.postalAddress.telecomContactMechId;
+            this.shippingAddress = data.postalAddress;
+            this.shippingAddress.contactNumber = data.telecomNumber.contactNumber;
           }
           if(data.orderPart.carrierPartyId != undefined) {
-            that.shippingOption = data.orderPart.carrierPartyId + ':' + data.orderPart.shipmentMethodEnumId;
-            for(var x in that.listShippingOptions) {
-              if(that.shippingOption === that.listShippingOptions[x].carrierPartyId +':'+ that.listShippingOptions[x].shipmentMethodEnumId) {
-                that.shippingMethod = that.listShippingOptions[x];
+            this.shippingOption = data.orderPart.carrierPartyId + ':' + data.orderPart.shipmentMethodEnumId;
+            for(var x in this.listShippingOptions) {
+              if(this.shippingOption === this.listShippingOptions[x].carrierPartyId +':'+ this.listShippingOptions[x].shipmentMethodEnumId) {
+                this.shippingMethod = this.listShippingOptions[x];
                 break;
               }
             }
           }
           if(data.paymentInfoList[0] != null) {
-            that.paymentOption = data.paymentInfoList[0].payment.paymentMethodId;
-            for(var x in that.listPaymentMethods) {
-              if(that.paymentOption === that.listPaymentMethods[x].paymentMethodId) {
-                that.paymentMethod = that.listPaymentMethods[x].paymentMethod;
-                that.paymentMethod.expireMonth = that.listPaymentMethods[x].expireMonth; 
-                that.paymentMethod.expireYear = that.listPaymentMethods[x].expireYear;
+            this.paymentOption = data.paymentInfoList[0].payment.paymentMethodId;
+            for(var x in this.listPaymentMethods) {
+              if(this.paymentOption === this.listPaymentMethods[x].paymentMethodId) {
+                this.paymentMethod = this.listPaymentMethods[x].paymentMethod;
+                this.paymentMethod.expireMonth = this.listPaymentMethods[x].expireMonth; 
+                this.paymentMethod.expireYear = this.listPaymentMethods[x].expireYear;
                 break;
               }
             }
           }
-          that.productsInCart = data;
-      });
+          this.productsInCart = data;
+      }.bind(this));
     },
     addCustomerPaymentMethod() {
-      const that = this;
       this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
       CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
         console.log(data);
-        that.hideModal("modal2");
-        that.paymentMethod = {};
-        that.getCustomerPaymentMethods();
-      });
+        this.hideModal("modal2");
+        this.paymentMethod = {};
+        this.getCustomerPaymentMethods();
+      }.bind(this));
     },
     addCartBillingShipping(option){
-      const that = this;
       var info = {
         "shippingPostalContactMechId":this.addressOption.split(':')[0],
         "shippingTelecomContactMechId":this.addressOption.split(':')[1],
@@ -115,18 +109,17 @@ var CheckOutPage = {
           break;
        }
       ProductService.addCartBillingShipping(info,this.axiosConfig).then(function (data) {
-        that.paymentId = data;   
-        that.getCartInfo();
-      });
+        this.paymentId = data;   
+        this.getCartInfo();
+      }.bind(this));
     },
     setOptionNavbar(option) {
       this.optionNavbar = option; 
     },
     getCustomerPaymentMethods() {
-      const that = this;
       CustomerService.getPaymentMethods(this.axiosConfig).then(function (data) {
-        that.listPaymentMethods = data.methodInfoList;
-      });
+        this.listPaymentMethods = data.methodInfoList;
+      }.bind(this));
     },
     setCartPlace() {
       const that = this;
@@ -134,9 +127,9 @@ var CheckOutPage = {
         "cardSecurityCodeByPaymentId": this.paymentId
       };
       ProductService.setCartPlace(data,this.axiosConfig).then(function (data) {
-        that.getCartInfo();
-        that.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
-      });
+        this.getCartInfo();
+        this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
+      }.bind(this));
     },
     hideModal(modalid) {
       $('#'+modalid).modal('hide');

@@ -16,16 +16,14 @@ var SuccessCheckOut = {
   },
   methods: {
     getCustomerOrders() {
-      const that = this;
       CustomerService.getCustomerOrders(this.axiosConfig).then(function (data) {
-        that.ordersList = data.orderInfoList;
-      });
+        this.ordersList = data.orderInfoList;
+      }.bind(this));
     },
     getCustomerOrderById() {
-      const that = this;
       CustomerService.getCustomerOrderById(this.$route.params.orderId,this.axiosConfig).then(function (data) {
-        that.orderList = data;
-      });
+        this.orderList = data;
+      }.bind(this));
     },
     formatDate(date) {
       var monthNames = [

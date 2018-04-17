@@ -16,10 +16,9 @@ var CustomerOrderPage = {
   },
   methods: {
     getCustomerOrderById() {
-      const that = this;
       CustomerService.getCustomerOrderById(this.$route.params.orderId,this.axiosConfig).then(function (data) {
-        that.orderList = data;
-      });
+        this.orderList = data;
+      }.bind(this));
     },
     formatDate(date) {
       var monthNames = [
