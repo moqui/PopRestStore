@@ -386,6 +386,17 @@
     margin-top: -5px;
 }
 
+.span-link {
+    color: #1ec9d9;
+    cursor: pointer;
+}
+
+.span-link-container {
+    font-size: 0.9em;
+    display: inline-block;
+    margin-left: 35px;
+}
+
 .change-info {
     font-size: 0.9em !important;
     margin-top: 7px;
@@ -781,4 +792,28 @@
 .deals-sortby-text i {
     margin-right: 10px;
     font-size: 1.2em;
+}
+
+.account-subtitle {
+    font-size: 1.5em;
+}
+
+.account-hr {
+    margin-top: -20px;
+}
+
+.account-btn {
+    width: 100%;
+}
+
+.account-back-top {
+    color: #1ec9d9;
+    float: right;
+    margin-top: -40px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.account-div-container {
+    padding: 10px;
 }

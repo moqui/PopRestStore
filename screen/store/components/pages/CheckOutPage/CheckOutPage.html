@@ -29,7 +29,9 @@
           <span v-if="shippingMethod.shippingTotal != undefined">${{shippingMethod.shippingTotal.toFixed(2)}}</span>
         </span>
         <span class="col col-lg-6 mt-4">Total</span>
-        <span class="place-order-total col col-lg-1 offset-lg-4 mt-4" v-if="productsInCart.orderHeader">${{productsInCart.orderHeader.grandTotal}}</span>
+        <span class="place-order-total col col-lg-1 offset-lg-4 mt-4" v-if="productsInCart.orderHeader">
+          ${{productsInCart.orderHeader.grandTotal}}
+        </span>
       </div>
     </div>
     <div class="col col-lg-5 offset-lg-1 col-sm-12 col-12">

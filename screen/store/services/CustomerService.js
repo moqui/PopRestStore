@@ -28,5 +28,10 @@ var CustomerService = {
     return axios.get("/rest/s1/pop/customer/orders/"+orderId,headers).then(function (response) {
       return response.data;
     });
+  }, 
+  getCustomerInfo(headers) {
+    return axios.get("/rest/s1/pop/customer/info").then(function (response) {
+      return response.data;
+    });
   }
 };
