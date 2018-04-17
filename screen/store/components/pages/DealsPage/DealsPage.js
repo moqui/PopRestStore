@@ -8,13 +8,15 @@ var DealsPage = {
   },
   methods: {
     getProductsList() {
-      ProductService.getProductsByCategory(this.$route.params.categoryId).then(data => {
-        this.products = data;
+      const that = this;
+      ProductService.getProductsByCategory(this.$route.params.categoryId).then(function (data) {
+        that.products = data;
       });
     },
     getCategoryInfoById() {
-      ProductService.getCategoryInfoById(this.$route.params.categoryId).then(data => {
-        this.category = data;
+      const that = this;
+      ProductService.getCategoryInfoById(this.$route.params.categoryId).then(function (data) {
+        that.category = data;
       });
     }
   },

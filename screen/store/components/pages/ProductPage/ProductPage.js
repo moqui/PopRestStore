@@ -38,6 +38,7 @@ var ProductPage = {
       this.productImgRoute = route;
     },
     addProductCart (evt) {
+      const that = this;
       evt.preventDefault();
       var productCart = {
         "productId":this.product.pseudoId,
@@ -45,14 +46,15 @@ var ProductPage = {
         "quantity":this.quantity
       };
       console.log(this.axiosConfig);
-      ProductService.addProductCart(productCart,this.axiosConfig).then(data => {
-        this.isSuccessAddCart = true;
+      ProductService.addProductCart(productCart,this.axiosConfig).then(function (data) {
+        that.isSuccessAddCart = true;
       });
     },
   },
   mounted() {
-    ProductService.getProduct(this.$route.params.productId).then(product => {
-      this.product = product;
+    const that = this;
+    ProductService.getProduct(this.$route.params.productId).then(function (data) {
+      that.product = data;
     });
   }
 };

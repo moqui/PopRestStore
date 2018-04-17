@@ -29,62 +29,68 @@ var CheckOutPage = {
   },
   methods: {
     getCustomerShippingAddresses() {
-      CustomerService.getShippingAddresses(this.axiosConfig).then(data => {
-        this.listShippingAddress = data.postalAddressList;
+      const that = this;
+      CustomerService.getShippingAddresses(this.axiosConfig).then(function (data) {
+        that.listShippingAddress = data.postalAddressList;
       });
     },
     addCustomerShippingAddress() {
-      CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(data => {
-        this.shippingAddress = {};
-        this.getCustomerShippingAddresses();
-        this.hideModal("modal1");
+      const that = this;
+      CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(function (data) {
+        that.shippingAddress = {};
+        that.getCustomerShippingAddresses();
+        that.hideModal("modal1");
       });
     },
     getCartShippingOptions() {
-      ProductService.getCartShippingOptions(this.axiosConfig).then(data => {
-        this.listShippingOptions = data.shippingOptions;
+      const that = this;
+      ProductService.getCartShippingOptions(this.axiosConfig).then(function (data) {
+        that.listShippingOptions = data.shippingOptions;
       });
     },
     getCartInfo() {
-      ProductService.getCartInfo(this.axiosConfig).then(data => {
+      const that = this;
+      ProductService.getCartInfo(this.axiosConfig).then(function (data) {
           if(data.postalAddress != undefined) {
-            this.addressOption = data.postalAddress.contactMechId + ':' + data.postalAddress.telecomContactMechId;
-            this.shippingAddress = data.postalAddress;
-            this.shippingAddress.contactNumber = data.telecomNumber.contactNumber;
+            that.addressOption = data.postalAddress.contactMechId + ':' + data.postalAddress.telecomContactMechId;
+            that.shippingAddress = data.postalAddress;
+            that.shippingAddress.contactNumber = data.telecomNumber.contactNumber;
           }
           if(data.orderPart.carrierPartyId != undefined) {
-            this.shippingOption = data.orderPart.carrierPartyId + ':' + data.orderPart.shipmentMethodEnumId;
-            for(var x in this.listShippingOptions) {
-              if(this.shippingOption === this.listShippingOptions[x].carrierPartyId +':'+ this.listShippingOptions[x].shipmentMethodEnumId) {
-                this.shippingMethod = this.listShippingOptions[x];
+            that.shippingOption = data.orderPart.carrierPartyId + ':' + data.orderPart.shipmentMethodEnumId;
+            for(var x in that.listShippingOptions) {
+              if(that.shippingOption === that.listShippingOptions[x].carrierPartyId +':'+ that.listShippingOptions[x].shipmentMethodEnumId) {
+                that.shippingMethod = that.listShippingOptions[x];
                 break;
               }
             }
           }
           if(data.paymentInfoList[0] != null) {
-            this.paymentOption = data.paymentInfoList[0].payment.paymentMethodId;
-            for(var x in this.listPaymentMethods) {
-              if(this.paymentOption === this.listPaymentMethods[x].paymentMethodId) {
-                this.paymentMethod = this.listPaymentMethods[x].paymentMethod;
-                this.paymentMethod.expireMonth = this.listPaymentMethods[x].expireMonth; 
-                this.paymentMethod.expireYear = this.listPaymentMethods[x].expireYear;
+            that.paymentOption = data.paymentInfoList[0].payment.paymentMethodId;
+            for(var x in that.listPaymentMethods) {
+              if(that.paymentOption === that.listPaymentMethods[x].paymentMethodId) {
+                that.paymentMethod = that.listPaymentMethods[x].paymentMethod;
+                that.paymentMethod.expireMonth = that.listPaymentMethods[x].expireMonth; 
+                that.paymentMethod.expireYear = that.listPaymentMethods[x].expireYear;
                 break;
               }
             }
           }
-          this.productsInCart = data;
+          that.productsInCart = data;
       });
     },
     addCustomerPaymentMethod() {
+      const that = this;
       this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
-      CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(data => {
+      CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
         console.log(data);
-        this.hideModal("modal2");
-        this.paymentMethod = {};
-        this.getCustomerPaymentMethods();
+        that.hideModal("modal2");
+        that.paymentMethod = {};
+        that.getCustomerPaymentMethods();
       });
     },
     addCartBillingShipping(option){
+      const that = this;
       var info = {
         "shippingPostalContactMechId":this.addressOption.split(':')[0],
         "shippingTelecomContactMechId":this.addressOption.split(':')[1],
@@ -108,26 +114,28 @@ var CheckOutPage = {
           $('#collapse4').collapse("show");
           break;
        }
-      ProductService.addCartBillingShipping(info,this.axiosConfig).then(data => {
-        this.paymentId = data;   
-        this.getCartInfo();
+      ProductService.addCartBillingShipping(info,this.axiosConfig).then(function (data) {
+        that.paymentId = data;   
+        that.getCartInfo();
       });
     },
     setOptionNavbar(option) {
       this.optionNavbar = option; 
     },
     getCustomerPaymentMethods() {
-      CustomerService.getPaymentMethods(this.axiosConfig).then(data => {
-        this.listPaymentMethods = data.methodInfoList;
+      const that = this;
+      CustomerService.getPaymentMethods(this.axiosConfig).then(function (data) {
+        that.listPaymentMethods = data.methodInfoList;
       });
     },
     setCartPlace() {
+      const that = this;
       var data = {
         "cardSecurityCodeByPaymentId": this.paymentId
       };
-      ProductService.setCartPlace(data,this.axiosConfig).then(data => {
-        this.getCartInfo();
-        this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
+      ProductService.setCartPlace(data,this.axiosConfig).then(function (data) {
+        that.getCartInfo();
+        that.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
       });
     },
     hideModal(modalid) {

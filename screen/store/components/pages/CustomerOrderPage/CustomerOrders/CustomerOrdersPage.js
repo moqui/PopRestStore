@@ -16,19 +16,21 @@ var CustomerOrdersPage = {
   },
   methods: {
     getCustomerOrders() {
-      CustomerService.getCustomerOrders(this.axiosConfig).then(data => {
-        this.ordersList = data.orderInfoList;
-        this.getCustomerOrderById();
+      const that = this;
+      CustomerService.getCustomerOrders(this.axiosConfig).then(function (data) {
+        that.ordersList = data.orderInfoList;
+        that.getCustomerOrderById();
       });
     },
     getCustomerOrderById() {
+      const that = this;
       for(var x in this.ordersList) {
-        CustomerService.getCustomerOrderById(this.ordersList[x].orderId,this.axiosConfig).then(data => {
+        CustomerService.getCustomerOrderById(this.ordersList[x].orderId,this.axiosConfig).then(function (data) {
           var product = {
             "orderId":data.orderItemList[0].orderId,
             "listProduct":data.orderItemList
           };
-          this.listProduct.push(product);
+          that.listProduct.push(product);
         });
       }
     },

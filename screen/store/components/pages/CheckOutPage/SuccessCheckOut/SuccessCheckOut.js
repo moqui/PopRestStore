@@ -16,13 +16,15 @@ var SuccessCheckOut = {
   },
   methods: {
     getCustomerOrders() {
+      const that = this;
       CustomerService.getCustomerOrders(this.axiosConfig).then(function (data) {
-        this.ordersList = data.orderInfoList;
+        that.ordersList = data.orderInfoList;
       });
     },
     getCustomerOrderById() {
+      const that = this;
       CustomerService.getCustomerOrderById(this.$route.params.orderId,this.axiosConfig).then(function (data) {
-        this.orderList = data;
+        that.orderList = data;
       });
     },
     formatDate(date) {

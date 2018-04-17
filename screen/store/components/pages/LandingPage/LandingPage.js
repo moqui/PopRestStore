@@ -6,11 +6,11 @@ var LandingPage = {
     };
   },
   beforeCreate() {
-    ProductService.getFeaturedProducts().then(res => {
-      this.products = res;
-    })
+    const that = this;
+    ProductService.getFeaturedProducts().then(function (response) {
+      that.products = response;
+    });
   },
-  methods: {},
   components: {
     landingProduct: LandingProductTemplate,
     carousel: VueCarousel.Carousel,

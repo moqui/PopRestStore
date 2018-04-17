@@ -15,14 +15,10 @@ var CustomerOrderPage = {
     };
   },
   methods: {
-    getCustomerOrders() {
-      CustomerService.getCustomerOrders(this.axiosConfig).then(data => {
-        this.ordersList = data.orderInfoList;
-      });
-    },
     getCustomerOrderById() {
-      CustomerService.getCustomerOrderById(this.$route.params.orderId,this.axiosConfig).then(data => {
-        this.orderList = data;
+      const that = this;
+      CustomerService.getCustomerOrderById(this.$route.params.orderId,this.axiosConfig).then(function (data) {
+        that.orderList = data;
       });
     },
     formatDate(date) {
