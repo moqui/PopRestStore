@@ -79,13 +79,23 @@ along with this software (see the LICENSE.md file). If not, see
         <resource name="info">
             <method type="get"><service name="popstore.CustomerServices.get#CustomerInfo"/></method>
         </resource>
+        <resource name="updateInfo">
+            <method type="put"><service name="popstore.CustomerServices.update#Customer"/></method>
+        </resource>
+        <resource name="updatePassword">
+            <method type="put"><service name="popstore.CustomerServices.update#CustomerPassword"/></method>
+        </resource>
         <resource name="paymentMethods">
             <method type="get"><service name="popstore.CustomerServices.get#PaymentMethods"/></method>
             <method type="put"><service name="popstore.CustomerServices.store#CreditCard"/></method>
+            <id name="paymentMethodId">
+                <method type="delete"><service name="popstore.CustomerServices.delete#paymentMethod"/></method>
+            </id>
         </resource>
         <resource name="shippingAddresses">
             <method type="get"><service name="popstore.CustomerServices.get#ShippingAddresses"/></method>
             <method type="put"><service name="popstore.CustomerServices.store#ShippingAddress"/></method>
+            <method type="delete"><service name="popstore.CustomerServices.delete#ShippingAddress"/></method>
         </resource>
 
         <resource name="orders">

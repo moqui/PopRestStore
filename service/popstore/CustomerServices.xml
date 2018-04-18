@@ -150,6 +150,50 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
 
+    <service verb="update" noun="Customer">
+        <in-parameters>
+            <parameter name="partyId"/>
+            <parameter name="userId"/>
+            <parameter name="username"/>
+            <parameter name="firstName"/>
+            <parameter name="lastName"/>
+            <parameter name="middleName"/>
+            <parameter name="emailAddress"/>
+            <parameter name="locale"/>
+            <parameter name="timeZone"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="customerInfo" type="Map"/>
+        </out-parameters>
+        <actions>
+            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
+            <if condition="!customerPartyId"><return message="No active customer"/></if>
+            <set field="partyId" from="customerPartyId"/>
+            <set field="orderId" from="cartOrderId"/>
+
+            <service-call name="mantle.party.PartyServices.update#Account" in-map="context"/>
+            
+            <service-call name="popstore.CustomerServices.get#CustomerInfo" out-map="customerInfo"/>
+        </actions>
+    </service>
+
+    <service verb="update" noun="CustomerPassword">
+        <in-parameters>
+            <parameter name="userId"/>
+            <parameter name="oldPassword"/>
+            <parameter name="newPassword"/>
+            <parameter name="newPasswordVerify"/>
+        </in-parameters>
+        <actions>
+            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
+            <if condition="!customerPartyId"><return message="No active customer"/></if>
+            <set field="partyId" from="customerPartyId"/>
+            <set field="orderId" from="cartOrderId"/>
+
+            <service-call name="org.moqui.impl.UserServices.update#Password" in-map="context"/>
+        </actions>
+    </service>
+
     <!-- Payment Methods -->
 
     <service verb="get" noun="PaymentMethods">
@@ -215,6 +259,20 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
 
+    <service verb="delete" noun="paymentMethod">
+        <in-parameters>
+            <parameter name="paymentMethodId"/>
+        </in-parameters>
+        <actions>
+            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
+            <if condition="!customerPartyId"><return message="No active customer"/></if>
+            <set field="partyId" from="customerPartyId"/>
+            <set field="orderId" from="cartOrderId"/>
+
+            <service-call name="mantle.account.PaymentMethodServices.delete#PaymentMethod" in-map="context"/>
+        </actions>
+    </service>
+
     <!-- Shipping Addresses -->
 
     <service verb="get" noun="ShippingAddresses">
@@ -234,6 +292,7 @@ along with this software (see the LICENSE.md file). If not, see
             <set field="postalAddressList" from="shippingContactListInfo.postalAddressList"/>
         </actions>
     </service>
+
     <service verb="store" noun="ShippingAddress">
         <in-parameters>
             <parameter name="postalContactMechId"/>
@@ -273,4 +332,20 @@ along with this software (see the LICENSE.md file). If not, see
             <!-- TODO: if address verification/validation available call explicitly so customer knows of potential issues right away -->
         </actions>
     </service>
+
+    <service verb="delete" noun="ShippingAddress">
+        <in-parameters>
+            <parameter name="contactMechId"/>
+            <parameter name="contactMechPurposeId"/>
+        </in-parameters>
+        <actions>
+            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
+            <if condition="!customerPartyId"><return message="No active customer"/></if>
+            <set field="partyId" from="customerPartyId"/>
+            <set field="orderId" from="cartOrderId"/>
+
+            <service-call name="mantle.party.ContactServices.delete#PartyContactMech" in-map="context"/>
+        </actions>
+    </service>
+
 </services>

@@ -33,5 +33,26 @@ var CustomerService = {
     return axios.get("/rest/s1/pop/customer/info").then(function (response) {
       return response.data;
     });
+  },
+  updateCustomerInfo(customerInfo,headers) {
+    return axios.put("/rest/s1/pop/customer/updateInfo",customerInfo,headers).then(function (response){
+      return response.data;
+    });
+  },
+  updateCustomerPassword(customerInfo,headers) {
+    return axios.put("/rest/s1/pop/customer/updatePassword",customerInfo,headers).then(function (response) {
+      return response.data;
+    });
+  },
+  deletePaymentMethod(paymentMethodId,headers) {
+    return axios.delete("/rest/s1/pop/customer/paymentMethods/"+paymentMethodId,headers).then(function (response) {
+      return response.data;
+    });
+  },
+  deleteShippingAddress(contactMechId,contactMechPurposeId,headers) {
+    return axios.delete("/rest/s1/pop/customer/shippingAddresses?contactMechId="+contactMechId
+    +"&contactMechPurposeId="+contactMechPurposeId,headers).then(function (response) {
+      return response.data;
+    });
   }
 };
