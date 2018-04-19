@@ -24,8 +24,11 @@
 }
 
 .moqui-navbar .moqui-logo {
-    margin-top: -30px;
     width: 101px;
+}
+
+.moqui-logo1 {
+    margin-top: -30px;
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -847,6 +850,12 @@
 .item-actions {
     color: #04c3d5;
     cursor: pointer;
-    font-size: 0.7em;
+    font-size: 0.8em;
     margin-left: 15px;
+}
+
+.last-price {
+    color: #666666;
+    margin-top: -15px;
+    font-size: 0.9em;
 }

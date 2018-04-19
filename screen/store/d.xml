@@ -45,6 +45,7 @@ along with this software (see the LICENSE.md file). If not, see
     <script src="/store/components/pages/LandingPage/LandingProduct/LandingProduct.js"></script>
     <script src="/store/components/pages/LandingPage/LandingPage.js"></script>
     <script src="/store/components/pages/ProductPage/ProductReview/ProductReview.js"></script>
+    <script src="/store/components/pages/ProductPage/ProductImage/ProductImage.js"></script>
     <script src="/store/components/pages/ProductPage/ProductPage.js"></script>
     <script src="/store/components/pages/LoginPage/LoginPage.js"></script>
     <script src="/store/components/pages/WikiPage/WikiPage.js"></script>

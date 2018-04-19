@@ -12,6 +12,7 @@ var CheckOutPage = {
       addressOption: {},
       paymentOption: "",
       paymentId: {},
+      urlList: {},
       stateShippingAddress:1,
       stateShippingMethod:0,
       statePaymentMethod:0,
@@ -200,7 +201,8 @@ var CheckOutPage = {
   },
   components: {
     "placeorder-navbar": PlaceOrderNavbarTemplate,
-    "footer-page": FooterPageTemplate
+    "footer-page": FooterPageTemplate,
+    "product-image": ProductImageTemplate
   },
   mounted() {
     this.getCartShippingOptions();

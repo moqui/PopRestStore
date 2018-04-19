@@ -10,6 +10,7 @@ var storeComps = {
   WikiPage,
   ProductPage,
   ProductReview,
+  ProductImage,
   CheckOutPage,
   CustomerOrderPage,
   CustomerOrdersPage,

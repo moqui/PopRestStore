@@ -10,15 +10,21 @@
       </p>
       <hr class="hr">
       <div class="row" v-for="item in productsInCart.orderItemList" :key="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'">
-        <div class="col col-lg-6">
-          <p class="item-text-desc">{{item.itemDescription}}</p>
+        <div class="col col-lg-2">
+          <product-image :productId="item.productId"/>
         </div>
-        <div class="col col-lg-2 offset-lg-1">
-          <input class="input-quantity form-control" id="quantity" type="text" v-model="item.quantity"/>
+        <div class="col col-lg-5">
+          <p class="item-text-desc">{{item.itemDescription}}</p>
+          <p v-if="item.unitListPrice" class="last-price">
+            <del>${{item.unitListPrice}}</del>
+            <span class="place-order-total"> Save ${{(item.unitListPrice - item.unitAmount).toFixed(2)}}</span>
+          </p>
+        </div>
+        <div class="col col-lg-2">
+          <input class="input-quantity form-control" id="quantity" @change="updateProductQuantity(item)" type="text" v-model="item.quantity"/>
         </div>
         <div class="col col-lg-1 offset-lg-1">
           <p class="place-order-total">${{item.unitAmount}}</p>
-          <span class="item-actions" @click="updateProductQuantity(item)">Update</span>
           <span class="item-actions" @click="deleteOrderProduct(item)">Delete</span>
         </div>
       </div>
