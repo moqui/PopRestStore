@@ -18,19 +18,21 @@
         </div>
         <div class="col col-lg-1 offset-lg-1">
           <p class="place-order-total">${{item.unitAmount}}</p>
+          <span class="item-actions" @click="updateProductQuantity(item)">Update</span>
+          <span class="item-actions" @click="deleteOrderProduct(item)">Delete</span>
         </div>
       </div>
       <hr>
       <div class="row div-total">
         <span class="col col-lg-6">Subtotal</span>
-        <span class="col col-lg-1 offset-lg-4" v-if="productsInCart.orderPart">${{productsInCart.orderPart.partTotal}}</span>
+        <span class="col col-lg-1 offset-lg-4" v-if="productsInCart.orderPart">${{productsInCart.orderPart.partTotal.toFixed(2)}}</span>
         <span class="col col-lg-6 mt-4">Shipping</span>
         <span class="place-order-total col col-lg-1 offset-lg-4 mt-4">
           <span v-if="shippingMethod.shippingTotal != undefined">${{shippingMethod.shippingTotal.toFixed(2)}}</span>
         </span>
         <span class="col col-lg-6 mt-4">Total</span>
         <span class="place-order-total col col-lg-1 offset-lg-4 mt-4" v-if="productsInCart.orderHeader">
-          ${{productsInCart.orderHeader.grandTotal}}
+          ${{productsInCart.orderHeader.grandTotal.toFixed(2)}}
         </span>
       </div>
     </div>
@@ -69,12 +71,18 @@
                 {{option.telecomNumber.contactNumber}}
               </span>
             </label>
+            <span data-toggle="modal" data-target="#modal1" @click="selectAddress(option)" class="edit-icon">
+              <i class="fas fa-edit"></i>
+            </span>
+            <span @click="deleteShippingAddress(option.postalContactMechId,option.postalContactMechPurposeId)" class="delete-icon">  <i class="fas fa-trash-alt"></i>
+            </span>
           </div>
         </div>
         <br>   
-        <button data-toggle="collapse" data-target="#collapse1" @click="addCartBillingShipping(1),setOptionNavbar(2)" class="btn btn-continue float-right">Continue
+        <button data-toggle="collapse" data-target="#collapse1" @click="addCartBillingShipping(1),setOptionNavbar(2)" class="btn btn-continue float-right">
+          Continue
         </button>
-        <a data-toggle="modal" data-target="#modal1" class="text-add float-right">Add a New Address</a>
+        <a data-toggle="modal" data-target="#modal1" @click="cleanShippingAddress()" class="text-add float-right">Add a New Address</a>
       </div>
       <br>
       <p class="title-check-text"  v-bind:class="{ 'state': stateShippingMethod == 1, 'state1': stateShippingMethod == 2 }">
@@ -132,10 +140,16 @@
               <span class="span-description">{{item.paymentMethod.titleOnAccount}}</span>
               <span class="span-description">Expires on {{item.creditCard.expireDate}}</span>
             </label>
+            <span data-toggle="modal" data-target="#modal2" @click="selectPaymentMethod(item)" class="edit-icon icon-margin-top">
+              <i class="fas fa-edit"></i>
+            </span>
+            <span @click="deletePaymentMethod(item.paymentMethodId)" class="delete-icon icon-margin-top">
+              <i class="fas fa-trash-alt"></i>
+            </span>
           </div>
         </div>
         <br>
-        <a data-toggle="modal" data-target="#modal1" class="text-add col-4 offset-lg-3">Add a Credit Card</a>
+        <a data-toggle="modal" data-target="#modal2" @click="cleanPaymentMethod()" class="text-add col-4 offset-lg-3">Add a Credit Card</a>
         <button data-toggle="collapse" data-target="#collapse3"  class="btn btn-continue" @click="addCartBillingShipping(3),setOptionNavbar(4)">Continue</button>
       </div>
       <br>

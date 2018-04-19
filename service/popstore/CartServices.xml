@@ -208,6 +208,29 @@ General Order Placement and eCommerce Usage
         </actions>
     </service>
 
+    <service verb="update" noun="OrderProductQuantity">
+        <in-parameters>
+            <parameter name="orderId" required="true"/>
+            <parameter name="orderItemSeqId" required="true"/>
+            <parameter name="quantity" type="BigDecimal" required="true"/>
+        </in-parameters>
+        <actions>
+            <service-call name="mantle.order.OrderServices.update#OrderItem"
+                    in-map="[orderId:orderId, orderItemSeqId:orderItemSeqId, quantity:quantity]"/>
+        </actions>
+    </service>
+
+    <service verb="delete" noun="OrderItem">
+        <in-parameters>
+            <parameter name="orderId" />
+            <parameter name="orderItemSeqId" />
+        </in-parameters>
+        <actions>
+            <service-call name="mantle.order.OrderServices.delete#OrderItem"
+                        in-map="[orderId:orderId, orderItemSeqId:orderItemSeqId]"/>
+        </actions>
+    </service>
+
     <service verb="get" noun="ShippingOptions">
         <out-parameters>
             <parameter name="shippingOptions"/>

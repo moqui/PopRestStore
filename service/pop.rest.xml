@@ -55,6 +55,15 @@ along with this software (see the LICENSE.md file). If not, see
         <resource name="add">
             <method type="post"><service name="popstore.CartServices.add#Product"/></method>
         </resource>
+
+        <resource name="updateProductQuantity">
+            <method type="post"><service name="popstore.CartServices.update#OrderProductQuantity"/></method>
+        </resource>
+
+        <resource name="deleteOrderItem">
+            <method type="delete"><service name="popstore.CartServices.delete#OrderItem"/></method>
+        </resource>
+
         <resource name="promoCode">
             <method type="post"><service name="mantle.product.PromotionServices.add#OrderPromoCode"/></method>
             <method type="delete"><service name="mantle.product.PromotionServices.remove#OrderPromoCode"/></method>

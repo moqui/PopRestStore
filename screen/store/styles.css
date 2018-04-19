@@ -24,6 +24,7 @@
 }
 
 .moqui-navbar .moqui-logo {
+    margin-top: -30px;
     width: 101px;
 }
 
@@ -33,6 +34,7 @@
 
 .navbar-title {
     margin-top: 10px;
+    margin-left: -20px;
     display: inline-block;
     font-size: 2em;
     color: #fff;
@@ -816,4 +818,35 @@
 
 .account-div-container {
     padding: 10px;
+}
+
+.edit-icon {
+    color: #04c3d5;
+    display: inline-block;
+    right: 40px;
+    margin-top: -85px;
+    position: absolute;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.delete-icon {
+    color: #04c3d5;
+    display: inline-block;
+    right: 20px;
+    margin-top: -85px;
+    position: absolute;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.icon-margin-top {
+    margin-top: -70px;
+}
+
+.item-actions {
+    color: #04c3d5;
+    cursor: pointer;
+    font-size: 0.7em;
+    margin-left: 15px;
 }

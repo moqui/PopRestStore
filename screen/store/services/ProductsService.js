@@ -48,5 +48,16 @@ var ProductService = {
     return axios.post("/rest/s1/pop/cart/place",data,headers).then(function (response) {
       return response.data;
     });
+  }, 
+  updateProductQuantity(data,headers) {
+    return axios.post("/rest/s1/pop/cart/updateProductQuantity",data,headers).then(function (response) {
+      return response.data;
+    });
+  },
+  deleteOrderProduct(orderId,orderItemSeqId,headers) {
+    return axios.delete("/rest/s1/pop/cart/deleteOrderItem?orderId="+orderId+"&orderItemSeqId="+orderItemSeqId,headers)
+    .then(function (response) {
+      return response.data;
+    });
   }
 };
