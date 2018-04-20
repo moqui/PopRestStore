@@ -49,6 +49,21 @@ var router = new VueRouter({
       path: "/account",
       name: "account",
       component: AccountPageTemplate
+    },
+    {
+      path: "/help",
+      name: "help",
+      component: HelpPageTemplate
+    },
+    {
+      path: "/about",
+      name: "about",
+      component: AboutPageTemplate
+    },
+    {
+      path: "/contact",
+      name: "contact",
+      component: ContactPageTemplate
     }
   ]
 });

@@ -16,5 +16,8 @@ var storeComps = {
   CustomerOrdersPage,
   SuccessCheckOut,
   DealsPage,
-  AccountPage
+  AccountPage,
+  HelpPage,
+  AboutPage,
+  ContactPage
 };

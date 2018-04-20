@@ -35,13 +35,14 @@
   	      	<div class="col col-lg-3 col-12 order-list mb-4" >
   	      	  <div class="customer-orders-id">
                 <router-link class="customer-orders-text" :to="'/orders/'+item.orderId" tag="span">Order #{{item.orderId}}</router-link>
-  	      	    <span class="customer-text-date">{{formatDate(item.placedDate)}}</span>
+  	      	    <span class="customer-text-date">{{formatDate(item.placedDate ? item.placedDate : item.entryDate)}}</span>
   	      	  </div>
   	      	</div>
   	      	<div class="col col-lg-4 col-12">
   	      	  <template v-for="(productList, index) in listProduct">
   	      	    <template v-if="productList.orderId == item.orderId && product.itemTypeEnumId=='ItemProduct'" v-for="product in productList.listProduct">
   	      	      <span class="order-product-description">{{product.itemDescription}}</span>
+                  <br>
   	      	    </template>
   	      	  </template>
   	      	  <p class="order-product-status">{{item.partStatusId}}</p>
@@ -60,13 +61,14 @@
   	      	<div class="col col-lg-3 col-12 order-list mb-4" >
   	      	  <div class="customer-orders-id">
   	      	  	<span class="customer-orders-text">Order #{{item.orderId}}</span>
-  	      	    <span class="customer-text-date">{{formatDate(item.placedDate)}}</span>
+  	      	    <span class="customer-text-date">{{formatDate(item.placedDate ? item.placedDate : item.entryDate)}}</span>
   	      	  </div>
   	      	</div>
   	      	<div class="col col-lg-4 col-12">
   	      	  <template v-for="(productList, index) in listProduct">
   	      	    <template v-if="productList.orderId == item.orderId && product.itemTypeEnumId=='ItemProduct'" v-for="product in productList.listProduct">
   	      	      <span class="order-product-description">{{product.itemDescription}}</span>
+                  <br>
   	      	    </template>
   	      	  </template>
   	      	  <p class="order-product-status">{{item.partStatusId}}</p>

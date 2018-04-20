@@ -663,7 +663,7 @@
 .customer-orders-ul {
     list-style-type: none;
     font-size: 1em;
-    margin-left: -20px;
+    margin-left: -25px;
 }
 
 .customer-orders-ul li {
@@ -858,4 +858,23 @@
     color: #666666;
     margin-top: -15px;
     font-size: 0.9em;
+}
+
+.footer-margin {
+    margin-top: 400px;
+}
+
+.help-title {
+    display: inline-block;
+    margin-top: -50px;
+}
+
+.about-img {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+}
+
+.contact-textarea {
+    resize:none;
 }

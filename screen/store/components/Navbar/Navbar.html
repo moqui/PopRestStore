@@ -37,16 +37,36 @@
                     </div>
                 </li>
 
-
-                <a class="nav-link">Deals</a>
+                <router-link :to="'/deals/PopcAllProducts'" tag="a" class="nav-link">
+                    Deals 
+                </router-link>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Customer Service
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Profile</a>
-                        <a class="dropdown-item" href="#">Signout</a>
+                        <router-link :to="'/help'" tag="a" class="dropdown-item">
+                            Help Center 
+                        </router-link>
+                        <router-link :to="'/help'" tag="a" class="dropdown-item">
+                            Delivery Rates 
+                        </router-link>
+                        <router-link :to="'/help'" tag="a" class="dropdown-item">
+                            Delivery Times  
+                        </router-link>
+                        <router-link :to="'/help'" tag="a" class="dropdown-item">
+                            Customer Pick Up 
+                        </router-link>
+                        <router-link :to="'/help'" tag="a" class="dropdown-item">
+                            How to pay 
+                        </router-link>
+                        <router-link :to="'/about'" tag="a" class="dropdown-item">
+                            About POP Shop 
+                        </router-link>
+                        <router-link :to="'/contact'" tag="a" class="dropdown-item">
+                            Contact Us 
+                        </router-link>
                     </div>
                 </li>
             </ul>
