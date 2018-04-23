@@ -11,6 +11,7 @@ var CheckOutPage = {
       shippingOption: "",
       addressOption: {},
       paymentOption: "",
+      isSameAddress: true,
       paymentId: {},
       urlList: {},
       stateShippingAddress:1,
@@ -78,6 +79,10 @@ var CheckOutPage = {
     },
     addCustomerPaymentMethod() {
       this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
+      if(this.isSameAddress) {
+        this.paymentMethod.postalContactMechId = this.addressOption.split(':')[0];
+        this.paymentMethod.telecomContactMechId = this.addressOption.split(':')[1];
+      }
       CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
         console.log(data);
         this.hideModal("modal2");

@@ -878,3 +878,16 @@
 .contact-textarea {
     resize:none;
 }
+
+.address-text {
+    color: #666666;
+    font-size: 0.9em;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.check-icon {
+    color: #04c3d5;
+    margin-left: 5px;
+    cursor: pointer;
+}

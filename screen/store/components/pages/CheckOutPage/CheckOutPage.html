@@ -154,6 +154,9 @@
             </span>
           </div>
         </div>
+        <input v-model="isSameAddress" class="check-icon" type="checkbox" />
+        <span class="address-text">My billing address is the same as my shipping address</span>
+        <br>
         <br>
         <a data-toggle="modal" data-target="#modal2" @click="cleanPaymentMethod()" class="text-add col-4 offset-lg-3">Add a Credit Card</a>
         <button data-toggle="collapse" data-target="#collapse3"  class="btn btn-continue" @click="addCartBillingShipping(3),setOptionNavbar(4)">Continue</button>
@@ -226,6 +229,7 @@
                   <option value="2018">2018</option>
                   <option value="2019">2019</option>
                   <option value="2020">2020</option>
+                  <option value="2021">2021</option>
                 </select>
               </div>
             </div>
