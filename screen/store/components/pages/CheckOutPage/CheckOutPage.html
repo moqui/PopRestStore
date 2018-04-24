@@ -53,12 +53,12 @@
       </p>
       <hr class="hr" v-bind:class="{ 'hr1': stateShippingAddress == 1, 'hr2':stateShippingAddress == 2 }">
       <div v-if="stateShippingAddress == 2" class="div-total">
-        <span class="span-description">{{shippingAddress.toName}}</span>
-        <span class="span-description">{{shippingAddress.address1}} {{shippingAddress.address2}}</span>
-        <span class="span-description">{{shippingAddress.city}}</span>
+        <span class="span-description">{{shippingAddressSelect.toName}}</span>
+        <span class="span-description">{{shippingAddressSelect.address1}} {{shippingAddressSelect.address2}}</span>
+        <span class="span-description">{{shippingAddressSelect.city}}</span>
         <span class="span-description">
           <i class="fa fa-phone phone-icon"></i>
-          {{shippingAddress.contactNumber}}
+          {{shippingAddressSelect.contactNumber}}
         </span>
       </div>
       <div id="collapse1" class="collapse show">
@@ -135,12 +135,28 @@
         <span class="span-description">{{paymentMethod.description}}</span>
         <span class="span-description">{{paymentMethod.titleOnAccount}}</span>
         <span class="span-description">{{paymentMethod.expireMonth}}/{{paymentMethod.expireYear}}</span>
+        <br>
+        <template v-if="isSameAddress == 2 && statePaymentMethod == 2">
+          <span>Billing address:</span> 
+          <br>
+          <span class="span-description">{{paymentMethod.toName}}</span>
+          <span class="span-description">{{paymentMethod.address1}} {{paymentMethod.address2}}</span>
+          <span class="span-description">{{paymentMethod.city}}</span>
+          <span class="span-description">
+            <i class="fa fa-phone phone-icon"></i>
+            {{paymentMethod.contactNumber}}
+          </span>
+        </template>
       </div>
+      <span v-if="isSameAddress == 0 && statePaymentMethod == 2">
+        My billing address is the same as my shipping address
+      </span>
+       
       <div id="collapse3" class="collapse">
         <div v-for="(item,index) in listPaymentMethods">
           <div v-bind:class="{ 'div-checkmark': paymentOption == item.paymentMethodId }">
             <label  :for="index + 'r3'" class="container-input">
-              <input :id="index + 'r3'"  type="radio" :value="item.paymentMethodId" v-model="paymentOption" @click="changePaymentMethod(item)"/>
+              <input :id="index + 'r3'"  type="radio" :value="item.paymentMethodId" v-model="paymentOption" @click="selectPaymentMethod(item)"/>
               <span class="checkmark"></span>
               <span class="span-description">{{item.paymentMethod.description}}</span>
               <span class="span-description">{{item.paymentMethod.titleOnAccount}}</span>
@@ -154,12 +170,46 @@
             </span>
           </div>
         </div>
-        <input v-model="isSameAddress" class="check-icon" type="checkbox" />
-        <span class="address-text">My billing address is the same as my shipping address</span>
+        <label class="container-input1" v-if="isSameAddress == 0">
+          <input @click="isSameAddress = '1'" type="checkbox" checked/>
+          <span class="checkmark-input"></span>
+        </label>
+        <span class="address-text" v-if="isSameAddress == 0">My billing address is the same as my shipping address</span>
+        <div class="div-billing-address" v-if="isSameAddress == 1">
+          <span class="address-text">Choose billing address: </span>
+          <div v-for="(option, index) in listShippingAddress" class="mt-3">
+            <div v-bind:class="{ 'div-checkmark': billingAddressOption == option.postalContactMechId + ':' +
+                option.telecomContactMechId, 'span-color': billingAddressOption != option.postalContactMechId + ':' +
+                option.telecomContactMechId }">
+              <label :for="index + 'a1'" class="container-input">
+              <input :id="index + 'a1'" type="radio" :value="option.postalContactMechId + ':' +
+                option.telecomContactMechId" v-model="billingAddressOption" @click="selectBillingAddress(option)"/>
+                <span class="checkmark"></span>
+                <span class="span-description">{{option.postalAddress.toName}}</span>
+                <span class="span-description">{{option.postalAddress.address1}} {{option.postalAddress.address2}}</span>
+                <span class="span-description">{{option.postalAddress.city}}</span>
+                <span class="span-description">
+                  <i class="fa fa-phone phone-icon"></i>
+                  {{option.telecomNumber.contactNumber}}
+                </span>
+              </label>
+            </div>
+          </div>
+          <br>   
+          <button  @click="addCustomerPaymentMethod(),isSameAddress = '2'" class="btn btn-continue float-right">
+            Use Address
+          </button>
+          <a data-toggle="modal" data-target="#modal1" @click="cleanShippingAddress()" class="text-add float-right">
+            Add a New Address
+          </a>
+        </div>
         <br>
-        <br>
-        <a data-toggle="modal" data-target="#modal2" @click="cleanPaymentMethod()" class="text-add col-4 offset-lg-3">Add a Credit Card</a>
-        <button data-toggle="collapse" data-target="#collapse3"  class="btn btn-continue" @click="addCartBillingShipping(3),setOptionNavbar(4)">Continue</button>
+        <a v-if="isSameAddress == 0 || isSameAddress ==2" data-toggle="modal" data-target="#modal2" @click="cleanPaymentMethod()" class="text-add col-4 offset-lg-3">
+          Add a Credit Card
+        </a>
+        <button v-if="isSameAddress == 0 || isSameAddress ==2" data-toggle="collapse" data-target="#collapse3"  class="btn btn-continue" @click="addCartBillingShipping(3),setOptionNavbar(4)">
+          Continue
+        </button>
       </div>
       <br>
       <p class="title-check-text">

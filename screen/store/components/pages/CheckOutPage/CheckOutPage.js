@@ -4,14 +4,17 @@ var CheckOutPage = {
     return {
       productsInCart: [],
       shippingAddress: {},
+      shippingAddressSelect: {},
       paymentMethod: {},
       shippingMethod: {},
+      billingAddress: {},
+      billingAddressOption: "",
       listShippingAddress: [],
       listPaymentMethods: [],
       shippingOption: "",
       addressOption: {},
       paymentOption: "",
-      isSameAddress: true,
+      isSameAddress: "0",
       paymentId: {},
       urlList: {},
       stateShippingAddress:1,
@@ -51,8 +54,8 @@ var CheckOutPage = {
       ProductService.getCartInfo(this.axiosConfig).then(function (data) {
           if(data.postalAddress != undefined) {
             this.addressOption = data.postalAddress.contactMechId + ':' + data.postalAddress.telecomContactMechId;
-            this.shippingAddress = data.postalAddress;
-            this.shippingAddress.contactNumber = data.telecomNumber.contactNumber;
+            this.shippingAddressSelect = data.postalAddress;
+            this.shippingAddressSelect.contactNumber = data.telecomNumber.contactNumber;
           }
           if(data.orderPart.carrierPartyId != undefined) {
             this.shippingOption = data.orderPart.carrierPartyId + ':' + data.orderPart.shipmentMethodEnumId;
@@ -65,11 +68,12 @@ var CheckOutPage = {
           }
           if(data.paymentInfoList[0] != null) {
             this.paymentOption = data.paymentInfoList[0].payment.paymentMethodId;
+            this.billingAddressOption = data.paymentInfoList[0].paymentMethod.postalContactMechId + ':' +data.paymentInfoList[0].paymentMethod.telecomContactMechId; 
+            this.selectBillingAddress(data.paymentInfoList[0]);
             for(var x in this.listPaymentMethods) {
               if(this.paymentOption === this.listPaymentMethods[x].paymentMethodId) {
-                this.paymentMethod = this.listPaymentMethods[x].paymentMethod;
-                this.paymentMethod.expireMonth = this.listPaymentMethods[x].expireMonth; 
-                this.paymentMethod.expireYear = this.listPaymentMethods[x].expireYear;
+                this.selectPaymentMethod(this.listPaymentMethods[x]);
+                this.selectBillingAddress(this.listPaymentMethods[x]);
                 break;
               }
             }
@@ -79,12 +83,11 @@ var CheckOutPage = {
     },
     addCustomerPaymentMethod() {
       this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
-      if(this.isSameAddress) {
+      if(this.isSameAddress && this.paymentMethod.postalContactMechId == null) {
         this.paymentMethod.postalContactMechId = this.addressOption.split(':')[0];
         this.paymentMethod.telecomContactMechId = this.addressOption.split(':')[1];
       }
       CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
-        console.log(data);
         this.hideModal("modal2");
         this.paymentMethod = {};
         this.getCustomerPaymentMethods();
@@ -162,6 +165,16 @@ var CheckOutPage = {
         this.getCartInfo();
       }.bind(this));
     },
+    selectBillingAddress(address) {
+      this.paymentMethod.address1 = address.postalAddress.address1;
+      this.paymentMethod.address2 = address.postalAddress.address2;
+      this.paymentMethod.toName = address.postalAddress.toName;
+      this.paymentMethod.city = address.postalAddress.city;
+      this.paymentMethod.countryGeoId = address.postalAddress.countryGeoId;
+      this.paymentMethod.contactNumber = address.telecomNumber.contactNumber;
+      this.paymentMethod.postalCode = address.postalAddress.postalCode;
+      this.paymentMethod.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
+    },
     selectAddress(address) {
       this.shippingAddress = {};
       this.shippingAddress.address1 = address.postalAddress.address1;
@@ -178,24 +191,22 @@ var CheckOutPage = {
     selectPaymentMethod(method) {
       this.paymentMethod = {};
       this.paymentMethod.paymentMethodId = method.paymentMethodId;
+      this.paymentMethod.description = method.paymentMethod.description;
       this.paymentMethod.paymentMethodTypeEnumId = method.paymentMethod.PmtCreditCard;
       this.paymentMethod.cardNumber = method.creditCard.cardNumber;
       this.paymentMethod.titleOnAccount = method.paymentMethod.titleOnAccount;
       this.paymentMethod.expireMonth = method.expireMonth;
       this.paymentMethod.expireYear = method.expireYear;
       this.paymentMethod.validateSecurityCode = "";
+      this.paymentMethod.postalContactMechId = method.paymentMethod.postalContactMechId;
+      this.paymentMethod.telecomContactMechId = method.paymentMethod.telecomContactMechId;
     },
     hideModal(modalid) {
       $('#'+modalid).modal('hide');
     },
     changeShippingAddress(data) {
-      this.shippingAddress = data.postalAddress;
-      this.shippingAddress.contactNumber = data.telecomNumber.contactNumber; 
-    }, 
-    changePaymentMethod(data) {
-      this.paymentMethod = data.paymentMethod;
-      this.paymentMethod.expireMonth = data.expireMonth; 
-      this.paymentMethod.expireYear = data.expireYear;
+      this.shippingAddressSelect = data.postalAddress;
+      this.shippingAddressSelect.contactNumber = data.telecomNumber.contactNumber; 
     },
     cleanShippingAddress() {
       this.shippingAddress = {};

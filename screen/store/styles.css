@@ -230,7 +230,6 @@
     height: 25px; 
     position: absolute;
     text-align: center;
-    justify-content: center;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -319,6 +318,10 @@
 .div-checkmark {
     background-color: #e7e7e7;
     border-radius: 5px;
+}
+
+.span-color span{
+    color: #adadad !important;
 }
 
 .container-input {
@@ -890,4 +893,65 @@
     color: #04c3d5;
     margin-left: 5px;
     cursor: pointer;
+}
+
+.div-billing-address {
+    margin-left: 30px;
+}
+
+.container-input1 {
+    position: relative;
+    margin-left: 5px;
+    margin-right: 10px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 1em;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.container-input1 input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    border-radius: 3px;
+    border:1px solid #999999;
+}
+
+.container-input1 input:checked ~ .checkmark-input {
+    background-color: #fff;
+}
+
+.checkmark-input:after {
+    content: "";
+    position: absolute;
+    display: none;
+    margin-left: -5px;
+    margin-top: -4px;
+}
+
+.container-input1 input:checked ~ .checkmark-input:after {
+    display: block;
+}
+
+.container-input1 .checkmark-input:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid #04c3d5;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }

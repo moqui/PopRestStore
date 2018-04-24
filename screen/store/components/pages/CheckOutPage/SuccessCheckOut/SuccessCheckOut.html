@@ -56,10 +56,10 @@
   	      <span class="col col-lg-3">Billing Address</span>
   	      <hr class="order-hr">
           <ul class="ul-custumer-order">
-            <li>{{orderList.postalAddress.toName}}</li>
-            <li>{{orderList.postalAddress.address1}}</li>
-            <li>{{orderList.postalAddress.city}} {{orderList.postalAddress.address2}}</li>
-            <li><i class="fa fa-phone phone-icon"></i> {{orderList.telecomNumber.contactNumber}}</li>
+            <li>{{orderList.paymentInfoList[0].postalAddress.toName}}</li>
+            <li>{{orderList.paymentInfoList[0].postalAddress.address1}}</li>
+            <li>{{orderList.paymentInfoList[0].postalAddress.city}} {{orderList.paymentInfoList[0].postalAddress.address2}}</li>
+            <li><i class="fa fa-phone phone-icon"></i> {{orderList.paymentInfoList[0].telecomNumber.contactNumber}}</li>
           </ul>
   	    </div>
   	  </div>
