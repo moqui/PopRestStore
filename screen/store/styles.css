@@ -755,9 +755,13 @@
 }
 
 .customer-link {
-    color: #1ec9d9;
+    color: #1ec9d9 !important;
     cursor: pointer;
     margin-right: 10px;
+}
+
+a:hover {
+    text-decoration: none;
 }
 
 .customer-link i {
@@ -954,4 +958,18 @@
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+.scrolling-wrapper {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.scrolling-wrapper:hover {
+    overflow-x: scroll;
+}
+
+.card-1 {
+    display: inline-block;
 }

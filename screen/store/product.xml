@@ -13,36 +13,26 @@ along with this software (see the LICENSE.md file). If not, see
 <http://creativecommons.org/publicdomain/zero/1.0/>.
 -->
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
-        require-authentication="anonymous-view">
-     <parameter name="productCategoryId" />
+        require-authentication="anonymous-view" allow-extra-path="true">
+     <parameter name="productId" />
      <parameter name="star"  />
 
      <pre-actions>
      	<set field="star" value="5"/>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
-        <if condition="extraPathNameList &amp;&amp; !productCategoryId">
-            <set field="productCategoryId" from="extraPathNameList[0]"/></if>
-        
-        <if condition="!productCategoryId">
-        	<set field="productCategoryId" value="PopcAllProducts"/>
-        </if>
-        <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory"/>
-        <set field="html_title" from="productCategory?.categoryName ?: ''"/>
+        <if condition="extraPathNameList &amp;&amp; !productId">
+            <set field="productId" from="extraPathNameList[0]"/></if>
     </pre-actions>
    
     <actions>
-        <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="pcmpList"
-                    in-map="[productCategoryId:productCategoryId]"/>
-
-        <set field="categoryId" value="PopcBrowseRoot"/>
-        <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="categoriesList"
-                    in-map="[productCategoryId:categoryId]"/>
+        <service-call name="popstore.ProductServices.get#ProductInfo" out-map="product"
+                    in-map="[productId:productId]"/>
     </actions>
 
 
     <widgets>
     	<render-mode><text type="html" location="component://PopRestStore/template/store/Navbar/navbar.html.ftl"/></render-mode>
-        <render-mode><text type="html" location="component://PopRestStore/template/store/home.html.ftl"/></render-mode>
+        <render-mode><text type="html" location="component://PopRestStore/template/store/ProductPage/productPage.html.ftl"/></render-mode>
         <render-mode><text type="html" location="component://PopRestStore/template/store/FooterPage/footerPage.html.ftl"/></render-mode>
     </widgets>
 </screen>

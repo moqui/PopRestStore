@@ -48,6 +48,7 @@ var storeInfo = ${storeInfoJson};
     </transition>
 
     <subscreens default-item="home" always-use-full-path="true"/>
+    <subscreens default-item="product" always-use-full-path="true"/>
 
     <widgets>
         <render-mode><text type="html" location="component://PopRestStore/template/store/root.html.ftl"/></render-mode>
