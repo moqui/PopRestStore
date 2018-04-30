@@ -17,6 +17,13 @@ along with this software (see the LICENSE.md file). If not, see
      <parameter name="productId" />
      <parameter name="star"  />
 
+    <transition name="createProductReview">
+        <service-call name="popstore.ProductServices.create#ProductReview" web-send-json-response="true"
+                in-map="context"/>
+        <default-response type="none"/>
+    </transition>
+
+
      <pre-actions>
      	<set field="star" value="5"/>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
@@ -27,12 +34,20 @@ along with this software (see the LICENSE.md file). If not, see
     <actions>
         <service-call name="popstore.ProductServices.get#ProductInfo" out-map="product"
                     in-map="[productId:productId]"/>
+        
+        <service-call name="popstore.ProductServices.get#ProductReviews" out-map="reviewsList"
+                    in-map="[productId:productId]"/>
+
+        <set field="categoryId" value="PopcBrowseRoot"/>
+        <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="categoriesList"
+                    in-map="[productCategoryId:categoryId]"/>
     </actions>
 
 
     <widgets>
     	<render-mode><text type="html" location="component://PopRestStore/template/store/Navbar/navbar.html.ftl"/></render-mode>
         <render-mode><text type="html" location="component://PopRestStore/template/store/ProductPage/productPage.html.ftl"/></render-mode>
+        <render-mode><text type="html" location="component://PopRestStore/template/store/ProductPage/productReview.html.ftl"/></render-mode>
         <render-mode><text type="html" location="component://PopRestStore/template/store/FooterPage/footerPage.html.ftl"/></render-mode>
     </widgets>
 </screen>

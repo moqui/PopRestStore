@@ -38,7 +38,9 @@
                  </#list>
         	</p>
         	<div class="product-description">
-        		${product.descriptionLong}
+        		<#if product.descriptionLong??>
+        			${product.descriptionLong}
+        		</#if>
         	</div>
       	</div>
       	<div class="col col-lg-3">
@@ -86,7 +88,10 @@
         </button>
       	</div>
 	</div>
+	<hr>
 </div>
+
+
 <script>
     var url = "/store/content/productImage/";
     //Default image
