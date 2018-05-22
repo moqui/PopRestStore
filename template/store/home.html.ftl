@@ -36,10 +36,10 @@
     <div class="text-left mt-3 modal-text">
         This Week's deals
     </div>
-    <div class="scrolling-wrapper">
+    <div class="carousel">
         <#list pcmpList.productList as product>
             <div class="col col-lg-3 card-1">
-                <div class="landing-product">
+                <a class="landing-product" href="/store/product/${product.productId}">
                     <figure class="figure">
                         <img width="90%" 
                         class="figure-img img-fluid"
@@ -77,14 +77,14 @@
                             </span>
                         </figcaption>
                     </figure>
-                </div>
+                </a>
             </div>
         </#list>
     </div>
     <div class="text-left mt-3 modal-text">
         Best Sellers
     </div>
-    <div class="scrolling-wrapper">
+    <div class="carousel">
         <#list pcmpList.productList as product>
             <div class="col col-lg-3 card-1">
                 <div class="landing-product">

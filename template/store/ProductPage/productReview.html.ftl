@@ -1,18 +1,19 @@
+<#assign starNumber=0>
 <div class="container mb-5">
 	<span class="modal-text">Customer Reviews</span>
 	<#list reviewsList.productReviewList as review>
   	<div class="review">
     	<span class="modal-text">"${review.productReview}"</span>
     	<br>
-    	<span class="star-rating review-text-size">
+      <span class="star-rating review-text-size">
     		<#list 1..5 as x>
     			<#if (review.productRating >= x)>
 					<i class="fas fa-star"></i>
 					<#else>
 					<i class="far fa-star"></i>
     			</#if>
-        	</#list>
-        </span>
+        </#list>
+      </span>
     	<span class="review-date review-text-size">
     		Reviewed by 
     		<#if review.postedAnonymous == "Y">
@@ -28,6 +29,7 @@
 		</span>
   	</div>
   	</#list>
+    <br>
   	<button data-toggle="modal" data-target="#modal1" class="btn btn-continue review-btn">Write a Review</button>
 </div>
 <div class="modal fade" id="modal1">
@@ -42,8 +44,28 @@
           	<div class="modal-body">
           		<input type="hidden" value="${ec.web.sessionToken}" name="moquiSessionToken" id="moquiSessionToken">
           		<input type="hidden" value="${productId}" name="productId" id="productId">
-            	<input type="text" value="5" name="productRating" id="productRating">
-            	<input type="text" name="productReview" id="productReview">
+              <input type="hidden" value="${starNumber}" name="productRating" id="productRating">
+              <div class='rating-stars text-center'>
+                <ul id='stars'>
+                  <li class='star' data-value='1'>
+                    <i class='fa fa-star fa-fw'></i>
+                  </li>
+                  <li class='star' data-value='2'>
+                    <i class='fa fa-star fa-fw'></i>
+                  </li>
+                  <li class='star' data-value='3'>
+                    <i class='fa fa-star fa-fw'></i>
+                  </li>
+                  <li class='star' data-value='4'>
+                    <i class='fa fa-star fa-fw'></i>
+                  </li>
+                  <li class='star' data-value='5'>
+                    <i class='fa fa-star fa-fw'></i>
+                  </li>
+                </ul>
+              </div>
+            	<br>
+            	<textarea class="form-control" rows="5" name="productReview" id="productReview"></textarea>
             </div>
             <div class="row justify-content-center">
 

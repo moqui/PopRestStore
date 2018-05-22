@@ -137,6 +137,7 @@ var CheckOutPage = {
       };
       ProductService.setCartPlace(data,this.axiosConfig).then(function (data) {
         this.getCartInfo();
+        console.log(data);
         this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
       }.bind(this));
     },

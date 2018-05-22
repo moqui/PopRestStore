@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>pop-rest-store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
     <!-- TODO: refer to specific version to avoid redirect -->
     <link rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css">
@@ -52,6 +53,58 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha256-5+02zu5UULQkO7w1GIr6vftCgMfFdZcAHeDtFnKZsBs=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js" integrity="sha256-LlN0a0J3hMkDLO1mhcMwy+GIMbIRV7kvKHx4oCxNoxI=" crossorigin="anonymous"></script>
 
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<script>
+    var urlPost = "s1/pop/cart/add";
+    $(document).ready(function(){
+        $('.carousel').slick({
+            infinite: true,
+            slidesToShow: 4,
+            slidesToScroll: 3,
+            nextArrow:"<button type='button' class='slick-next'><i class='fas fa-arrow-right'></i></button>",
+            prevArrow:"<button type='button' class='slick-prev'><i class='fas fa-arrow-left'></i></button>"
+        });
+
+        $("#cartAdd").click(function(){
+            $.post(storeConfig.restApiLocation + urlPost,$("#cart-add-form").serialize(), function(data){
+                $("#isSuccessAddCart").show();
+                console.log(data);
+            });
+        });
+
+        $('#stars li').on('mouseover', function(){
+        var onStar = parseInt($(this).data('value'), 10); 
+   
+        $(this).parent().children('li.star').each(function(e){
+            if (e < onStar) {
+                $(this).addClass('hover');
+            }
+            else {
+                $(this).removeClass('hover');
+            }
+        });
+    
+        }).on('mouseout', function(){
+            $(this).parent().children('li.star').each(function(e){
+            $(this).removeClass('hover');
+            });
+        });
+  
+        $('#stars li').on('click', function(){
+           var onStar = parseInt($(this).data('value'), 10); 
+           var stars = $(this).parent().children('li.star');
+    
+           for (i = 0; i < stars.length; i++) {
+               $(stars[i]).removeClass('selected');
+            }
+    
+            for (i = 0; i < onStar; i++) {
+               $(stars[i]).addClass('selected');
+            }    
+        });
+    });
+</script>
     <#if footerScriptText?has_content>${footerScriptText}</#if>
 </body>
 </html>
