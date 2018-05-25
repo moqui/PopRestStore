@@ -136,10 +136,12 @@ var CheckOutPage = {
         "cardSecurityCodeByPaymentId": this.paymentId
       };
       ProductService.setCartPlace(data,this.axiosConfig).then(function (data) {
-        this.getCartInfo();
-        console.log(data);
         this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
-      }.bind(this));
+      }.bind(this))
+      .catch(function (error) {
+        //Todo add error message to show to customer
+        console.log(error.response);
+      });
     },
     deletePaymentMethod(paymentMethodId) {
       CustomerService.deletePaymentMethod(paymentMethodId,this.axiosConfig).then(function (data) {

@@ -56,7 +56,8 @@
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
 <script>
-    var urlPost = "s1/pop/cart/add";
+    var urlCartAdd = "s1/pop/cart/add";
+    var urlAddReview = "s1/pop/products/reviews"
     $(document).ready(function(){
         $('.carousel').slick({
             infinite: true,
@@ -67,15 +68,21 @@
         });
 
         $("#cartAdd").click(function(){
-            $.post(storeConfig.restApiLocation + urlPost,$("#cart-add-form").serialize(), function(data){
+            $.post(storeConfig.restApiLocation + urlCartAdd,$("#cart-add-form").serialize(), function(data){
                 $("#isSuccessAddCart").show();
+                console.log(data);
+            });
+        });
+
+        $("#addReview").click(function(){
+            $.post(storeConfig.restApiLocation + urlAddReview,$("#product-review-form").serialize(), function(data){
+                $('#product-review-form').trigger("reset");
                 console.log(data);
             });
         });
 
         $('#stars li').on('mouseover', function(){
         var onStar = parseInt($(this).data('value'), 10); 
-   
         $(this).parent().children('li.star').each(function(e){
             if (e < onStar) {
                 $(this).addClass('hover');
@@ -84,7 +91,6 @@
                 $(this).removeClass('hover');
             }
         });
-    
         }).on('mouseout', function(){
             $(this).parent().children('li.star').each(function(e){
             $(this).removeClass('hover');
@@ -92,7 +98,9 @@
         });
   
         $('#stars li').on('click', function(){
-           var onStar = parseInt($(this).data('value'), 10); 
+           var onStar = parseInt($(this).data('value'), 10);
+           //the number of stars is assigned 
+           $("#productRating").val(onStar);
            var stars = $(this).parent().children('li.star');
     
            for (i = 0; i < stars.length; i++) {

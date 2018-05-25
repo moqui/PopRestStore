@@ -34,9 +34,9 @@
 </div>
 <div class="modal fade" id="modal1">
     <div class="modal-dialog" role="document">
-        <form class="modal-content" method="post" action="${createProductReview}">
+        <form class="modal-content" id="product-review-form">
           	<div class="modal-header">
-            	<h5 class="modal-title" id="exampleModalLabel">Add an Review</h5>
+            	<h5 class="modal-title">Add an Review</h5>
             	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
               		<span aria-hidden="true">&times;</span>
             	</button>
@@ -44,7 +44,8 @@
           	<div class="modal-body">
           		<input type="hidden" value="${ec.web.sessionToken}" name="moquiSessionToken" id="moquiSessionToken">
           		<input type="hidden" value="${productId}" name="productId" id="productId">
-              <input type="hidden" value="${starNumber}" name="productRating" id="productRating">
+              <input type="hidden" value="1" name="productRating" id="productRating">
+              <label>Rating</label>
               <div class='rating-stars text-center'>
                 <ul id='stars'>
                   <li class='star' data-value='1'>
@@ -65,11 +66,11 @@
                 </ul>
               </div>
             	<br>
-            	<textarea class="form-control" rows="5" name="productReview" id="productReview"></textarea>
+              <label>Comments</label>
+            	<textarea class="form-control text-area-review" rows="5" name="productReview" id="productReview"></textarea>
             </div>
             <div class="row justify-content-center">
-
-              	<button  class="btn btn-continue col col-sm-6 offset-sm-1" type="submit">Add Review</button>
+              	<button class="btn btn-continue col col-sm-6 offset-sm-1" id="addReview">Add Review</button>
               	<a data-dismiss="modal" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
             </div>
         </form>

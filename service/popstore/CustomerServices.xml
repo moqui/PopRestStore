@@ -16,7 +16,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <!-- Login and Register for eCommerce -->
 
-    <service verb="login" noun="Customer" authenticate="anonymous-all">
+    <service verb="login" noun="Customer">
         <in-parameters>
             <parameter name="username" required="true"/>
             <parameter name="password" required="true"/>

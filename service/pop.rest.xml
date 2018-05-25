@@ -26,7 +26,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <!-- Login and Register -->
 
-    <resource name="login" require-authentication="anonymous-all">
+    <resource name="login">
         <method type="post"><service name="popstore.CustomerServices.login#Customer"/></method></resource>
     <resource name="register" require-authentication="anonymous-all">
         <method type="post"><service name="popstore.CustomerServices.register#Customer"/></method></resource>

@@ -44,7 +44,6 @@ var ProductPage = {
         "currencyUomId":this.product.priceUomId,
         "quantity":this.quantity
       };
-      console.log(this.axiosConfig);
       ProductService.addProductCart(productCart,this.axiosConfig).then(function (data) {
         this.isSuccessAddCart = true;
       }.bind(this));

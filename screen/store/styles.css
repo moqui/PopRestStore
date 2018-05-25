@@ -1025,6 +1025,7 @@ a:hover {
 }
 .rating-stars ul > li.star {
     display:inline-block;
+    cursor: pointer;
 }
 
 .rating-stars ul > li.star > i.fa {
@@ -1038,4 +1039,36 @@ a:hover {
 
 .rating-stars ul > li.star.selected > i.fa {
     color:#ffed00;
+}
+
+.text-area-review {
+    resize: none;
+}
+
+.btn-login {
+    background-color: #04c3d5;
+    color: #fff;
+    height: 45px;
+}
+
+.btn-create-account {
+    background-color: #dd6231;
+    color: #fff;
+    height: 45px;
+}
+
+.login-form, .new-customer {
+    color: #666666;
+}
+
+.login-forgot {
+    float: right;
+    color: #04c3d5;
+    font-size: 0.8em;
+}
+
+.split {
+    height: 300px;
+    width: 1px;
+    background-color: #bfbfbf;
 }
