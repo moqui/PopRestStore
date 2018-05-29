@@ -12,6 +12,7 @@
     <div class="container">
         <div class="row">
             <div class="login-form col-sm-5">
+                {{loginErrormessage}}
                 <h1 class="text-left">Sign In</h1>
                 <div class="form-group row">
                     <label for="" class=" col-form-label col-sm-2 text-left">
@@ -21,7 +22,6 @@
                         <input v-model="username" type="text" class="form-control">
                     </div>
                 </div>
-
                 <div class="form-group row ">
                     <label for="" class="col-form-label col-sm-2 text-left">
                         Password
@@ -30,7 +30,7 @@
                         <input v-model="password" type="password" class="form-control">
                     </div>
                 </div>
-                <button class="btn btn-login offset-sm-2 btn-block col-sm-10" @click="login(username, password)">
+                <button class="btn btn-login offset-sm-2 btn-block col-sm-10" @click="login()">
                     Sign In
                 </button>
                 <router-link :to="'/'" tag="a">

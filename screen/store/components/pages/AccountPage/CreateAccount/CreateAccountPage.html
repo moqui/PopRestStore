@@ -1,0 +1,76 @@
+<div>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top order-navbar bg-dark">
+        <div class="d-flex flex-column moqui-navbar order-navbar">
+            <div class="container d-flex flex-row main-navbar">
+                <router-link class="navbar-brand" :to="'/'" tag="a">
+                    <img height="65px" class="moqui-logo" src="./assets/moqui-logo.svg" alt="">
+                    <span class="font-italic order-navbar-title">POP Shop</span>
+                </router-link>
+            </div>
+        </div>
+    </nav>
+    <div class="container account-container">
+        <div class="row">
+            <div class="col col-lg-7 offset-lg-1">
+                <h1 class="text-left">Sign In</h1>
+                <p class="">
+                    Welcome. You're just one step away from access to the number one stop for everything POP.
+                </p>
+                <div class="form-group row">
+                    <label for="" class=" col-form-label col-sm-3 text-left">
+                        First Name *
+                    </label>
+                    <div class="col-sm-7">
+                        <input type="text" v-model="accountInfo.firstName" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class=" col-form-label col-sm-3 text-left">
+                        Last Name *
+                    </label>
+                    <div class="col-sm-7">
+                        <input type="text" v-model="accountInfo.lastName" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class=" col-form-label col-sm-3 text-left">
+                        Email
+                    </label>
+                    <div class="col-sm-7">
+                        <input type="email" v-model="accountInfo.emailAddress" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class=" col-form-label col-sm-3 text-left">
+                        Password *
+                    </label>
+                    <div class="col-sm-7">
+                        <input type="password" v-model="accountInfo.newPassword" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class=" col-form-label col-sm-3 text-left">
+                        Confirm Password
+                    </label>
+                    <div class="col-sm-7">
+                        <input type="password" v-model="confirmPassword" class="form-control">
+                    </div>
+                </div>
+                <button class="btn btn-login offset-sm-3 col-sm-7" @click="createAccount()">
+                    Create Account
+                </button>
+            </div>
+            <div class="col-lg-1">
+                <div class="split-account"></div>
+            </div>
+            <div class="col col-lg-3">
+                <p class="already-text">Already have an account?</p>
+                <router-link :to="'/'" tag="a">
+                    <p class="sign-in">Sign in here</p>
+                </router-link>
+            </div>
+        </div>
+    </div>
+    <br>
+    <footer-page :infoLink="false" class="mt-5"/>
+</div>

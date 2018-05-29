@@ -74,6 +74,11 @@ along with this software (see the LICENSE.md file). If not, see
             </if>
         </actions>
     </service>
+    <service verb="logout" noun="Customer">
+        <actions>
+            <script>ec.user.logoutUser()</script>
+        </actions>
+    </service>
     <service verb="register" noun="Customer" authenticate="anonymous-all">
         <in-parameters>
             <parameter name="firstName" required="true"/><parameter name="middleName"/><parameter name="lastName" required="true"/>

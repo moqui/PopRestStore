@@ -17,6 +17,7 @@ var storeComps = {
   SuccessCheckOut,
   DealsPage,
   AccountPage,
+  CreateAccountPage,
   HelpPage,
   AboutPage,
   ContactPage

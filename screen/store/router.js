@@ -51,6 +51,11 @@ var router = new VueRouter({
       component: AccountPageTemplate
     },
     {
+      path: "/account/create",
+      name: "createaccount",
+      component: CreateAccountPageTemplate
+    },
+    {
       path: "/help",
       name: "help",
       component: HelpPageTemplate

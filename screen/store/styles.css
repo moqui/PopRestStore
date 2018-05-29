@@ -1072,3 +1072,26 @@ a:hover {
     width: 1px;
     background-color: #bfbfbf;
 }
+
+.split-account {
+    margin-top: 40px;
+    height: 120px;
+    width: 1.5px;
+    float: right;
+    background-color: #bfbfbf;
+}
+
+.account-container {
+    color: #666666;
+    margin-top: -50px;
+}
+
+.sign-in {
+    color: #04c3d5;
+    margin-top: -15px;
+    cursor: pointer;
+}
+
+.already-text {
+    margin-top: 80px;
+}
