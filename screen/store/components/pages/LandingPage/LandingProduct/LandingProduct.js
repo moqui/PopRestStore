@@ -1,7 +1,11 @@
 var LandingProduct = {
   name: "landing-product",
   data() {
-    return {};
+    return {
+      product1: {
+        smallImageList: []
+      }
+    };
   },
   components: {
     StarRating: StarRatingTemplate
@@ -17,7 +21,16 @@ var LandingProduct = {
       return storeConfig.productImageLocation + smallImageList[0].productContentId;
     }
   },
-  mounted() {}
+  mounted() {
+    if(this._props.product.smallImageList == undefined){
+      ProductService.getProduct(this._props.product.productId).then(function (data) {
+        this.product1 = data;
+        this.product1.smallImageList = data.contentList;
+      }.bind(this));
+    } else {
+      this.product1 = this._props.product;
+    }
+  }
 };
 var LandingProductTemplate = getPlaceholderRoute(
   "/store/components/pages/LandingPage/LandingProduct/LandingProduct.html",

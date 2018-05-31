@@ -2,18 +2,18 @@
     <figure class="figure">
         <img width="90%" 
             class="figure-img img-fluid"
-            v-if="product.smallImageList.length" 
-            :src="getProductSingleImg(product.smallImageList)"
+            v-if="product1.smallImageList != 'undefined'" 
+            :src="getProductSingleImg(product1.smallImageList)"
         >
-        <figcaption class="text-left title-product-text figure-caption">{{product.productName}}</figcaption>
+        <figcaption class="text-left title-product-text figure-caption">{{product1.productName}}</figcaption>
         <figcaption class="text-left figure-caption">
-            <star-rating :rating="product.rating" />
-            <span class="text-dark">{{product.numberOfRatings}}</span>
+            <star-rating :rating="product1.rating" />
+            <span class="text-dark">{{product1.numberOfRatings}}</span>
         </figcaption>
         <figcaption class="text-primary text-left figure-caption">
-            <span class="product-price-text">${{product.price}}</span>
+            <span class="product-price-text">${{product1.price}}</span>
             <span class="product-last-price">
-                <del v-if="product.listPrice">${{product.listPrice}}</del>
+                <del v-if="product1.listPrice">${{product1.listPrice}}</del>
             </span>
         </figcaption>
     </figure>

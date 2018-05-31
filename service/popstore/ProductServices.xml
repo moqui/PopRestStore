@@ -135,9 +135,12 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="productListPageRangeHigh" type="Integer"/>
         </out-parameters>
         <actions>
+            <set field="sessionAttributes" from="ec.web.sessionAttributes"/>
             <set field="productStoreId" from="sessionAttributes.productStoreId"/>
             <!-- TODO: if no productStoreId lookup somehow? should be set from initial call to content/config.js transition -->
-
+            <if condition="productCategoryId"><set field="queryString" from="(term ? term + ' AND ' : '') + 'categories.productCategoryId:' + productCategoryId"/></if>
+            <service-call name="org.moqui.search.SearchServices.search#DataDocuments" out-map="productList"
+                    in-map="[queryString:queryString, indexName:'popc', documentType:'PopcProduct']"/>
             <!-- TODO -->
         </actions>
     </service>

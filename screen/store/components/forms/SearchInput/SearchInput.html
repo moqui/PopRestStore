@@ -1,6 +1,6 @@
 <div class="search-input">
-    <input type="text" placeholder="Search...">
-    <button class="search-button">
+    <input type="text" placeholder="Search..." v-model="searchText">
+    <button class="search-button" @click="searchProduct()">
         <i class="fa fa-search"></i>
     </button>
 </div>

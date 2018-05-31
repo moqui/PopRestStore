@@ -21,6 +21,11 @@ var router = new VueRouter({
       component: ProductPageTemplate
     },
     {
+      path: "/product/search/:searchText",
+      name: "productsearch",
+      component: ProductSearchTemplate
+    },
+    {
       path: "/checkout",
       name: "checkout",
       component: CheckOutPageTemplate

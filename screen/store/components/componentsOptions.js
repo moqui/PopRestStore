@@ -11,6 +11,7 @@ var storeComps = {
   ProductPage,
   ProductReview,
   ProductImage,
+  ProductSearch,
   CheckOutPage,
   CustomerOrderPage,
   CustomerOrdersPage,
