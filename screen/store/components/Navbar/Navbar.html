@@ -17,9 +17,7 @@
                         <span class="navbar-pop-title">Official POP Merchandise</span>
                         <span class="text-center navbar-pop-subtitle">Quality 100% Guaranted</span>
                     </div>
-
                 </ul>
-
             </div>
         </div>
         <div v-if="subBar" class="container d-flex flex-row">
@@ -74,20 +72,36 @@
 
             <!-- Right aligned nav items -->
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        User
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <router-link :to="'/account'" tag="a" class="dropdown-item">
-                            Account Settings 
+                <template v-if="customerInfo.firstName != null">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            {{customerInfo.firstName}} Account
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <router-link :to="'/account'" tag="a" class="dropdown-item">
+                                Account Settings 
+                            </router-link>
+                            <router-link :to="'/orders'" tag="a" class="dropdown-item">
+                                My Orders
+                            </router-link>
+                            <a class="dropdown-item" href="#">Signout</a>
+                        </div>
+                    </li>
+                </template>
+                <template v-else>
+                    <li class="nav-item">
+                        <router-link :to="'/account/create'" tag="a" class="nav-link">  
+                            Join Now
                         </router-link>
-                        <router-link :to="'/orders'" tag="a" class="dropdown-item">
-                            My Orders
+                    </li>
+                    <li class="nav-item">
+                        <router-link :to="'/login'" tag="a" class="nav-link">
+                            <i class="fas fa-user"></i>  
+                            Sign In
                         </router-link>
-                    <a class="dropdown-item" href="#">Signout</a>
-                    </div>
-                </li>
+                    </li>
+                </template>
                 <li class="nav-item">
                     <router-link :to="'/checkout'" tag="a" class="nav-link">
                         <i class="fa fa-shopping-cart"></i>  
@@ -95,7 +109,6 @@
                     </router-link>
                 </li>
             </ul>
-
         </div>
     </div>
 </nav>

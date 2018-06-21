@@ -42,14 +42,14 @@
             </div>
             <div class="new-customer col-sm-5">
                 <h1 class="text-left">New Customer</h1>
-                <button class="btn btn-create-account btn-block col-sm-10">
-                    Create an Account
-                </button>
+                <router-link :to="'/account/create'" tag="button" class="btn btn-create-account btn-block col-sm-10">  
+                            Create an Account
+                </router-link>
                 <p class="new-customer-text mt-3">
                     Don't have a POP Commerce Account? Don't worry.<br> It's easy, free and only takes a minute.
                 </p>
             </div>
         </div>
     </div>
-    <footer-page class="fixed-bottom" :infoLink="false" />
+    <footer-page style="margin-top: 150px;" :infoLink="false" />
 </div>

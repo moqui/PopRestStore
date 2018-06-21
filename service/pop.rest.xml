@@ -42,6 +42,8 @@ along with this software (see the LICENSE.md file). If not, see
             <method type="get"><service name="popstore.ProductServices.get#ProductReviews"/></method>
             <method type="post"><service name="popstore.ProductServices.create#ProductReview"/></method>
         </resource>
+        <resource name="test"><method type="get"><service name="PayTrace.PayTraceVaultPaymentServices.send#LevelThreeData"/></method></resource>
+        <resource name="registertest"><method type="get"><service name="PayTrace.PayTraceVaultPaymentServices.authorize#Payment"/></method></resource>
     </resource>
     <resource name="categories" require-authentication="anonymous-view">
         <id name="productCategoryId">

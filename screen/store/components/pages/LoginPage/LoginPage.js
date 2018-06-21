@@ -13,7 +13,8 @@ var LoginPage = {
   methods: {
     login() {
       LoginService.login(this.username, this.password).then(function (data) {
-        console.log(data);
+        storeInfo.apiKey = data.apiKey;
+        this.$router.push({ name: 'Products'});
       }.bind(this))
       .catch(function (error) {
         this.loginErrormessage = error.response.data.errors;
