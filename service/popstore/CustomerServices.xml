@@ -74,6 +74,19 @@ along with this software (see the LICENSE.md file). If not, see
             </if>
         </actions>
     </service>
+    <service verb="reset" noun="Password" require-authentication="anonymous-view">
+        <in-parameters>
+            <parameter name="userId"/>
+            <parameter name="username"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="username"/>
+        </out-parameters>
+        <actions>
+           <!-- <service-call name="org.moqui.impl.UserServices.reset#Password" in-map="[userId:userId, username: 
+                    username]" out-map="response"/> -->
+        </actions>
+    </service>
     <service verb="logout" noun="Customer">
         <actions>
             <script>ec.user.logoutUser()</script>

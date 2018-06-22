@@ -11,7 +11,12 @@ var LoginPage = {
     apiKey: "apiKey"
   }),
   methods: {
-    login() {
+    login(event) {
+      event.preventDefault();
+      if(this.username.length < 3 || this.password.length < 3){
+        this.loginErrormessage = "You must type a valid Username and Password";
+        return;
+      }
       LoginService.login(this.username, this.password).then(function (data) {
         storeInfo.apiKey = data.apiKey;
         this.$router.push({ name: 'Products'});

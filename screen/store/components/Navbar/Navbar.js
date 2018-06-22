@@ -31,8 +31,8 @@ var Navbar = {
     },
     logout() {
       LoginService.logout().then(function (data) {
-        this.$router.push({ name: 'Products'});
-      });
+        this.$router.push({ name: 'login'});
+      }.bind(this));
     },
   },
   mounted() {

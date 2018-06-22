@@ -74,6 +74,11 @@ var router = new VueRouter({
       path: "/contact",
       name: "contact",
       component: ContactPageTemplate
+    },
+    {
+      path: "/resetPassword",
+      name: "resetPassword",
+      component: ResetPasswordTemplate
     }
   ]
 });

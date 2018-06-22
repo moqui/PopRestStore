@@ -21,5 +21,6 @@ var storeComps = {
   CreateAccountPage,
   HelpPage,
   AboutPage,
-  ContactPage
+  ContactPage,
+  ResetPasswordPage
 };

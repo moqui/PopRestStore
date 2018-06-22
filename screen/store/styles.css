@@ -1073,6 +1073,12 @@ a:hover {
     background-color: #bfbfbf;
 }
 
+.split-reset {
+    height: 90px;
+    width: 1px;
+    background-color: #bfbfbf;
+}
+
 .split-account {
     margin-top: 40px;
     height: 120px;
@@ -1094,4 +1100,17 @@ a:hover {
 
 .already-text {
     margin-top: 80px;
+}
+
+.reset-text { 
+    color: #848484;
+    margin-left: -40px;
+}
+
+.reset-link {
+    color: #30cedc;
+}
+
+.reset-link:hover {
+    color: #30cedc;
 }

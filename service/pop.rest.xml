@@ -32,6 +32,8 @@ along with this software (see the LICENSE.md file). If not, see
         <method type="get"><service name="popstore.CustomerServices.logout#Customer"/></method></resource>
     <resource name="register">
         <method type="post"><service name="popstore.CustomerServices.register#Customer"/></method></resource>
+    <resource name="resetPassword">
+        <method type="post"><service name="popstore.CustomerServices.reset#Password"/></method></resource>
 
     <!-- Product Information -->
 

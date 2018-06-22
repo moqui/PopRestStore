@@ -13,5 +13,10 @@ var LoginService = {
     return axios.get("/rest/s1/pop/logout").then(function (response) {
       return response.data;
     });
+  },
+  resetPassword(username) {
+    return axios.post("/rest/s1/pop/resetPassword",username).then(function (response) {
+      return response.data;
+    });
   }
 };

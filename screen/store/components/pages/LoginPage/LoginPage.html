@@ -11,42 +11,44 @@
     </nav>
     <div class="container">
         <div class="row">
-            <div class="login-form col-sm-5">
-                {{loginErrormessage}}
+            <form class="login-form col-lg-5 col-sm-12" v-on:submit="login" method="post">
                 <h1 class="text-left">Sign In</h1>
+                <span>
+                    {{loginErrormessage}}
+                </span>
                 <div class="form-group row">
-                    <label for="" class=" col-form-label col-sm-2 text-left">
+                    <label for="" class=" col-form-label col-lg-3 col-sm-12 text-left">
                         Email
                     </label>
-                    <div class="col-sm-10">
-                        <input v-model="username" type="text" class="form-control">
+                    <div class="col-lg-9 col-sm-12">
+                        <input v-model="username" type="text" class="form-control" required>
                     </div>
                 </div>
-                <div class="form-group row ">
-                    <label for="" class="col-form-label col-sm-2 text-left">
+                <div class="form-group row">
+                    <label for="" class="col-form-label col-sm-12 col-lg-3 text-left">
                         Password
                     </label>
-                    <div class="col-sm-10">
-                        <input v-model="password" type="password" class="form-control">
+                    <div class="col-lg-9 col-sm-12">
+                        <input v-model="password" type="password" class="form-control" required>
                     </div>
                 </div>
-                <button class="btn btn-login offset-sm-2 btn-block col-sm-10" @click="login()">
+                <button class="btn btn-login offset-lg-3 btn-block col-sm-12 col-lg-9" type="submit">
                     Sign In
                 </button>
                 <router-link :to="'/'" tag="a">
-                    <span class="login-forgot mt-2">Forgot Your Password?</span>
+                    <span class="login-forgot mt-2 mb-5">Forgot Your Password?</span>
                 </router-link>
-            </div>
-            <div class="col-sm-2">
+            </form>
+            <div class="col-sm-2 d-none d-lg-block d-xl-block">
                 <div class="split mx-auto"></div>
             </div>
-            <div class="new-customer col-sm-5">
+            <div class="new-customer col-sm-12 col-lg-5">
                 <h1 class="text-left">New Customer</h1>
-                <router-link :to="'/account/create'" tag="button" class="btn btn-create-account btn-block col-sm-10">  
-                            Create an Account
+                <router-link :to="'/account/create'" tag="button" class="btn btn-create-account btn-block col-sm-12 col-lg-10">  
+                    Create an Account
                 </router-link>
                 <p class="new-customer-text mt-3">
-                    Don't have a POP Commerce Account? Don't worry.<br> It's easy, free and only takes a minute.
+                    Don't have a POP Commerce Account? Don't worry. It's easy, free and only takes a minute.
                 </p>
             </div>
         </div>
