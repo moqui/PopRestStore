@@ -1,7 +1,7 @@
 <set field="productStoreId" value="POPC_DEFAULT"/>
 <#assign star = 3>
 <!--PopcAllProducts-->
-<div class="container-fluid features" style="margin-top: 135px;">
+<div class="container-fluid features d-none d-sm-none d-md-block" style="margin-top: 135px;">
     <div class="d-flex justify-content-around container">
         <div class="feature ">
             <div class="feature-icon">
@@ -38,7 +38,7 @@
     </div>
     <div class="carousel">
         <#list pcmpList.productList as product>
-            <div class="col col-lg-3 card-1">
+            <div>
                 <a class="landing-product" href="/store/product/${product.productId}">
                     <figure class="figure">
                         <img width="90%" 

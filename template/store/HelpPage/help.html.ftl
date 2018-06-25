@@ -23,7 +23,7 @@
         <div class="col col-lg-9 offset-lg-1 col-12">
             <span class="customer-orders-title help-title">Help Center</span>
             <br>
-            <p class="order-text-color account-subtitle mt-3">Delivery Rates</p>
+            <p class="order-text-color account-subtitle mt-3" id="delivery">Delivery Rates</p>
             <hr class="account-hr">
             <p class="modal-text">
                 We deliver nationwide from $2.99 for standard shipping. Express shipping cost $6.99 and comes with tracking.
@@ -31,13 +31,13 @@
                     <span class="customer-link">Contact us</span> for information about international orders. We can ship as far away Canada.
                 </p>
             </p>
-            <p class="order-text-color account-subtitle mt-5">Delivery Times</p>
+            <p class="order-text-color account-subtitle mt-5" id="customer-pick-up">Delivery Times</p>
             <span class="account-back-top">Back to Top</span>
             <hr class="account-hr">
             <p class="modal-text">
                 Standar shipping takes between 1 and 2 weeks. Express shipping takes 1 to 2 days.
             </p>
-            <p class="order-text-color account-subtitle mt-5">Customer Pick Up</p>
+            <p class="order-text-color account-subtitle mt-5" id="how-to-pay">Customer Pick Up</p>
             <span class="account-back-top">Back to Top</span>
             <hr class="account-hr">
             <p class="modal-text">

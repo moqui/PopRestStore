@@ -3,6 +3,7 @@ var Navbar = {
   data() {
     return {
       customerInfo: {},
+      productsQuantity: "",
       axiosConfig: {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
@@ -29,6 +30,12 @@ var Navbar = {
         console.log('An error has occurred' + error);
       });
     },
+    getCartInfo() {
+      ProductService.getCartInfo(this.axiosConfig).then(function (data) {
+        this.productsQuantity = data.orderItemList ? data.orderItemList.length : 0;
+        console.log(this.productsQuantity);
+      }.bind(this));
+    },
     logout() {
       LoginService.logout().then(function (data) {
         this.$router.push({ name: 'login'});
@@ -39,6 +46,7 @@ var Navbar = {
     if(storeInfo.apiKey != null){
       this.getCustomerInfo();
     }
+    this.getCartInfo();
   },
   created() {
     this.$store.dispatch("getAllCategories");

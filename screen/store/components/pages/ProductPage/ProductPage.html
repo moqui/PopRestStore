@@ -19,7 +19,7 @@
         <i class="fas fa-arrow-right"></i></router-link>
     </div>
     <div class="row">
-      <div class="col col-lg-1">
+      <div class="col col-lg-1 col-sm-4 col-4">
         <div>
           <img width="200px" height="200px" 
             class="figure-img img-fluid product-img"
@@ -31,10 +31,10 @@
             @click="setProductImge(getProductImageSrc(smallImageInfo))"> 
         </div>
       </div>
-      <div class="col col-lg-4">
+      <div class="col col-lg-4 col-sm-8 col-8">
         <img class="product-img-select" :src="productImgRoute">
       </div>
-      <div class="col col-lg-4">
+      <div class="col col-lg-4 col-sm-12 col-12">
         <p>
           <span class="product-title">
           {{product.productName}}

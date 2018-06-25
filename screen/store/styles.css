@@ -84,6 +84,7 @@
     padding: 3px 15px;
     margin-left: -4px;
     color: #fff;
+    cursor: pointer;
     position: absolute;
     top: 0;
     right: 0;
@@ -1113,4 +1114,26 @@ a:hover {
 
 .reset-link:hover {
     color: #30cedc;
+}
+
+.figure-img {
+    border:1px solid #f5f5f5;
+}
+
+.cart-quantity {
+    width: 20px;
+    height: 20px;
+    font-size: 0.8em;
+    background-color: #dd6231;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    margin-left: -10px;
+    margin-top: -5px;
+}
+
+.footer-a {
+    color: #fff !important;
 }
