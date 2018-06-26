@@ -4,7 +4,14 @@ var CreateAccountPage = {
   	return {
       accountInfo: [],
       confirmPassword: "",
-      errorMessage: ""
+      errorMessage: "",
+      axiosConfig: {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+          "Access-Control-Allow-Origin": "*",
+          "moquiSessionToken":storeInfo.moquiSessionToken
+        }
+      }
   	}
   },
   methods: {
@@ -24,10 +31,15 @@ var CreateAccountPage = {
         return;
       }
 
-      LoginService.createAccount(this.accountInfo).then(function (data) {
+      LoginService.createAccount(this.accountInfo, this.axiosConfig).then(function (data) {
         console.log(data);
       }.bind(this));
   	}
+  },
+  mounted() {
+    if(storeInfo.apiKey != null) {
+      this.$router.push({ name: 'Products'});
+    }
   },
   components: {
     "footer-page": FooterPageTemplate,

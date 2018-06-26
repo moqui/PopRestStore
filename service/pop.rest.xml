@@ -27,12 +27,12 @@ along with this software (see the LICENSE.md file). If not, see
     <!-- Login and Register -->
 
     <resource name="login" require-authentication="anonymous-view">
-        <method type="get"><service name="popstore.CustomerServices.login#Customer"/></method></resource>
+        <method type="post"><service name="popstore.CustomerServices.login#Customer"/></method></resource>
     <resource name="logout" require-authentication="anonymous-view">
         <method type="get"><service name="popstore.CustomerServices.logout#Customer"/></method></resource>
-    <resource name="register">
+    <resource name="register" require-authentication="anonymous-all">
         <method type="post"><service name="popstore.CustomerServices.register#Customer"/></method></resource>
-    <resource name="resetPassword">
+    <resource name="resetPassword" require-authentication="anonymous-all">
         <method type="post"><service name="popstore.CustomerServices.reset#Password"/></method></resource>
 
     <!-- Product Information -->

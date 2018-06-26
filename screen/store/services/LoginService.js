@@ -1,11 +1,11 @@
 var LoginService = {
-  login(username, password) {
-    return axios.get("/rest/s1/pop/login?username="+username+"&password="+password).then(function (response) {
+  login(user, headers) {
+    return axios.post("/rest/s1/pop/login", user, headers).then(function (response) {
       return response.data;
     });
   },
-  createAccount(account) {
-    return axios.post("/rest/s1/pop/register",account).then(function (response) {
+  createAccount(account, headers) {
+    return axios.post("/rest/s1/pop/register", account, headers).then(function (response) {
       return response.data;
     });
   },
@@ -14,8 +14,8 @@ var LoginService = {
       return response.data;
     });
   },
-  resetPassword(username) {
-    return axios.post("/rest/s1/pop/resetPassword",username).then(function (response) {
+  resetPassword(username, headers) {
+    return axios.post("/rest/s1/pop/resetPassword", username, headers).then(function (response) {
       return response.data;
     });
   }

@@ -33,11 +33,11 @@ var Navbar = {
     getCartInfo() {
       ProductService.getCartInfo(this.axiosConfig).then(function (data) {
         this.productsQuantity = data.orderItemList ? data.orderItemList.length : 0;
-        console.log(this.productsQuantity);
       }.bind(this));
     },
     logout() {
       LoginService.logout().then(function (data) {
+        storeInfo = {};
         this.$router.push({ name: 'login'});
       }.bind(this));
     },

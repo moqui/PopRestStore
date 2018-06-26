@@ -21,7 +21,7 @@
                         Email
                     </label>
                     <div class="col-lg-9 col-sm-12">
-                        <input v-model="username" type="text" class="form-control" required>
+                        <input v-model="user.username" type="text" class="form-control" required>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -29,13 +29,13 @@
                         Password
                     </label>
                     <div class="col-lg-9 col-sm-12">
-                        <input v-model="password" type="password" class="form-control" required>
+                        <input v-model="user.password" type="password" class="form-control" required>
                     </div>
                 </div>
                 <button class="btn btn-login offset-lg-3 btn-block col-sm-12 col-lg-9" type="submit">
                     Sign In
                 </button>
-                <router-link :to="'/'" tag="a">
+                <router-link :to="'/resetPassword'" tag="a">
                     <span class="login-forgot mt-2 mb-5">Forgot Your Password?</span>
                 </router-link>
             </form>

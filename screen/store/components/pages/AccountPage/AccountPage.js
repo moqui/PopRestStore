@@ -119,9 +119,13 @@ var AccountPage = {
     "footer-page": FooterPageTemplate
   },
   mounted() {
-    this.getCustomerInfo();
-    this.getCustomerAddress();
-    this.getCustomerPaymentMethods();
+    if(storeInfo.apiKey == null) {
+      this.$router.push({ name: 'Products'});
+    }else {
+      this.getCustomerInfo();
+      this.getCustomerAddress();
+      this.getCustomerPaymentMethods();
+    }
   } 
 };
 var AccountPageTemplate = getPlaceholderRoute(

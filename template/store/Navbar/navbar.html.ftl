@@ -84,20 +84,38 @@
 
             <!-- Right aligned nav items -->
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        User
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item">
-                            Account Settings 
+                <#if user??>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" 
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                            ${user.userFullName}
+                            Account
                         </a>
-                        <a class="dropdown-item" href="/store/d#/orders">
-                            My Orders
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="/store/d#/account">
+                                Account Settings 
+                            </a>
+                            <a class="dropdown-item" href="/store/d#/orders">
+                                My Orders
+                            </a>
+                            <a class="dropdown-item" href="#">Signout</a>
+                        </div>
+                    </li>
+                <#else>
+                    <li class="nav-item">
+                        <a href="/store/d#/account/create" class="nav-link">
+                            Join Now
                         </a>
-                    <a class="dropdown-item" href="#">Signout</a>
-                    </div>
-                </li>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/store/d#/login" class="nav-link">
+                            <i class="fas fa-user"></i>
+                            Sign In
+                        </a>
+                    </li>
+                </#if>
+
                 <li class="nav-item">
                     <a class="nav-link" href="/store/d#/checkout">
                         <i class="fa fa-shopping-cart"></i>  

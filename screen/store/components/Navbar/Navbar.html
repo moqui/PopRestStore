@@ -76,10 +76,11 @@
             <ul class="navbar-nav ml-auto">
                 <template v-if="customerInfo.firstName != null">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle text-capitalize" href="#" id="navbarDropdownMenuLink"
+                            data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-user"></i>
-                            {{customerInfo.firstName}} Account
+                            {{customerInfo.firstName}} {{customerInfo.middleName}} Account
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <router-link :to="'/account'" tag="a" class="dropdown-item">

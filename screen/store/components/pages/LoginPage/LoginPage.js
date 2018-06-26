@@ -2,9 +2,18 @@ var LoginPage = {
   name: "login",
   data() {
     return {
-      username: "",
-      password: "",
-      loginErrormessage: ""
+      user: {
+        username: "",
+        password: ""
+      },
+      loginErrormessage: "",
+      axiosConfig: {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+          "Access-Control-Allow-Origin": "*",
+          "moquiSessionToken":storeInfo.moquiSessionToken
+        }
+      }
     };
   },
   computed: Vuex.mapGetters({
@@ -13,17 +22,22 @@ var LoginPage = {
   methods: {
     login(event) {
       event.preventDefault();
-      if(this.username.length < 3 || this.password.length < 3){
+      if(this.user.username.length < 3 || this.user.password.length < 3){
         this.loginErrormessage = "You must type a valid Username and Password";
         return;
       }
-      LoginService.login(this.username, this.password).then(function (data) {
+      LoginService.login(this.user, this.axiosConfig).then(function (data) {
         storeInfo.apiKey = data.apiKey;
         this.$router.push({ name: 'Products'});
       }.bind(this))
       .catch(function (error) {
         this.loginErrormessage = error.response.data.errors;
       }.bind(this));;
+    }
+  },
+  mounted() {
+    if(storeInfo.apiKey != null) {
+      this.$router.push({ name: 'Products'});
     }
   },
   components: {

@@ -74,17 +74,17 @@ along with this software (see the LICENSE.md file). If not, see
             </if>
         </actions>
     </service>
-    <service verb="reset" noun="Password" require-authentication="anonymous-view">
+    <service verb="reset" noun="Password" require-authentication="anonymous-all">
         <in-parameters>
             <parameter name="userId"/>
             <parameter name="username"/>
         </in-parameters>
         <out-parameters>
-            <parameter name="username"/>
+            <parameter name="response"/>
         </out-parameters>
         <actions>
-           <!-- <service-call name="org.moqui.impl.UserServices.reset#Password" in-map="[userId:userId, username: 
-                    username]" out-map="response"/> -->
+            <service-call name="org.moqui.impl.UserServices.reset#Password" in-map="[username: username]" 
+                out-map="response"/>
         </actions>
     </service>
     <service verb="logout" noun="Customer">
@@ -92,7 +92,7 @@ along with this software (see the LICENSE.md file). If not, see
             <script>ec.user.logoutUser()</script>
         </actions>
     </service>
-    <service verb="register" noun="Customer" authenticate="anonymous-all">
+    <service verb="register" noun="Customer" require-authentication="anonymous-all">
         <in-parameters>
             <parameter name="firstName" required="true"/><parameter name="middleName"/><parameter name="lastName" required="true"/>
 
@@ -198,16 +198,12 @@ along with this software (see the LICENSE.md file). If not, see
     <service verb="update" noun="CustomerPassword">
         <in-parameters>
             <parameter name="userId"/>
+            <parameter name="username"/>
             <parameter name="oldPassword"/>
             <parameter name="newPassword"/>
             <parameter name="newPasswordVerify"/>
         </in-parameters>
         <actions>
-            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
-            <if condition="!customerPartyId"><return message="No active customer"/></if>
-            <set field="partyId" from="customerPartyId"/>
-            <set field="orderId" from="cartOrderId"/>
-
             <service-call name="org.moqui.impl.UserServices.update#Password" in-map="context"/>
         </actions>
     </service>
