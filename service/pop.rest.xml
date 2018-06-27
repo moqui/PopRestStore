@@ -101,7 +101,7 @@ along with this software (see the LICENSE.md file). If not, see
         <resource name="updateInfo">
             <method type="put"><service name="popstore.CustomerServices.update#Customer"/></method>
         </resource>
-        <resource name="updatePassword">
+        <resource name="updatePassword" require-authentication="anonymous-all">
             <method type="put"><service name="popstore.CustomerServices.update#CustomerPassword"/></method>
         </resource>
         <resource name="paymentMethods">

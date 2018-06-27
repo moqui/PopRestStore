@@ -39,7 +39,9 @@ along with this software (see the LICENSE.md file). If not, see
         <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="categoriesList"
                     in-map="[productCategoryId:categoryId]"/>
     </actions>
-
+    
+    <transition name="logout"><actions><script>ec.user.logoutUser()</script></actions>
+        <default-response url="/store"/><error-response url="."/></transition>
 
     <widgets>
     	<render-mode><text type="html" location="component://PopRestStore/template/store/Navbar/navbar.html.ftl"/></render-mode>

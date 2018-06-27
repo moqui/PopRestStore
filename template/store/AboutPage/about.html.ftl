@@ -7,7 +7,7 @@
         <span class="modal-text">About POP Shop</span>
     </div>
     <div class="row mt-4">
-        <div class="customer-menu">
+        <div class="customer-menu col col-lg-2 col-md-3 mb-5">
             <a href="/store/help" class="customer-link">Help Center</a>
             <ul class="customer-orders-ul">
                 <li>Delivery Rates</li>

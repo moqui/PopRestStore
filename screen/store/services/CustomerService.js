@@ -40,12 +40,12 @@ var CustomerService = {
     });
   },
   updateCustomerPassword(customerInfo,headers) {
-    return axios.put("/rest/s1/pop/customer/updatePassword",customerInfo,headers).then(function (response) {
+    return axios.put("/rest/s1/pop/customer/updatePassword",customerInfo, headers).then(function (response) {
       return response.data;
     });
   },
   deletePaymentMethod(paymentMethodId,headers) {
-    return axios.delete("/rest/s1/pop/customer/paymentMethods/"+paymentMethodId,headers).then(function (response) {
+    return axios.delete("/rest/s1/pop/customer/paymentMethods/"+paymentMethodId, headers).then(function (response) {
       return response.data;
     });
   },

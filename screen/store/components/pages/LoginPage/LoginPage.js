@@ -32,7 +32,7 @@ var LoginPage = {
       }.bind(this))
       .catch(function (error) {
         this.loginErrormessage = error.response.data.errors;
-      }.bind(this));;
+      }.bind(this));
     }
   },
   mounted() {

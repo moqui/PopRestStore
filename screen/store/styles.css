@@ -1137,3 +1137,9 @@ a:hover {
 .footer-a {
     color: #fff !important;
 }
+
+.next-step {
+    cursor: pointer;
+    font-size: 0.8em;
+    color: #a8a8a8;
+}

@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="d-flex flex-column moqui-navbar">
         <div class="container d-flex flex-row main-navbar">
-            <a class="navbar-brand d-none d-sm-block" :to="'/'" >
+            <a class="navbar-brand d-none d-sm-block"  href="/store">
                 <img height="60px" class="moqui-logo moqui-logo1" src="/store/assets/moqui-logo.svg" alt="">
                 <span class="font-italic navbar-title">POP Shop</span>
             </a>
@@ -26,9 +26,7 @@
                         <span class="navbar-pop-title">Official POP Merchandise</span>
                         <span class="text-center navbar-pop-subtitle">Quality 100% Guaranted</span>
                     </div>
-
                 </ul>
-
             </div>
         </div>
         <div id="nav_collapse1" class="container navbar-collapse collapse">
@@ -56,25 +54,25 @@
                         Customer Service
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" href="/store/help">
                             Help Center 
                         </a>
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" href="/store/help">
                             Delivery Rates 
                         </a>
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" href="/store/help#delivery">
                             Delivery Times  
                         </a>
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" href="/store/help#customer-pick-up">
                             Customer Pick Up 
                         </a>
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" href="/store/help#how-to-pay">
                             How to pay 
                         </a>
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" href="/store/about">
                             About POP Shop 
                         </a>
-                        <a class="dropdown-item">
+                        <a class="dropdown-item" href="/store/contact">
                             Contact Us 
                         </a>
                     </div>
@@ -99,7 +97,9 @@
                             <a class="dropdown-item" href="/store/d#/orders">
                                 My Orders
                             </a>
-                            <a class="dropdown-item" href="#">Signout</a>
+                            <form method="get" action="/rest/s1/pop/logout">
+                                <button class="dropdown-item" type="submit" style="cursor: pointer;">Signout</button>
+                            </form>
                         </div>
                     </li>
                 <#else>
