@@ -5,6 +5,8 @@ var AccountPage = {
       customerInfo: {},
       passwordInfo: {},
       customerAddressList: [],
+      countriesList: [],
+      regionsList: [],
       customerAddress: {},
       customerPaymentMethods: [],
       addressOption: "",
@@ -87,6 +89,16 @@ var AccountPage = {
         this.getCustomerAddress();
       }.bind(this));
     },
+    getCountries() {
+      GeoService.getCountries().then(function (data) {
+        this.countriesList = data.geoList;
+      }.bind(this));
+    },
+    getRegions(geoId) {
+      GeoService.getRegions(geoId).then(function (data){
+        this.regionsList = data.resultList;
+      }.bind(this));
+    },
     selectAddress(address) {
       this.customerAddress = {};
       this.customerAddress.address1 = address.postalAddress.address1;
@@ -99,6 +111,9 @@ var AccountPage = {
       this.customerAddress.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
       this.customerAddress.postalContactMechId = address.postalContactMechId;
       this.customerAddress.telecomContactMechId = address.telecomContactMechId;
+      if(this.customerAddress.countryGeoId != null){
+        this.getRegions(this.customerAddress.countryGeoId);
+      }
     },
     selectPaymentMethod(method) {
       this.paymentMethod = {};
@@ -125,6 +140,8 @@ var AccountPage = {
       this.getCustomerInfo();
       this.getCustomerAddress();
       this.getCustomerPaymentMethods();
+      this.getCountries();
+      this.getRegions();
     }
   } 
 };

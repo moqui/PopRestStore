@@ -5,7 +5,7 @@
                 <img height="60px" class="moqui-logo moqui-logo1" src="/store/assets/moqui-logo.svg" alt="">
                 <span class="font-italic navbar-title">POP Shop</span>
             </a>
-            <a class="navbar-brand d-block d-sm-none">
+            <a class="navbar-brand d-block d-sm-none" href="/store">
                 <span class="font-italic navbar-title">POP Shop</span>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav_collapse1" 
@@ -38,14 +38,14 @@
                     
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <#list categoriesList.subCategoryList as category>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="/store/d#/deals/${category.productCategoryId}">
                                 ${category.categoryName}
                             </a>
                         </#list>
                     </div>
                 </li>
 
-                <a class="nav-link">
+                <a class="nav-link" href="/store/d#/deals/PopcAllProducts">
                     Deals 
                 </a>
 
@@ -54,25 +54,25 @@
                         Customer Service
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="/store/help">
+                        <a class="dropdown-item" href="/store/content/help">
                             Help Center 
                         </a>
-                        <a class="dropdown-item" href="/store/help">
+                        <a class="dropdown-item" href="/store/content/help">
                             Delivery Rates 
                         </a>
-                        <a class="dropdown-item" href="/store/help#delivery">
+                        <a class="dropdown-item" href="/store/content/help#delivery">
                             Delivery Times  
                         </a>
-                        <a class="dropdown-item" href="/store/help#customer-pick-up">
+                        <a class="dropdown-item" href="/store/content/help#customer-pick-up">
                             Customer Pick Up 
                         </a>
-                        <a class="dropdown-item" href="/store/help#how-to-pay">
+                        <a class="dropdown-item" href="/store/content/help#how-to-pay">
                             How to pay 
                         </a>
-                        <a class="dropdown-item" href="/store/about">
+                        <a class="dropdown-item" href="/store/content/about">
                             About POP Shop 
                         </a>
-                        <a class="dropdown-item" href="/store/contact">
+                        <a class="dropdown-item" href="/store/content/contact">
                             Contact Us 
                         </a>
                     </div>
@@ -97,9 +97,9 @@
                             <a class="dropdown-item" href="/store/d#/orders">
                                 My Orders
                             </a>
-                            <form method="get" action="/rest/s1/pop/logout">
-                                <button class="dropdown-item" type="submit" style="cursor: pointer;">Signout</button>
-                            </form>
+                            <a class="dropdown-item" id="logout">
+                                Signout
+                            </a>
                         </div>
                     </li>
                 <#else>
@@ -118,6 +118,13 @@
 
                 <li class="nav-item">
                     <a class="nav-link" href="/store/d#/checkout">
+                        <span class="cart-quantity">
+                            <#if cartList.orderItemList??>
+                                ${cartList.orderItemList?size}
+                            <#else>
+                                0
+                            </#if>
+                        </span>
                         <i class="fa fa-shopping-cart"></i>  
                         Cart
                     </a>

@@ -11,6 +11,8 @@ var CheckOutPage = {
       billingAddressOption: "",
       listShippingAddress: [],
       listPaymentMethods: [],
+      countriesList: [],
+      regionsList: [],
       shippingOption: "",
       addressOption: {},
       paymentOption: "",
@@ -48,6 +50,16 @@ var CheckOutPage = {
     getCartShippingOptions() {
       ProductService.getCartShippingOptions(this.axiosConfig).then(function (data) {
         this.listShippingOptions = data.shippingOptions;
+      }.bind(this));
+    },
+    getCountries() {
+      GeoService.getCountries().then(function (data) {
+        this.countriesList = data.geoList;
+      }.bind(this));
+    },
+    getRegions(geoId) {
+      GeoService.getRegions(geoId).then(function (data){
+        this.regionsList = data.resultList;
       }.bind(this));
     },
     getCartInfo() {
@@ -228,6 +240,7 @@ var CheckOutPage = {
     this.getCartInfo();
     this.getCustomerShippingAddresses();
     this.getCustomerPaymentMethods();
+    this.getCountries();
   }
 };
 var CheckOutPageTemplate = getPlaceholderRoute(

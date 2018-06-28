@@ -213,8 +213,11 @@
             <div class="form-group row">
               <label for="country" class="col-sm-3 col-form-label modal-text">Country <span class="modal-text-required">*</span></label>
               <div class="col-sm-9">
-                <select v-model="customerAddress.countryGeoId" class="form-control">
-                  <option value="USA">United States</option>
+                <select v-model="customerAddress.countryGeoId" class="form-control" 
+                  @change="getRegions(customerAddress.countryGeoId)">
+                  <option v-for="country in countriesList" :value="country.geoId">
+                    {{country.geoName}}
+                  </option>
                 </select>
               </div>
             </div>
@@ -240,7 +243,7 @@
               <label for="state" class="col-sm-3 col-form-label modal-text">State <span class="modal-text-required">*</span></label>
               <div class="col-sm-9">
                 <select v-model="customerAddress.stateProvinceGeoId" class="form-control">
-                  <option value="USA_AK">Alaska</option>
+                  <option v-for="region in regionsList" :value="region.geoId">{{region.geoName}}</option>
                 </select>
               </div>
             </div>

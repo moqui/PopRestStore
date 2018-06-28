@@ -8,14 +8,14 @@
     </div>
     <div class="row mt-4">
         <div class="customer-menu col col-lg-2 col-md-3 mb-5">
-            <a href="/store/help" class="customer-link">Help Center</a>
+            <a href="/store/content/help" class="customer-link">Help Center</a>
             <ul class="customer-orders-ul">
                 <li>Delivery Rates</li>
                 <li>Delivery Times</li>
                 <li>Customer Pick Up</li>
                 <li>How to Pay</li>
             </ul>
-            <a href="/store/about" class="customer-link">About POP Shop</a>
+            <a href="/store/content/about" class="customer-link">About POP Shop</a>
             <p class="modal-text">Contact Us</p>
         </div>
         <div class="col col-lg-9 col-md-9 offset-lg-1 col-12">

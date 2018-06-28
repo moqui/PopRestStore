@@ -57,7 +57,8 @@
 
 <script>
     var urlCartAdd = "s1/pop/cart/add";
-    var urlAddReview = "s1/pop/products/reviews"
+    var urlAddReview = "s1/pop/products/reviews";
+    var urlLogOut = "s1/pop/logout";
     $(document).ready(function(){
         $('.carousel').slick({
             infinite: true,
@@ -102,6 +103,12 @@
             $.post(storeConfig.restApiLocation + urlAddReview,$("#product-review-form").serialize(), function(data){
                 $('#product-review-form').trigger("reset");
                 console.log(data);
+            });
+        });
+
+        $("#logout").click(function(){
+            $.get(storeConfig.restApiLocation + urlLogOut, function(data){
+                window.location.href = "/store";
             });
         });
 

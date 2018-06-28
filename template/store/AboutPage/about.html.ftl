@@ -8,7 +8,7 @@
     </div>
     <div class="row mt-4">
         <div class="customer-menu col col-lg-2 col-md-3 mb-5">
-            <a href="/store/help" class="customer-link">Help Center</a>
+            <a href="/store/content/help" class="customer-link">Help Center</a>
             <ul class="customer-orders-ul">
                 <li>Delivery Rates</li>
                 <li>Delivery Times</li>
@@ -16,7 +16,7 @@
                 <li>How to Pay</li>
             </ul>
             <span class="modal-text">About POP Shop</span>
-            <a href="/store/contact" class="customer-link">Contact Us</a>
+            <a href="/store/content/contact" class="customer-link">Contact Us</a>
         </div>
         <div class="col col-lg-9 offset-lg-1 col-12">
             <span class="customer-orders-title help-title">About POP Shop</span>

@@ -38,6 +38,7 @@ along with this software (see the LICENSE.md file). If not, see
     <script src="/store/services/LoginService.js"></script>
     <script src="/store/services/ProductsService.js"></script>
     <script src="/store/services/CustomerService.js"></script>
+    <script src="/store/services/GeoService.js"></script>
     <script src="/store/components/RoutePlaceholder.js"></script>
     <script src="/store/components/forms/SearchInput/SearchInput.js"></script>
     <script src="/store/components/forms/StarRating/StarRating.js"></script>

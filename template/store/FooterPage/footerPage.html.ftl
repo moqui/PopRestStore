@@ -3,41 +3,41 @@
   	    <div class="row" v-if="infoLink">
   	        <ul class="col col-lg-3 footer-ul">
   	            <li>
-                    <a href="/store/help" class="footer-a">
+                    <a href="/store/content/help" class="footer-a">
                         Help Center
                     </a>
                 </li>
   	            <li>
-                    <a href="/store/help" class="footer-a">
+                    <a href="/store/content/help" class="footer-a">
                         Delivery Rates
                     </<a>
                 </li>
   	            <li>
-                    <a href="/store/help#delivery" class="footer-a">
+                    <a href="/store/content/help#delivery" class="footer-a">
                         Delivery Times
                     </a>
                 </li>
   	        </ul>
   	        <ul class="col col-lg-3 footer-ul">
   	            <li>
-                    <a href="/store/help#customer-pick-up" class="footer-a">
+                    <a href="/store/content/help#customer-pick-up" class="footer-a">
                         Customer Pick Up
                     </a>
                 </li>
   	            <li>
-                    <a href="/store/help#how-to-pay" class="footer-a">
+                    <a href="/store/content/help#how-to-pay" class="footer-a">
                         How to Pay
                     </a>
                 </li>
   	        </ul>
   	        <ul class="col col-lg-3 footer-ul">
   	            <li>
-                    <a href="/store/about" class="footer-a">
+                    <a href="/store/content/about" class="footer-a">
                         About POP Shop
                     </a>
                 </li>
   	            <li>
-                    <a href="/store/contact" class="footer-a">
+                    <a href="/store/content/contact" class="footer-a">
                         Contact Us
                     </a>
                 </li>

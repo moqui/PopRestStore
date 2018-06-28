@@ -18,7 +18,6 @@ along with this software (see the LICENSE.md file). If not, see
      <parameter name="star"  />
 
      <pre-actions>
-        <set field="user" from="ec.user.userAccount"/>
      	<set field="star" value="5"/>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
         <if condition="extraPathNameList &amp;&amp; !productCategoryId">
@@ -34,17 +33,10 @@ along with this software (see the LICENSE.md file). If not, see
     <actions>
         <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="pcmpList"
                     in-map="[productCategoryId:productCategoryId]"/>
-
-        <set field="categoryId" value="PopcBrowseRoot"/>
-        <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="categoriesList"
-                    in-map="[productCategoryId:categoryId]"/>
     </actions>
-    
-    <transition name="logout"><actions><script>ec.user.logoutUser()</script></actions>
-        <default-response url="/store"/><error-response url="."/></transition>
 
     <widgets>
-    	<render-mode><text type="html" location="component://PopRestStore/template/store/Navbar/navbar.html.ftl"/></render-mode>
+        <render-mode><text type="html" location="component://PopRestStore/template/store/Navbar/navbar.html.ftl"/></render-mode>
         <render-mode><text type="html" location="component://PopRestStore/template/store/home.html.ftl"/></render-mode>
         <render-mode><text type="html" location="component://PopRestStore/template/store/FooterPage/footerPage.html.ftl"/></render-mode>
     </widgets>

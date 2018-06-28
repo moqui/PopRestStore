@@ -35,6 +35,19 @@ along with this software (see the LICENSE.md file). If not, see
     <resource name="resetPassword" require-authentication="anonymous-all">
         <method type="post"><service name="popstore.CustomerServices.reset#Password"/></method></resource>
 
+
+     <!-- Geos --> 
+     
+    <resource name="geos">
+        <method type="get">
+            <service name="popstore.StoreServices.get#Geos"/></method>
+        <id name="geoId">
+            <method type="get"><entity name="geos" masterName="default" operation="one"/></method>
+            <resource name="regions"><method type="get">
+                    <service name="org.moqui.impl.BasicServices.get#GeoRegionsForDropDown"/></method></resource>
+        </id>
+    </resource>  
+
     <!-- Product Information -->
 
     <resource name="products" require-authentication="anonymous-view">
