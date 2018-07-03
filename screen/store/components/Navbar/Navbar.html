@@ -31,7 +31,7 @@
                     </a>
                     
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <router-link class="dropdown-item" :to="'/deals/'+category.productCategoryId" tag="a" v-for="category in categories" :key="category.productCategoryId">
+                        <router-link class="dropdown-item item-color" :to="'/deals/'+category.productCategoryId" tag="a" v-for="category in categories" :key="category.productCategoryId">
                             {{category.categoryName}}
                         </router-link>
                     </div>

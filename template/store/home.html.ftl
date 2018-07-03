@@ -81,6 +81,7 @@
             </div>
         </#list>
     </div>
+    <hr/>
     <div class="text-left mt-3 modal-text">
         Best Sellers
     </div>

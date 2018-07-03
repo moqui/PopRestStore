@@ -17,6 +17,7 @@ var CheckOutPage = {
       addressOption: {},
       paymentOption: "",
       isSameAddress: "0",
+      responseMessage: "",
       paymentId: {},
       urlList: {},
       stateShippingAddress:1,
@@ -95,6 +96,26 @@ var CheckOutPage = {
     },
     addCustomerPaymentMethod() {
       this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
+      if(this.paymentMethod.titleOnAccount == null || 
+        this.paymentMethod.titleOnAccount.trim() == "" ||
+        this.paymentMethod.cardNumber == null ||
+        this.paymentMethod.cardNumber.trim() == "" ||
+        this.paymentMethod.expireMonth == null || 
+        this.paymentMethod.expireMonth.trim() == "" || 
+        this.paymentMethod.expireYear == null || 
+        this.paymentMethod.expireYear.trim() == "" || 
+        this.paymentMethod.cardSecurityCode == null ||
+        this.paymentMethod.cardSecurityCode.trim() == "") {
+        this.responseMessage = "Verify the required fields";
+        return;
+      }
+
+      if(this.paymentMethod.cardNumber.startsWith("5")) {
+        this.paymentMethod.creditCardTypeEnumId = "CctMasterCard";
+      } else if(this.paymentMethod.cardNumber.startsWith("4")){
+        this.paymentMethod.creditCardTypeEnumId = "CctVisa";
+      }
+
       if(this.isSameAddress && this.paymentMethod.postalContactMechId == null) {
         this.paymentMethod.postalContactMechId = this.addressOption.split(':')[0];
         this.paymentMethod.telecomContactMechId = this.addressOption.split(':')[1];
@@ -212,7 +233,7 @@ var CheckOutPage = {
       this.paymentMethod.titleOnAccount = method.paymentMethod.titleOnAccount;
       this.paymentMethod.expireMonth = method.expireMonth;
       this.paymentMethod.expireYear = method.expireYear;
-      this.paymentMethod.validateSecurityCode = "";
+      this.paymentMethod.cardSecurityCode = "";
       this.paymentMethod.postalContactMechId = method.paymentMethod.postalContactMechId;
       this.paymentMethod.telecomContactMechId = method.paymentMethod.telecomContactMechId;
     },

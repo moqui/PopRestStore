@@ -1,4 +1,3 @@
-<#assign star = 5>
 <div class="container" style="margin-top: 150px;">
     <a class="customer-link"  href="/store">
         Home 
@@ -54,7 +53,7 @@
       			    <#if product.listPrice??>
           		      <span class="save-circle" v-if="product.listPrice">
             		        <span class="save-circle-title">SAVE</span>
-            		        <span class="save-circle-text">$${(product.listPrice - product.price)}</span>
+            		        <span class="save-circle-text">$${(product.listPrice - product.price)?string(",##0.00")}</span>
           		      </span>
           		  </#if>
                 <form id="cart-add-form">

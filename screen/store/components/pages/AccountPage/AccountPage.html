@@ -164,6 +164,7 @@
             </button>
           </div>
           <div class="modal-body">
+            <span>{{responseMessage}}</span>
             <div class="form-group row">
           	  <label class="col-sm-4 col-form-label modal-text">Old Password *</label>
               <div class="col-sm-7">
@@ -278,6 +279,7 @@
             </button>
           </div>
           <div class="modal-body">
+            <span>{{responseMessage}}</span>
             <div class="form-group row">
               <label for="card" class="col-sm-3 col-form-label modal-text">Card Number <span class="modal-text-required">*</span></label>
               <div class="col-sm-9">
@@ -328,7 +330,7 @@
               <div class="col-sm-9">
                 <input class="form-control" id="security"
                       type="text"
-                      v-model="paymentMethod.validateSecurityCode"
+                      v-model="paymentMethod.cardSecurityCode"
                       placeholder="3 or 4 Digits" required/>
               </div>
             </div>

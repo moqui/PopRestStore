@@ -1,4 +1,3 @@
-<#assign starNumber=0>
 <div class="container mb-5">
 	<span class="modal-text">Customer Reviews</span>
 	<#list reviewsList.productReviewList as review>

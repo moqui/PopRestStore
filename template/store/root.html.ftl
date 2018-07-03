@@ -112,6 +112,11 @@
             });
         });
 
+        $("#form-search").submit(function(event){
+            event.preventDefault();
+            window.location.href = "/store/d#/product/search/" + $(this).serializeArray()[0].value;
+        });
+      
         $('#stars li').on('mouseover', function(){
         var onStar = parseInt($(this).data('value'), 10); 
         $(this).parent().children('li.star').each(function(e){

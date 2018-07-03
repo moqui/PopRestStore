@@ -14,12 +14,12 @@
             </button>
 
             <div class="navbar-collapse collapse">
-                <div class="search-input">
-                    <input type="text" placeholder="Search...">
-                    <button class="search-button">
+                <form id="form-search" class="search-input" action="#">
+                    <input type="text" placeholder="Search..." name="search" id="search">
+                    <button class="search-button" type="submit">
                         <i class="fa fa-search"></i>
                     </button>
-                </div>
+                </form>
                 <!-- Right aligned nav items -->
                 <ul class="navbar-nav ml-auto">
                     <div class="text-secondary">
@@ -38,7 +38,7 @@
                     
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <#list categoriesList.subCategoryList as category>
-                            <a class="dropdown-item" href="/store/d#/deals/${category.productCategoryId}">
+                            <a class="dropdown-item item-color" href="/store/d#/deals/${category.productCategoryId}">
                                 ${category.categoryName}
                             </a>
                         </#list>
@@ -54,25 +54,26 @@
                         Customer Service
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="/store/content/help">
+                        <a class="dropdown-item item-color" href="/store/content/help">
                             Help Center 
                         </a>
-                        <a class="dropdown-item" href="/store/content/help">
+                        <a class="dropdown-item item-color" href="/store/content/help">
                             Delivery Rates 
                         </a>
-                        <a class="dropdown-item" href="/store/content/help#delivery">
+                        <a class="dropdown-item item-color" href="/store/content/help#delivery">
                             Delivery Times  
                         </a>
-                        <a class="dropdown-item" href="/store/content/help#customer-pick-up">
+                        <a class="dropdown-item item-color" href="/store/content/help#customer-pick-up">
                             Customer Pick Up 
                         </a>
-                        <a class="dropdown-item" href="/store/content/help#how-to-pay">
+                        <a class="dropdown-item item-color" href="/store/content/help#how-to-pay">
                             How to pay 
                         </a>
-                        <a class="dropdown-item" href="/store/content/about">
+                        <hr>
+                        <a class="dropdown-item item-color" href="/store/content/about">
                             About POP Shop 
                         </a>
-                        <a class="dropdown-item" href="/store/content/contact">
+                        <a class="dropdown-item item-color" href="/store/content/contact">
                             Contact Us 
                         </a>
                     </div>
@@ -91,13 +92,14 @@
                             Account
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="/store/d#/account">
+                            <a class="dropdown-item item-color" href="/store/d#/account">
                                 Account Settings 
                             </a>
-                            <a class="dropdown-item" href="/store/d#/orders">
+                            <a class="dropdown-item item-color" href="/store/d#/orders">
                                 My Orders
                             </a>
-                            <a class="dropdown-item" id="logout">
+                            <hr>
+                            <a class="dropdown-item item-color" id="logout">
                                 Signout
                             </a>
                         </div>

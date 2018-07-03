@@ -233,6 +233,8 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="validateSecurityCode"><description>Not persisted, just passed through so available to SECA rules for validation by gateway, etc</description></parameter>
             <parameter name="expireMonth"/>
             <parameter name="expireYear"/>
+            <parameter name="creditCardTypeEnumId"/>
+            <parameter name="cardSecurityCode"/>
             <parameter name="expireDate" default-value="${expireMonth?:''}/${expireYear?:''}">
                 <time-range after="now" format="MM/yyyy"/></parameter>
 

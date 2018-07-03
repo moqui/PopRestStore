@@ -6,7 +6,8 @@ var SearchInput = {
     };
   },
   methods: {
-    searchProduct(){
+    searchProduct(event){
+      event.preventDefault();
       this.$router.push({ name: 'productsearch', params: { searchText: this.searchText }});
     }
   },

@@ -32,12 +32,14 @@
       <div class="row div-total">
         <span class="col col-lg-6">Subtotal</span>
         <span class="col col-lg-1 offset-lg-4" v-if="productsInCart.orderPart">${{productsInCart.orderPart.partTotal.toFixed(2)}}</span>
+        <hr style="width: 96%;">
         <span class="col col-lg-6 mt-4">Shipping</span>
         <span class="place-order-total col col-lg-1 offset-lg-4 mt-4">
           <span v-if="shippingMethod.shippingTotal != undefined">${{shippingMethod.shippingTotal.toFixed(2)}}</span>
         </span>
-        <span class="col col-lg-6 mt-4">Total</span>
-        <span class="place-order-total col col-lg-1 offset-lg-4 mt-4" v-if="productsInCart.orderHeader">
+        <hr style="width: 96%;">
+        <span class="col col-lg-6 mt-3 mb-5">Total</span>
+        <span class="place-order-total col col-lg-1 offset-lg-4 mt-3" v-if="productsInCart.orderHeader">
           ${{productsInCart.orderHeader.grandTotal.toFixed(2)}}
         </span>
       </div>
@@ -237,6 +239,7 @@
             </button>
           </div>
           <div class="modal-body">
+            <span>{{responseMessage}}</span>
             <div class="form-group row">
               <label for="card" class="col-sm-3 col-form-label modal-text">Card Number <span class="modal-text-required">*</span></label>
               <div class="col-sm-9">
@@ -288,7 +291,7 @@
               <div class="col-sm-9">
                 <input class="form-control" id="security"
                       type="text"
-                      v-model="paymentMethod.validateSecurityCode"
+                      v-model="paymentMethod.cardSecurityCode"
                       placeholder="3 or 4 Digits" required/>
               </div>
             </div>

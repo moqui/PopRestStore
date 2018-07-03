@@ -52,7 +52,7 @@ along with this software (see the LICENSE.md file). If not, see
         <section name="PageTextSection" condition="pageText">
             <widgets><label text="${pageText}" type="div" style="content-page" encode="false"/></widgets>
             <fail-widgets>
-                <label text="Sorry, we couldn't find that page!" type="h2" style="text-center"/>
+                <render-mode><text type="html" location="component://PopRestStore/template/store/ErrorPage/error.html.ftl"/></render-mode>
             </fail-widgets>
         </section>
         <render-mode><text type="html" location="component://PopRestStore/template/store/FooterPage/footerPage.html.ftl"/></render-mode>
