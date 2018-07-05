@@ -1,8 +1,8 @@
 <div>
   <navbar sub-bar="true"/>
   <div class="container">
-  	<div class="container">
-  	  <router-link class="customer-link" :to="'/'" tag="span">
+    <div class="container">
+      <router-link class="customer-link" :to="'/'" tag="span">
         Home 
         <i class="fas fa-angle-right"></i>
       </router-link>
@@ -85,7 +85,7 @@
             <button @click="updateCustomerInfo" class="btn btn-continue account-btn">Save</button>
           </div>
           <div class="col-sm-6 offset-sm-2 mt-3">
-          	<button data-toggle="modal" data-target="#modal" class="btn btn-continue account-btn">Change Password</button>
+            <button data-toggle="modal" data-target="#modal" class="btn btn-continue account-btn">Change Password</button>
           </div>
         </div>
         <p class="order-text-color account-subtitle mt-5">Delivery Address</p>
@@ -99,24 +99,24 @@
               <input :id="index + 'r1'" type="radio" :value="address.postalContactMechId + ':' +
                 address.telecomContactMechId" v-model="addressOption"/>
               <span class="checkmark"></span>
-          	  <span class="span-description">{{address.postalAddress.toName}}</span>
-          	  <span class="span-description mt-1">{{address.postalAddress.address1}}</span>
-          	  <span class="span-description mt-1">
-          	    {{address.postalAddress.city}}, 
-          	    {{address.postalAddress.address2}} 
-          	    {{address.postalAddress.countryGeoId}}
-          	  </span>
-          	  <span class="span-description mt-1">
-          	  	<i class="fa fa-phone phone-icon"></i>
-          	    {{address.telecomNumber.contactNumber}}
-          	  </span>
-          	</label>
-          	<span class="span-link-container mt-1">
-          	  <span data-toggle="modal" data-target="#modal1" @click="selectAddress(address)" class="span-link">Update</span>
-          	  <span>|</span>
-          	  <span @click="deleteShippingAddress(address.postalContactMechId,address.postalContactMechPurposeId)" class="span-link">Delete</span>
-          	</span>
-            </div>	
+              <span class="span-description">{{address.postalAddress.toName}}</span>
+              <span class="span-description mt-1">{{address.postalAddress.address1}}</span>
+              <span class="span-description mt-1">
+                {{address.postalAddress.city}}, 
+                {{address.postalAddress.address2}} 
+                {{address.postalAddress.countryGeoId}}
+              </span>
+              <span class="span-description mt-1">
+                <i class="fa fa-phone phone-icon"></i>
+                {{address.telecomNumber.contactNumber}}
+              </span>
+            </label>
+            <span class="span-link-container mt-1">
+              <span data-toggle="modal" data-target="#modal1" @click="selectAddress(address)" class="span-link">Update</span>
+              <span>|</span>
+              <span @click="deleteShippingAddress(address.postalContactMechId,address.postalContactMechPurposeId)" class="span-link">Delete</span>
+            </span>
+            </div>  
           </template>
         </div>
         <br>
@@ -130,7 +130,7 @@
         <hr class="account-hr">
         <div class="row">
           <template v-for="(item, index) in customerPaymentMethods">
-          	<div v-bind:class="{ 'div-checkmark': paymentOption == item.paymentMethodId }" class="col col-lg-6 account-div-container">
+            <div v-bind:class="{ 'div-checkmark': paymentOption == item.paymentMethodId }" class="col col-lg-6 account-div-container">
               <label  :for="index + 'r3'" class="container-input">
                 <input :id="index + 'r3'"  type="radio" :value="item.paymentMethodId" v-model="paymentOption"/>
                 <span class="checkmark"></span>
@@ -139,12 +139,12 @@
                 <span class="span-description mt-1">Expires on {{item.creditCard.expireDate}}</span>
               </label>
               <span class="span-link-container mt-1">
-          	    <span @click="selectPaymentMethod(item)" data-toggle="modal" data-target="#modal2" class="span-link">Update</span>
-          	    <span>|</span>
-          	    <span @click="deletePaymentMethod(item.paymentMethodId)" class="span-link">Delete</span>
-          	  </span>
+                <span @click="selectPaymentMethod(item)" data-toggle="modal" data-target="#modal2" class="span-link">Update</span>
+                <span>|</span>
+                <span @click="deletePaymentMethod(item.paymentMethodId)" class="span-link">Delete</span>
+              </span>
             </div>
-          </template>	
+          </template> 
         </div>
         <br>
         <div class="row">
@@ -166,28 +166,28 @@
           <div class="modal-body">
             <span>{{responseMessage}}</span>
             <div class="form-group row">
-          	  <label class="col-sm-4 col-form-label modal-text">Old Password *</label>
+              <label class="col-sm-4 col-form-label modal-text">Old Password *</label>
               <div class="col-sm-7">
                 <input class="form-control" type="password" v-model="passwordInfo.oldPassword" required/>
               </div>
             </div>
             <div class="form-group row">
-          	  <label class="col-sm-4 col-form-label modal-text">New Password *</label>
+              <label class="col-sm-4 col-form-label modal-text">New Password *</label>
               <div class="col-sm-7">
                 <input class="form-control" type="password" v-model="passwordInfo.newPassword" required/>
               </div>
             </div>
             <div class="form-group row">
-          	  <label class="col-sm-4 col-form-label modal-text">Confirm New Password *</label>
+              <label class="col-sm-4 col-form-label modal-text">Confirm New Password *</label>
               <div class="col-sm-7">
                 <input class="form-control" type="password" v-model="passwordInfo.newPasswordVerify" required/>
               </div>
             </div>
             <div class="form-group row">
               <div class="col-sm-7 offset-sm-4">
-          	    <button @click="updateCustomerPassword" class="btn btn-continue account-btn">Change Password</button>
-          	    <br>
-          	    <a data-dismiss="modal" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
+                <button @click="updateCustomerPassword" class="btn btn-continue account-btn">Change Password</button>
+                <br>
+                <a data-dismiss="modal" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
               </div>
             </div>
           </div>
@@ -205,6 +205,7 @@
             </button>
           </div>
           <div class="modal-body">
+            <span>{{responseMessage}}</span>
             <div class="form-group row">
               <label class="col-sm-3 col-form-label modal-text">Name <span class="modal-text-required">*</span></label>
               <div class="col-sm-9">

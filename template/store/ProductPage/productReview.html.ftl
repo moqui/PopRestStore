@@ -68,9 +68,9 @@
               <label>Comments</label>
             	<textarea class="form-control text-area-review" rows="5" name="productReview" id="productReview"></textarea>
             </div>
-            <div class="row justify-content-center">
-              	<button class="btn btn-continue col col-sm-6 offset-sm-1" id="addReview">Add Review</button>
-              	<a data-dismiss="modal" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
+            <div class="modal-footer">
+              	<button class="btn btn-continue" id="addReview">Add Review</button>
+              	<a data-dismiss="modal" class="btn btn-link">Or Cancel</a>
             </div>
         </form>
 	</div>

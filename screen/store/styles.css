@@ -515,6 +515,8 @@
     background-color: #666666;
     color: #fff;
     padding: 30px;
+    position: relative;
+    margin-top: 12%;
 }
 
 .footer p {
@@ -1148,4 +1150,14 @@ a:hover {
 
 .item-color {
     color: #36cfdd !important;
+}
+
+.product-container {
+    margin-top: 150px
+}
+
+@media only screen and (max-width : 480px) { 
+.landing-container {
+    margin-top: 135px;
+}
 }

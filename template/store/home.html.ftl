@@ -32,9 +32,58 @@
         </div>
     </div>
 </div>
-<div class="container mt-2">
+<div class="container landing-container">
     <div class="text-left mt-3 modal-text">
         This Week's deals
+    </div>
+    <div class="carousel">
+        <#list pcmpList.productList as product>
+            <div>
+                <a class="landing-product" href="/store/product/${product.productId}">
+                    <figure class="figure">
+                        <img width="90%" 
+                        class="figure-img img-fluid"
+                        src="/store/content/productImage/${product.smallImageList[0].productContentId}" >
+                        <figcaption class="text-left title-product-text figure-caption">${product.productName}</figcaption>
+                        <figcaption class="text-left figure-caption">
+                            <#if product.numberOfRatings??>
+                                <#list 1..5 as x>
+                                    <span class="star-rating">
+                                        <#if (product.numberOfRatings >= x)>
+                                            <i class="fas fa-star"></i>
+                                        <#else>
+                                            <i class="far fa-star"></i>
+                                        </#if>  
+                                    </span>
+                                </#list>
+                            <#else>
+                                <#list 1..5 as x>
+                                    <span class="star-rating">
+                                        <#if (star >= x)>
+                                            <i class="fas fa-star"></i>
+                                        <#else>
+                                            <i class="far fa-star"></i>
+                                        </#if>  
+                                    </span>
+                                </#list>
+                            </#if>
+                        </figcaption>
+                        <figcaption class="text-primary text-left figure-caption">
+                            <span class="product-price-text">$${product.price}</span>
+                            <span class="product-last-price">
+                            <#if product.listPrice??>
+                                <del>$${product.listPrice}</del>
+                            </#if>
+                            </span>
+                        </figcaption>
+                    </figure>
+                </a>
+            </div>
+        </#list>
+    </div>
+    <hr/>
+    <div class="text-left mt-3 modal-text">
+        Best Sellers
     </div>
     <div class="carousel">
         <#list pcmpList.productList as product>
@@ -78,55 +127,6 @@
                         </figcaption>
                     </figure>
                 </a>
-            </div>
-        </#list>
-    </div>
-    <hr/>
-    <div class="text-left mt-3 modal-text">
-        Best Sellers
-    </div>
-    <div class="carousel">
-        <#list pcmpList.productList as product>
-            <div class="col col-lg-3 card-1">
-                <div class="landing-product">
-                    <figure class="figure">
-                        <img width="90%" 
-                        class="figure-img img-fluid"
-                        src="/store/content/productImage/${product.smallImageList[0].productContentId}" >
-                        <figcaption class="text-left title-product-text figure-caption">${product.productName}</figcaption>
-                        <figcaption class="text-left figure-caption">
-                            <#if product.numberOfRatings??>
-                            <#list 1..5 as x>
-                                <span class="star-rating">
-                                    <#if (product.numberOfRatings >= x)>
-                                        <i class="fas fa-star"></i>
-                                    <#else>
-                                        <i class="far fa-star"></i>
-                                    </#if>  
-                                </span>
-                            </#list>
-                            <#else>
-                            <#list 1..5 as x>
-                                <span class="star-rating">
-                                    <#if (star >= x)>
-                                        <i class="fas fa-star"></i>
-                                    <#else>
-                                        <i class="far fa-star"></i>
-                                    </#if>  
-                                </span>
-                            </#list>
-                            </#if>
-                        </figcaption>
-                        <figcaption class="text-primary text-left figure-caption">
-                            <span class="product-price-text">$${product.price}</span>
-                            <span class="product-last-price">
-                            <#if product.listPrice??>
-                                <del>$${product.listPrice}</del>
-                            </#if>
-                            </span>
-                        </figcaption>
-                    </figure>
-                </div>
             </div>
         </#list>
     </div>

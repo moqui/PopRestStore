@@ -1,7 +1,7 @@
 var AccountPage = {
   name: "account-page",
   data() {
-  	return {
+  return {
       customerInfo: {},
       passwordInfo: {},
       customerAddressList: [],
@@ -44,13 +44,29 @@ var AccountPage = {
       }.bind(this));
     },
     addCustomerAddress() {
+      if(this.customerAddress.toName == null || 
+        this.customerAddress.toName.trim() == "" ||
+        this.customerAddress.countryGeoId == null ||
+        this.customerAddress.countryGeoId.trim() == "" ||
+        this.customerAddress.city == null ||
+        this.customerAddress.city.trim() == "" ||
+        this.customerAddress.address1 == null ||
+        this.customerAddress.address1.trim() == "" ||
+        this.customerAddress.postalCode == null ||
+        this.customerAddress.postalCode.trim() == "") {
+
+        this.responseMessage = "Verify the required fields";
+        return;
+      }
       CustomerService.addShippingAddress(this.customerAddress,this.axiosConfig).then(function (data) {
         this.customerAddress = {};
         this.getCustomerAddress();
         this.hideModal("modal1");
+        this.responseMessage = "";
       }.bind(this));
     },
     addCustomerPaymentMethod() {
+
       this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
 
       if(this.paymentMethod.titleOnAccount == null || 
@@ -68,9 +84,13 @@ var AccountPage = {
       }
 
       if(this.paymentMethod.cardNumber.startsWith("5")) {
-        this.paymentMethod.creditCardTypeEnumId = "CctMasterCard";
+
+        this.paymentMethod.creditCardTypeEnumId = "CctMastercard";
+
       } else if(this.paymentMethod.cardNumber.startsWith("4")){
+
         this.paymentMethod.creditCardTypeEnumId = "CctVisa";
+
       }
      
 
@@ -158,6 +178,7 @@ var AccountPage = {
       this.customerAddress.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
       this.customerAddress.postalContactMechId = address.postalContactMechId;
       this.customerAddress.telecomContactMechId = address.telecomContactMechId;
+      this.responseMessage = "";
       if(this.customerAddress.countryGeoId != null){
         this.getRegions(this.customerAddress.countryGeoId);
       }
@@ -171,6 +192,7 @@ var AccountPage = {
       this.paymentMethod.expireMonth = method.expireMonth;
       this.paymentMethod.expireYear = method.expireYear;
       this.paymentMethod.cardSecurityCode = "";
+      this.responseMessage = "";
     },
     hideModal(modalid) {
       $('#'+modalid).modal('hide');

@@ -1,4 +1,4 @@
-<div class="container" style="margin-top: 150px;">
+<div class="container product-container">
     <a class="customer-link"  href="/store">
         Home 
         <i class="fas fa-angle-right"></i>
@@ -13,26 +13,26 @@
         <i class="fa fa-check-square-o" aria-hidden="true"></i>
         You added a ${product.productName} to your shopping cart.
       </span>
-      <a class="float-right product-checkout-text" href="/checkout" tag="span">Go to Checkout
+      <a class="float-right product-checkout-text" href="/store/d#/checkout" tag="span">Go to Checkout
         <i class="fas fa-arrow-right"></i></a>
     </div>
 	  <div class="row mt-2">
-		    <div class="col col-lg-1">
+		    <div class="col col-lg-1 col-sm-4 col-4">
         	  <div>
         		    <#list product.contentList as img>
-        		    <#if img.productContentTypeEnumId == "PcntImageSmall">
-          		      <img width="200px" height="200px" onClick="changeUrl(${img.productContentId})"
-            		    class="figure-img img-fluid product-img"
-            		    src="/store/content/productImage/${img.productContentId}"
-            		    alt="Small Image"> 
-            	  </#if>
+        		        <#if img.productContentTypeEnumId == "PcntImageSmall">
+          		          <img width="200px" height="200px" onClick="changeUrl(${img.productContentId})"
+            		            class="figure-img img-fluid product-img"
+            		            src="/store/content/productImage/${img.productContentId}"
+            		            alt="Small Image"> 
+            	      </#if>
             	  </#list>
         	  </div>
       	</div>
-		    <div class="col col-lg-4">
+		    <div class="col col-lg-4 col-sm-8 col-8">
         	 <img id="singleImage" class="product-img-select">
       	</div>
-      	<div class="col col-lg-4">
+      	<div class="col col-lg-4 col-sm-12 col-12">
         	  <p>
           		  <span class="product-title">${product.productName}</span>
           		  <br>

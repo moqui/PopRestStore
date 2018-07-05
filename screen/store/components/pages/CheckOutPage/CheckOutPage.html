@@ -14,7 +14,9 @@
           <product-image :productId="item.productId"/>
         </div>
         <div class="col col-lg-5">
-          <p class="item-text-desc">{{item.itemDescription}}</p>
+          <p class="item-text-desc">
+            <a class="item-text-desc" :href="'/store/product/' + item.productId">{{item.itemDescription}}</a>
+          </p>
           <p v-if="item.unitListPrice" class="last-price">
             <del>${{item.unitListPrice}}</del>
             <span class="place-order-total"> Save ${{(item.unitListPrice - item.unitAmount).toFixed(2)}}</span>
@@ -87,7 +89,8 @@
           </div>
         </div>
         <br>   
-        <button data-toggle="collapse" data-target="#collapse1" @click="addCartBillingShipping(1),setOptionNavbar(2)" class="btn btn-continue float-right">
+        <button data-toggle="collapse" data-target="#collapse1" @click="addCartBillingShipping(1),setOptionNavbar(2)" class="btn btn-continue float-right" :disabled="addressOption == null || addressOption == '' 
+          || listShippingAddress == null || listShippingAddress.length == 0 ">
           Continue
         </button>
         <a data-toggle="modal" data-target="#modal1" @click="cleanShippingAddress()" class="text-add float-right">Add a New Address</a>
@@ -121,7 +124,10 @@
           </div>
         </div>
         <br>
-        <button data-toggle="collapse" data-target="#collapse2"  @click="addCartBillingShipping(2),setOptionNavbar(3)" class="btn btn-continue float-right">Continue</button>
+        <button data-toggle="collapse" data-target="#collapse2"  @click="addCartBillingShipping(2),setOptionNavbar(3)" class="btn btn-continue float-right" :disabled="shippingOption == null || shippingOption == '' || 
+            listShippingOptions == null || listShippingOptions.length == 0">
+          Continue
+        </button>
       </div>
       <br>
       <p class="title-check-text" v-bind:class="{ 'state': statePaymentMethod == 1, 'state1': statePaymentMethod == 2 }">
@@ -209,7 +215,8 @@
         <a v-if="isSameAddress == 0 || isSameAddress ==2" data-toggle="modal" data-target="#modal2" @click="cleanPaymentMethod()" class="text-add col-4 offset-lg-3">
           Add a Credit Card
         </a>
-        <button v-if="isSameAddress == 0 || isSameAddress ==2" data-toggle="collapse" data-target="#collapse3"  class="btn btn-continue" @click="addCartBillingShipping(3),setOptionNavbar(4)">
+        <button v-if="isSameAddress == 0 || isSameAddress ==2" data-toggle="collapse" data-target="#collapse3"  class="btn btn-continue" @click="addCartBillingShipping(3),setOptionNavbar(4)" :disabled="paymentOption == null 
+          || paymentOption == '' || listPaymentMethods == null || listPaymentMethods.length == 0">
           Continue
         </button>
       </div>
@@ -314,6 +321,7 @@
             </button>
           </div>
           <div class="modal-body">
+            <span>{{responseMessage}}</span>
             <div class="form-group row">
               <label for="name" class="col-sm-3 col-form-label modal-text">Name <span class="modal-text-required">*</span></label>
               <div class="col-sm-9">
@@ -399,5 +407,5 @@
   </div>
   <span class="link-text">Forgot something? <router-link :to="'/'" tag="span" class="text-add">Head back to the shop.</router-link></span>
 </div>
-<footer-page class="mt-5 navbar-fixed-bottom" :infoLink="false" />
+<footer-page :infoLink="false" />
 </div>

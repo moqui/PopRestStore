@@ -42,6 +42,20 @@ var CheckOutPage = {
       }.bind(this));
     },
     addCustomerShippingAddress() {
+      if(this.shippingAddress.toName == null || 
+        this.shippingAddress.toName.trim() == "" ||
+        this.shippingAddress.countryGeoId == null ||
+        this.shippingAddress.countryGeoId.trim() == "" ||
+        this.shippingAddress.city == null ||
+        this.shippingAddress.city.trim() == "" ||
+        this.shippingAddress.address1 == null ||
+        this.shippingAddress.address1.trim() == "" ||
+        this.shippingAddress.postalCode == null ||
+        this.shippingAddress.postalCode.trim() == "") {
+        console.log(this.shippingAddress);
+        this.responseMessage = "Verify the required fields";
+        return;
+      } 
       CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(function (data) {
         this.shippingAddress = {};
         this.getCustomerShippingAddresses();
@@ -111,7 +125,7 @@ var CheckOutPage = {
       }
 
       if(this.paymentMethod.cardNumber.startsWith("5")) {
-        this.paymentMethod.creditCardTypeEnumId = "CctMasterCard";
+        this.paymentMethod.creditCardTypeEnumId = "CctMastercard";
       } else if(this.paymentMethod.cardNumber.startsWith("4")){
         this.paymentMethod.creditCardTypeEnumId = "CctVisa";
       }
@@ -124,6 +138,10 @@ var CheckOutPage = {
         this.hideModal("modal2");
         this.paymentMethod = {};
         this.getCustomerPaymentMethods();
+        this.responseMessage = "";
+      }.bind(this))
+      .catch(function (error) {
+        this.responseMessage = "An error occurred";
       }.bind(this));
     },
     addCartBillingShipping(option){
@@ -210,6 +228,7 @@ var CheckOutPage = {
       this.paymentMethod.contactNumber = address.telecomNumber.contactNumber;
       this.paymentMethod.postalCode = address.postalAddress.postalCode;
       this.paymentMethod.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
+      this.responseMessage = "";
     },
     selectAddress(address) {
       this.shippingAddress = {};
@@ -223,6 +242,7 @@ var CheckOutPage = {
       this.shippingAddress.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
       this.shippingAddress.postalContactMechId = address.postalContactMechId;
       this.shippingAddress.telecomContactMechId = address.telecomContactMechId;
+      this.responseMessage = "";
     },
     selectPaymentMethod(method) {
       this.paymentMethod = {};
@@ -236,6 +256,7 @@ var CheckOutPage = {
       this.paymentMethod.cardSecurityCode = "";
       this.paymentMethod.postalContactMechId = method.paymentMethod.postalContactMechId;
       this.paymentMethod.telecomContactMechId = method.paymentMethod.telecomContactMechId;
+      this.responseMessage = "";
     },
     hideModal(modalid) {
       $('#'+modalid).modal('hide');
@@ -262,6 +283,9 @@ var CheckOutPage = {
     this.getCustomerShippingAddresses();
     this.getCustomerPaymentMethods();
     this.getCountries();
+    if(this.productsInCart == null) {
+      location.href ="/store";
+    }
   }
 };
 var CheckOutPageTemplate = getPlaceholderRoute(
