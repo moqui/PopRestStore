@@ -2,10 +2,10 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top order-navbar bg-dark">
         <div class="d-flex flex-column moqui-navbar order-navbar">
             <div class="container d-flex flex-row main-navbar">
-                <router-link class="navbar-brand" :to="'/'" tag="a">
+                <a class="navbar-brand" href="/store">
                     <img height="65px" class="moqui-logo" src="./assets/moqui-logo.svg" alt="">
                     <span class="font-italic order-navbar-title">POP Shop</span>
-                </router-link>
+                </a>
             </div>
         </div>
     </nav>
@@ -53,5 +53,6 @@
             </div>
         </div>
     </div>
-    <footer-page style="margin-top: 150px;" :infoLink="false" />
+    <br>
+    <footer-page :infoLink="false" />
 </div>

@@ -2,7 +2,7 @@ var CreateAccountPage = {
   name: "create-account",
   data() {
   	return {
-      accountInfo: [],
+      accountInfo: {},
       confirmPassword: "",
       errorMessage: "",
       axiosConfig: {
@@ -17,6 +17,9 @@ var CreateAccountPage = {
   methods: {
     createAccount(event){
       event.preventDefault();
+      var emailValidation = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+      var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,35}$/;
+
       if(this.accountInfo.firstName == null ||  this.accountInfo.firstName.trim() == ""
         || this.accountInfo.lastName == null || this.accountInfo.lastName.trim() == ""
         || this.accountInfo.emailAddress == null || this.accountInfo.emailAddress.trim() == ""
@@ -30,11 +33,31 @@ var CreateAccountPage = {
         this.errorMessage = "Passwords do not match";
         return;
       }
+      
+      this.accountInfo.newPasswordVerify = this.confirmPassword;
+      console.log(this.accountInfo);
 
       LoginService.createAccount(this.accountInfo, this.axiosConfig).then(function (data) {
-        console.log(data);
+        this.login(this.accountInfo.emailAddress, this.accountInfo.newPassword);
+      }.bind(this))
+      .catch(function (error) {
+        this.errorMessage = "An error occurred: " + error.response.data.errors;
+        console.log(error);
       }.bind(this));
-  	}
+  	},
+    login(userName, password) {
+      var user = {
+        username: userName,
+        password: password
+      };
+      LoginService.login(user, this.axiosConfig).then(function (data) {
+        storeInfo.apiKey = data.apiKey;
+        location.href ="/store";
+      }.bind(this))
+      .catch(function (error) {
+        this.errorMessage = error.response.data.errors;
+      }.bind(this));
+    }
   },
   mounted() {
     if(storeInfo.apiKey != null) {
