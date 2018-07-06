@@ -6,7 +6,7 @@
       <span class="order-title">Thank You For Your Purchase</span>
     </div>
     <div class="row mt-4">
-  	  <span class="col col-lg-2 order-link-text">Order #{{orderList.orderHeader.orderId}}</span>
+  	  <a class="col col-lg-2 order-link-text" :href="'/store/d#/orders/'+orderList.orderHeader.orderId">Order #{{orderList.orderHeader.orderId}}</a>
   	  <span class="col col-lg-3 order-text-color">Order Status: <span class="order-status">{{orderList.orderHeader.statusId}}</span></span>
   	  <span class="col col-lg-3 order-text-color">Order Date: {{formatDate(orderList.orderHeader.placedDate)}}</span>
   	  <span class="col col-lg-3 order-text-color">Expected Arrival: 7 April, 2018</span>
@@ -63,8 +63,8 @@
           </ul>
   	    </div>
   	  </div>
-  	  <router-link class="mt-5 btn btn-continue col col-lg-5 offset-lg-6" :to="'/'" tag="button">Keep Shopping</router-link>
+      <a class="mt-5 btn btn-continue col col-lg-5 offset-lg-6 btn-keep-shoping" href="/store">Keep Shopping</a>
     </div>
   </div>
-  <footer-page class="mt-5 navbar-fixed-bottom" :infoLink="false" style="height: 70px;"/>
+  <footer-page :infoLink="false"/>
 </div>

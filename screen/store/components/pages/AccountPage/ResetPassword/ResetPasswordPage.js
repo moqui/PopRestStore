@@ -27,6 +27,7 @@ var ResetPasswordPage = {
       event.preventDefault();
       LoginService.resetPassword(this.data,this.axiosConfig).then(function (data) {
           this.nextStep = 1;
+          this.responseMessage = "";
       }.bind(this))
       .catch(function (error) {
         this.responseMessage = error.response.data.errors;
@@ -61,7 +62,7 @@ var ResetPasswordPage = {
       }
       LoginService.login(user, this.axiosConfig).then(function (data) {
         storeInfo.apiKey = data.apiKey;
-        this.$router.push({ name: 'Products'});
+        location.href ="/store";
       }.bind(this));
     }
   },

@@ -109,6 +109,7 @@
         $("#logout").click(function(){
             $.get(storeConfig.restApiLocation + urlLogOut, function(data){
                 window.location.href = "/store";
+                location.reload();
             });
         });
 

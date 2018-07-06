@@ -28,7 +28,7 @@ var LoginPage = {
       }
       LoginService.login(this.user, this.axiosConfig).then(function (data) {
         storeInfo.apiKey = data.apiKey;
-        this.$router.push({ name: 'Products'});
+        location.href ="/store";
       }.bind(this))
       .catch(function (error) {
         this.loginErrormessage = error.response.data.errors;
@@ -37,7 +37,7 @@ var LoginPage = {
   },
   mounted() {
     if(storeInfo.apiKey != null) {
-      this.$router.push({ name: 'Products'});
+      location.href ="/store";
     }
   },
   components: {

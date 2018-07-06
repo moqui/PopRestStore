@@ -1,21 +1,21 @@
-<div>
+<div ref="top">
   <navbar sub-bar="true"/>
   <div class="container">
     <div class="container">
-      <router-link class="customer-link" :to="'/'" tag="span">
+      <a class="customer-link" href="/store">
         Home 
         <i class="fas fa-angle-right"></i>
-      </router-link>
+      </a>
       <span class="modal-text">Account Settings</span>
     </div>
     <div class="row mt-4">
       <div class="col col-lg-2 col-12">
         <div class="customer-menu">
-          <span>Account Settings</span>
+          <span class="color-tab">Account Settings</span>
           <ul class="customer-orders-ul">
             <li>Profile</li>
-            <li>Delivery Address</li>
-            <li>Payment Method</li>
+            <li class="item-info" @click="scrollTo('delivery')">Delivery Address</li>
+            <li class="item-info" @click="scrollTo('credit')">Payment Method</li>
           </ul>
           <router-link class="customer-link" :to="'/orders'" tag="span">
             My Orders
@@ -88,8 +88,8 @@
             <button data-toggle="modal" data-target="#modal" class="btn btn-continue account-btn">Change Password</button>
           </div>
         </div>
-        <p class="order-text-color account-subtitle mt-5">Delivery Address</p>
-        <span class="account-back-top">Back to Top</span>
+        <p class="order-text-color account-subtitle mt-5" id="delivery" ref="delivery">Delivery Address</p>
+        <span class="account-back-top" @click="scrollTo('top')">Back to Top</span>
         <hr class="account-hr">
         <div class="row">
           <template v-for="(address, index) in customerAddressList">
@@ -125,8 +125,8 @@
             Add an Address
           </button>
         </div>
-        <p class="order-text-color account-subtitle mt-5">Credit Card</p>
-        <span class="account-back-top">Back to Top</span>
+        <p class="order-text-color account-subtitle mt-5" id="credit" ref="credit">Credit Card</p>
+        <span class="account-back-top" @click="scrollTo('top')">Back to Top</span>
         <hr class="account-hr">
         <div class="row">
           <template v-for="(item, index) in customerPaymentMethods">
@@ -139,7 +139,7 @@
                 <span class="span-description mt-1">Expires on {{item.creditCard.expireDate}}</span>
               </label>
               <span class="span-link-container mt-1">
-                <span @click="selectPaymentMethod(item)" data-toggle="modal" data-target="#modal2" class="span-link">Update</span>
+                <span @click="selectPaymentMethod(item),isUpdate = true" data-toggle="modal" data-target="#modal2" class="span-link">Update</span>
                 <span>|</span>
                 <span @click="deletePaymentMethod(item.paymentMethodId)" class="span-link">Delete</span>
               </span>
@@ -148,7 +148,7 @@
         </div>
         <br>
         <div class="row">
-          <button data-toggle="modal" data-target="#modal2" class="btn btn-continue col col-lg-6 account-btn">
+          <button @click="resetData(),isUpdate = false" data-toggle="modal" data-target="#modal2" class="btn btn-continue col col-lg-6 account-btn">
             Add a Credit Card
           </button>
         </div>
@@ -163,8 +163,10 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <span>{{responseMessage}}</span>
+          <form class="modal-body" v-on:submit="updateCustomerPassword" method="post">
+            <div v-if="responseMessage != null && responseMessage != ''" class="alert alert-primary" role="alert">
+              {{responseMessage}}
+            </div>
             <div class="form-group row">
               <label class="col-sm-4 col-form-label modal-text">Old Password *</label>
               <div class="col-sm-7">
@@ -185,12 +187,12 @@
             </div>
             <div class="form-group row">
               <div class="col-sm-7 offset-sm-4">
-                <button @click="updateCustomerPassword" class="btn btn-continue account-btn">Change Password</button>
+                <button type="submit" class="btn btn-continue account-btn">Change Password</button>
                 <br>
                 <a data-dismiss="modal" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
@@ -279,7 +281,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
+          <form class="modal-body" v-on:submit="addCustomerPaymentMethod" method="post">
             <span>{{responseMessage}}</span>
             <div class="form-group row">
               <label for="card" class="col-sm-3 col-form-label modal-text">Card Number <span class="modal-text-required">*</span></label>
@@ -287,7 +289,7 @@
                 <input class="form-control" id="card"
                       type="text"
                       v-model="paymentMethod.cardNumber"
-                      placeholder="13 to 16 digits Spaces are optional" required/>
+                      placeholder="13 to 16 digits Spaces are optional" required :disabled="isUpdate"/>
               </div>
             </div>
             <div class="form-group row">
@@ -336,10 +338,10 @@
               </div>
             </div>
             <div class="row justify-content-center">
-              <button @click="addCustomerPaymentMethod" class="btn btn-continue col col-sm-6 offset-sm-1">Add Credit Card</button>
+              <button type="submit" class="btn btn-continue col col-sm-6 offset-sm-1">Add Credit Card</button>
               <a data-dismiss="modal" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

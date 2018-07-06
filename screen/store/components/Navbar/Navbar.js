@@ -38,6 +38,7 @@ var Navbar = {
     logout() {
       LoginService.logout().then(function (data) {
         storeInfo = {};
+        location.reload();
         this.$router.push({ name: 'login'});
       }.bind(this));
     },

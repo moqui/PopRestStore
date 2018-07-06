@@ -423,6 +423,14 @@
     cursor: pointer;
 }
 
+.order-link-text:hover {
+    color: #04c3d5;
+}
+
+.btn-keep-shoping:hover {
+    color: #fff;
+}
+
 .order-text-color {
     color: #666666;
 }
@@ -1150,6 +1158,7 @@ a:hover {
 
 .item-color {
     color: #36cfdd !important;
+    cursor: pointer;
 }
 
 .product-container {
@@ -1157,7 +1166,11 @@ a:hover {
 }
 
 @media only screen and (max-width : 480px) { 
-.landing-container {
-    margin-top: 135px;
+    .landing-container {
+        margin-top: 135px;
+    }
 }
+
+.color-tab {
+    color: #797979;
 }

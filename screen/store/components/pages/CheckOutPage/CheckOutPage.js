@@ -191,7 +191,7 @@ var CheckOutPage = {
       }.bind(this))
       .catch(function (error) {
         //Todo add error message to show to customer
-        console.log(error.response);
+        console.log(error);
       });
     },
     deletePaymentMethod(paymentMethodId) {

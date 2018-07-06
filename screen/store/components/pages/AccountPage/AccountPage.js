@@ -13,6 +13,7 @@ var AccountPage = {
       paymentOption: "",
       paymentMethod: {},
       responseMessage: "",
+      isUpdate: false,
       message: {
         state: "",
         message: ""
@@ -65,8 +66,8 @@ var AccountPage = {
         this.responseMessage = "";
       }.bind(this));
     },
-    addCustomerPaymentMethod() {
-
+    addCustomerPaymentMethod(event) {
+      event.preventDefault();
       this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
 
       if(this.paymentMethod.titleOnAccount == null || 
@@ -101,6 +102,10 @@ var AccountPage = {
         this.responseMessage = "";
       }.bind(this));
     },
+    resetData() {
+      this.paymentMethod = {};
+      this.customerAddress = {};
+    },
     updateCustomerInfo() {
       if(this.customerInfo.username == null || this.customerInfo.username.trim() == ""
           || this.customerInfo.firstName == null || this.customerInfo.firstName.trim() == ""
@@ -118,8 +123,9 @@ var AccountPage = {
         this.message.message = "Correct your data have been updated!";
       }.bind(this));
     },
-    updateCustomerPassword() {
-      var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,35}$/;
+    updateCustomerPassword(event) {
+      event.preventDefault();
+      var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%.*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,35}$/;
       if(!expreg.test(this.passwordInfo.newPassword)) {
         this.responseMessage = "The password must have at least 8 characters, a special character," +
         " a lowercase letter, a capital letter and at least one number.";
@@ -134,17 +140,17 @@ var AccountPage = {
       this.passwordInfo.userId = this.customerInfo.userId;
 
       CustomerService.updateCustomerPassword(this.passwordInfo,this.axiosConfig).then(function (data) {
-        console.log(data);
-        this.message.state = 1;
-        this.message.message = data.messages.replace("null",this.customerInfo.username);
+        this.responseMessage = data.messages.replace("null",this.customerInfo.username);
         this.passwordInfo = {};
-        this.hideModal("modal");
       }.bind(this))
       .catch(function (error) {
-        this.message.state = 2;
-        this.message.message = "An error occurred";
-        this.hideModal("modal");
+        this.responseMessage = "An error occurred: " + error.response.data.errors;
       }.bind(this));
+    },
+    scrollTo(refName) {
+      var element = this.$refs[refName];
+      var top = element.offsetTop;
+      window.scrollTo(0, top);
     },
     deletePaymentMethod(paymentMethodId) {
       CustomerService.deletePaymentMethod(paymentMethodId,this.axiosConfig).then(function (data) {
