@@ -190,7 +190,7 @@ var CheckOutPage = {
         this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
       }.bind(this))
       .catch(function (error) {
-        //Todo add error message to show to customer
+        this.responseMessage = error.
         console.log(error);
       });
     },

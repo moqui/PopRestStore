@@ -32,6 +32,15 @@ var CustomerOrdersPage = {
         }.bind(this));
       }
     },
+    scrollTo(refName) {
+      if(refName == null) {
+        window.scrollTo(0, 0);
+      }else {
+        var element = this.$refs[refName];
+        var top = element.offsetTop;
+        window.scrollTo(0, top);
+      }
+    },
     formatDate(date) {
       var monthNames = [
         "January", "February", "March",

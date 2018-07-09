@@ -1,94 +1,114 @@
 <div>
-  <navbar sub-bar="true"/>
-  <div class="container" v-if="orderList.orderPart">
-    <div class="container mt-2">
-      <router-link class="customer-link" :to="'/'" tag="span">
-        Home <i class="fas fa-angle-right"></i>
-      </router-link>
-      <router-link class="customer-link" :to="'/orders'" tag="span">
-        My Orders <i class="fas fa-angle-right"></i>
-      </router-link>
-      <span class="modal-text">#{{orderList.orderHeader.orderId}}</span>
+    <navbar sub-bar="true"/>
+    <div class="container" v-if="orderList.orderPart">
+        <div class="container mt-2">
+            <router-link class="customer-link" :to="'/'" tag="span">
+                Home <i class="fas fa-angle-right"></i>
+            </router-link>
+            <router-link class="customer-link" :to="'/orders'" tag="span">
+                My Orders <i class="fas fa-angle-right"></i>
+            </router-link>
+            <span class="modal-text">#{{orderList.orderHeader.orderId}}</span>
+        </div>
+        <div class="row mt-4">
+            <div class="col col-lg-2 col-12">
+                <div class="customer-menu">
+                    <router-link class="customer-link" :to="'/account'" tag="span">
+                        Account Settings 
+                    </router-link>
+                    <ul class="customer-orders-ul">
+                        <router-link  :to="'/account'" tag="li">
+                            Profile 
+                        </router-link>
+                        <router-link  :to="'/account'" tag="li">
+                            Delivery Address 
+                        </router-link>
+                        <router-link  :to="'/account'" tag="li">
+                            Payment Method 
+                        </router-link>
+                    </ul>
+                    <router-link class="customer-link" :to="'/orders'" tag="span">
+                        My Orders
+                    </router-link>
+                    <ul class="customer-orders-ul">
+                        <router-link :to="'/orders'" tag="li">
+                            Current Orders
+                        </router-link>
+                        <router-link :to="'/orders'" tag="li">
+                            Order History
+                        </router-link>
+                    </ul>
+                </div>
+            </div>
+            <div class="col col-lg-9 offset-lg-1 col-12">
+                <span class="customer-orders-title">Order #{{orderList.orderHeader.orderId}}</span>
+                <br>
+                <div class="mt-4">
+                    <span class="order-text-color mr-5">Order Status: <span class="order-status">{{orderList.orderHeader.statusId}}</span></span>
+                    <span class="order-text-color mr-5">Order Date: {{formatDate(orderList.orderHeader.placedDate)}}</span>
+                    <span class="order-text-color mr-5">Expected Arrival: 7 April, 2018</span>
+                </div>
+                <div class="row mt-5">
+                    <div class="col col-lg-12">
+                        <div class="row item-title-text">
+                            <span class="col col-lg-8 order-link-text">Item</span>  
+                            <span class="col col-lg-2 order-text-color text-center">Quantity</span>
+                            <span class="col col-lg-2 order-text-color text-center">Price</span>
+                        </div>
+                        <hr class="order-hr">
+                        <div class="row">
+                            <template v-for="(item, index) in orderList.orderItemList">
+                                <template v-if="item.itemTypeEnumId == 'ItemProduct'">
+                                    <a class="col col-lg-8 order-link-text" :href="'/store/product/' + item.productId">
+                                        {{item.itemDescription}}
+                                    </a>
+                                    <span class="col col-lg-2 order-text-color text-center">{{item.quantity}}</span>
+                                    <span class="col col-lg-2 order-text-color text-center">${{item.unitAmount}}</span> 
+                                </template>
+                            </template>
+                        </div>
+                        <hr>
+                        <div class="row order-text-color">
+                            <span class="col col-lg-3 offset-lg-6 ">SubTotal</span>
+                            <span class="col col-lg-2 offset-lg-1 text-center">${{orderList.orderPart.partTotal.toFixed(2)}}</span>
+                            <span class="col col-lg-3 offset-lg-6 mt-4">Delivery</span>
+                            <span class="col col-lg-2 offset-lg-1 mt-4 text-center">$0.00</span>
+                            <span class="col col-lg-3 offset-lg-6 mt-4">TOTAL</span>
+                            <span class="col col-lg-2 offset-lg-1 mt-4 text-center">${{orderList.orderHeader.grandTotal.toFixed(2)}}</span>
+                            <span class="col col-lg-6 offset-lg-6">
+                                <hr>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col col-lg-6 order-text-color mt-5">
+                        <span class="col col-lg-6">Delivery Address</span>
+                        <hr class="order-hr">
+                        <ul class="ul-custumer-order">
+                            <li>{{orderList.postalAddress.toName}}</li>
+                            <li>{{orderList.postalAddress.address1}}</li>
+                            <li>{{orderList.postalAddress.city}} {{orderList.postalAddress.address2}}</li>
+                            <li><i class="fa fa-phone phone-icon"></i> {{orderList.telecomNumber.contactNumber}}</li>
+                        </ul>
+                    </div>
+                    <div class="col col-lg-6 order-text-color mt-5">
+                        <span class="col col-lg-6">Billing Address</span>
+                        <hr class="order-hr">
+                        <ul class="ul-custumer-order">
+                            <li>{{orderList.paymentInfoList[0].postalAddress.toName}}</li>
+                            <li>{{orderList.paymentInfoList[0].postalAddress.address1}}</li>
+                            <li>
+                                {{orderList.paymentInfoList[0].postalAddress.city}} 
+                                {{orderList.paymentInfoList[0].postalAddress.address2}}
+                            </li>
+                            <li>
+                                <i class="fa fa-phone phone-icon"></i> 
+                                {{orderList.paymentInfoList[0].telecomNumber.contactNumber}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="row mt-4">
-      <div class="col col-lg-2 col-12">
-        <div class="customer-menu">
-          <span>Account Settings</span>
-          <ul class="customer-orders-ul">
-            <li>Profile</li>
-            <li>Delivery Address</li>
-            <li>Payment Method</li>
-          </ul>
-          <router-link class="customer-link" :to="'/orders'" tag="span">
-            My Orders
-          </router-link>
-          <ul class="customer-orders-ul">
-            <li>Current Orders</li>
-            <li>Order History</li>
-          </ul>
-        </div>
-      </div>
-      <div class="col col-lg-9 offset-lg-1 col-12">
-        <span class="customer-orders-title">Order #{{orderList.orderHeader.orderId}}</span>
-        <br>
-        <div class="mt-4">
-          <span class="order-text-color mr-5">Order Status: <span class="order-status">{{orderList.orderHeader.statusId}}</span></span>
-          <span class="order-text-color mr-5">Order Date: {{formatDate(orderList.orderHeader.placedDate)}}</span>
-          <span class="order-text-color mr-5">Expected Arrival: 7 April, 2018</span>
-        </div>
-        <div class="row mt-5">
-          <div class="col col-lg-12">
-            <div class="row item-title-text">
-              <span class="col col-lg-8 order-link-text">Item</span>  
-              <span class="col col-lg-2 order-text-color text-center">Quantity</span>
-              <span class="col col-lg-2 order-text-color text-center">Price</span>
-            </div>
-            <hr class="order-hr">
-            <div class="row">
-              <template v-for="(item, index) in orderList.orderItemList">
-                <template v-if="item.itemTypeEnumId == 'ItemProduct'">
-                  <router-link class="col col-lg-8 order-link-text" :to="'/product/'+item.productId" tag="span">
-                    {{item.itemDescription}}
-                  </router-link>
-                  <span class="col col-lg-2 order-text-color text-center">{{item.quantity}}</span>
-                  <span class="col col-lg-2 order-text-color text-center">${{item.unitAmount}}</span> 
-                </template>
-              </template>
-            </div>
-            <hr>
-            <div class="row order-text-color">
-              <span class="col col-lg-3 offset-lg-6 ">SubTotal</span>
-              <span class="col col-lg-2 offset-lg-1 text-center">${{orderList.orderPart.partTotal.toFixed(2)}}</span>
-              <span class="col col-lg-3 offset-lg-6 mt-4">Delivery</span>
-              <span class="col col-lg-2 offset-lg-1 mt-4 text-center">$0.00</span>
-              <span class="col col-lg-3 offset-lg-6 mt-4">TOTAL</span>
-              <span class="col col-lg-2 offset-lg-1 mt-4 text-center">${{orderList.orderHeader.grandTotal.toFixed(2)}}</span>
-              <span class="col col-lg-6 offset-lg-6"><hr></span>
-            </div>
-          </div>
-          <div class="col col-lg-6 order-text-color mt-5">
-            <span class="col col-lg-6">Delivery Address</span>
-            <hr class="order-hr">
-            <ul class="ul-custumer-order">
-              <li>{{orderList.postalAddress.toName}}</li>
-              <li>{{orderList.postalAddress.address1}}</li>
-              <li>{{orderList.postalAddress.city}} {{orderList.postalAddress.address2}}</li>
-              <li><i class="fa fa-phone phone-icon"></i> {{orderList.telecomNumber.contactNumber}}</li>
-            </ul>
-          </div>
-          <div class="col col-lg-6 order-text-color mt-5">
-            <span class="col col-lg-6">Billing Address</span>
-            <hr class="order-hr">
-            <ul class="ul-custumer-order">
-              <li>{{orderList.paymentInfoList[0].postalAddress.toName}}</li>
-              <li>{{orderList.paymentInfoList[0].postalAddress.address1}}</li>
-              <li>{{orderList.paymentInfoList[0].postalAddress.city}} {{orderList.paymentInfoList[0].postalAddress.address2}}</li>
-              <li><i class="fa fa-phone phone-icon"></i> {{orderList.paymentInfoList[0].telecomNumber.contactNumber}}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <footer-page :infoLink="true" />
+    <footer-page :infoLink="true" />
 </div>

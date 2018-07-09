@@ -10,10 +10,18 @@
             <div class="customer-menu col col-lg-2 col-md-3 mb-5">
                 <span class="modal-text">Help Center</span>
                 <ul class="customer-orders-ul">
-                    <li>Delivery Rates</li>
-                    <li>Delivery Times</li>
-                    <li>Customer Pick Up</li>
-                    <li>How to Pay</li>
+                    <li>
+                        <a href="/store/content/help">Delivery Rates</a>
+                    </li>
+                    <li>
+                        <a href="/store/content/help#delivery">Delivery Times</a>
+                    </li>
+                    <li>
+                        <a href="/store/content/help#customer-pick-up">Customer Pick Up</a>
+                    </li>
+                    <li>
+                        <a href="/store/content/help#how-to-pay">How to Pay</a>
+                    </li>
                 </ul>
                 <a href="/store/content/about" class="customer-link">About POP Shop</a>
                 <a href="/store/content/contact" class="customer-link">Contact Us</a>

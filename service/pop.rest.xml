@@ -47,6 +47,18 @@ along with this software (see the LICENSE.md file). If not, see
         </id>
     </resource>  
 
+    <resource name="locale">
+        <method type="get">
+            <service name="popstore.StoreServices.get#locale"/>
+        </method>
+    </resource>
+   
+    <resource name="timeZone">
+        <method type="get">
+            <service name="popstore.StoreServices.get#TimeZone"/>
+        </method>
+    </resource>
+
     <!-- Product Information -->
 
     <resource name="products" require-authentication="anonymous-view">

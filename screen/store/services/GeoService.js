@@ -8,5 +8,15 @@ var GeoService = {
   	return axios.get("/rest/s1/pop/geos/" + geoId + "/regions").then(function (response) {
       return response.data;
   	});
+  },
+  getLocale() {
+    return axios.get("/rest/s1/pop/locale").then(function (response) {
+      return response.data;
+    });
+  },
+  getTimeZone() {
+    return axios.get("/rest/s1/pop/timeZone").then(function (response) {
+      return response.data;
+    });
   }
 };

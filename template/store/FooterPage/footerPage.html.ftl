@@ -10,7 +10,7 @@
   	            <li>
                     <a href="/store/content/help" class="footer-a">
                         Delivery Rates
-                    </<a>
+                    </a>
                 </li>
   	            <li>
                     <a href="/store/content/help#delivery" class="footer-a">

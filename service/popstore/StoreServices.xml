@@ -68,4 +68,27 @@ along with this software (see the LICENSE.md file). If not, see
             </entity-find>
         </actions>
     </service>
+    <service verb="get" noun="locale">
+        <out-parameters>
+            <parameter name="localeStringList"/>
+        </out-parameters>
+        <actions>
+            <set field="localeStringList" from="[]"/>
+            <iterate list="Locale.getAvailableLocales()" entry="lcl">
+                <script>
+                    localeStringList.add([locale:lcl.toString(), name:lcl.getDisplayName(ec.user.locale)])
+                </script>
+            </iterate>
+            <order-map-list list="localeStringList"><order-by field-name="name"/></order-map-list>
+        </actions>
+    </service>
+    <service verb="get" noun="TimeZone">
+        <out-parameters>
+            <parameter name="timeZoneList"/>
+        </out-parameters>
+        <set field="timeZoneList" from="[]"/>
+        <actions>
+           timeZoneList = new TreeSet(TimeZone.getAvailableIDs().collect())
+        </actions>
+    </service>
 </services>
