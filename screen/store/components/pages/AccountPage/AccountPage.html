@@ -227,7 +227,9 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <span>{{responseMessage}}</span>
+                        <div v-if="responseMessage != null && responseMessage != ''" class="alert alert-primary" role="alert">
+                            {{responseMessage}}
+                        </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label modal-text">Name <span class="modal-text-required">*</span></label>
                             <div class="col-sm-9">
@@ -319,7 +321,9 @@
                         </button>
                     </div>
                     <form class="modal-body" v-on:submit="addCustomerPaymentMethod" method="post">
-                        <span>{{responseMessage}}</span>
+                        <div v-if="responseMessage != null && responseMessage != ''" class="alert alert-primary" role="alert">
+                            {{responseMessage}}
+                        </div>
                         <div class="form-group row">
                             <label for="card" class="col-sm-3 col-form-label modal-text">
                                 Card Number 
@@ -381,13 +385,20 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Select an Address*</label>
                             <div class="col-sm-9">
-                                <select v-model="addressOption" class="form-control" required>
-                                    <option @click="selectBillingAddress(item)" v-for="item in customerAddressList" 
-                                        :value="item.postalContactMechId + ':' +
-                                        item.telecomContactMechId">
-                                        {{item.postalAddress.address1}}, {{item.postalAddress.city}}
-                                    </option>
-                                </select>
+                                <template v-for="(item, index) in customerAddressList">
+                                    <label :for="index + 'r4'" class="container-input">
+                                        <input :id="index + 'r4'" type="radio" :value="item.postalContactMechId + ':' +
+                                            item.telecomContactMechId" v-model="paymentAddressOption" 
+                                            @click="selectBillingAddress(item)"/>
+                                        <span class="checkmark"></span>
+                                        <span class="span-description">{{item.postalAddress.toName}}</span>
+                                        <span class="span-description">
+                                            {{item.postalAddress.address1}} {{item.postalAddress.address2}}
+                                        </span>
+                                        <span class="span-description">{{item.postalAddress.city}}</span>
+                                    </label>
+                                    <br>
+                                </template>
                             </div>
                         </div>
                         <div class="row justify-content-center">

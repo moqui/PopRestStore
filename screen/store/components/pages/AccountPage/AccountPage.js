@@ -12,7 +12,7 @@ var AccountPage = {
       customerAddress: {},
       addressOption: "",
       customerPaymentMethods: [],
-      addressOption: "",
+      paymentAddressOption: "",
       paymentOption: "",
       paymentMethod: {},
       responseMessage: "",
@@ -83,7 +83,7 @@ var AccountPage = {
         this.paymentMethod.expireYear.trim() == "" || 
         this.paymentMethod.cardSecurityCode == null ||
         this.paymentMethod.cardSecurityCode.trim() == "" ||
-        this.addressOption == null || this.addressOption == "") {
+        this.paymentAddressOption == null || this.paymentAddressOption == "") {
         this.responseMessage = "Verify the required fields";
         return;
       }
@@ -94,13 +94,18 @@ var AccountPage = {
         this.paymentMethod.creditCardTypeEnumId = "CctVisa";
       }   
 
-      if(this.isUpdate) {
-        this.paymentMethod.cardNumber = "";
+      if(this.paymentMethod.cardSecurityCode.length < 3 || this.paymentMethod.cardSecurityCode.length > 4) {
+        this.responseMessage = "Must type a valid CSC";
+        return;
       }
      
       if(this.paymentMethod.postalContactMechId == null) {
-        this.paymentMethod.postalContactMechId = this.addressOption.split(':')[0];
-        this.paymentMethod.telecomContactMechId = this.addressOption.split(':')[1];
+        this.paymentMethod.postalContactMechId = this.paymentAddressOption.split(':')[0];
+        this.paymentMethod.telecomContactMechId = this.paymentAddressOption.split(':')[1];
+      }
+
+      if(this.isUpdate) {
+        this.paymentMethod.cardNumber = "";
       }
 
       CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
@@ -108,12 +113,13 @@ var AccountPage = {
         this.paymentMethod = {};
         this.getCustomerPaymentMethods();
         this.responseMessage = "";
-        this.addressOption = "";
+        this.paymentAddressOption = "";
       }.bind(this));
     },
     resetData() {
       this.paymentMethod = {};
       this.customerAddress = {};
+      this.paymentAddressOption = "";
     },
     updateCustomerInfo() {
       if(this.customerInfo.username == null || this.customerInfo.username.trim() == ""
@@ -236,7 +242,7 @@ var AccountPage = {
       this.paymentMethod.expireYear = method.expireYear;
       this.paymentMethod.postalContactMechId = method.paymentMethod.postalContactMechId;
       this.paymentMethod.telecomContactMechId = method.paymentMethod.telecomContactMechId;
-      this.addressOption = method.paymentMethod.postalContactMechId + ':' + method.paymentMethod.telecomContactMechId;
+      this.paymentAddressOption = method.paymentMethod.postalContactMechId + ':' + method.paymentMethod.telecomContactMechId;
       this.paymentMethod.cardSecurityCode = "";
       this.responseMessage = "";
     },

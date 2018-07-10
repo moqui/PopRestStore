@@ -69,7 +69,7 @@
                         <a class="dropdown-item item-color" href="/store/content/help#how-to-pay">
                             How to pay 
                         </a>
-                        <hr>
+                        <div role="separator" class="dropdown-divider"></div>
                         <a class="dropdown-item item-color" href="/store/content/about">
                             About POP Shop 
                         </a>
@@ -98,7 +98,7 @@
                             <a class="dropdown-item item-color" href="/store/d#/orders">
                                 My Orders
                             </a>
-                            <hr>
+                            <div role="separator" class="dropdown-divider"></div>
                             <a class="dropdown-item item-color" id="logout">
                                 Signout
                             </a>
@@ -120,7 +120,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link" href="/store/d#/checkout">
-                        <span class="cart-quantity">
+                        <span class="cart-quantity" id="cart-quantity">
                             <#if cartList.orderItemList??>
                                 ${cartList.orderItemList?size}
                             <#else>

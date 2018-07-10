@@ -95,14 +95,13 @@
         $("#cartAdd").click(function(){
             $.post(storeConfig.restApiLocation + urlCartAdd,$("#cart-add-form").serialize(), function(data){
                 $("#isSuccessAddCart").show();
-                console.log(data);
+                $("#cart-quantity").text(data.orderItemList.length);
             });
         });
 
         $("#addReview").click(function(){
             $.post(storeConfig.restApiLocation + urlAddReview,$("#product-review-form").serialize(), function(data){
                 $('#product-review-form').trigger("reset");
-                console.log(data);
             });
         });
 

@@ -58,12 +58,16 @@
                         <hr class="order-hr">
                         <div class="row">
                             <template v-for="(item, index) in orderList.orderItemList">
-                                <template v-if="item.itemTypeEnumId == 'ItemProduct'">
-                                    <a class="col col-lg-8 order-link-text" :href="'/store/product/' + item.productId">
+                                <template>
+                                    <a v-if="item.itemTypeEnumId == 'ItemProduct'" class="col col-lg-8 order-link-text" 
+                                        :href="'/store/product/' + item.productId">
                                         {{item.itemDescription}}
                                     </a>
+                                    <span v-if="item.itemTypeEnumId != 'ItemProduct'" class="col col-lg-8 order-link-text">
+                                        {{item.itemDescription}}
+                                    </span>
                                     <span class="col col-lg-2 order-text-color text-center">{{item.quantity}}</span>
-                                    <span class="col col-lg-2 order-text-color text-center">${{item.unitAmount}}</span> 
+                                    <span class="col col-lg-2 order-text-color text-center">${{item.unitAmount.toFixed(2)}}</span> 
                                 </template>
                             </template>
                         </div>

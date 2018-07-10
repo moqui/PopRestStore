@@ -14,9 +14,10 @@ var CheckOutPage = {
       countriesList: [],
       regionsList: [],
       shippingOption: "",
-      addressOption: {},
+      addressOption: "",
       paymentOption: "",
       isSameAddress: "0",
+      isUpdate: false,
       responseMessage: "",
       paymentId: {},
       urlList: {},
@@ -124,6 +125,11 @@ var CheckOutPage = {
         return;
       }
 
+      if(this.paymentMethod.cardSecurityCode.length < 3 || this.paymentMethod.cardSecurityCode.length > 4) {
+        this.responseMessage = "Must type a valid CSC";
+        return;
+      }
+
       if(this.paymentMethod.cardNumber.startsWith("5")) {
         this.paymentMethod.creditCardTypeEnumId = "CctMastercard";
       } else if(this.paymentMethod.cardNumber.startsWith("4")){
@@ -134,6 +140,11 @@ var CheckOutPage = {
         this.paymentMethod.postalContactMechId = this.addressOption.split(':')[0];
         this.paymentMethod.telecomContactMechId = this.addressOption.split(':')[1];
       }
+
+      if(this.isUpdate) {
+        this.paymentMethod.cardNumber = "";
+      }
+
       CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
         this.hideModal("modal2");
         this.paymentMethod = {};
@@ -270,6 +281,7 @@ var CheckOutPage = {
     },
     cleanPaymentMethod() {
       this.paymentMethod = {};
+      this.isUpdate = false;
     }
   },
   components: {

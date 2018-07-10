@@ -9,10 +9,10 @@
                     <span class="col col-lg-1">Price</span>
                 </p>
                 <hr class="hr">
-                <div class="row" v-for="item in productsInCart.orderItemList" :key="item.productId" 
-                    v-if="item.itemTypeEnumId=='ItemProduct'">
+                <div class="row" v-for="item in productsInCart.orderItemList" :key="item.productId" >
                     <div class="col col-lg-2">
-                        <product-image :productId="item.productId"/>
+                        <product-image :productId="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'"
+                           class="mb-1"/>
                     </div>
                     <div class="col col-lg-5">
                         <p class="item-text-desc">
@@ -25,11 +25,14 @@
                     </div>
                     <div class="col col-lg-2">
                         <input class="input-quantity form-control" id="quantity" @change="updateProductQuantity(item)" 
-                            type="text" v-model="item.quantity"/>
+                            type="text" v-model="item.quantity" :disabled="item.itemTypeEnumId != 'ItemProduct'" />
                     </div>
                     <div class="col col-lg-1 offset-lg-1">
                         <p class="place-order-total">${{item.unitAmount}}</p>
-                        <span class="item-actions" @click="deleteOrderProduct(item)">Delete</span>
+                        <span class="item-actions" @click="deleteOrderProduct(item)" 
+                            v-if="item.itemTypeEnumId=='ItemProduct'">
+                            Delete
+                        </span>
                     </div>
                 </div>
                 <hr>
@@ -80,17 +83,19 @@
                         <div v-bind:class="{ 'div-checkmark': addressOption == option.postalContactMechId + ':' +
                             option.telecomContactMechId }">
                             <label :for="index + 'r1'" class="container-input">
-                            <input :id="index + 'r1'" type="radio" :value="option.postalContactMechId + ':' +
-                                option.telecomContactMechId" v-model="addressOption" @click="changeShippingAddress(option)"/>
-                            <span class="checkmark"></span>
-                            <span class="span-description">{{option.postalAddress.toName}}</span>
-                            <span class="span-description">
-                                {{option.postalAddress.address1}} {{option.postalAddress.address2}}</span>
-                            <span class="span-description">{{option.postalAddress.city}}</span>
-                            <span class="span-description">
-                                <i class="fa fa-phone phone-icon"></i>
-                                {{option.telecomNumber.contactNumber}}
-                            </span>
+                                <input :id="index + 'r1'" type="radio" :value="option.postalContactMechId + ':' +
+                                    option.telecomContactMechId" v-model="addressOption" 
+                                    @click="changeShippingAddress(option)"/>
+                                <span class="checkmark"></span>
+                                <span class="span-description">{{option.postalAddress.toName}}</span>
+                                <span class="span-description">
+                                    {{option.postalAddress.address1}} {{option.postalAddress.address2}}
+                                </span>
+                                <span class="span-description">{{option.postalAddress.city}}</span>
+                                <span class="span-description">
+                                    <i class="fa fa-phone phone-icon"></i>
+                                    {{option.telecomNumber.contactNumber}}
+                                </span>
                             </label>
                             <span data-toggle="modal" data-target="#modal1" @click="selectAddress(option)" class="edit-icon">
                                 <i class="fas fa-edit"></i>
@@ -192,7 +197,8 @@
                                 <span class="span-description">{{item.paymentMethod.titleOnAccount}}</span>
                                 <span class="span-description">Expires on {{item.creditCard.expireDate}}</span>
                             </label>
-                            <span data-toggle="modal" data-target="#modal2" @click="selectPaymentMethod(item)" 
+                            <span data-toggle="modal" data-target="#modal2" 
+                                @click="selectPaymentMethod(item),isUpdate = true" 
                                 class="edit-icon icon-margin-top">
                                 <i class="fas fa-edit"></i>
                             </span>
@@ -282,7 +288,10 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <span>{{responseMessage}}</span>
+                            <div v-if="responseMessage != null && responseMessage != ''" 
+                                class="alert alert-primary" role="alert">
+                                {{responseMessage}}
+                            </div>
                             <div class="form-group row">
                                 <label for="card" class="col-sm-3 col-form-label modal-text">
                                     Card Number 
@@ -363,7 +372,10 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <span>{{responseMessage}}</span>
+                            <div v-if="responseMessage != null && responseMessage != ''" 
+                                class="alert alert-primary" role="alert">
+                                {{responseMessage}}
+                            </div>
                             <div class="form-group row">
                                 <label for="name" class="col-sm-3 col-form-label modal-text">Name <span class="modal-text-required">*</span></label>
                                 <div class="col-sm-9">
@@ -467,7 +479,7 @@
         </div>
         <span class="link-text">
             Forgot something? 
-            <router-link :to="'/'" tag="span" class="text-add">Head back to the shop.</router-link>
+            <a href="/store" class="text-add">Head back to the shop.</a>
         </span>
     </div>
     <footer-page :infoLink="false" />
