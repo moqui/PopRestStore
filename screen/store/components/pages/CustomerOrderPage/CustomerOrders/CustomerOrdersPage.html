@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col col-lg-2 col-12">
                 <div class="customer-menu">
-                    <router-link class="customer-link" :to="'/account'" tag="span">
+                    <router-link class="customer-link font-weight-bold" :to="'/account'" tag="span">
                         Account Settings 
                     </router-link>
                     <ul class="customer-orders-ul">
@@ -24,7 +24,7 @@
                             Payment Method 
                         </router-link>
                     </ul>
-                    <span class="color-tab">My Orders</span>
+                    <span class="color-tab font-weight-bold">My Orders</span>
                     <ul class="customer-orders-ul">
                         <li @click="scrollTo('current')">Current Orders</li>
                         <li @click="scrollTo('order')">Order History</li>

@@ -18,6 +18,7 @@ var CheckOutPage = {
       paymentOption: "",
       isSameAddress: "0",
       isUpdate: false,
+      isSpinner: false,
       responseMessage: "",
       paymentId: {},
       urlList: {},
@@ -53,10 +54,15 @@ var CheckOutPage = {
         this.shippingAddress.address1.trim() == "" ||
         this.shippingAddress.postalCode == null ||
         this.shippingAddress.postalCode.trim() == "") {
-        console.log(this.shippingAddress);
         this.responseMessage = "Verify the required fields";
         return;
       } 
+
+      if(this.shippingAddress.postalCode.length < 5 || this.shippingAddress.postalCode.length > 7) {
+        this.responseMessage = "Type a valid postal code";
+        return;
+      }
+
       CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(function (data) {
         this.shippingAddress = {};
         this.getCustomerShippingAddresses();
@@ -197,13 +203,25 @@ var CheckOutPage = {
       var data = {
         "cardSecurityCodeByPaymentId": this.paymentId
       };
+      this.isSpinner = true;
       ProductService.setCartPlace(data,this.axiosConfig).then(function (data) {
-        this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
+        if(data.orderHeader != null) {
+          this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
+        }
+
+        if(data.messages.includes("error") && data.messages.includes("122")) {
+          this.responseMessage = "Please provide a valid Billing ZIP";
+        } else {
+          this.responseMessage = data.messages;
+        }
+        this.isSpinner = false;
+        this.showModal("modal-error");
       }.bind(this))
       .catch(function (error) {
-        this.responseMessage = error.
-        console.log(error);
-      });
+        this.isSpinner = true;
+        this.responseMessage = error;
+        this.showModal("modal-error");
+      }.bind(this));
     },
     deletePaymentMethod(paymentMethodId) {
       CustomerService.deletePaymentMethod(paymentMethodId,this.axiosConfig).then(function (data) {
@@ -269,8 +287,11 @@ var CheckOutPage = {
       this.paymentMethod.telecomContactMechId = method.paymentMethod.telecomContactMechId;
       this.responseMessage = "";
     },
-    hideModal(modalid) {
-      $('#'+modalid).modal('hide');
+    hideModal(modalId) {
+      $('#'+modalId).modal('hide');
+    },
+    showModal(modalId) {
+      $('#'+modalId).modal('show');
     },
     changeShippingAddress(data) {
       this.shippingAddressSelect = data.postalAddress;
@@ -278,6 +299,7 @@ var CheckOutPage = {
     },
     cleanShippingAddress() {
       this.shippingAddress = {};
+      this.isUpdate = false;
     },
     cleanPaymentMethod() {
       this.paymentMethod = {};

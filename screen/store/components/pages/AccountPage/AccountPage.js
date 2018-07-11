@@ -120,6 +120,7 @@ var AccountPage = {
       this.paymentMethod = {};
       this.customerAddress = {};
       this.paymentAddressOption = "";
+      this.isUpdate = false;
     },
     updateCustomerInfo() {
       if(this.customerInfo.username == null || this.customerInfo.username.trim() == ""
@@ -135,7 +136,7 @@ var AccountPage = {
       CustomerService.updateCustomerInfo(this.customerInfo,this.axiosConfig).then(function (data) {
         this.customerInfo = data.customerInfo;
         this.message.state = 1;
-        this.message.message = "Correct your data have been updated!";
+        this.message.message = "Correct! Your data have been updated.";
       }.bind(this));
     },
     updateCustomerPassword(event) {

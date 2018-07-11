@@ -1019,12 +1019,6 @@ a:hover {
 }
 
 #isSuccessAddCart {
-    background-color: #f2f2f2;
-    border-radius: 5px;
-    height: 40px;
-    align-items: center;
-    margin-bottom: 30px;
-    margin-top: 30px;
     display: none;
 }
 
@@ -1179,4 +1173,23 @@ a:hover {
 
 .color-tab {
     color: #797979;
+}
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    position: absolute;
+    z-index: 1000;
+    vertical-align: middle;
+    animation: spin 2s linear infinite;
+    margin-top: 15%;
+    margin-left: 30%;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

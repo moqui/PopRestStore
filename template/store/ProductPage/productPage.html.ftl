@@ -7,13 +7,10 @@
     <span class="customer-link">Office Supplies</span>
 </div>
 <div class="container container-text mt-1">
-    <div id="isSuccessAddCart">
-        <span class="success-add-cart">
+    <div id="isSuccessAddCart" class="alert alert-primary mt-3 mb-3" role="alert">
             <i class="far fa-check-square"></i>
-            <i class="fa fa-check-square-o" aria-hidden="true"></i>
             You added a ${product.productName} to your shopping cart.
-        </span>
-        <a class="float-right product-checkout-text" href="/store/d#/checkout" tag="span">
+        <a class="float-right" href="/store/d#/checkout">
             Go to Checkout
             <i class="fas fa-arrow-right"></i>
         </a>

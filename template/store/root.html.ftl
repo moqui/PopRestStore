@@ -95,7 +95,13 @@
         $("#cartAdd").click(function(){
             $.post(storeConfig.restApiLocation + urlCartAdd,$("#cart-add-form").serialize(), function(data){
                 $("#isSuccessAddCart").show();
-                $("#cart-quantity").text(data.orderItemList.length);
+                var quantity = 0;
+                for(var i = 0; i < data.orderItemList.length; i++) {
+                    if(data.orderItemList[i].itemTypeEnumId == "ItemProduct") {
+                        quantity++;
+                    }
+                }
+                $("#cart-quantity").text(quantity);
             });
         });
 

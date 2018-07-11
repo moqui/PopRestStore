@@ -11,13 +11,13 @@
         <div class="row mt-4">
             <div class="col col-lg-2 col-12">
                 <div class="customer-menu">
-                    <span class="color-tab">Account Settings</span>
+                    <span class="color-tab font-weight-bold">Account Settings</span>
                     <ul class="customer-orders-ul">
                         <li>Profile</li>
                         <li class="item-info" @click="scrollTo('delivery')">Delivery Address</li>
                         <li class="item-info" @click="scrollTo('credit')">Payment Method</li>
                     </ul>
-                    <router-link class="customer-link" :to="'/orders'" tag="span">
+                    <router-link class="customer-link font-weight-bold" :to="'/orders'" tag="span">
                         My Orders
                     </router-link>
                     <ul class="customer-orders-ul">
@@ -116,8 +116,8 @@
                                 </span>
                             </label>
                             <span class="span-link-container mt-1">
-                                <span data-toggle="modal" data-target="#modal1" @click="selectAddress(address)" 
-                                    class="span-link">
+                                <span data-toggle="modal" data-target="#modal1" 
+                                    @click="selectAddress(address),isUpdate = true" class="span-link">
                                     Update
                                 </span>
                                 <span>|</span>
@@ -132,7 +132,7 @@
                 <br>
                 <div class="row">
                     <button data-toggle="modal" data-target="#modal1" 
-                        class="btn btn-continue col col-lg-6 account-btn" @click="customerAddress = {}">
+                        class="btn btn-continue col col-lg-6 account-btn" @click="resetData()">
                         Add an Address
                     </button>
                 </div>
@@ -167,7 +167,7 @@
                 </div>
                 <br>
                 <div class="row">
-                    <button @click="resetData(),isUpdate = false" data-toggle="modal" data-target="#modal2" 
+                    <button @click="resetData()" data-toggle="modal" data-target="#modal2" 
                         class="btn btn-continue col col-lg-6 account-btn">
                         Add a Credit Card
                     </button>
@@ -221,7 +221,10 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add an Address</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            <span v-if="!isUpdate">Add Address</span>
+                            <span v-else>Update Address</span>
+                        </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -303,7 +306,8 @@
                         </div>
                         <div class="row justify-content-center">
                             <button @click="addCustomerAddress" class="btn btn-continue col col-sm-6 offset-sm-1">
-                                Add Address
+                                <span v-if="!isUpdate">Add Address</span>
+                                <span v-else>Update Address</span>
                             </button>
                             <a data-dismiss="modal" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
                         </div>
@@ -315,7 +319,10 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Add a Credit Card</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">
+                            <span v-if="!isUpdate">Add Credit Card</span>
+                            <span v-else>Update Credit Card</span>
+                        </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -428,7 +435,7 @@
                                     customerAddress.postalContactMechId,customerAddress.postalContactMechPurposeId)">
                                 Delete
                             </button>
-                            <a data-dismiss="modal" class="btn btn-link text-add col col-sm-6 offset-sm-1">Cancel</a>
+                            <a data-dismiss="modal" class="btn btn-link text-add mr-0 col col-sm-6 offset-sm-1">Cancel</a>
                         </div>
                     </div>
                 </div>
@@ -450,7 +457,7 @@
                                 @click="deletePaymentMethod(paymentMethod.paymentMethodId)">
                                 Delete
                             </button>
-                            <a data-dismiss="modal" class="btn btn-link text-add col col-sm-6 offset-sm-1">Cancel</a>
+                            <a data-dismiss="modal" class="btn btn-link text-add mr-0 col col-sm-6 offset-sm-1">Cancel</a>
                         </div>
                     </div>
                 </div>

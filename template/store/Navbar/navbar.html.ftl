@@ -121,11 +121,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/store/d#/checkout">
                         <span class="cart-quantity" id="cart-quantity">
+                            <#assign x = 0>
                             <#if cartList.orderItemList??>
-                                ${cartList.orderItemList?size}
-                            <#else>
-                                0
+                                <#list cartList.orderItemList as item>
+                                    <#if item.itemTypeEnumId == "ItemProduct">
+                                        <#assign x++>
+                                    </#if>
+                                </#list>
                             </#if>
+                            ${x}
                         </span>
                         <i class="fa fa-shopping-cart"></i>  
                         Cart

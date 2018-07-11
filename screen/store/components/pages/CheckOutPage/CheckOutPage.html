@@ -1,6 +1,7 @@
 <div>
     <div class="container checkout-container">
         <placeorder-navbar :option="optionNavbar"/>
+        <div class="loader" v-if="isSpinner"></div>
         <div class="row">
             <div class="col col-lg-6 col-sm-12 col-12">
                 <p class="title-cart-item row">
@@ -28,7 +29,7 @@
                             type="text" v-model="item.quantity" :disabled="item.itemTypeEnumId != 'ItemProduct'" />
                     </div>
                     <div class="col col-lg-1 offset-lg-1">
-                        <p class="place-order-total">${{item.unitAmount}}</p>
+                        <p class="place-order-total">${{item.unitAmount.toFixed(2)}}</p>
                         <span class="item-actions" @click="deleteOrderProduct(item)" 
                             v-if="item.itemTypeEnumId=='ItemProduct'">
                             Delete
@@ -97,7 +98,8 @@
                                     {{option.telecomNumber.contactNumber}}
                                 </span>
                             </label>
-                            <span data-toggle="modal" data-target="#modal1" @click="selectAddress(option)" class="edit-icon">
+                            <span data-toggle="modal" data-target="#modal1" 
+                                @click="selectAddress(option),isUpdate = true" class="edit-icon">
                                 <i class="fas fa-edit"></i>
                             </span>
                             <span @click="deleteShippingAddress(option.postalContactMechId,option.postalContactMechPurposeId)"
@@ -282,7 +284,10 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Add a Credit Card</h5>
+                            <h5 class="modal-title" id="exampleModalLongTitle">
+                                <span v-if="!isUpdate">Add Credit Card</span>
+                                <span v-else>Update Credit Card</span>
+                            </h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
@@ -301,7 +306,7 @@
                                     <input class="form-control" id="card"
                                         type="text"
                                         v-model="paymentMethod.cardNumber"
-                                        placeholder="13 to 16 digits Spaces are optional" required/>
+                                        placeholder="13 to 16 digits Spaces are optional" required :disabled="isUpdate"/>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -352,7 +357,8 @@
                             </div>
                             <div class="row justify-content-center">
                                 <button @click="addCustomerPaymentMethod" class="btn btn-continue col col-sm-6 offset-sm-1">
-                                    Add Credit Card
+                                    <span v-if="!isUpdate">Add Credit Card</span>
+                                    <span v-else>Update Credit Card</span>
                                 </button>
                                 <a @click="hideModal('modal2')" class="btn btn-link text-add col col-sm-9 offset-sm-1">
                                     Or Cancel
@@ -362,11 +368,30 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="modal-error">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">An error occurred</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-center">{{responseMessage}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="modal1">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add an Address</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">
+                                <span v-if="!isUpdate">Add Address</span>
+                                <span v-else>Update Address</span>
+                            </h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -466,7 +491,8 @@
                             </div>
                             <div class="row justify-content-center">
                                 <button @click="addCustomerShippingAddress" class="btn btn-continue col col-sm-6 offset-sm-1">
-                                    Add Address
+                                    <span v-if="!isUpdate">Add Address</span>
+                                    <span v-else>Update Address</span>
                                 </button>
                                 <a @click="hideModal('modal1')" class="btn btn-link text-add col col-sm-9 offset-sm-1">
                                     Or Cancel
