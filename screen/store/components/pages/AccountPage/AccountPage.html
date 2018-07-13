@@ -222,8 +222,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">
-                            <span v-if="!isUpdate">Add Address</span>
-                            <span v-else>Update Address</span>
+                            <span v-if="isUpdate">Update Address</span>
+                            <span v-else>Add Address</span>
                         </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -306,8 +306,8 @@
                         </div>
                         <div class="row justify-content-center">
                             <button @click="addCustomerAddress" class="btn btn-continue col col-sm-6 offset-sm-1">
-                                <span v-if="!isUpdate">Add Address</span>
-                                <span v-else>Update Address</span>
+                                <span v-if="isUpdate">Update Address</span>
+                                <span v-else>Add Address</span>
                             </button>
                             <a data-dismiss="modal" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
                         </div>
@@ -320,8 +320,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">
-                            <span v-if="!isUpdate">Add Credit Card</span>
-                            <span v-else>Update Credit Card</span>
+                            <span v-if="isUpdate">Update Credit Card</span>
+                            <span v-else>Add Credit Card</span>
                         </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -410,8 +410,8 @@
                         </div>
                         <div class="row justify-content-center">
                             <button type="submit" class="btn btn-continue col col-sm-6 offset-sm-1">
-                                <span v-if="!isUpdate">Add Credit Card</span>
-                                <span v-else>Update Credit Card</span>
+                                <span v-if="isUpdate">Update Credit Card</span>
+                                <span v-else>Add Credit Card</span>
                             </button>
                             <a data-dismiss="modal" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
                         </div>
