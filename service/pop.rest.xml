@@ -26,16 +26,50 @@ along with this software (see the LICENSE.md file). If not, see
 
     <!-- Login and Register -->
 
-    <resource name="login" require-authentication="anonymous-all">
+    <resource name="login" require-authentication="anonymous-view">
         <method type="post"><service name="popstore.CustomerServices.login#Customer"/></method></resource>
+    <resource name="logout" require-authentication="anonymous-view">
+        <method type="get"><service name="popstore.CustomerServices.logout#Customer"/></method></resource>
     <resource name="register" require-authentication="anonymous-all">
         <method type="post"><service name="popstore.CustomerServices.register#Customer"/></method></resource>
+    <resource name="resetPassword" require-authentication="anonymous-all">
+        <method type="post"><service name="popstore.CustomerServices.reset#Password"/></method></resource>
+
+    <resource name="test">
+        <method type="post"><service name="YotPo.YotPoServices.create#Order"/></method></resource>
+    <!-- Geos --> 
+     
+    <resource name="geos">
+        <method type="get">
+            <service name="popstore.StoreServices.get#Geos"/></method>
+        <id name="geoId">
+            <method type="get"><entity name="geos" masterName="default" operation="one"/></method>
+            <resource name="regions"><method type="get">
+                    <service name="org.moqui.impl.BasicServices.get#GeoRegionsForDropDown"/></method></resource>
+        </id>
+    </resource>  
+
+    <resource name="locale">
+        <method type="get">
+            <service name="popstore.StoreServices.get#locale"/>
+        </method>
+    </resource>
+   
+    <resource name="timeZone">
+        <method type="get">
+            <service name="popstore.StoreServices.get#TimeZone"/>
+        </method>
+    </resource>
 
     <!-- Product Information -->
 
     <resource name="products" require-authentication="anonymous-view">
         <id name="productId"><method type="get"><service name="popstore.ProductServices.get#ProductInfo"/></method></id>
         <resource name="search"><method type="get"><service name="popstore.ProductServices.search#Products"/></method></resource>
+        <resource name="reviews">
+            <method type="get"><service name="popstore.ProductServices.get#ProductReviews"/></method>
+            <method type="post"><service name="popstore.ProductServices.create#ProductReview"/></method>
+        </resource>
     </resource>
     <resource name="categories" require-authentication="anonymous-view">
         <id name="productCategoryId">
@@ -91,7 +125,7 @@ along with this software (see the LICENSE.md file). If not, see
         <resource name="updateInfo">
             <method type="put"><service name="popstore.CustomerServices.update#Customer"/></method>
         </resource>
-        <resource name="updatePassword">
+        <resource name="updatePassword" require-authentication="anonymous-all">
             <method type="put"><service name="popstore.CustomerServices.update#CustomerPassword"/></method>
         </resource>
         <resource name="paymentMethods">

@@ -21,6 +21,11 @@ var router = new VueRouter({
       component: ProductPageTemplate
     },
     {
+      path: "/product/search/:searchText",
+      name: "productsearch",
+      component: ProductSearchTemplate
+    },
+    {
       path: "/checkout",
       name: "checkout",
       component: CheckOutPageTemplate
@@ -51,6 +56,11 @@ var router = new VueRouter({
       component: AccountPageTemplate
     },
     {
+      path: "/account/create",
+      name: "createaccount",
+      component: CreateAccountPageTemplate
+    },
+    {
       path: "/help",
       name: "help",
       component: HelpPageTemplate
@@ -64,6 +74,11 @@ var router = new VueRouter({
       path: "/contact",
       name: "contact",
       component: ContactPageTemplate
+    },
+    {
+      path: "/resetPassword",
+      name: "resetPassword",
+      component: ResetPasswordTemplate
     }
   ]
 });

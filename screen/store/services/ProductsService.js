@@ -4,6 +4,12 @@ var ProductService = {
       return response.data.productList;
     });
   },
+  getProductBySearch(productName, categoryId) {
+    return axios.get("/rest/s1/pop/products/search?term=" + productName + "&productCategoryId=" + categoryId)
+    .then(function (response) {
+      return response.data;
+    })
+  },
   getProductsByCategory(categoryId) {
     return axios.get("/rest/s1/pop/categories/"+categoryId+"/products").then(function (response) {
       return response.data.productList;
@@ -34,7 +40,7 @@ var ProductService = {
       return response.data;
     });
   },
-  addCartBillingShipping(data,headers) {
+  addCartBillingShipping(data, headers) {
     return axios.post("/rest/s1/pop/cart/billingShipping",data,headers).then(function (response) {
       return response.data;
     });
@@ -44,17 +50,17 @@ var ProductService = {
       return response.data;
     });
   },
-  setCartPlace(data,headers) {
+  setCartPlace(data, headers) {
     return axios.post("/rest/s1/pop/cart/place",data,headers).then(function (response) {
       return response.data;
     });
   }, 
-  updateProductQuantity(data,headers) {
+  updateProductQuantity(data, headers) {
     return axios.post("/rest/s1/pop/cart/updateProductQuantity",data,headers).then(function (response) {
       return response.data;
     });
   },
-  deleteOrderProduct(orderId,orderItemSeqId,headers) {
+  deleteOrderProduct(orderId, orderItemSeqId,headers) {
     return axios.delete("/rest/s1/pop/cart/deleteOrderItem?orderId="+orderId+"&orderItemSeqId="+orderItemSeqId,headers)
     .then(function (response) {
       return response.data;

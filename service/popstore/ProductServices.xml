@@ -84,6 +84,36 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
 
+    <service verb="create" noun="ProductReview">
+        <in-parameters>
+            <parameter name="productId"/>
+            <parameter name="productRating"/>
+            <parameter name="productReview"/>
+        </in-parameters>
+        <actions>
+            <service-call name="create#mantle.product.ProductReview"
+                in-map="context + [userId:(ec.user.userId ?: '_NA_'), statusId:'PrvwApproved',
+                postedAnonymous:(ec.user.userId ? 'N' : 'Y'), postedDateTime:ec.user.nowTimestamp]"/>
+        </actions>
+    </service>
+
+    <service verb="get" noun="ProductReviews">
+        <in-parameters>
+            <parameter name="productId"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productReviewList" type="List">
+                <parameter name="review" type="Map"></parameter>
+            </parameter>
+        </out-parameters>
+        <actions>
+            <entity-find entity-name="mantle.product.ProductReview" list="productReviewList">
+                <econdition field-name="productId"/>
+                <econdition field-name="statusId" value="PrvwApproved"/>
+            </entity-find>
+        </actions>
+    </service>
+
     <service verb="search" noun="Products">
         <in-parameters>
             <parameter name="term"/>
@@ -105,9 +135,12 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="productListPageRangeHigh" type="Integer"/>
         </out-parameters>
         <actions>
+            <set field="sessionAttributes" from="ec.web.sessionAttributes"/>
             <set field="productStoreId" from="sessionAttributes.productStoreId"/>
             <!-- TODO: if no productStoreId lookup somehow? should be set from initial call to content/config.js transition -->
-
+            <if condition="productCategoryId"><set field="queryString" from="(term ? term + ' AND ' : '') + 'categories.productCategoryId:' + productCategoryId"/></if>
+            <service-call name="org.moqui.search.SearchServices.search#DataDocuments" out-map="productList"
+                    in-map="[queryString:queryString, indexName:'popc', documentType:'PopcProduct']"/>
             <!-- TODO -->
         </actions>
     </service>

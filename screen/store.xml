@@ -20,6 +20,11 @@ along with this software (see the LICENSE.md file). If not, see
         <set field="productStoreId" value="POPC_DEFAULT"/>
         <entity-find-one entity-name="mantle.product.store.ProductStore" value-field="productStore" cache="true"/>
         <set field="wikiSpaceId" from="productStore?.wikiSpaceId"/>
+        <service-call name="popstore.CartServices.get#CartInfo" out-map="cartList" in-map="context"/>
+        <set field="categoryId" value="PopcBrowseRoot"/>
+        <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="categoriesList"
+                    in-map="[productCategoryId:categoryId]"/>
+        <set field="user" from="ec.user.userAccount"/>
     </always-actions>
 
     <transition name="config.js" read-only="true">

@@ -14,8 +14,30 @@ along with this software (see the LICENSE.md file). If not, see
 -->
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
         require-authentication="anonymous-view">
+     <parameter name="productCategoryId" />
+     <parameter name="star"  />
+
+     <pre-actions>
+     	<set field="star" value="5"/>
+        <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
+        <if condition="extraPathNameList &amp;&amp; !productCategoryId">
+            <set field="productCategoryId" from="extraPathNameList[0]"/></if>
+        
+        <if condition="!productCategoryId">
+        	<set field="productCategoryId" value="PopcAllProducts"/>
+        </if>
+        <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory"/>
+        <set field="html_title" from="productCategory?.categoryName ?: ''"/>
+    </pre-actions>
+   
+    <actions>
+        <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="pcmpList"
+                    in-map="[productCategoryId:productCategoryId]"/>
+    </actions>
 
     <widgets>
+        <render-mode><text type="html" location="component://PopRestStore/template/store/Navbar/navbar.html.ftl"/></render-mode>
         <render-mode><text type="html" location="component://PopRestStore/template/store/home.html.ftl"/></render-mode>
+        <render-mode><text type="html" location="component://PopRestStore/template/store/FooterPage/footerPage.html.ftl"/></render-mode>
     </widgets>
 </screen>

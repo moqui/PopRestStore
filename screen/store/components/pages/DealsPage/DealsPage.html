@@ -2,10 +2,10 @@
   <navbar sub-bar="true"/>
   <div class="container">
     <div class="container">
-      <router-link class="customer-link" :to="'/'" tag="span">
+      <a class="customer-link" href="/store">
         Home 
         <i class="fas fa-angle-right"></i>
-      </router-link>
+      </a>
       <span class="modal-text">{{category.categoryName}}</span>
     </div>
     <div class="row mt-4">
@@ -35,9 +35,9 @@
         </div>
         <div class="row mt-5">
           <div class="col col-lg-4" v-for="(product, index) in products">
-            <router-link :to="'/product/' + product.productId">
+            <a :href="'/store/product/'+ product.productId">
               <landing-product :product="product" />
-            </router-link>
+            </a>
           </div>
         </div>
       </div>

@@ -11,13 +11,16 @@ var storeComps = {
   ProductPage,
   ProductReview,
   ProductImage,
+  ProductSearch,
   CheckOutPage,
   CustomerOrderPage,
   CustomerOrdersPage,
   SuccessCheckOut,
   DealsPage,
   AccountPage,
+  CreateAccountPage,
   HelpPage,
   AboutPage,
-  ContactPage
+  ContactPage,
+  ResetPasswordPage
 };

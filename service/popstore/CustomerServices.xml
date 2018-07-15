@@ -16,7 +16,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <!-- Login and Register for eCommerce -->
 
-    <service verb="login" noun="Customer" authenticate="anonymous-all">
+    <service verb="login" noun="Customer">
         <in-parameters>
             <parameter name="username" required="true"/>
             <parameter name="password" required="true"/>
@@ -74,7 +74,24 @@ along with this software (see the LICENSE.md file). If not, see
             </if>
         </actions>
     </service>
-    <service verb="register" noun="Customer" authenticate="anonymous-all">
+    <service verb="reset" noun="Password" require-authentication="anonymous-all">
+        <in-parameters>
+            <parameter name="username"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="response"/>
+        </out-parameters>
+        <actions>
+            <service-call name="org.moqui.impl.UserServices.reset#Password" in-map="[username: username]" 
+                out-map="response"/>
+        </actions>
+    </service>
+    <service verb="logout" noun="Customer">
+        <actions>
+            <script>ec.user.logoutUser()</script>
+        </actions>
+    </service>
+    <service verb="register" noun="Customer" require-authentication="anonymous-all">
         <in-parameters>
             <parameter name="firstName" required="true"/><parameter name="middleName"/><parameter name="lastName" required="true"/>
 
@@ -177,19 +194,15 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
 
-    <service verb="update" noun="CustomerPassword">
+    <service verb="update" noun="CustomerPassword" require-authentication="anonymous-all">
         <in-parameters>
             <parameter name="userId"/>
+            <parameter name="username"/>
             <parameter name="oldPassword"/>
             <parameter name="newPassword"/>
             <parameter name="newPasswordVerify"/>
         </in-parameters>
         <actions>
-            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
-            <if condition="!customerPartyId"><return message="No active customer"/></if>
-            <set field="partyId" from="customerPartyId"/>
-            <set field="orderId" from="cartOrderId"/>
-
             <service-call name="org.moqui.impl.UserServices.update#Password" in-map="context"/>
         </actions>
     </service>
@@ -220,6 +233,8 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="validateSecurityCode"><description>Not persisted, just passed through so available to SECA rules for validation by gateway, etc</description></parameter>
             <parameter name="expireMonth"/>
             <parameter name="expireYear"/>
+            <parameter name="creditCardTypeEnumId"/>
+            <parameter name="cardSecurityCode"/>
             <parameter name="expireDate" default-value="${expireMonth?:''}/${expireYear?:''}">
                 <time-range after="now" format="MM/yyyy"/></parameter>
 

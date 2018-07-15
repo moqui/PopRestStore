@@ -4,13 +4,22 @@ var CheckOutPage = {
     return {
       productsInCart: [],
       shippingAddress: {},
+      shippingAddressSelect: {},
       paymentMethod: {},
       shippingMethod: {},
+      billingAddress: {},
+      billingAddressOption: "",
       listShippingAddress: [],
       listPaymentMethods: [],
+      countriesList: [],
+      regionsList: [],
       shippingOption: "",
-      addressOption: {},
+      addressOption: "",
       paymentOption: "",
+      isSameAddress: "0",
+      isUpdate: false,
+      isSpinner: false,
+      responseMessage: "",
       paymentId: {},
       urlList: {},
       stateShippingAddress:1,
@@ -35,6 +44,25 @@ var CheckOutPage = {
       }.bind(this));
     },
     addCustomerShippingAddress() {
+      if(this.shippingAddress.toName == null || 
+        this.shippingAddress.toName.trim() == "" ||
+        this.shippingAddress.countryGeoId == null ||
+        this.shippingAddress.countryGeoId.trim() == "" ||
+        this.shippingAddress.city == null ||
+        this.shippingAddress.city.trim() == "" ||
+        this.shippingAddress.address1 == null ||
+        this.shippingAddress.address1.trim() == "" ||
+        this.shippingAddress.postalCode == null ||
+        this.shippingAddress.postalCode.trim() == "") {
+        this.responseMessage = "Verify the required fields";
+        return;
+      } 
+
+      if(this.shippingAddress.postalCode.length < 5 || this.shippingAddress.postalCode.length > 7) {
+        this.responseMessage = "Type a valid postal code";
+        return;
+      }
+
       CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(function (data) {
         this.shippingAddress = {};
         this.getCustomerShippingAddresses();
@@ -46,12 +74,22 @@ var CheckOutPage = {
         this.listShippingOptions = data.shippingOptions;
       }.bind(this));
     },
+    getCountries() {
+      GeoService.getCountries().then(function (data) {
+        this.countriesList = data.geoList;
+      }.bind(this));
+    },
+    getRegions(geoId) {
+      GeoService.getRegions(geoId).then(function (data){
+        this.regionsList = data.resultList;
+      }.bind(this));
+    },
     getCartInfo() {
       ProductService.getCartInfo(this.axiosConfig).then(function (data) {
           if(data.postalAddress != undefined) {
             this.addressOption = data.postalAddress.contactMechId + ':' + data.postalAddress.telecomContactMechId;
-            this.shippingAddress = data.postalAddress;
-            this.shippingAddress.contactNumber = data.telecomNumber.contactNumber;
+            this.shippingAddressSelect = data.postalAddress;
+            this.shippingAddressSelect.contactNumber = data.telecomNumber.contactNumber;
           }
           if(data.orderPart.carrierPartyId != undefined) {
             this.shippingOption = data.orderPart.carrierPartyId + ':' + data.orderPart.shipmentMethodEnumId;
@@ -64,11 +102,12 @@ var CheckOutPage = {
           }
           if(data.paymentInfoList[0] != null) {
             this.paymentOption = data.paymentInfoList[0].payment.paymentMethodId;
+            this.billingAddressOption = data.paymentInfoList[0].paymentMethod.postalContactMechId + ':' +data.paymentInfoList[0].paymentMethod.telecomContactMechId; 
+            this.selectBillingAddress(data.paymentInfoList[0]);
             for(var x in this.listPaymentMethods) {
               if(this.paymentOption === this.listPaymentMethods[x].paymentMethodId) {
-                this.paymentMethod = this.listPaymentMethods[x].paymentMethod;
-                this.paymentMethod.expireMonth = this.listPaymentMethods[x].expireMonth; 
-                this.paymentMethod.expireYear = this.listPaymentMethods[x].expireYear;
+                this.selectPaymentMethod(this.listPaymentMethods[x]);
+                this.selectBillingAddress(this.listPaymentMethods[x]);
                 break;
               }
             }
@@ -78,11 +117,48 @@ var CheckOutPage = {
     },
     addCustomerPaymentMethod() {
       this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
+      if(this.paymentMethod.titleOnAccount == null || 
+        this.paymentMethod.titleOnAccount.trim() == "" ||
+        this.paymentMethod.cardNumber == null ||
+        this.paymentMethod.cardNumber.trim() == "" ||
+        this.paymentMethod.expireMonth == null || 
+        this.paymentMethod.expireMonth.trim() == "" || 
+        this.paymentMethod.expireYear == null || 
+        this.paymentMethod.expireYear.trim() == "" || 
+        this.paymentMethod.cardSecurityCode == null ||
+        this.paymentMethod.cardSecurityCode.trim() == "") {
+        this.responseMessage = "Verify the required fields";
+        return;
+      }
+
+      if(this.paymentMethod.cardSecurityCode.length < 3 || this.paymentMethod.cardSecurityCode.length > 4) {
+        this.responseMessage = "Must type a valid CSC";
+        return;
+      }
+
+      if(this.paymentMethod.cardNumber.startsWith("5")) {
+        this.paymentMethod.creditCardTypeEnumId = "CctMastercard";
+      } else if(this.paymentMethod.cardNumber.startsWith("4")){
+        this.paymentMethod.creditCardTypeEnumId = "CctVisa";
+      }
+
+      if(this.isSameAddress && this.paymentMethod.postalContactMechId == null) {
+        this.paymentMethod.postalContactMechId = this.addressOption.split(':')[0];
+        this.paymentMethod.telecomContactMechId = this.addressOption.split(':')[1];
+      }
+
+      if(this.isUpdate) {
+        this.paymentMethod.cardNumber = "";
+      }
+
       CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
-        console.log(data);
         this.hideModal("modal2");
         this.paymentMethod = {};
         this.getCustomerPaymentMethods();
+        this.responseMessage = "";
+      }.bind(this))
+      .catch(function (error) {
+        this.responseMessage = "An error occurred";
       }.bind(this));
     },
     addCartBillingShipping(option){
@@ -127,9 +203,24 @@ var CheckOutPage = {
       var data = {
         "cardSecurityCodeByPaymentId": this.paymentId
       };
+      this.isSpinner = true;
       ProductService.setCartPlace(data,this.axiosConfig).then(function (data) {
-        this.getCartInfo();
-        this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
+        if(data.orderHeader != null) {
+          this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
+        }
+
+        if(data.messages.includes("error") && data.messages.includes("122")) {
+          this.responseMessage = "Please provide a valid Billing ZIP";
+        } else {
+          this.responseMessage = data.messages;
+        }
+        this.isSpinner = false;
+        this.showModal("modal-error");
+      }.bind(this))
+      .catch(function (error) {
+        this.isSpinner = true;
+        this.responseMessage = error;
+        this.showModal("modal-error");
       }.bind(this));
     },
     deletePaymentMethod(paymentMethodId) {
@@ -157,6 +248,17 @@ var CheckOutPage = {
         this.getCartInfo();
       }.bind(this));
     },
+    selectBillingAddress(address) {
+      this.paymentMethod.address1 = address.postalAddress.address1;
+      this.paymentMethod.address2 = address.postalAddress.address2;
+      this.paymentMethod.toName = address.postalAddress.toName;
+      this.paymentMethod.city = address.postalAddress.city;
+      this.paymentMethod.countryGeoId = address.postalAddress.countryGeoId;
+      this.paymentMethod.contactNumber = address.telecomNumber.contactNumber;
+      this.paymentMethod.postalCode = address.postalAddress.postalCode;
+      this.paymentMethod.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
+      this.responseMessage = "";
+    },
     selectAddress(address) {
       this.shippingAddress = {};
       this.shippingAddress.address1 = address.postalAddress.address1;
@@ -169,34 +271,39 @@ var CheckOutPage = {
       this.shippingAddress.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
       this.shippingAddress.postalContactMechId = address.postalContactMechId;
       this.shippingAddress.telecomContactMechId = address.telecomContactMechId;
+      this.responseMessage = "";
     },
     selectPaymentMethod(method) {
       this.paymentMethod = {};
       this.paymentMethod.paymentMethodId = method.paymentMethodId;
+      this.paymentMethod.description = method.paymentMethod.description;
       this.paymentMethod.paymentMethodTypeEnumId = method.paymentMethod.PmtCreditCard;
       this.paymentMethod.cardNumber = method.creditCard.cardNumber;
       this.paymentMethod.titleOnAccount = method.paymentMethod.titleOnAccount;
       this.paymentMethod.expireMonth = method.expireMonth;
       this.paymentMethod.expireYear = method.expireYear;
-      this.paymentMethod.validateSecurityCode = "";
+      this.paymentMethod.cardSecurityCode = "";
+      this.paymentMethod.postalContactMechId = method.paymentMethod.postalContactMechId;
+      this.paymentMethod.telecomContactMechId = method.paymentMethod.telecomContactMechId;
+      this.responseMessage = "";
     },
-    hideModal(modalid) {
-      $('#'+modalid).modal('hide');
+    hideModal(modalId) {
+      $('#'+modalId).modal('hide');
+    },
+    showModal(modalId) {
+      $('#'+modalId).modal('show');
     },
     changeShippingAddress(data) {
-      this.shippingAddress = data.postalAddress;
-      this.shippingAddress.contactNumber = data.telecomNumber.contactNumber; 
-    }, 
-    changePaymentMethod(data) {
-      this.paymentMethod = data.paymentMethod;
-      this.paymentMethod.expireMonth = data.expireMonth; 
-      this.paymentMethod.expireYear = data.expireYear;
+      this.shippingAddressSelect = data.postalAddress;
+      this.shippingAddressSelect.contactNumber = data.telecomNumber.contactNumber; 
     },
     cleanShippingAddress() {
       this.shippingAddress = {};
+      this.isUpdate = false;
     },
     cleanPaymentMethod() {
       this.paymentMethod = {};
+      this.isUpdate = false;
     }
   },
   components: {
@@ -209,6 +316,10 @@ var CheckOutPage = {
     this.getCartInfo();
     this.getCustomerShippingAddresses();
     this.getCustomerPaymentMethods();
+    this.getCountries();
+    if(this.productsInCart == null) {
+      location.href ="/store";
+    }
   }
 };
 var CheckOutPageTemplate = getPlaceholderRoute(

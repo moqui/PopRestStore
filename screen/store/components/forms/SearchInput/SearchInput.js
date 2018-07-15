@@ -1,7 +1,15 @@
 var SearchInput = {
   name: "search-input",
   data() {
-    return {};
+    return {
+    	searchText: ""
+    };
+  },
+  methods: {
+    searchProduct(event){
+      event.preventDefault();
+      this.$router.push({ name: 'productsearch', params: { searchText: this.searchText }});
+    }
   },
   props: ["placeholder"]
 };
