@@ -51,9 +51,7 @@ var CheckOutPage = {
         this.shippingAddress.city == null ||
         this.shippingAddress.city.trim() == "" ||
         this.shippingAddress.address1 == null ||
-        this.shippingAddress.address1.trim() == "" ||
-        this.shippingAddress.postalCode == null ||
-        this.shippingAddress.postalCode.trim() == "") {
+        this.shippingAddress.address1.trim() == "") {
         this.responseMessage = "Verify the required fields";
         return;
       } 
