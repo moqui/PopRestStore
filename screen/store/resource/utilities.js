@@ -2,8 +2,6 @@
 
 var storeComps = {};
 
-
-
 var moqui = {
     isString: function(obj) { return typeof obj === 'string'; },
     isBoolean: function(obj) { return typeof obj === 'boolean'; },
@@ -129,32 +127,33 @@ moqui.handleLoadError = function (jqXHR, textStatus, errorThrown) {
     moqui.handleAjaxError(jqXHR, textStatus, errorThrown);
 };
 
-Vue.component('route-placeholder', {
-    props: { 
-        location: {
-            type: String,
-            required: true
-        }, 
-        options: Object, 
-        properties: Object 
-    },
-    data: function() { return { activeComponent:moqui.EmptyComponent } },
+Vue.component("route-placeholder", {
+    props: { location: { type: String, required: true }, options: Object, properties: Object },
+    data: function() { return { activeComponent: moqui.EmptyComponent }; },
     template: '<component :is="activeComponent" v-bind="properties"></component>',
     mounted: function() {
-        var vm = this;
         var jsCompObj = this.options || {};
         // NOTE on cache: on initial load if there are multiple of the same component (like category-product) will load template multiple times, consider some sort of lock/wait
         var cachedComponent = moqui.componentCache.get(this.location);
         if (cachedComponent) {
-            vm.activeComponent = cachedComponent;
+            this.activeComponent = cachedComponent;
         } else {
-            $.ajax({ type:"GET", url:this.location, error:moqui.handleLoadError, success: function (htmlText) {
-                jsCompObj.template = htmlText;
+            var vm = this;
+            axios.get(this.location).then(function(res) {
+                jsCompObj.template = res.data;
                 var vueComp = Vue.extend(jsCompObj);
                 vm.activeComponent = vueComp;
                 moqui.componentCache.put(vm.location, vueComp);
-            }});
+            }, moqui.handleLoadError);
         }
     }
 });
-
+function getPlaceholderRoute(location, name, props) {
+    // NOTE: this must use back tick JS template string with ${} support to resolve location, name after load, for better browser support would be nice to find alternative without template per component
+    var component = {
+        name:name,
+        template: `<route-placeholder location="${location}" :options="$root.storeComps[\'${name}\']" :properties="$props"></route-placeholder>`
+    };
+    if (props) { component.props = props; }
+    return component;
+}
