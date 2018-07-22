@@ -20,12 +20,16 @@ along with this software (see the LICENSE.md file). If not, see
     <!-- TODO: any of these needed at root level? as needed move to root.html.ftl -->
     <pre-actions><script><![CDATA[
         footerScriptText = """
-    <!-- TODO: before production/release change to vue.min.js -->
+    <!-- Vue JS, see: https://vuejs.org/v2/guide/ -->
+    <!-- NOTE: change to vue.min.js for production, using vue.js for now while in initial development -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js" integrity="sha256-1Q2q5hg2YXp9fYlM++sIEXOcUb8BRSDUsQ1zXvLBqmA=" crossorigin="anonymous"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.js" integrity="sha256-CMMTrj5gGwOAXBeFi7kNokqowkzbeL8ydAJy39ewjkQ=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
+    <!-- Vue Router, see: https://router.vuejs.org/en/ -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.min.js" integrity="sha256-yEB9jUlD51i5kxJZlzgzfR6XmVKI76Nl1WRA1aqIilU=" crossorigin="anonymous"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.0.1/vuex.min.js" integrity="sha256-1QlN0ckC4jlz91DZixPZxTv9vYpcBmS7sK7HA8xFmFA=" crossorigin="anonymous"></script>
+
     <script src="https://ssense.github.io/vue-carousel/js/vue-carousel.min.js"></script>
     <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
@@ -33,7 +37,6 @@ along with this software (see the LICENSE.md file). If not, see
 
     <script src="/store/config.js"></script>
     <script src="/store/resource/utilities.js"></script>
-    <script src="/store/store.js"></script>
     <script src="/store/services/ContentService.js"></script>
     <script src="/store/services/LoginService.js"></script>
     <script src="/store/services/ProductsService.js"></script>
@@ -64,9 +67,6 @@ along with this software (see the LICENSE.md file). If not, see
     <script src="/store/components/pages/HelpPage/HelpPage.js"></script>
     <script src="/store/components/pages/AboutPage/AboutPage.js"></script>
     <script src="/store/components/pages/ContactPage/ContactPage.js"></script>
-    <script src="/store/router.js"></script>
-    <script src="/store/App.js"></script>
-    <script src="/store/components/componentsOptions.js"></script>
     <script src="/store/main.js"></script>
         """
     ]]></script></pre-actions>
