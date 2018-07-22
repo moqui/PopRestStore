@@ -12,7 +12,7 @@ var AccountPage = {
       customerAddress: {},
       addressOption: "",
       customerPaymentMethods: [],
-      paymentAddressOption: "",
+      paymentAddressOption: {},
       paymentOption: "",
       paymentMethod: {},
       responseMessage: "",
@@ -48,6 +48,7 @@ var AccountPage = {
       }.bind(this));
     },
     addCustomerAddress() {
+
       if(this.customerAddress.toName == null || 
         this.customerAddress.toName.trim() == "" ||
         this.customerAddress.countryGeoId == null ||
@@ -56,12 +57,17 @@ var AccountPage = {
         this.customerAddress.city.trim() == "" ||
         this.customerAddress.address1 == null ||
         this.customerAddress.address1.trim() == "" ||
-        this.customerAddress.postalCode == null ||
-        this.customerAddress.postalCode.trim() == "") {
-
+        this.customerAddress.contactNumber == null ||
+        this.customerAddress.contactNumber.trim() == "") {
         this.responseMessage = "Verify the required fields";
         return;
       }
+
+      if(this.customerAddress.postalCode.length < 5 || this.customerAddress.postalCode.length > 7) {
+        this.responseMessage = "Type a valid postal code";
+        return;
+      }
+
       CustomerService.addShippingAddress(this.customerAddress,this.axiosConfig).then(function (data) {
         this.customerAddress = {};
         this.getCustomerAddress();
@@ -83,8 +89,22 @@ var AccountPage = {
         this.paymentMethod.expireYear.trim() == "" || 
         this.paymentMethod.cardSecurityCode == null ||
         this.paymentMethod.cardSecurityCode.trim() == "" ||
-        this.paymentAddressOption == null || this.paymentAddressOption == "") {
+        this.paymentMethod.address1 == null || 
+        this.paymentMethod.address1.trim() == "" ||
+        this.paymentMethod.toName == null || 
+        this.paymentMethod.toName.trim() == "" ||
+        this.paymentMethod.city == null || 
+        this.paymentMethod.city.trim() == "" || 
+        this.paymentMethod.countryGeoId == null || 
+        this.paymentMethod.countryGeoId.trim() == "" || 
+        this.paymentMethod.contactNumber == null ||
+        this.paymentMethod.contactNumber.trim() == "") {
         this.responseMessage = "Verify the required fields";
+        return;
+      }
+
+      if(this.paymentMethod.postalCode.length < 5 || this.paymentMethod.postalCode.length > 7) {
+        this.responseMessage = "Type a valid postal code";
         return;
       }
 
@@ -100,8 +120,8 @@ var AccountPage = {
       }
      
       if(this.paymentMethod.postalContactMechId == null) {
-        this.paymentMethod.postalContactMechId = this.paymentAddressOption.split(':')[0];
-        this.paymentMethod.telecomContactMechId = this.paymentAddressOption.split(':')[1];
+        this.paymentMethod.postalContactMechId = this.paymentAddressOption.postalContactMechId;
+        this.paymentMethod.telecomContactMechId = this.paymentAddressOption.telecomContactMechId;
       }
 
       if(this.isUpdate) {
@@ -113,22 +133,22 @@ var AccountPage = {
         this.paymentMethod = {};
         this.getCustomerPaymentMethods();
         this.responseMessage = "";
-        this.paymentAddressOption = "";
+        this.paymentAddressOption = {};
       }.bind(this));
     },
     resetData() {
       this.paymentMethod = {};
       this.customerAddress = {};
-      this.paymentAddressOption = "";
+      this.paymentAddressOption = {};
       this.isUpdate = false;
     },
     updateCustomerInfo() {
       if(this.customerInfo.username == null || this.customerInfo.username.trim() == ""
-          || this.customerInfo.firstName == null || this.customerInfo.firstName.trim() == ""
-          || this.customerInfo.lastName == null || this.customerInfo.lastName.trim() == ""
-          || this.customerInfo.emailAddress == null || this.customerInfo.emailAddress.trim() == ""
-          || this.customerInfo.locale == null || this.customerInfo.locale.trim() == ""
-          || this.customerInfo.timeZone == null || this.customerInfo.timeZone.trim() == "") {
+        || this.customerInfo.firstName == null || this.customerInfo.firstName.trim() == ""
+        || this.customerInfo.lastName == null || this.customerInfo.lastName.trim() == ""
+        || this.customerInfo.emailAddress == null || this.customerInfo.emailAddress.trim() == ""
+        || this.customerInfo.locale == null || this.customerInfo.locale.trim() == ""
+        || this.customerInfo.timeZone == null || this.customerInfo.timeZone.trim() == "") {
         this.message.state = 2;
         this.message.message = "Verify the required fields";
         return;
@@ -136,7 +156,7 @@ var AccountPage = {
       CustomerService.updateCustomerInfo(this.customerInfo,this.axiosConfig).then(function (data) {
         this.customerInfo = data.customerInfo;
         this.message.state = 1;
-        this.message.message = "Correct! Your data have been updated.";
+        this.message.message = "Correct! Your data has been updated.";
       }.bind(this));
     },
     updateCustomerPassword(event) {
@@ -223,15 +243,27 @@ var AccountPage = {
       }
     },
     selectBillingAddress(address) {
-      this.paymentMethod.address1 = address.postalAddress.address1;
-      this.paymentMethod.address2 = address.postalAddress.address2;
-      this.paymentMethod.toName = address.postalAddress.toName;
-      this.paymentMethod.city = address.postalAddress.city;
-      this.paymentMethod.countryGeoId = address.postalAddress.countryGeoId;
-      this.paymentMethod.contactNumber = address.telecomNumber.contactNumber;
-      this.paymentMethod.postalCode = address.postalAddress.postalCode;
-      this.paymentMethod.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
-      this.responseMessage = "";
+      if(address != 0) {
+        this.paymentMethod.address1 = address.postalAddress.address1;
+        this.paymentMethod.address2 = address.postalAddress.address2;
+        this.paymentMethod.toName = address.postalAddress.toName;
+        this.paymentMethod.city = address.postalAddress.city;
+        this.paymentMethod.countryGeoId = address.postalAddress.countryGeoId;
+        this.paymentMethod.contactNumber = address.telecomNumber.contactNumber;
+        this.paymentMethod.postalCode = address.postalAddress.postalCode;
+        this.paymentMethod.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
+        this.responseMessage = "";
+        this.getRegions(this.paymentMethod.countryGeoId);
+      } else {
+        this.paymentMethod.address1 = "";
+        this.paymentMethod.address2 = "";
+        this.paymentMethod.toName = "";
+        this.paymentMethod.city = "";
+        this.paymentMethod.countryGeoId = "";
+        this.paymentMethod.contactNumber = "";
+        this.paymentMethod.postalCode = "";
+        this.paymentMethod.stateProvinceGeoId = "";
+      }
     },
     selectPaymentMethod(method) {
       this.paymentMethod = {};
@@ -243,7 +275,18 @@ var AccountPage = {
       this.paymentMethod.expireYear = method.expireYear;
       this.paymentMethod.postalContactMechId = method.paymentMethod.postalContactMechId;
       this.paymentMethod.telecomContactMechId = method.paymentMethod.telecomContactMechId;
-      this.paymentAddressOption = method.paymentMethod.postalContactMechId + ':' + method.paymentMethod.telecomContactMechId;
+      
+      this.paymentMethod.address1 = method.postalAddress.address1;
+      this.paymentMethod.address2 = method.postalAddress.address2;
+      this.paymentMethod.toName = method.postalAddress.toName;
+      this.paymentMethod.city = method.postalAddress.city;
+      this.paymentMethod.countryGeoId = method.postalAddress.countryGeoId;
+      this.paymentMethod.contactNumber = method.telecomNumber.contactNumber;
+      this.paymentMethod.postalCode = method.postalAddress.postalCode;
+      this.paymentMethod.stateProvinceGeoId = method.postalAddress.stateProvinceGeoId;
+
+      this.getRegions(this.paymentMethod.countryGeoId);
+
       this.paymentMethod.cardSecurityCode = "";
       this.responseMessage = "";
     },

@@ -275,7 +275,7 @@
                         <div class="form-group row">
                             <label for="adress2" class="col-sm-3 col-form-label"></label>
                             <div class="col-sm-9">
-                                <input class="form-control" type="text"  v-model="customerAddress.address2"  required/>
+                                <input class="form-control" type="text"  v-model="customerAddress.address2"/>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -290,7 +290,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="postalcode" class="col-sm-3 col-form-label modal-text">Zip Code</label>
+                            <label for="postalcode" class="col-sm-3 col-form-label modal-text">Zip Code*</label>
                             <div class="col-sm-9">
                                 <input class="form-control" type="text"  v-model="customerAddress.postalCode" required/>
                             </div>
@@ -389,25 +389,95 @@
                                     placeholder="3 or 4 Digits" required/>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row" v-if="!isUpdate">
                             <label class="col-sm-3 col-form-label">Select an Address*</label>
                             <div class="col-sm-9">
-                                <template v-for="(item, index) in customerAddressList">
-                                    <label :for="index + 'r4'" class="container-input">
-                                        <input :id="index + 'r4'" type="radio" :value="item.postalContactMechId + ':' +
-                                            item.telecomContactMechId" v-model="paymentAddressOption" 
-                                            @click="selectBillingAddress(item)"/>
-                                        <span class="checkmark"></span>
-                                        <span class="span-description">{{item.postalAddress.toName}}</span>
-                                        <span class="span-description">
-                                            {{item.postalAddress.address1}} {{item.postalAddress.address2}}
-                                        </span>
-                                        <span class="span-description">{{item.postalAddress.city}}</span>
-                                    </label>
-                                    <br>
-                                </template>
+                                <select v-model="paymentAddressOption" class="form-control" 
+                                    @change="selectBillingAddress(paymentAddressOption)">
+                                    <option value="0" >New Address</option>
+                                    <option v-for="item in customerAddressList" 
+                                        :value="item">
+                                        {{item.postalAddress.toName}}, {{item.postalAddress.address1}}, 
+                                        {{item.postalAddress.city}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
+                        <template v-if="isUpdate || paymentAddressOption == 0">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label modal-text">
+                                Name <span class="modal-text-required">*</span>
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control"  type="text" v-model="paymentMethod.toName" required/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="country" class="col-sm-3 col-form-label modal-text">
+                                Country 
+                                <span class="modal-text-required">*</span>
+                            </label>
+                            <div class="col-sm-9">
+                                <select v-model="paymentMethod.countryGeoId" class="form-control" 
+                                    @change="getRegions(paymentMethod.countryGeoId)">
+                                    <option v-for="country in countriesList" :value="country.geoId">
+                                        {{country.geoName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="city" class="col-sm-3 col-form-label modal-text">
+                                City 
+                                <span class="modal-text-required">*</span>
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="city"  type="text" v-model="paymentMethod.city"  required/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="adress1" class="col-sm-3 col-form-label modal-text">
+                                Address 
+                                <span class="modal-text-required">*</span>
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="adress1" type="text"  v-model="paymentMethod.address1" 
+                                    required/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="adress2" class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text"  v-model="paymentMethod.address2"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="state" class="col-sm-3 col-form-label modal-text">
+                                State 
+                                <span class="modal-text-required">*</span>
+                            </label>
+                            <div class="col-sm-9">
+                                <select v-model="paymentMethod.stateProvinceGeoId" class="form-control">
+                                    <option v-for="region in regionsList" :value="region.geoId">{{region.geoName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="postalcode" class="col-sm-3 col-form-label modal-text">Zip Code</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text"  v-model="paymentMethod.postalCode" required/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="contactnumber" class="col-sm-3 col-form-label modal-text">
+                                Phone Number 
+                                <span class="modal-text-required">*</span>
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" v-model="paymentMethod.contactNumber" required/>
+                            </div>
+                        </div>
+                        </template>
                         <div class="row justify-content-center">
                             <button type="submit" class="btn btn-continue col col-sm-6 offset-sm-1">
                                 <span v-if="isUpdate">Update Credit Card</span>
