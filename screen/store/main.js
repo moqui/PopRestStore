@@ -24,7 +24,6 @@ var store = new Vuex.Store({
 var router = new VueRouter({
     routes: [
         { path: "/", name: "Products", component: LandingPageTemplate },
-        { path: "/content/:contentId", name: "content", component: WikiPage },
         { path: "/login", name: "login", component: LoginPageTemplate },
         { path: "/product/:productId/:extra?", name: "Product", component: ProductPageTemplate },
         { path: "/product/search/:searchText", name: "productsearch", component: ProductSearchTemplate },
@@ -35,9 +34,6 @@ var router = new VueRouter({
         { path: "/deals/:categoryId/:extra?", name: "deals", component: DealsPageTemplate },
         { path: "/account", name: "account", component: AccountPageTemplate },
         { path: "/account/create", name: "createaccount", component: CreateAccountPageTemplate },
-        { path: "/help", name: "help", component: HelpPageTemplate },
-        { path: "/about", name: "about", component: AboutPageTemplate },
-        { path: "/contact", name: "contact", component: ContactPageTemplate },
         { path: "/resetPassword", name: "resetPassword", component: ResetPasswordTemplate }
     ]
 });
@@ -58,7 +54,6 @@ var storeComps = {
     LandingPage,
     LandingProduct,
     LoginPage,
-    WikiPage,
     ProductPage,
     ProductReview,
     ProductImage,
@@ -70,9 +65,6 @@ var storeComps = {
     DealsPage,
     AccountPage,
     CreateAccountPage,
-    HelpPage,
-    AboutPage,
-    ContactPage,
     ResetPasswordPage
 };
 
