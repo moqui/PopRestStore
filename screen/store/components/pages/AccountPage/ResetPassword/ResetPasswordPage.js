@@ -1,4 +1,4 @@
-var ResetPasswordPage = {
+storeComps.ResetPasswordPage = {
   name: "reset-password",
   data() {
   	return {
@@ -59,18 +59,13 @@ var ResetPasswordPage = {
       var user = {
         username: this.passwordInfo.username,
         password: this.passwordInfo.newPassword
-      }
+      };
       LoginService.login(user, this.axiosConfig).then(function (data) {
         storeInfo.apiKey = data.apiKey;
         location.href ="/store";
       }.bind(this));
     }
   },
-  components: {
-  	"footer-page": FooterPageTemplate,
-  }
+  components: { "footer-page": storeComps.FooterPageTemplate }
 };
-var ResetPasswordTemplate = getPlaceholderRoute(
-  "/store/components/pages/AccountPage/ResetPassword/ResetPasswordPage.html",
-  "ResetPasswordPage"
-);
+storeComps.ResetPasswordTemplate = getPlaceholderRoute("resetPasswordTemplate", "ResetPasswordPage");

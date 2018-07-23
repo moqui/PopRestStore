@@ -1,11 +1,6 @@
-var FooterPage = {
+storeComps.FooterPage = {
   name: "footer-page",
-  data() {
-  	return {};
-  },
+  data() { return {}; },
   props: ["infoLink"]
 };
-var FooterPageTemplate = getPlaceholderRoute(
-  "/store/components/pages/FooterPage/FooterPage.html",
-  "FooterPage",FooterPage.props
-);
+storeComps.FooterPageTemplate = getPlaceholderRoute("footerTemplate", "FooterPage", storeComps.FooterPage.props);

@@ -1,23 +1,12 @@
-var LandingPage = {
+storeComps.LandingPage = {
   name: "landing-page",
-  data() {
-    return {
-      products: []
-    };
-  },
+  data() { return { products: [] }; },
   beforeCreate() {
     ProductService.getFeaturedProducts().then(function (response) {
       this.products = response;
     }.bind(this));
   },
-  components: {
-    landingProduct: LandingProductTemplate,
-    carousel: VueCarousel.Carousel,
-    slide: VueCarousel.Slide,
-    starRating: StarRatingTemplate,
-    navbar: NavbarTemplate,
-    "footer-page": FooterPageTemplate
-  }
+  components: { landingProduct: storeComps.LandingProductTemplate, starRating: storeComps.StarRatingTemplate, navbar: storeComps.NavbarTemplate,
+    "footer-page": storeComps.FooterPageTemplate, carousel: VueCarousel.Carousel, slide: VueCarousel.Slide }
 };
-
-var LandingPageTemplate = getPlaceholderRoute("/store/components/pages/LandingPage/LandingPage.html", "LandingPage");
+storeComps.LandingPageTemplate = getPlaceholderRoute("homeTemplate", "LandingPage");

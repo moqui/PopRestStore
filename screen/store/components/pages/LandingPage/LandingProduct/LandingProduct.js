@@ -1,4 +1,4 @@
-var LandingProduct = {
+storeComps.LandingProduct = {
   name: "landing-product",
   data() {
     return {
@@ -7,9 +7,7 @@ var LandingProduct = {
       }
     };
   },
-  components: {
-    StarRating: StarRatingTemplate
-  },
+  components: { StarRating: storeComps.StarRatingTemplate },
   props: ["product"],
   methods: {
     getProductImageSrc(imageInfo) {
@@ -32,8 +30,4 @@ var LandingProduct = {
     }
   }
 };
-var LandingProductTemplate = getPlaceholderRoute(
-  "/store/components/pages/LandingPage/LandingProduct/LandingProduct.html",
-  "LandingProduct",
-  LandingProduct.props
-);
+storeComps.LandingProductTemplate = getPlaceholderRoute("categoryProductTemplate", "LandingProduct", storeComps.LandingProduct.props);

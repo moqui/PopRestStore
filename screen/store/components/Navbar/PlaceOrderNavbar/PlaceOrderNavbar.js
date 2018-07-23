@@ -1,9 +1,6 @@
-var OrderNavbar = {
+storeComps.OrderNavbar = {
   name: "orderNavbar",
-  data() {
-    return {};
-  },
+  data() { return {}; },
   props: ["option"]
 };
-
-var PlaceOrderNavbarTemplate = getPlaceholderRoute("/store/components/Navbar/PlaceOrderNavbar/PlaceOrderNavbar.html", "OrderNavbar", OrderNavbar.props);
+storeComps.PlaceOrderNavbarTemplate = getPlaceholderRoute("checkoutNavbarTemplate", "OrderNavbar", storeComps.OrderNavbar.props);

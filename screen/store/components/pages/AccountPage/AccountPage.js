@@ -1,4 +1,4 @@
-var AccountPage = {
+storeComps.AccountPage = {
   name: "account-page",
   data() {
   return {
@@ -294,10 +294,7 @@ var AccountPage = {
       $('#'+modalid).modal('hide');
     }
   },
-  components: {
-    navbar: NavbarTemplate,
-    "footer-page": FooterPageTemplate
-  },
+  components: { navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
   mounted() {
     if(storeInfo.apiKey == null) {
       this.$router.push({ name: 'Products'});
@@ -312,7 +309,4 @@ var AccountPage = {
     }
   } 
 };
-var AccountPageTemplate = getPlaceholderRoute(
-  "/store/components/pages/AccountPage/AccountPage.html",
-  "AccountPage"
-);
+storeComps.AccountPageTemplate = getPlaceholderRoute("accountTemplate", "AccountPage");

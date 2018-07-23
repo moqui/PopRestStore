@@ -148,11 +148,10 @@ Vue.component("route-placeholder", {
         }
     }
 });
-function getPlaceholderRoute(location, name, props) {
-    // NOTE: this must use back tick JS template string with ${} support to resolve location, name after load, for better browser support would be nice to find alternative without template per component
+function getPlaceholderRoute(locationVar, name, props) {
     var component = {
         name:name,
-        template: `<route-placeholder location="${location}" :options="$root.storeComps[\'${name}\']" :properties="$props"></route-placeholder>`
+        template: '<route-placeholder :location="$root.storeConfig.' + locationVar + '" :options="$root.storeComps.' + name + '" :properties="$props"></route-placeholder>'
     };
     if (props) { component.props = props; }
     return component;

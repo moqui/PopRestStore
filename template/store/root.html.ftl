@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
-    <!-- TODO: refer to specific version to avoid redirect -->
-    <link rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css">
     <link rel="stylesheet" href="/store/styles.css">
+    <!-- TODO: refer to specific version to avoid redirect -->
+    <!-- TODO: move to load under d.xml -->
+    <link rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css">
+    <!-- TODO: move to load under d.xml -->
     <script>
         // default store configuration, settings may be reset by script returned by /content/settings.js (transition that calls StoreServices.get#StoreInfo)
         var storeConfig = {
@@ -24,18 +26,29 @@
             contentLocation: "/store/content/",
             contentAttachmentLocation: "/store/content/attachment/",
             productImageLocation: "/store/content/productImage/",
+            // nav page/etc template locations (may be path or full URL)
+            navbarTemplate: "/store/components/template/Navbar.html",
+            footerTemplate: "/store/components/template/FooterPage.html",
+            homeTemplate: "/store/components/template/HomePage.html",
+            searchTemplate: "/store/components/template/SearchPage.html",
+            searchInputTemplate: "/store/components/template/SearchInput.html",
             // browse page/etc template locations (may be path or full URL)
-            homeTemplate: "/store/template/HomeTemplate.html",
-            searchTemplate: "/store/template/SearchTemplate.html",
-            categoryTemplate: "/store/template/CategoryTemplate.html",
-            categoryProductTemplate: "/store/template/CategoryProductTemplate.html",
-            productTemplate: "/store/template/ProductTemplate.html",
+            categoryTemplate: "/store/components/template/CategoryPage.html",
+            categoryProductTemplate: "/store/components/template/CategoryProduct.html",
+            productTemplate: "/store/components/template/ProductPage.html",
+            productImageTemplate: "/store/components/template/ProductImage.html",
+            productReviewTemplate: "/store/components/template/ProductReview.html",
+            starRatingTemplate: "/store/components/template/StarRating.html",
             // buy page/etc template locations (may be path or full URL)
-            loginTemplate: "/store/template/LoginTemplate.html",
-            profileTemplate: "/store/template/ProfileTemplate.html",
-            orderHistoryTemplate: "/store/template/OrderHistoryTemplate.html",
-            orderDetailTemplate: "/store/template/OrderDetailTemplate.html",
-            cartTemplate: "/store/template/CartTemplate.html"
+            loginTemplate: "/store/components/template/LoginPage.html",
+            resetPasswordTemplate: "/store/components/template/ResetPasswordPage.html",
+            accountTemplate: "/store/components/template/AccountPage.html",
+            accountCreateTemplate: "/store/components/template/CreateAccountPage.html",
+            orderHistoryTemplate: "/store/components/template/OrderHistoryTemplate.html",
+            orderDetailTemplate: "/store/components/template/OrderDetailTemplate.html",
+            checkoutTemplate: "/store/components/template/CheckoutPage.html",
+            checkoutNavbarTemplate: "/store/components/template/CheckoutNavbar.html",
+            checkoutSuccessTemplate: "/store/components/template/CheckoutSuccess.html"
         };
     </script>
 </head>

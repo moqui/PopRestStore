@@ -1,4 +1,4 @@
-var CustomerOrderPage = {
+storeComps.CustomerOrderPage = {
   name: "customerorder-page",
   data() {
     return {
@@ -34,15 +34,7 @@ var CustomerOrderPage = {
       return day + ' ' + monthNames[monthIndex] + ', ' + year;
     }
   },
-  components: {
-    navbar: NavbarTemplate,
-    "footer-page": FooterPageTemplate
-  },
-  mounted() {
-    this.getCustomerOrderById();
-  }
+  components: { navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
+  mounted() { this.getCustomerOrderById(); }
 };
-var CustomerOrderPageTemplate = getPlaceholderRoute(
-  "/store/components/pages/CustomerOrderPage/CustomerOrderPage.html",
-  "CustomerOrderPage"
-);
+storeComps.CustomerOrderPageTemplate = getPlaceholderRoute("orderDetailTemplate", "CustomerOrderPage");

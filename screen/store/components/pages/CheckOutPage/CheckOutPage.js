@@ -1,4 +1,4 @@
-var CheckOutPage = {
+storeComps.CheckOutPage = {
   name: "checkout-page",
   data() {
     return {
@@ -304,11 +304,7 @@ var CheckOutPage = {
       this.isUpdate = false;
     }
   },
-  components: {
-    "placeorder-navbar": PlaceOrderNavbarTemplate,
-    "footer-page": FooterPageTemplate,
-    "product-image": ProductImageTemplate
-  },
+  components: { "placeorder-navbar": storeComps.PlaceOrderNavbarTemplate, "footer-page": storeComps.FooterPageTemplate, "product-image": storeComps.ProductImageTemplate },
   mounted() {
     this.getCartShippingOptions();
     this.getCartInfo();
@@ -320,7 +316,4 @@ var CheckOutPage = {
     }
   }
 };
-var CheckOutPageTemplate = getPlaceholderRoute(
-  "/store/components/pages/CheckOutPage/CheckOutPage.html",
-  "CheckOutPage"
-);
+storeComps.CheckOutPageTemplate = getPlaceholderRoute("checkoutTemplate", "CheckOutPage");

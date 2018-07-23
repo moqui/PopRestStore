@@ -1,4 +1,4 @@
-var CustomerOrdersPage = {
+storeComps.CustomerOrdersPage = {
   name: "customerorders-page",
   data() {
   	return {
@@ -42,12 +42,7 @@ var CustomerOrdersPage = {
       }
     },
     formatDate(date) {
-      var monthNames = [
-        "January", "February", "March",
-        "April", "May", "June", "July",
-        "August", "September", "October",
-        "November", "December"
-      ];
+      var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
       var date = new Date(date);
       var day = date.getDate();
       var monthIndex = date.getMonth();
@@ -55,15 +50,7 @@ var CustomerOrdersPage = {
       return monthNames[monthIndex] + ' ' + day + ', ' + year;
     }
   },
-  components : {
-    navbar: NavbarTemplate,
-  	"footer-page": FooterPageTemplate
-  },
-  mounted() {
-    this.getCustomerOrders();
-  }
+  components : { navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
+  mounted() { this.getCustomerOrders(); }
 };
-var CustomerOrdersPageTemplate = getPlaceholderRoute(
-  "/store/components/pages/CustomerOrderPage/CustomerOrders/CustomerOrdersPage.html",
-  "CustomerOrdersPage"
-);
+storeComps.CustomerOrdersPageTemplate = getPlaceholderRoute("orderHistoryTemplate", "CustomerOrdersPage");

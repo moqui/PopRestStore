@@ -87,7 +87,7 @@
                     <div class="col col-lg-6 order-text-color mt-5">
                         <span class="col col-lg-6">Delivery Address</span>
                         <hr class="order-hr">
-                        <ul class="ul-custumer-order">
+                        <ul v-if="orderList.postalAddress" class="ul-custumer-order">
                             <li>{{orderList.postalAddress.toName}}</li>
                             <li>{{orderList.postalAddress.address1}}</li>
                             <li>{{orderList.postalAddress.city}} {{orderList.postalAddress.address2}}</li>
@@ -97,7 +97,7 @@
                     <div class="col col-lg-6 order-text-color mt-5">
                         <span class="col col-lg-6">Billing Address</span>
                         <hr class="order-hr">
-                        <ul class="ul-custumer-order">
+                        <ul v-if="orderList.paymentInfoList && orderList.paymentInfoList.length" class="ul-custumer-order">
                             <li>{{orderList.paymentInfoList[0].postalAddress.toName}}</li>
                             <li>{{orderList.paymentInfoList[0].postalAddress.address1}}</li>
                             <li>

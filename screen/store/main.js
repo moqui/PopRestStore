@@ -23,18 +23,18 @@ var appObjects = {
     }),
     router: new VueRouter({
         routes: [
-            { path: "/", name: "Products", component: LandingPageTemplate },
-            { path: "/login", name: "login", component: LoginPageTemplate },
-            { path: "/product/:productId/:extra?", name: "Product", component: ProductPageTemplate },
-            { path: "/product/search/:searchText", name: "productsearch", component: ProductSearchTemplate },
-            { path: "/checkout", name: "checkout", component: CheckOutPageTemplate },
-            { path: "/checkout/:orderId", name: "successcheckout", component: SuccessCheckOutTemplate },
-            { path: "/orders/:orderId", name: "order", component: CustomerOrderPageTemplate },
-            { path: "/orders", name: "orders", component: CustomerOrdersPageTemplate },
-            { path: "/deals/:categoryId/:extra?", name: "deals", component: DealsPageTemplate },
-            { path: "/account", name: "account", component: AccountPageTemplate },
-            { path: "/account/create", name: "createaccount", component: CreateAccountPageTemplate },
-            { path: "/resetPassword", name: "resetPassword", component: ResetPasswordTemplate }
+            { path: "/", name: "Products", component: storeComps.LandingPageTemplate },
+            { path: "/login", name: "login", component: storeComps.LoginPageTemplate },
+            { path: "/product/:productId/:extra?", name: "Product", component: storeComps.ProductPageTemplate },
+            { path: "/product/search/:searchText", name: "productsearch", component: storeComps.ProductSearchTemplate },
+            { path: "/checkout", name: "checkout", component: storeComps.CheckOutPageTemplate },
+            { path: "/checkout/:orderId", name: "successcheckout", component: storeComps.SuccessCheckOutTemplate },
+            { path: "/orders/:orderId", name: "order", component: storeComps.CustomerOrderPageTemplate },
+            { path: "/orders", name: "orders", component: storeComps.CustomerOrdersPageTemplate },
+            { path: "/deals/:categoryId/:extra?", name: "deals", component: storeComps.DealsPageTemplate },
+            { path: "/account", name: "account", component: storeComps.AccountPageTemplate },
+            { path: "/account/create", name: "createaccount", component: storeComps.CreateAccountPageTemplate },
+            { path: "/resetPassword", name: "resetPassword", component: storeComps.ResetPasswordTemplate }
         ]
     }),
     App: {
@@ -44,36 +44,13 @@ var appObjects = {
     }
 };
 
-var storeComps = {
-    SearchInput,
-    StarRating,
-    Navbar,
-    OrderNavbar,
-    FooterPage,
-    LandingPage,
-    LandingProduct,
-    LoginPage,
-    ProductPage,
-    ProductReview,
-    ProductImage,
-    ProductSearch,
-    CheckOutPage,
-    CustomerOrderPage,
-    CustomerOrdersPage,
-    SuccessCheckOut,
-    DealsPage,
-    AccountPage,
-    CreateAccountPage,
-    ResetPasswordPage
-};
-
 Vue.use(bootstrapVue);
 // leave this, reminder to use vue.min.js for production: Vue.config.productionTip = false;
 
 var app = new Vue({
     el: "#app",
     router:appObjects.router,
-    data: function() { return { storeComps:storeComps }; },
+    data: function() { return { storeConfig:storeConfig, storeComps:storeComps }; },
     store:appObjects.store,
     template: "<App/>",
     components: { App:appObjects.App }

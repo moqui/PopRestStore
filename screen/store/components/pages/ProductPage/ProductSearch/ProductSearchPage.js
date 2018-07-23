@@ -1,22 +1,12 @@
-var ProductSearch = {
+storeComps.ProductSearch = {
   name: "product-search",
-  data() {
-  	return {
-  	  productList: []	
-  	};
-  },
-  methods: {
-  },
+  data() { return { productList: [] }; },
+  methods: { },
   beforeCreate() {
   	ProductService.getProductBySearch(this.$route.params.searchText,'PopcAllProducts').then(function (data){
         this.productList = data.productList;
     }.bind(this));
   },
-  components: {
-  	landingProduct: LandingProductTemplate,
-  	navbar: NavbarTemplate,
-    "footer-page": FooterPageTemplate
-  }
+  components: { landingProduct: storeComps.LandingProductTemplate, navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate }
 };
-
-var ProductSearchTemplate = getPlaceholderRoute("/store/components/pages/ProductPage/ProductSearch/ProductSearchPage.html", "ProductSearch");
+storeComps.ProductSearchTemplate = getPlaceholderRoute("searchTemplate", "ProductSearch");

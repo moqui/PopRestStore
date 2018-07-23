@@ -1,13 +1,7 @@
-var ProductReview = {
+storeComps.ProductReview = {
   name: "product-review",
-  data() {
-    return {}
-  },
-  components: {
-    StarRating: StarRatingTemplate
-  },
+  data() { return {} },
+  components: { StarRating: storeComps.StarRatingTemplate },
   props: ["reviews"]
 };
-var ProductReviewTemplate = getPlaceholderRoute(
-  "/store/components/pages/ProductPage/ProductReview/ProductReview.html","ProductReview",ProductReview.props
-);
+storeComps.ProductReviewTemplate = getPlaceholderRoute("productReviewTemplate", "ProductReview", storeComps.ProductReview.props);

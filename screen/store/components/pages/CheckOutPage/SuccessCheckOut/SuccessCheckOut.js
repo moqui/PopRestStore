@@ -1,4 +1,4 @@
-var SuccessCheckOut = {
+storeComps.SuccessCheckOut = {
   name: "success-checkout",
   data() {
     return {
@@ -26,12 +26,7 @@ var SuccessCheckOut = {
       }.bind(this));
     },
     formatDate(date) {
-      var monthNames = [
-        "January", "February", "March",
-        "April", "May", "June", "July",
-        "August", "September", "October",
-        "November", "December"
-      ];
+      var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
       var date = new Date(date);
       var day = date.getDate();
       var monthIndex = date.getMonth();
@@ -39,15 +34,7 @@ var SuccessCheckOut = {
       return day + ' ' + monthNames[monthIndex] + ', ' + year;
     }
   },
-  components: {
-    "placeorder-navbar": PlaceOrderNavbarTemplate,
-    "footer-page": FooterPageTemplate
-  },
-  mounted() {
-    this.getCustomerOrderById();
-  }
+  components: { "placeorder-navbar": storeComps.PlaceOrderNavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
+  mounted() { this.getCustomerOrderById(); }
 };
-var SuccessCheckOutTemplate = getPlaceholderRoute(
-  "/store/components/pages/CheckOutPage/SuccessCheckOut/SuccessCheckOut.html",
-  "SuccessCheckOut"
-);
+storeComps.SuccessCheckOutTemplate = getPlaceholderRoute("checkoutSuccessTemplate", "SuccessCheckOut");

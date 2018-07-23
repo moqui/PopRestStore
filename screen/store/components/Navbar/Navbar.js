@@ -1,4 +1,4 @@
-var Navbar = {
+storeComps.Navbar = {
   name: "navbar",
   data() {
     return {
@@ -15,12 +15,8 @@ var Navbar = {
     };
   },
   props: ["subBar"],
-  components: {
-    "search-input": SearchInputTemplate
-  },
-  computed: Vuex.mapGetters({
-    categories: "categories"
-  }),
+  components: { "search-input": storeComps.SearchInputTemplate },
+  computed: Vuex.mapGetters({ categories: "categories" }),
   methods: {
     getCustomerInfo() {
       CustomerService.getCustomerInfo(this.axiosConfig).then(function (data) {
@@ -41,17 +37,12 @@ var Navbar = {
         location.reload();
         this.$router.push({ name: 'login'});
       }.bind(this));
-    },
+    }
   },
   mounted() {
-    if(storeInfo.apiKey != null){
-      this.getCustomerInfo();
-    }
+    if (storeInfo.apiKey != null) { this.getCustomerInfo(); }
     this.getCartInfo();
   },
-  created() {
-    this.$store.dispatch("getAllCategories");
-  }
+  created() { this.$store.dispatch("getAllCategories"); }
 };
-
-var NavbarTemplate = getPlaceholderRoute("/store/components/Navbar/Navbar.html", "Navbar", Navbar.props);
+storeComps.NavbarTemplate = getPlaceholderRoute("navbarTemplate", "Navbar", storeComps.Navbar.props);

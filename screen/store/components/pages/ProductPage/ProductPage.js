@@ -1,4 +1,4 @@
-var ProductPage = {
+storeComps.ProductPage = {
   name: "product-page",
   data() {
     return {
@@ -16,12 +16,8 @@ var ProductPage = {
       }
     };
   },
-  components: {
-    StarRating: StarRatingTemplate,
-    navbar: NavbarTemplate,
-    "footer-page": FooterPageTemplate,
-    "product-review": ProductReviewTemplate
-  },
+  components: { StarRating: storeComps.StarRatingTemplate, navbar: storeComps.NavbarTemplate,
+      "footer-page": storeComps.FooterPageTemplate, "product-review": storeComps.ProductReviewTemplate },
   methods: {
     getProductImageSrc(imageInfo) {
       if (!imageInfo || !imageInfo.productContentId) return null;
@@ -55,7 +51,4 @@ var ProductPage = {
     }.bind(this));
   }
 };
-var ProductPageTemplate = getPlaceholderRoute(
-  "/store/components/pages/ProductPage/ProductPage.html",
-  "ProductPage"
-);
+storeComps.ProductPageTemplate = getPlaceholderRoute("productTemplate", "ProductPage");

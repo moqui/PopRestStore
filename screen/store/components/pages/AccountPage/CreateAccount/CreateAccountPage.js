@@ -1,4 +1,4 @@
-var CreateAccountPage = {
+storeComps.CreateAccountPage = {
   name: "create-account",
   data() {
   	return {
@@ -78,12 +78,6 @@ var CreateAccountPage = {
       this.$router.push({ name: 'Products'});
     }
   },
-  components: {
-    "footer-page": FooterPageTemplate,
-  }
+  components: { "footer-page": storeComps.FooterPageTemplate }
 };
-
-var CreateAccountPageTemplate = getPlaceholderRoute(
-  "/store/components/pages/AccountPage/CreateAccount/CreateAccountPage.html",
-  "CreateAccountPage"
-);
+storeComps.CreateAccountPageTemplate = getPlaceholderRoute("accountCreateTemplate", "CreateAccountPage");

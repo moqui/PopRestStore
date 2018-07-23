@@ -39,9 +39,9 @@ along with this software (see the LICENSE.md file). If not, see
 
 
     <widgets>
-    	<render-mode><text type="html" location="component://PopRestStore/template/store/Navbar/navbar.html.ftl"/></render-mode>
-        <render-mode><text type="html" location="component://PopRestStore/template/store/ProductPage/productPage.html.ftl"/></render-mode>
-        <render-mode><text type="html" location="component://PopRestStore/template/store/ProductPage/productReview.html.ftl"/></render-mode>
-        <render-mode><text type="html" location="component://PopRestStore/template/store/FooterPage/footerPage.html.ftl"/></render-mode>
+    	<render-mode><text type="html" location="component://PopRestStore/template/store/navbar.html.ftl"/></render-mode>
+        <render-mode><text type="html" location="component://PopRestStore/template/store/productPage.html.ftl"/></render-mode>
+        <render-mode><text type="html" location="component://PopRestStore/template/store/productReview.html.ftl"/></render-mode>
+        <render-mode><text type="html" location="component://PopRestStore/template/store/footerPage.html.ftl"/></render-mode>
     </widgets>
 </screen>

@@ -1,4 +1,4 @@
-var DealsPage = {
+storeComps.DealsPage = {
   name: "deals-page",
   data () {
   	return {
@@ -24,17 +24,7 @@ var DealsPage = {
       this.getCategoryInfoById();
     }
   },
-  components: {
-    landingProduct: LandingProductTemplate,
-    navbar: NavbarTemplate,
-    "footer-page": FooterPageTemplate
-  },
-  mounted() {
-    this.getProductsList();
-    this.getCategoryInfoById();
-  }
+  components: { landingProduct: storeComps.LandingProductTemplate, navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
+  mounted() { this.getProductsList(); this.getCategoryInfoById(); }
 };
-var DealsPageTemplate = getPlaceholderRoute(
-  "/store/components/pages/DealsPage/DealsPage.html",
-  "DealsPage"
-);
+storeComps.DealsPageTemplate = getPlaceholderRoute("categoryTemplate", "DealsPage");

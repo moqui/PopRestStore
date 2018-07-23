@@ -1,4 +1,4 @@
-var StarRating = {
+storeComps.StarRating = {
   name: "star-rating",
   props: ["rating"],
   data() {
@@ -22,4 +22,4 @@ var StarRating = {
     }
   }
 };
-var StarRatingTemplate = getPlaceholderRoute("/store/components/forms/StarRating/StarRating.html", "StarRating", StarRating.props);
+storeComps.StarRatingTemplate = getPlaceholderRoute("starRatingTemplate", "StarRating", storeComps.StarRating.props);
