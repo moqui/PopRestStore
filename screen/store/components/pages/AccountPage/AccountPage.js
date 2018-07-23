@@ -25,8 +25,8 @@ storeComps.AccountPage = {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
           "Access-Control-Allow-Origin": "*",
-          "api_key":storeInfo.apiKey,
-          "moquiSessionToken":storeInfo.moquiSessionToken
+          "api_key":this.$root.apiKey,
+          "moquiSessionToken":this.$root.moquiSessionToken
         }
       }
     };
@@ -296,9 +296,9 @@ storeComps.AccountPage = {
   },
   components: { navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
   mounted() {
-    if(storeInfo.apiKey == null) {
+    if (this.$root.apiKey == null) {
       this.$router.push({ name: 'Products'});
-    }else {
+    } else {
       this.getCustomerInfo();
       this.getCustomerAddress();
       this.getCustomerPaymentMethods();

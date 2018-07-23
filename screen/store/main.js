@@ -1,27 +1,10 @@
 /* This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. */
 
 var appObjects = {
-    store: new Vuex.Store({
-        state: { categories: [], user: null },
-        getters: {
-            categories: function(state) { return state.categories; },
-            apiKey: function(state) { return state.user.apiKey || null; }
-        },
-        mutations: {
-            setCategories: function(state, categories) { state.categories = categories; },
-            login: function(state, apiKey) { state.apiKey = apiKey; }
-        },
-        actions: {
-            getAllCategories: function({ commit }) {
-                ProductService.getCategories().then(function(categories) { commit("setCategories", categories); });
-            },
-            login: function({ commit }, username, password) {
-                LoginService.login(username, password).then(function(apiKey) { commit("login", apiKey); });
-            }
-        },
-        modules: {}
-    }),
+    // see https://router.vuejs.org/en/essentials/history-mode.html
+    // for route path expressions see https://router.vuejs.org/en/essentials/dynamic-matching.html AND https://github.com/vuejs/vue-router/blob/dev/examples/route-matching/app.js
     router: new VueRouter({
+        // TODO sooner or later: base: storeConfig.basePath, mode: 'history',
         routes: [
             { path: "/", name: "Products", component: storeComps.LandingPageTemplate },
             { path: "/login", name: "login", component: storeComps.LoginPageTemplate },
@@ -45,13 +28,33 @@ var appObjects = {
 };
 
 Vue.use(bootstrapVue);
-// leave this, reminder to use vue.min.js for production: Vue.config.productionTip = false;
+// TODO: leave this, reminder to use vue.min.js for production: Vue.config.productionTip = false;
 
-var app = new Vue({
+var sotreApp = new Vue({
     el: "#app",
-    router:appObjects.router,
-    data: function() { return { storeConfig:storeConfig, storeComps:storeComps }; },
-    store:appObjects.store,
+    router: appObjects.router,
+    // state: { categories: [], user: null },
+    data: {
+        storeComps: storeComps, storeConfig: storeConfig,
+        storeInfo: storeInfo, categoryList: storeInfo.categoryList, categoryByType: storeInfo.categoryByType,
+        preLoginRoute: null,
+        // apiKey null unless user is logged in
+        apiKey: null,
+        // session token for all non-get requests when no user is logged in (no api_key is passed)
+        moquiSessionToken: null,
+        // userInfo null unless user is logged in, then has response from /customer/info
+        customerInfo: storeInfo.customerInfo,
+        cartInfo: null
+    },
     template: "<App/>",
-    components: { App:appObjects.App }
+    components: { App:appObjects.App },
+    mounted: function () {
+        if (this.storeConfig.storeName && this.storeConfig.storeName.length) document.title = this.storeConfig.storeName;
+        var storeInfo = this.storeInfo;
+        if (storeInfo.apiKey && storeInfo.apiKey.length) { this.apiKey = storeInfo.apiKey; storeInfo.apiKey = null; }
+        if (storeInfo.moquiSessionToken && storeInfo.moquiSessionToken.length) {
+            this.moquiSessionToken = storeInfo.moquiSessionToken; storeInfo.moquiSessionToken = null; }
+        if (storeInfo.customerInfo && storeInfo.customerInfo.partyId) {
+            this.customerInfo = storeInfo.customerInfo; storeInfo.customerInfo = null; }
+    }
 });

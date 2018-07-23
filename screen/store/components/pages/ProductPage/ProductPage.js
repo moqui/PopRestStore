@@ -10,8 +10,8 @@ storeComps.ProductPage = {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
           "Access-Control-Allow-Origin": "*",
-          "api_key":storeInfo.apiKey,
-          "moquiSessionToken":storeInfo.moquiSessionToken
+          "api_key":this.$root.apiKey,
+          "moquiSessionToken":this.$root.moquiSessionToken
         }
       }
     };

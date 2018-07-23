@@ -9,7 +9,7 @@ storeComps.CreateAccountPage = {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
           "Access-Control-Allow-Origin": "*",
-          "moquiSessionToken":storeInfo.moquiSessionToken
+          "moquiSessionToken":this.$root.moquiSessionToken
         }
       }
   	}
@@ -65,7 +65,7 @@ storeComps.CreateAccountPage = {
         password: password
       };
       LoginService.login(user, this.axiosConfig).then(function (data) {
-        storeInfo.apiKey = data.apiKey;
+        this.$root.apiKey = data.apiKey;
         location.href ="/store";
       }.bind(this))
       .catch(function (error) {
@@ -74,7 +74,7 @@ storeComps.CreateAccountPage = {
     }
   },
   mounted() {
-    if(storeInfo.apiKey != null) {
+    if(this.$root.apiKey != null) {
       this.$router.push({ name: 'Products'});
     }
   },

@@ -27,49 +27,28 @@
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Shop
-                        <i class="fas fa-angle-down icon-down"></i>
-                    </a>
+                        Shop <i class="fas fa-angle-down icon-down"></i></a>
                     
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <router-link class="dropdown-item item-color" :to="'/deals/'+category.productCategoryId" tag="a" v-for="category in categories" :key="category.productCategoryId">
-                            {{category.categoryName}}
-                        </router-link>
+                            {{category.categoryName}}</router-link>
                     </div>
                 </li>
 
-                <router-link :to="'/deals/PopcAllProducts'" tag="a" class="nav-link">
-                    Deals 
-                </router-link>
+                <router-link :to="'/deals/PopcAllProducts'" tag="a" class="nav-link">Deals</router-link>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Customer Service
-                        <i class="fas fa-angle-down icon-down"></i>
-                    </a>
+                        Customer Service <i class="fas fa-angle-down icon-down"></i></a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item item-color" href="/store/content/help">
-                            Help Center 
-                        </a>
-                        <a class="dropdown-item item-color" href="/store/content/help">
-                            Delivery Rates 
-                        </a>
-                        <a class="dropdown-item item-color" href="/store/content/help#delivery">
-                            Delivery Times  
-                        </a>
-                        <a class="dropdown-item item-color" href="/store/content/help#customer-pick-up">
-                            Customer Pick Up 
-                        </a>
-                        <a class="dropdown-item item-color" href="/store/content/help#how-to-pay">
-                            How to pay 
-                        </a>
+                        <a class="dropdown-item item-color" href="/store/content/help">Help Center</a>
+                        <a class="dropdown-item item-color" href="/store/content/help">Delivery Rates</a>
+                        <a class="dropdown-item item-color" href="/store/content/help#delivery">Delivery Times</a>
+                        <a class="dropdown-item item-color" href="/store/content/help#customer-pick-up">Customer Pick Up</a>
+                        <a class="dropdown-item item-color" href="/store/content/help#how-to-pay">How to pay</a>
                         <div role="separator" class="dropdown-divider"></div>
-                        <a class="dropdown-item item-color" href="/store/content/about">
-                            About POP Shop 
-                        </a>
-                        <a class="dropdown-item item-color" href="/store/content/contact">
-                            Contact Us 
-                        </a>
+                        <a class="dropdown-item item-color" href="/store/content/about">About POP Shop</a>
+                        <a class="dropdown-item item-color" href="/store/content/contact">Contact Us</a>
                     </div>
                 </li>
             </ul>
@@ -87,12 +66,8 @@
                             <i class="fas fa-angle-down icon-down"></i>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <router-link :to="'/account'" tag="a" class="dropdown-item item-color">
-                                Account Settings 
-                            </router-link>
-                            <router-link :to="'/orders'" tag="a" class="dropdown-item item-color">
-                                My Orders
-                            </router-link>
+                            <router-link :to="'/account'" tag="a" class="dropdown-item item-color">Account Settings</router-link>
+                            <router-link :to="'/orders'" tag="a" class="dropdown-item item-color">My Orders</router-link>
                             <div role="separator" class="dropdown-divider"></div>
                             <a class="dropdown-item item-color" href="#" @click="logout()">Signout</a>
                         </div>
@@ -100,23 +75,15 @@
                 </template>
                 <template v-else>
                     <li class="nav-item">
-                        <router-link :to="'/account/create'" tag="a" class="nav-link">  
-                            Join Now
-                        </router-link>
+                        <router-link :to="'/account/create'" tag="a" class="nav-link">Join Now</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link :to="'/login'" tag="a" class="nav-link">
-                            <i class="fas fa-user"></i>  
-                            Sign In
-                        </router-link>
+                        <router-link :to="'/login'" tag="a" class="nav-link"><i class="fas fa-user"></i> Sign In</router-link>
                     </li>
                 </template>
                 <li class="nav-item">
                     <router-link :to="'/checkout'" tag="a" class="nav-link">
-                        <span class="cart-quantity">{{productsQuantity}}</span>
-                        <i class="fa fa-shopping-cart"></i>  
-                        Cart
-                    </router-link>
+                        <span class="cart-quantity">{{productsQuantity}}</span> <i class="fa fa-shopping-cart"></i> Cart</router-link>
                 </li>
                 <li class="nav-item d-block d-sm-block d-md-none">
                     <search-input placeholder="Search..." />

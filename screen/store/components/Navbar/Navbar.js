@@ -1,24 +1,16 @@
 storeComps.Navbar = {
   name: "navbar",
-  data() {
-    return {
-      customerInfo: {},
+  data: function() { return {
+      customerInfo: {}, categories: [],
       productsQuantity: "",
-      axiosConfig: {
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8",
-          "Access-Control-Allow-Origin": "*",
-          "api_key":storeInfo.apiKey,
-          "moquiSessionToken":storeInfo.moquiSessionToken
-        }
-      }
-    };
-  },
+      axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
+              "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
+  }; },
   props: ["subBar"],
   components: { "search-input": storeComps.SearchInputTemplate },
-  computed: Vuex.mapGetters({ categories: "categories" }),
   methods: {
-    getCustomerInfo() {
+    getCustomerInfo: function() {
+      // TODO: use customerInfo in $root from initial data load in config.js instead of doing another request
       CustomerService.getCustomerInfo(this.axiosConfig).then(function (data) {
         this.customerInfo = data;
       }.bind(this))
@@ -26,12 +18,12 @@ storeComps.Navbar = {
         console.log('An error has occurred' + error);
       });
     },
-    getCartInfo() {
+    getCartInfo: function() {
       ProductService.getCartInfo(this.axiosConfig).then(function (data) {
         this.productsQuantity = data.orderItemList ? data.orderItemList.length : 0;
       }.bind(this));
     },
-    logout() {
+    logout: function() {
       LoginService.logout().then(function (data) {
         storeInfo = {};
         location.reload();
@@ -39,10 +31,13 @@ storeComps.Navbar = {
       }.bind(this));
     }
   },
-  mounted() {
-    if (storeInfo.apiKey != null) { this.getCustomerInfo(); }
-    this.getCartInfo();
-  },
-  created() { this.$store.dispatch("getAllCategories"); }
+  mounted: function() {
+      var vm = this;
+      var storeInfo = this.$root.storeInfo;
+      if (storeInfo.categoryByType && storeInfo.categoryByType.PsctBrowseRoot && storeInfo.categoryByType.PsctBrowseRoot.productCategoryId) {
+        ProductService.getSubCategories(storeInfo.categoryByType.PsctBrowseRoot.productCategoryId).then(function(categories) { vm.categories = categories; }); }
+      if (this.$root.apiKey != null) { this.getCustomerInfo(); }
+      this.getCartInfo();
+  }
 };
 storeComps.NavbarTemplate = getPlaceholderRoute("navbarTemplate", "Navbar", storeComps.Navbar.props);

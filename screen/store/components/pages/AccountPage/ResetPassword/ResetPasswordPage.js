@@ -17,7 +17,7 @@ storeComps.ResetPasswordPage = {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
           "Access-Control-Allow-Origin": "*",
-          "moquiSessionToken":storeInfo.moquiSessionToken
+          "moquiSessionToken":this.$root.moquiSessionToken
         }
       }
   	};
@@ -61,7 +61,7 @@ storeComps.ResetPasswordPage = {
         password: this.passwordInfo.newPassword
       };
       LoginService.login(user, this.axiosConfig).then(function (data) {
-        storeInfo.apiKey = data.apiKey;
+        this.$root.apiKey = data.apiKey;
         location.href ="/store";
       }.bind(this));
     }
