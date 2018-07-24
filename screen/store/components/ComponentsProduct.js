@@ -54,8 +54,8 @@ storeComps.LandingPage = {
             this.products = response;
         }.bind(this));
     },
-    components: { "category-product": storeComps.CategoryProductTemplate, starRating: storeComps.StarRatingTemplate, navbar: storeComps.NavbarTemplate,
-        "footer-page": storeComps.FooterPageTemplate, carousel: VueCarousel.Carousel, slide: VueCarousel.Slide }
+    components: { "category-product": storeComps.CategoryProductTemplate, "star-rating": storeComps.StarRatingTemplate,
+        navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate }
 };
 storeComps.LandingPageTemplate = getPlaceholderRoute("homeTemplate", "LandingPage");
 
