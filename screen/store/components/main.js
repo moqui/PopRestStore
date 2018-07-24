@@ -27,7 +27,6 @@ var appObjects = {
     }
 };
 
-Vue.use(bootstrapVue);
 // TODO: leave this, reminder to use vue.min.js for production: Vue.config.productionTip = false;
 
 var sotreApp = new Vue({
