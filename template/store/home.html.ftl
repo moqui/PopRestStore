@@ -39,7 +39,7 @@
     <div class="carousel">
         <#list pcmpList.productList as product>
             <div>
-                <a class="landing-product" href="/store/product/${product.productId}">
+                <a class="category-product" href="/store/product/${product.productId}">
                     <figure class="figure">
                         <img width="90%" 
                         class="figure-img img-fluid"
@@ -88,7 +88,7 @@
     <div class="carousel">
         <#list pcmpList.productList as product>
             <div>
-                <a class="landing-product" href="/store/product/${product.productId}">
+                <a class="category-product" href="/store/product/${product.productId}">
                     <figure class="figure">
                         <img width="90%" 
                         class="figure-img img-fluid"

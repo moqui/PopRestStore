@@ -1,30 +1,21 @@
-storeComps.DealsPage = {
-  name: "deals-page",
-  data () {
-  	return {
-      products: [],
-      category: {}
-    };
+storeComps.CategoryPage = {
+  name: "category-page",
+  data: function() { return { products: [], category: {} };
   },
   methods: {
-    getProductsList() {
+    getProductsList: function() {
       ProductService.getProductsByCategory(this.$route.params.categoryId).then(function (data) {
         this.products = data;
       }.bind(this));
     },
-    getCategoryInfoById() {
+    getCategoryInfoById: function() {
       ProductService.getCategoryInfoById(this.$route.params.categoryId).then(function (data) {
         this.category = data;
       }.bind(this));
     }
   },
-  watch: {
-    '$route' (to, from) {
-      this.getProductsList();
-      this.getCategoryInfoById();
-    }
-  },
-  components: { landingProduct: storeComps.LandingProductTemplate, navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
-  mounted() { this.getProductsList(); this.getCategoryInfoById(); }
+  watch: { '$route': function(to, from) { this.getProductsList(); this.getCategoryInfoById(); } },
+  components: { "category-product": storeComps.CategoryProductTemplate, navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
+  mounted: function() { this.getProductsList(); this.getCategoryInfoById(); }
 };
-storeComps.DealsPageTemplate = getPlaceholderRoute("categoryTemplate", "DealsPage");
+storeComps.CategoryPageTemplate = getPlaceholderRoute("categoryTemplate", "CategoryPage");

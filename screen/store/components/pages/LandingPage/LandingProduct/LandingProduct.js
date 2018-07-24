@@ -1,26 +1,22 @@
-storeComps.LandingProduct = {
-  name: "landing-product",
-  data() {
-    return {
-      product1: {
-        smallImageList: []
-      }
-    };
-  },
+storeComps.CategoryProduct = {
+  name: "category-product",
+  data: function() { return {
+      product1: { smallImageList: [] }
+  }; },
   components: { StarRating: storeComps.StarRatingTemplate },
   props: ["product"],
   methods: {
-    getProductImageSrc(imageInfo) {
+    getProductImageSrc: function(imageInfo) {
       if (!imageInfo || !imageInfo.productContentId) return null;
       return storeConfig.productImageLocation + imageInfo.productContentId;
     },
-    getProductSingleImg(smallImageList){
+    getProductSingleImg: function(smallImageList){
       if (!smallImageList[0] || !smallImageList[0].productContentId) return null;
       return storeConfig.productImageLocation + smallImageList[0].productContentId;
     }
   },
   mounted() {
-    if(this._props.product.smallImageList == undefined){
+    if (!this._props.product.smallImageList) {
       ProductService.getProduct(this._props.product.productId).then(function (data) {
         this.product1 = data;
         this.product1.smallImageList = data.contentList;
@@ -30,4 +26,4 @@ storeComps.LandingProduct = {
     }
   }
 };
-storeComps.LandingProductTemplate = getPlaceholderRoute("categoryProductTemplate", "LandingProduct", storeComps.LandingProduct.props);
+storeComps.CategoryProductTemplate = getPlaceholderRoute("categoryProductTemplate", "CategoryProduct", storeComps.CategoryProduct.props);

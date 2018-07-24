@@ -8,13 +8,13 @@ var appObjects = {
         routes: [
             { path: "/", name: "Products", component: storeComps.LandingPageTemplate },
             { path: "/login", name: "login", component: storeComps.LoginPageTemplate },
+            { path: "/search/:searchText", name: "search", component: storeComps.SearchTemplate },
+            { path: "/category/:categoryId/:extra?", name: "category", component: storeComps.CategoryPageTemplate },
             { path: "/product/:productId/:extra?", name: "Product", component: storeComps.ProductPageTemplate },
-            { path: "/product/search/:searchText", name: "productsearch", component: storeComps.ProductSearchTemplate },
             { path: "/checkout", name: "checkout", component: storeComps.CheckOutPageTemplate },
             { path: "/checkout/:orderId", name: "successcheckout", component: storeComps.SuccessCheckOutTemplate },
             { path: "/orders/:orderId", name: "order", component: storeComps.CustomerOrderPageTemplate },
             { path: "/orders", name: "orders", component: storeComps.CustomerOrdersPageTemplate },
-            { path: "/deals/:categoryId/:extra?", name: "deals", component: storeComps.DealsPageTemplate },
             { path: "/account", name: "account", component: storeComps.AccountPageTemplate },
             { path: "/account/create", name: "createaccount", component: storeComps.CreateAccountPageTemplate },
             { path: "/resetPassword", name: "resetPassword", component: storeComps.ResetPasswordTemplate }

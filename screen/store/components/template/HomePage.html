@@ -38,7 +38,7 @@
         <carousel class="mt-4" :per-page="4" :navigationEnabled="true">
             <slide v-for="product in products" :key="product.productId">
                 <router-link :to="'product/' + product.productId">
-                    <landing-product :product="product" />
+                    <category-product :product="product" />
                 </router-link>
             </slide>
         </carousel>
@@ -48,7 +48,7 @@
         <carousel class="mt-4" :per-page="4" :navigationEnabled="true">
             <slide v-for="product in products" :key="product.productId">
                 <router-link :to="'product/' + product.productId">
-                    <landing-product :product="product" />
+                    <category-product :product="product" />
                 </router-link>
             </slide>
         </carousel>

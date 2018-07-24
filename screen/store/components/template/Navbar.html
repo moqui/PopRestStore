@@ -13,7 +13,10 @@
             </button>
 
             <div class="navbar-collapse collapse">
-                <search-input placeholder="Search..." />
+                <form class="search-input" @submit.prevent="searchProduct" method="post">
+                    <input type="text" placeholder="Search..." v-model="searchText">
+                    <button class="search-button" type="submit"><i class="fa fa-search"></i></button>
+                </form>
                 <!-- Right aligned nav items -->
                 <ul class="navbar-nav ml-auto">
                     <div class="text-secondary">
@@ -26,19 +29,20 @@
         <div id="nav_collapse1"  class="container navbar-collapse collapse">
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link" href="#" id="navbarMenuShop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Shop <i class="fas fa-angle-down icon-down"></i></a>
                     
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <router-link class="dropdown-item item-color" :to="'/deals/'+category.productCategoryId" tag="a" v-for="category in categories" :key="category.productCategoryId">
+                        <router-link class="dropdown-item item-color" :to="'/category/'+category.productCategoryId" tag="a" v-for="category in categories" :key="category.productCategoryId">
                             {{category.categoryName}}</router-link>
                     </div>
                 </li>
 
-                <router-link :to="'/deals/PopcAllProducts'" tag="a" class="nav-link">Deals</router-link>
+                <!-- TODO: hard coded category ID -->
+                <router-link :to="'/category/PopcAllProducts'" tag="a" class="nav-link">Deals</router-link>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link" href="#" id="navbarMenuService" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Customer Service <i class="fas fa-angle-down icon-down"></i></a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item item-color" href="/store/content/help">Help Center</a>
@@ -52,19 +56,12 @@
                     </div>
                 </li>
             </ul>
-
-
             <!-- Right aligned nav items -->
             <ul class="navbar-nav ml-auto">
                 <template v-if="customerInfo.firstName != null">
                     <li class="nav-item dropdown">
-                        <a class="nav-link text-capitalize" href="#" id="navbarDropdownMenuLink"
-                            data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-user"></i>
-                            {{customerInfo.firstName}} {{customerInfo.middleName}} Account
-                            <i class="fas fa-angle-down icon-down"></i>
-                        </a>
+                        <a class="nav-link text-capitalize" href="#" id="navbarMenuAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> {{customerInfo.firstName}} {{customerInfo.middleName}} Account <i class="fas fa-angle-down icon-down"></i></a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <router-link :to="'/account'" tag="a" class="dropdown-item item-color">Account Settings</router-link>
                             <router-link :to="'/orders'" tag="a" class="dropdown-item item-color">My Orders</router-link>
@@ -86,7 +83,10 @@
                         <span class="cart-quantity">{{productsQuantity}}</span> <i class="fa fa-shopping-cart"></i> Cart</router-link>
                 </li>
                 <li class="nav-item d-block d-sm-block d-md-none">
-                    <search-input placeholder="Search..." />
+                    <form class="search-input" @submit.prevent="searchProduct" method="post">
+                        <input type="text" placeholder="Search..." v-model="searchText">
+                        <button class="search-button" type="submit"><i class="fa fa-search"></i></button>
+                    </form>
                 </li>
             </ul>
         </div>

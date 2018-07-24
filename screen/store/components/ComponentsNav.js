@@ -1,35 +1,26 @@
+/* This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. */
 storeComps.Navbar = {
   name: "navbar",
   data: function() { return {
-      customerInfo: {}, categories: [],
-      productsQuantity: "",
+      customerInfo: {}, categories: [], searchText: "", productsQuantity: "",
       axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
               "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
   }; },
   props: ["subBar"],
-  components: { "search-input": storeComps.SearchInputTemplate },
   methods: {
-    getCustomerInfo: function() {
       // TODO: use customerInfo in $root from initial data load in config.js instead of doing another request
-      CustomerService.getCustomerInfo(this.axiosConfig).then(function (data) {
+    getCustomerInfo: function() { CustomerService.getCustomerInfo(this.axiosConfig).then(function (data) {
         this.customerInfo = data;
-      }.bind(this))
-      .catch(function (error)  {
-        console.log('An error has occurred' + error);
-      });
-    },
-    getCartInfo: function() {
-      ProductService.getCartInfo(this.axiosConfig).then(function (data) {
+    }.bind(this)).catch(function (error)  { console.log('An error has occurred' + error); }); },
+    getCartInfo: function() { ProductService.getCartInfo(this.axiosConfig).then(function (data) {
         this.productsQuantity = data.orderItemList ? data.orderItemList.length : 0;
-      }.bind(this));
-    },
-    logout: function() {
-      LoginService.logout().then(function (data) {
+    }.bind(this)); },
+    logout: function() { LoginService.logout().then(function (data) {
         storeInfo = {};
         location.reload();
         this.$router.push({ name: 'login'});
-      }.bind(this));
-    }
+    }.bind(this)); },
+    searchProduct: function() { this.$router.push({ name: 'search', params: { searchText: this.searchText }}); }
   },
   mounted: function() {
       var vm = this;
@@ -41,3 +32,10 @@ storeComps.Navbar = {
   }
 };
 storeComps.NavbarTemplate = getPlaceholderRoute("navbarTemplate", "Navbar", storeComps.Navbar.props);
+
+storeComps.FooterPage = {
+    name: "footer-page",
+    data() { return {}; },
+    props: ["infoLink"]
+};
+storeComps.FooterPageTemplate = getPlaceholderRoute("footerTemplate", "FooterPage", storeComps.FooterPage.props);

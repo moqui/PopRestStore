@@ -54,7 +54,7 @@ a:hover { text-decoration: none; }
 .features .feature .feature-info { padding: 5px; }
 .features .feature .feature-info .subtitle { margin-top: -5px; font-size: 0.7em; }
 
-.landing-product { color: #05c3d5 }
+.category-product { color: #05c3d5 }
 .star-rating { color: #ffed00; }
 
 .slick-prev, .slick-next { position: absolute; display: inline-block; line-height: 0; top: 50%; width: 40px; height: 40px;

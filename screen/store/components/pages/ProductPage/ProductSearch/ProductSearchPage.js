@@ -1,12 +1,16 @@
-storeComps.ProductSearch = {
+storeComps.Search = {
   name: "product-search",
-  data() { return { productList: [] }; },
-  methods: { },
-  beforeCreate() {
-  	ProductService.getProductBySearch(this.$route.params.searchText,'PopcAllProducts').then(function (data){
-        this.productList = data.productList;
-    }.bind(this));
+  data: function() { return { productList: [] }; },
+  methods: {
+      doSearch: function() {
+          // TODO: hard coded category ID
+          ProductService.getProductBySearch(this.$route.params.searchText,'PopcAllProducts').then(function (data){
+              this.productList = data.productList;
+          }.bind(this));
+      }
   },
-  components: { landingProduct: storeComps.LandingProductTemplate, navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate }
+  mounted: function() { this.doSearch(); },
+  components: { "category-product": storeComps.CategoryProductTemplate, navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
+  watch: { '$route': function(to, from) { this.doSearch(); } }
 };
-storeComps.ProductSearchTemplate = getPlaceholderRoute("searchTemplate", "ProductSearch");
+storeComps.SearchTemplate = getPlaceholderRoute("searchTemplate", "Search");

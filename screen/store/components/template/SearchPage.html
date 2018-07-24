@@ -11,9 +11,8 @@
             <div class="col col-lg-2 col-12">
                 <div class="customer-menu">
                     <ul class="deals-ul">
-                        <router-link :to="'/deals/PopcAllProducts'" tag="li">
-                            <i class="fas fa-th"></i> All
-                        </router-link>
+                        <!-- TODO hard coded category ID -->
+                        <router-link :to="'/category/PopcAllProducts'" tag="li"><i class="fas fa-th"></i> All</router-link>
                         <li><i class="fas fa-tag"></i> New</li>
                         <li><i class="fa fa-fire" aria-hidden="true"></i> Deals</li>
                     </ul>
@@ -34,7 +33,7 @@
                 <div class="row mt-5">
                     <div class="col col-lg-4" v-for="(product, index) in productList.documentList">
                         <a :href="'/store/product/' + product.productId">
-                            <landing-product :product="product" />
+                            <category-product :product="product" />
                         </a>
                     </div>
                 </div>

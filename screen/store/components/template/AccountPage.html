@@ -183,7 +183,7 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form class="modal-body" v-on:submit="updateCustomerPassword" method="post">
+                    <form class="modal-body" @submit.prevent="updateCustomerPassword" method="post">
                         <div v-if="responseMessage != null && responseMessage != ''" class="alert alert-primary" role="alert">
                             {{responseMessage}}
                         </div>
@@ -327,7 +327,7 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form class="modal-body" v-on:submit="addCustomerPaymentMethod" method="post">
+                    <form class="modal-body" @submit.prevent="addCustomerPaymentMethod" method="post">
                         <div v-if="responseMessage != null && responseMessage != ''" class="alert alert-primary" role="alert">
                             {{responseMessage}}
                         </div>
