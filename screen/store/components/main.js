@@ -6,11 +6,11 @@ var appObjects = {
     router: new VueRouter({
         // TODO sooner or later: base: storeConfig.basePath, mode: 'history',
         routes: [
-            { path: "/", name: "Products", component: storeComps.LandingPageTemplate },
+            { path: "/", name: "landing", component: storeComps.LandingPageTemplate },
             { path: "/login", name: "login", component: storeComps.LoginPageTemplate },
             { path: "/search/:searchText", name: "search", component: storeComps.SearchTemplate },
             { path: "/category/:categoryId/:extra?", name: "category", component: storeComps.CategoryPageTemplate },
-            { path: "/product/:productId/:extra?", name: "Product", component: storeComps.ProductPageTemplate },
+            { path: "/product/:productId/:extra?", name: "product", component: storeComps.ProductPageTemplate },
             { path: "/checkout", name: "checkout", component: storeComps.CheckOutPageTemplate },
             { path: "/checkout/:orderId", name: "successcheckout", component: storeComps.SuccessCheckOutTemplate },
             { path: "/orders/:orderId", name: "order", component: storeComps.CustomerOrderPageTemplate },
