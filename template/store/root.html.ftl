@@ -8,45 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha256-UK1EiopXIL+KVhfbFa8xrmAWPeBjMVdvYMYkTAEv/HI=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
     <link rel="stylesheet" href="/store/components/styles.css">
-    <#-- TODO: move to load under d.xml -->
-    <script>
-        // default store configuration, settings may be reset by script returned by /content/settings.js (transition that calls StoreServices.get#StoreInfo)
-        var storeConfig = {
-            apiKey: null, moquiSessionToken: null,
-            // base path for the router, by default the app page should load from '/store'
-            basePath: "/store/d/",
-            // REST API base location, default on the same server
-            // if the Moqui server is running on a different server use something like "https://api.domain.com/rest/"
-            restApiLocation: "/rest/",
-            // Content base location for server administered content, points to the content.xml screen
-            // this may be a path on the same server or for production preferably a full URL that goes through a caching proxy like CloudFlare
-            contentLocation: "/store/content/",
-            contentAttachmentLocation: "/store/content/attachment/",
-            productImageLocation: "/store/content/productImage/",
-            // nav page/etc template locations (may be path or full URL)
-            navbarTemplate: "/store/components/template/Navbar.html",
-            footerTemplate: "/store/components/template/FooterPage.html",
-            homeTemplate: "/store/components/template/HomePage.html",
-            searchTemplate: "/store/components/template/SearchPage.html",
-            // browse page/etc template locations (may be path or full URL)
-            categoryTemplate: "/store/components/template/CategoryPage.html",
-            categoryProductTemplate: "/store/components/template/CategoryProduct.html",
-            productTemplate: "/store/components/template/ProductPage.html",
-            productImageTemplate: "/store/components/template/ProductImage.html",
-            productReviewTemplate: "/store/components/template/ProductReview.html",
-            starRatingTemplate: "/store/components/template/StarRating.html",
-            // buy page/etc template locations (may be path or full URL)
-            loginTemplate: "/store/components/template/LoginPage.html",
-            resetPasswordTemplate: "/store/components/template/ResetPasswordPage.html",
-            accountTemplate: "/store/components/template/AccountPage.html",
-            accountCreateTemplate: "/store/components/template/CreateAccountPage.html",
-            orderHistoryTemplate: "/store/components/template/OrderHistoryTemplate.html",
-            orderDetailTemplate: "/store/components/template/OrderDetailTemplate.html",
-            checkoutTemplate: "/store/components/template/CheckoutPage.html",
-            checkoutNavbarTemplate: "/store/components/template/CheckoutNavbar.html",
-            checkoutSuccessTemplate: "/store/components/template/CheckoutSuccess.html"
-        };
-    </script>
 </head>
 
 <body>

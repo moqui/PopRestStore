@@ -19,10 +19,51 @@ along with this software (see the LICENSE.md file). If not, see
 
     <!-- TODO: any of these needed at root level? as needed move to root.html.ftl -->
     <pre-actions><script><![CDATA[
+        footerScriptText = """
+    <script>
+        // default store configuration, settings may be reset by script returned by /content/settings.js (transition that calls StoreServices.get#StoreInfo)
+        var storeConfig = {
+            apiKey: null, moquiSessionToken: null,
+            // base path for the router, by default the app page should load from '/store'
+            basePath: "/store/d/",
+            // REST API base location, default on the same server
+            // if the Moqui server is running on a different server use something like "https://api.domain.com/rest/"
+            restApiLocation: "/rest/",
+            // Content base location for server administered content, points to the content.xml screen
+            // this may be a path on the same server or for production preferably a full URL that goes through a caching proxy like CloudFlare
+            contentLocation: "/store/content/",
+            contentAttachmentLocation: "/store/content/attachment/",
+            productImageLocation: "/store/content/productImage/",
+            // nav page/etc template locations (may be path or full URL)
+            navbarTemplate: "/store/components/template/Navbar.html",
+            footerTemplate: "/store/components/template/FooterPage.html",
+            homeTemplate: "/store/components/template/HomePage.html",
+            searchTemplate: "/store/components/template/SearchPage.html",
+            // browse page/etc template locations (may be path or full URL)
+            categoryTemplate: "/store/components/template/CategoryPage.html",
+            categoryProductTemplate: "/store/components/template/CategoryProduct.html",
+            productTemplate: "/store/components/template/ProductPage.html",
+            productImageTemplate: "/store/components/template/ProductImage.html",
+            productReviewTemplate: "/store/components/template/ProductReview.html",
+            starRatingTemplate: "/store/components/template/StarRating.html",
+            // buy page/etc template locations (may be path or full URL)
+            loginTemplate: "/store/components/template/LoginPage.html",
+            resetPasswordTemplate: "/store/components/template/ResetPasswordPage.html",
+            accountTemplate: "/store/components/template/AccountPage.html",
+            accountCreateTemplate: "/store/components/template/CreateAccountPage.html",
+            orderHistoryTemplate: "/store/components/template/OrderHistoryTemplate.html",
+            orderDetailTemplate: "/store/components/template/OrderDetailTemplate.html",
+            checkoutTemplate: "/store/components/template/CheckoutPage.html",
+            checkoutNavbarTemplate: "/store/components/template/CheckoutNavbar.html",
+            checkoutSuccessTemplate: "/store/components/template/CheckoutSuccess.html"
+        };
+    </script>
+        """
+
         String instancePurpose = System.getProperty("instance_purpose")
         if (!instancePurpose || instancePurpose == 'production') {
             /* ========== Production Mode ========== */
-            footerScriptText = """
+            footerScriptText += """
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js" integrity="sha256-TaLceMwjWRqe4yhbqPOJH6V7UGt5AvvdNfpaIXJWbFU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.min.js" integrity="sha256-yEB9jUlD51i5kxJZlzgzfR6XmVKI76Nl1WRA1aqIilU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
@@ -40,7 +81,7 @@ along with this software (see the LICENSE.md file). If not, see
             """
         } else {
             /* ========== Dev Mode ========== */
-            footerScriptText = """
+            footerScriptText += """
     <!-- Vue JS, see: https://vuejs.org/v2/guide/ -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.js" integrity="sha256-CMMTrj5gGwOAXBeFi7kNokqowkzbeL8ydAJy39ewjkQ=" crossorigin="anonymous"></script>
     <!-- Vue Router, see: https://router.vuejs.org/en/ -->
