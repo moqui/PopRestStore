@@ -39,14 +39,7 @@ along with this software (see the LICENSE.md file). If not, see
     <script src="/store/components/ApiServices.js"></script>
 
     <script src="/store/components/ComponentsNav.js"></script>
-
-    <script src="/store/components/forms/StarRating/StarRating.js"></script>
-    <script src="/store/components/pages/LandingPage/LandingProduct/LandingProduct.js"></script>
-    <script src="/store/components/pages/LandingPage/LandingPage.js"></script>
-    <script src="/store/components/pages/ProductPage/ProductReview/ProductReview.js"></script>
-    <script src="/store/components/pages/ProductPage/ProductImage/ProductImage.js"></script>
-    <script src="/store/components/pages/ProductPage/ProductPage.js"></script>
-    <script src="/store/components/pages/ProductPage/ProductSearch/ProductSearchPage.js"></script>
+    <script src="/store/components/ComponentsProduct.js"></script>
 
     <script src="/store/components/pages/LoginPage/LoginPage.js"></script>
     <script src="/store/components/Navbar/PlaceOrderNavbar/PlaceOrderNavbar.js"></script>
@@ -54,7 +47,6 @@ along with this software (see the LICENSE.md file). If not, see
     <script src="/store/components/pages/CheckOutPage/SuccessCheckOut/SuccessCheckOut.js"></script>
     <script src="/store/components/pages/CustomerOrderPage/CustomerOrderPage.js"></script>
     <script src="/store/components/pages/CustomerOrderPage/CustomerOrders/CustomerOrdersPage.js"></script>
-    <script src="/store/components/pages/DealsPage/DealsPage.js"></script>
     <script src="/store/components/pages/AccountPage/AccountPage.js"></script>
     <script src="/store/components/pages/AccountPage/ResetPassword/ResetPasswordPage.js"></script>
     <script src="/store/components/pages/AccountPage/CreateAccount/CreateAccountPage.js"></script>
