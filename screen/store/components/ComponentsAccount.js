@@ -22,7 +22,7 @@ storeComps.LoginPage = {
         }
     },
     mounted: function() { if (this.$root.apiKey != null) { location.href = "/store"; } },
-    components: {"placeorder-navbar": storeComps.PlaceOrderNavbarTemplate, "footer-page": storeComps.FooterPageTemplate}
+    components: {"checkout-navbar": storeComps.CheckoutNavbarTemplate, "footer-page": storeComps.FooterPageTemplate}
 };
 storeComps.LoginPageTemplate = getPlaceholderRoute("loginTemplate", "LoginPage");
 

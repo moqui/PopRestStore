@@ -33,7 +33,7 @@
             <div class="col col-lg-9 offset-lg-1 col-12">
                 <span class="customer-orders-title">Account Settings</span>
                 <br>
-                <div v-if="message.state != '' " v-bind:class="{ 'alert-primary': message.state == 1, 'alert-danger': message.state == 2}" class="alert" role="alert">
+                <div v-if="message.state != '' " :class="{ 'alert-primary': message.state == 1, 'alert-danger': message.state == 2}" class="alert" role="alert">
                     {{message.message}}
                 </div>
                 <p class="order-text-color account-subtitle mt-3">Profile</p>
@@ -97,7 +97,7 @@
                 <hr class="account-hr">
                 <div class="row">
                     <template v-for="(address, index) in customerAddressList">
-                        <div v-bind:class="{ 'div-checkmark': addressOption == address.postalContactMechId + ':' +
+                        <div :class="{ 'div-checkmark': addressOption == address.postalContactMechId + ':' +
                             address.telecomContactMechId }" class="col col-lg-6 account-div-container">
                             <label :for="index + 'r1'" class="container-input">
                                 <input :id="index + 'r1'" type="radio" :value="address.postalContactMechId + ':' +
@@ -141,7 +141,7 @@
                 <hr class="account-hr">
                 <div class="row">
                     <template v-for="(item, index) in customerPaymentMethods">
-                        <div v-bind:class="{ 'div-checkmark': paymentOption == item.paymentMethodId }" 
+                        <div :class="{ 'div-checkmark': paymentOption == item.paymentMethodId }"
                             class="col col-lg-6 account-div-container">
                             <label  :for="index + 'r3'" class="container-input">
                                 <input :id="index + 'r3'"  type="radio" :value="item.paymentMethodId" 
