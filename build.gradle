@@ -37,7 +37,7 @@ task minifyCombined(type: com.eriwen.gradle.js.tasks.MinifyJsTask) {
     }
 }
 
-task clean { doLast { delete file(dir: "${compsPath}", include: 'combined.*') }}
+task clean { doLast { delete fileTree(dir: "${compsPath}", include: 'combined.*') }}
 task build {
     dependsOn combineBaseJs
     dependsOn minifyCombined
