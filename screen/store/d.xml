@@ -69,15 +69,7 @@ along with this software (see the LICENSE.md file). If not, see
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
 
     <script src="/store/config.js"></script>
-    <script src="/store/components/utilities.js"></script>
-    <script src="/store/components/ApiServices.js"></script>
-
-    <script src="/store/components/ComponentsNav.js"></script>
-    <script src="/store/components/ComponentsProduct.js"></script>
-    <script src="/store/components/ComponentsAccount.js"></script>
-    <script src="/store/components/ComponentsCheckout.js"></script>
-
-    <script src="/store/components/main.js"></script>
+    <script src="/store/components/combined.min.js"></script>
             """
         } else {
             /* ========== Dev Mode ========== */

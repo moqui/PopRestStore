@@ -1,0 +1,44 @@
+/*
+ * This software is in the public domain under CC0 1.0 Universal plus a
+ * Grant of Patent License.
+ *
+ * To the extent possible under law, the author(s) have dedicated all
+ * copyright and related and neighboring rights to this software to the
+ * public domain worldwide. This software is distributed without any
+ * warranty.
+ *
+ * You should have received a copy of the CC0 Public Domain Dedication
+ * along with this software (see the LICENSE.md file). If not, see
+ * <http://creativecommons.org/publicdomain/zero/1.0/>.
+ */
+
+import java.nio.charset.StandardCharsets
+plugins {
+    id "com.eriwen.gradle.js" version "2.14.1"
+}
+
+def compsPath = "screen/store/components"
+// source JS files in load order
+def compsJsFiles = [compsPath + "/utilities.js", compsPath + "/ApiServices.js", compsPath + "/ComponentsNav.js",
+        compsPath + "/ComponentsProduct.js", compsPath + "/ComponentsAccount.js", compsPath + "/ComponentsCheckout.js", compsPath + "/main.js"]
+
+task combineBaseJs(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
+    encoding = "UTF-8"
+    source = compsJsFiles
+    dest = file("${compsPath}/combined.js")
+}
+task minifyCombined(type: com.eriwen.gradle.js.tasks.MinifyJsTask) {
+    source = file("${compsPath}/combined.js")
+    dest = file("${compsPath}/combined.min.js")
+    closure {
+        compilerOptions.setOutputCharset(StandardCharsets.UTF_8)
+        compilerOptions.setLanguageIn(com.google.javascript.jscomp.CompilerOptions.LanguageMode.fromString("ECMASCRIPT6"))
+        compilerOptions.setLanguageOut(com.google.javascript.jscomp.CompilerOptions.LanguageMode.fromString("ES5"))
+    }
+}
+
+task clean { doLast { delete file(dir: "${compsPath}", include: 'combined.*') }}
+task build {
+    dependsOn combineBaseJs
+    dependsOn minifyCombined
+}
