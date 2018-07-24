@@ -1,30 +1,23 @@
-<set field="productStoreId" value="POPC_DEFAULT"/>
+<#-- TODO: hard coded default stars, maybe better not to show stars if we have no data? -->
 <#assign star = 3>
-<!--PopcAllProducts-->
-<div class="container-fluid features d-none d-sm-none d-md-block" style="margin-top: 135px;">
+<div class="container-fluid features d-none d-sm-none d-md-block">
     <div class="d-flex justify-content-around container">
-        <div class="feature ">
-            <div class="feature-icon">
-                <i class="fa fa-gift" aria-hidden="true"></i>
-            </div>
+        <div class="feature">
+            <div class="feature-icon"><i class="fa fa-gift" aria-hidden="true"></i></div>
             <div class="feature-info">
                 <div class="title text-left">FAST SHIPPING</div>
                 <div class="subtitle">Nationwide delivery whitin 3 days</div>
             </div>
         </div>
-        <div class="feature ">
-            <div class="feature-icon">
-                <i class="fa fa-fire" aria-hidden="true"></i>
-            </div>
+        <div class="feature">
+            <div class="feature-icon"><i class="fa fa-fire" aria-hidden="true"></i></div>
             <div class="feature-info">
                 <div class="title text-left">HOT DEALS</div>
                 <div class="subtitle">New deals every week</div>
             </div>
         </div>
-        <div class="feature ">
-            <div class="feature-icon">
-                <i class="fa fa-lock" aria-hidden="true"></i>
-            </div>
+        <div class="feature">
+            <div class="feature-icon"><i class="fa fa-lock" aria-hidden="true"></i></div>
             <div class="feature-info">
                 <div class="title text-left">FAST SHIPPING</div>
                 <div class="subtitle">Nationwide delivery whitin 3 days</div>
@@ -32,18 +25,15 @@
         </div>
     </div>
 </div>
-<div class="container landing-container">
-    <div class="text-left mt-3 modal-text">
-        This Week's deals
-    </div>
+<div class="container">
+    <div class="text-left mt-3 modal-text">This Week's deals</div>
     <div class="carousel">
         <#list pcmpList.productList as product>
             <div>
                 <a class="category-product" href="/store/product/${product.productId}">
                     <figure class="figure">
-                        <img width="90%" 
-                        class="figure-img img-fluid"
-                        src="/store/content/productImage/${product.smallImageList[0].productContentId}" >
+                        <img width="90%" class="figure-img img-fluid"
+                                src="/store/content/productImage/${product.smallImageList[0].productContentId}">
                         <figcaption class="text-left title-product-text figure-caption">${product.productName}</figcaption>
                         <figcaption class="text-left figure-caption">
                             <#if product.numberOfRatings??>
@@ -82,17 +72,14 @@
         </#list>
     </div>
     <hr/>
-    <div class="text-left mt-3 modal-text">
-        Best Sellers
-    </div>
+    <div class="text-left mt-3 modal-text">Best Sellers</div>
     <div class="carousel">
         <#list pcmpList.productList as product>
             <div>
                 <a class="category-product" href="/store/product/${product.productId}">
                     <figure class="figure">
-                        <img width="90%" 
-                        class="figure-img img-fluid"
-                        src="/store/content/productImage/${product.smallImageList[0].productContentId}" >
+                        <img width="90%" class="figure-img img-fluid"
+                                src="/store/content/productImage/${product.smallImageList[0].productContentId}" >
                         <figcaption class="text-left title-product-text figure-caption">${product.productName}</figcaption>
                         <figcaption class="text-left figure-caption">
                             <#if product.numberOfRatings??>

@@ -2,12 +2,8 @@
     <navbar sub-bar="true"/>
     <div class="container" v-if="orderList.orderPart">
         <div class="container mt-2">
-            <router-link class="customer-link" :to="'/'" tag="span">
-                Home <i class="fas fa-angle-right"></i>
-            </router-link>
-            <router-link class="customer-link" :to="'/orders'" tag="span">
-                My Orders <i class="fas fa-angle-right"></i>
-            </router-link>
+            <router-link class="customer-link" :to="'/'" tag="span">Home <i class="fas fa-angle-right"></i></router-link>
+            <router-link class="customer-link" :to="'/orders'" tag="span">My Orders <i class="fas fa-angle-right"></i></router-link>
             <span class="modal-text">#{{orderList.orderHeader.orderId}}</span>
         </div>
         <div class="row mt-4">

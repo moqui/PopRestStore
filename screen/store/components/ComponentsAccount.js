@@ -22,7 +22,6 @@ storeComps.LoginPage = {
         }
     },
     mounted: function() { if (this.$root.apiKey != null) { location.href = "/store"; } },
-    components: {"checkout-navbar": storeComps.CheckoutNavbarTemplate, "footer-page": storeComps.FooterPageTemplate}
 };
 storeComps.LoginPageTemplate = getPlaceholderRoute("loginTemplate", "LoginPage");
 
@@ -72,8 +71,7 @@ storeComps.ResetPasswordPage = {
                 location.href ="/store";
             }.bind(this));
         }
-    },
-    components: { "footer-page": storeComps.FooterPageTemplate }
+    }
 };
 storeComps.ResetPasswordTemplate = getPlaceholderRoute("resetPasswordTemplate", "ResetPasswordPage");
 
@@ -299,8 +297,7 @@ storeComps.AccountPage = {
         },
         hideModal: function(modalid) { $('#'+modalid).modal('hide'); }
     },
-    components: { navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
-    mounted() {
+    mounted: function() {
         if (this.$root.apiKey == null) {
             this.$router.push({ name: 'landing'});
         } else {
@@ -373,7 +370,6 @@ storeComps.CreateAccountPage = {
         }
     },
     mounted: function() { if(this.$root.apiKey != null) { this.$router.push({ name: 'landing' }); } },
-    components: { "footer-page": storeComps.FooterPageTemplate }
 };
 storeComps.CreateAccountPageTemplate = getPlaceholderRoute("accountCreateTemplate", "CreateAccountPage");
 
@@ -399,7 +395,6 @@ storeComps.CustomerOrderPage = {
             return day + ' ' + monthNames[monthIndex] + ', ' + year;
         }
     },
-    components: { navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
     mounted: function() { this.getCustomerOrderById(); }
 };
 storeComps.CustomerOrderPageTemplate = getPlaceholderRoute("orderDetailTemplate", "CustomerOrderPage");
@@ -447,7 +442,6 @@ storeComps.CustomerOrdersPage = {
             return monthNames[monthIndex] + ' ' + day + ', ' + year;
         }
     },
-    components : { navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
     mounted: function() { this.getCustomerOrders(); }
 };
 storeComps.CustomerOrdersPageTemplate = getPlaceholderRoute("orderHistoryTemplate", "CustomerOrdersPage");

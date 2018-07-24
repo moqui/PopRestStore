@@ -1,19 +1,13 @@
-<div class="container product-container">
-    <a class="customer-link"  href="/store">
-    Home 
-    <i class="fas fa-angle-right"></i>
-    </a>
+<div class="container">
+    <a class="customer-link" href="/store">Home <i class="fas fa-angle-right"></i></a>
+    <#-- TODO: replace demo breadcrumbs with real or get rid of -->
     <span class="customer-link">All Products <i class="fas fa-angle-right"></i></span>
     <span class="customer-link">Office Supplies</span>
 </div>
 <div class="container container-text mt-1">
     <div id="isSuccessAddCart" class="alert alert-primary mt-3 mb-3" role="alert">
-            <i class="far fa-check-square"></i>
-            You added a ${product.productName} to your shopping cart.
-        <a class="float-right" href="/store/d#/checkout">
-            Go to Checkout
-            <i class="fas fa-arrow-right"></i>
-        </a>
+        <i class="far fa-check-square"></i> You added a ${product.productName} to your shopping cart.
+        <a class="float-right" href="/store/d#/checkout">Go to Checkout <i class="fas fa-arrow-right"></i></a>
     </div>
     <div class="row mt-2">
         <div class="col col-lg-1 col-sm-4 col-4">
@@ -85,10 +79,7 @@
                     </div>
                 </form>
             </div>
-            <button id="cartAdd" class="btn cart-form-btn col"> 
-                <i class="fa fa-shopping-cart"></i>
-                Add to Cart
-            </button>
+            <button id="cartAdd" class="btn cart-form-btn col"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
         </div>
     </div>
     <hr>

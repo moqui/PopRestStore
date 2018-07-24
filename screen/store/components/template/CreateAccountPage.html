@@ -1,15 +1,7 @@
 <div>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top order-navbar bg-dark">
-        <div class="d-flex flex-column moqui-navbar order-navbar">
-            <div class="container d-flex flex-row main-navbar">
-                <a class="navbar-brand" href="/store">
-                    <img height="65px" class="moqui-logo" src="./assets/moqui-logo.svg" alt="">
-                    <span class="font-italic order-navbar-title">POP Shop</span>
-                </a>
-            </div>
-        </div>
-    </nav>
+    <navbar sub-bar="true"/>
     <div class="container account-container">
+        <br>
         <div class="row">
             <form class="col col-lg-7 offset-lg-1" @submit.prevent="createAccount" method="post">
                 <h1 class="text-left">Join POP Commerce</h1>

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="d-flex flex-column moqui-navbar">
         <div class="container d-flex flex-row main-navbar">
             <a class="navbar-brand d-none d-sm-block"  href="/store">
@@ -35,7 +35,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
                     
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <#list categoriesList.subCategoryList as category>
+                        <#list browseCategoriesList.subCategoryList as category>
                             <a class="dropdown-item item-color" href="/store/d#/category/${category.productCategoryId}">
                                 ${category.categoryName}
                             </a>
@@ -62,7 +62,6 @@
                     </div>
                 </li>
             </ul>
-
 
             <!-- Right aligned nav items -->
             <ul class="navbar-nav ml-auto">

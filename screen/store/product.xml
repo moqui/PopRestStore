@@ -14,12 +14,11 @@ along with this software (see the LICENSE.md file). If not, see
 -->
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
         require-authentication="anonymous-view" allow-extra-path="true">
-     <parameter name="productId" />
-     <parameter name="star"  />
+     <parameter name="productId"/>
+     <parameter name="star"/>
 
     <pre-actions>
-        <set field="user" from="ec.user.userAccount"/>
-     	<set field="star" value="5"/>
+     	<set field="star" from="5"/>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
         <if condition="extraPathNameList &amp;&amp; !productId">
             <set field="productId" from="extraPathNameList[0]"/></if>
@@ -42,6 +41,6 @@ along with this software (see the LICENSE.md file). If not, see
     	<render-mode><text type="html" location="component://PopRestStore/template/store/navbar.html.ftl"/></render-mode>
         <render-mode><text type="html" location="component://PopRestStore/template/store/productPage.html.ftl"/></render-mode>
         <render-mode><text type="html" location="component://PopRestStore/template/store/productReview.html.ftl"/></render-mode>
-        <render-mode><text type="html" location="component://PopRestStore/template/store/footerPage.html.ftl"/></render-mode>
+        <render-mode><text type="html" location="component://PopRestStore/template/store/footer.html.ftl"/></render-mode>
     </widgets>
 </screen>

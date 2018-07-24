@@ -54,8 +54,7 @@ storeComps.LandingPage = {
             this.products = response;
         }.bind(this));
     },
-    components: { "category-product": storeComps.CategoryProductTemplate, "star-rating": storeComps.StarRatingTemplate,
-        navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate }
+    components: { "category-product": storeComps.CategoryProductTemplate, "star-rating": storeComps.StarRatingTemplate }
 };
 storeComps.LandingPageTemplate = getPlaceholderRoute("homeTemplate", "LandingPage");
 
@@ -75,7 +74,7 @@ storeComps.CategoryPage = {
         }
     },
     watch: { '$route': function(to, from) { this.getProductsList(); this.getCategoryInfoById(); } },
-    components: { "category-product": storeComps.CategoryProductTemplate, navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
+    components: { "category-product": storeComps.CategoryProductTemplate },
     mounted: function() { this.getProductsList(); this.getCategoryInfoById(); }
 };
 storeComps.CategoryPageTemplate = getPlaceholderRoute("categoryTemplate", "CategoryPage");
@@ -92,7 +91,7 @@ storeComps.Search = {
         }
     },
     mounted: function() { this.doSearch(); },
-    components: { "category-product": storeComps.CategoryProductTemplate, navbar: storeComps.NavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
+    components: { "category-product": storeComps.CategoryProductTemplate },
     watch: { '$route': function(to, from) { this.doSearch(); } }
 };
 storeComps.SearchTemplate = getPlaceholderRoute("searchTemplate", "Search");
@@ -116,7 +115,7 @@ storeComps.ProductImageTemplate = getPlaceholderRoute("productImageTemplate", "P
 storeComps.ProductReview = {
     name: "product-review",
     data() { return {} },
-    components: { StarRating: storeComps.StarRatingTemplate },
+    components: { "star-rating": storeComps.StarRatingTemplate },
     props: ["reviews"]
 };
 storeComps.ProductReviewTemplate = getPlaceholderRoute("productReviewTemplate", "ProductReview", storeComps.ProductReview.props);
@@ -128,8 +127,7 @@ storeComps.ProductPage = {
         axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
                 "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
     }; },
-    components: { StarRating: storeComps.StarRatingTemplate, navbar: storeComps.NavbarTemplate,
-        "footer-page": storeComps.FooterPageTemplate, "product-review": storeComps.ProductReviewTemplate },
+    components: { "star-rating": storeComps.StarRatingTemplate, "product-review": storeComps.ProductReviewTemplate },
     methods: {
         getProductImageSrc: function(imageInfo) {
             if (!imageInfo || !imageInfo.productContentId) return null;

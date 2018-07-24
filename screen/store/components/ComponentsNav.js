@@ -32,6 +32,7 @@ storeComps.Navbar = {
   }
 };
 storeComps.NavbarTemplate = getPlaceholderRoute("navbarTemplate", "Navbar", storeComps.Navbar.props);
+Vue.component("navbar", storeComps.NavbarTemplate);
 
 storeComps.FooterPage = {
     name: "footer-page",
@@ -39,3 +40,4 @@ storeComps.FooterPage = {
     props: ["infoLink"]
 };
 storeComps.FooterPageTemplate = getPlaceholderRoute("footerTemplate", "FooterPage", storeComps.FooterPage.props);
+Vue.component("footer-page", storeComps.FooterPageTemplate);

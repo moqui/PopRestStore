@@ -5,6 +5,7 @@ storeComps.CheckoutNavbar = {
   props: ["option"]
 };
 storeComps.CheckoutNavbarTemplate = getPlaceholderRoute("checkoutNavbarTemplate", "CheckoutNavbar", storeComps.CheckoutNavbar.props);
+Vue.component("checkout-navbar", storeComps.CheckoutNavbarTemplate);
 
 storeComps.CheckOutPage = {
     name: "checkout-page",
@@ -231,7 +232,7 @@ storeComps.CheckOutPage = {
         cleanShippingAddress: function() { this.shippingAddress = {}; this.isUpdate = false; },
         cleanPaymentMethod: function() { this.paymentMethod = {}; this.isUpdate = false; }
     },
-    components: { "checkout-navbar": storeComps.CheckoutNavbarTemplate, "footer-page": storeComps.FooterPageTemplate, "product-image": storeComps.ProductImageTemplate },
+    components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
         this.getCartShippingOptions();
         this.getCartInfo();
@@ -268,7 +269,6 @@ storeComps.SuccessCheckOut = {
             return day + ' ' + monthNames[monthIndex] + ', ' + year;
         }
     },
-    components: { "checkout-navbar": storeComps.CheckoutNavbarTemplate, "footer-page": storeComps.FooterPageTemplate },
     mounted: function() { this.getCustomerOrderById(); }
 };
 storeComps.SuccessCheckOutTemplate = getPlaceholderRoute("checkoutSuccessTemplate", "SuccessCheckOut");

@@ -49,12 +49,13 @@ along with this software (see the LICENSE.md file). If not, see
     </actions>
     <widgets>
         <render-mode><text type="html" location="component://PopRestStore/template/store/navbar.html.ftl"/></render-mode>
-        <section name="PageTextSection" condition="pageText">
-            <widgets><label text="${pageText}" type="div" style="content-page" encode="false"/></widgets>
-            <fail-widgets>
+        <container id="content">
+            <section name="PageTextSection" condition="pageText"><widgets>
+                <label text="${pageText}" type="div" style="content-page" encode="false"/>
+            </widgets><fail-widgets>
                 <render-mode><text type="html" location="component://PopRestStore/template/store/error.html.ftl"/></render-mode>
-            </fail-widgets>
-        </section>
-        <render-mode><text type="html" location="component://PopRestStore/template/store/footerPage.html.ftl"/></render-mode>
+            </fail-widgets></section>
+        </container>
+        <render-mode><text type="html" location="component://PopRestStore/template/store/footer.html.ftl"/></render-mode>
     </widgets>
 </screen>
