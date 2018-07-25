@@ -57,8 +57,7 @@ along with this software (see the LICENSE.md file). If not, see
     <dbResources resourceId="DEMO_TS_M_ILB" filename="img_TShirtManBack.jpg" isFile="Y" parentResourceId="MCNT_PROD_DEMO_TS_M"/>
     <dbResources resourceId="DEMO_TS_M_DL" filename="description.html" isFile="Y" parentResourceId="MCNT_PROD_DEMO_TS_M"/>
     <moqui.resource.DbResourceFile resourceId="DEMO_TS_M_DL" rootVersionName="01" mimeType="text/html" versionName="01">
-        <fileData><![CDATA[PHA+MTAwJSBjb3R0b24gPC9wPg0KPHA+SW1wb3J0ZWQ8L3A+DQo8cD5HcmFwaGljcyBjbG9zdXJlPC9wPg0KPHA+TWFjaGluZSB3YXNoPC9wPg0KPHA+U2hvcnQtc2xlZXZlIGdyYXBoaWMgVC1zaGlydCBpbiBsaWdodHdlaWdodCByaW5nLXNwdW4gY290dG9uIGZlYXR1cmluZyByaWJiZWQgY3JldyBuZWNrbGluZTwvcD4NCjxwPlRhZy1mcmVlIGNvbGxhciBmb3IgY29tZm9ydDwvcD4=]]>
-        </fileData>
+        <fileData><![CDATA[PHA+MTAwJSBjb3R0b24gPC9wPg0KPHA+SW1wb3J0ZWQ8L3A+DQo8cD5HcmFwaGljcyBjbG9zdXJlPC9wPg0KPHA+TWFjaGluZSB3YXNoPC9wPg0KPHA+U2hvcnQtc2xlZXZlIGdyYXBoaWMgVC1zaGlydCBpbiBsaWdodHdlaWdodCByaW5nLXNwdW4gY290dG9uIGZlYXR1cmluZyByaWJiZWQgY3JldyBuZWNrbGluZTwvcD4NCjxwPlRhZy1mcmVlIGNvbGxhciBmb3IgY29tZm9ydDwvcD4=]]></fileData>
     </moqui.resource.DbResourceFile>
     <!-- call a service to generate variants -->
     <mantle.product.ProductServices.createVariantProducts productId="DEMO_TS_M" productTypeEnumId="PtAsset"

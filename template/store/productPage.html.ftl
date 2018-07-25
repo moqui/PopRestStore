@@ -13,17 +13,17 @@
         <div class="col col-lg-1 col-sm-4 col-4">
             <div>
                 <#list product.contentList as img>
-                    <#if img.productContentTypeEnumId == "PcntImageSmall">
-                        <img width="200px" height="200px" onClick="changeUrl(${img.productContentId})"
+                    <#if img.productContentTypeEnumId == "PcntImageLarge">
+                        <img width="200px" height="200px" onClick="changeLargeImage('${img.productContentId}');"
                             class="figure-img img-fluid product-img"
                             src="/store/content/productImage/${img.productContentId}"
-                            alt="Small Image"> 
+                            alt="Product Image">
                     </#if>
                 </#list>
             </div>
         </div>
         <div class="col col-lg-4 col-sm-8 col-8">
-            <img id="singleImage" class="product-img-select">
+            <img id="product-image-large" class="product-img-select">
         </div>
         <div class="col col-lg-4 col-sm-12 col-12">
             <p>
@@ -85,14 +85,11 @@
     <hr>
 </div>
 <script>
-    var url = "/store/content/productImage/";
+    var prodImageUrl = "/store/content/productImage/";
+    var $productImageLarge = document.getElementById("product-image-large");
+    function changeLargeImage(productContentId) { $productImageLarge.src = prodImageUrl + productContentId; }
     //Default image
-    var urlImg = ${product.contentList[0].productContentId};
-    var image = document.getElementById('singleImage');
-    image.src = url + urlImg;
-    function changeUrl(route) {
-        image.src = url + route;
-    }
+    <#if product.contentList?has_content>changeLargeImage("${product.contentList[0].productContentId}");</#if>
     function setStarNumber(number) {
         var productRating = document.getElementById("productRating");
         productRating.value = number;
