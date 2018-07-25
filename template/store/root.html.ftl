@@ -56,7 +56,7 @@
         });
         $("#form-search").submit(function(event){
             event.preventDefault();
-            window.location.href = "/store/d#/product/search/" + $(this).serializeArray()[0].value;
+            window.location.href = "/store/d#/search/" + $(this).serializeArray()[0].value;
         });
 
         var $starsLi = $('#stars li');

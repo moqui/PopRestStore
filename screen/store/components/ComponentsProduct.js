@@ -20,29 +20,20 @@ storeComps.StarRatingTemplate = getPlaceholderRoute("starRatingTemplate", "StarR
 
 storeComps.CategoryProduct = {
     name: "category-product",
-    data: function () { return { product1: {smallImageList: []} }; },
+    data: function () { return { } },
     components: {"star-rating": storeComps.StarRatingTemplate},
     props: ["product"],
     methods: {
         getProductImageSrc: function (imageInfo) {
             if (!imageInfo || !imageInfo.productContentId) return null;
-            return storeConfig.productImageLocation + imageInfo.productContentId;
+            return this.$root.storeConfig.productImageLocation + imageInfo.productContentId;
         },
-        getProductSingleImg: function (smallImageList) {
-            if (!smallImageList[0] || !smallImageList[0].productContentId) return null;
-            return storeConfig.productImageLocation + smallImageList[0].productContentId;
+        getProductSingleImgSrc: function () {
+            var prod = this._props.product;
+            return this.getProductImageSrc(prod.mediumImageInfo || prod.smallImageInfo);
         }
     },
-    mounted: function () {
-        if (!this._props.product.smallImageList) {
-            ProductService.getProduct(this._props.product.productId).then(function (data) {
-                this.product1 = data;
-                this.product1.smallImageList = data.contentList;
-            }.bind(this));
-        } else {
-            this.product1 = this._props.product;
-        }
-    }
+    computed: { localProd: function() { return this._props.product } }
 };
 storeComps.CategoryProductTemplate = getPlaceholderRoute("categoryProductTemplate", "CategoryProduct", storeComps.CategoryProduct.props);
 
@@ -81,12 +72,11 @@ storeComps.CategoryPageTemplate = getPlaceholderRoute("categoryTemplate", "Categ
 
 storeComps.Search = {
     name: "product-search",
-    data: function() { return { productList: [] }; },
+    data: function() { return { searchInfo: {} }; },
     methods: {
         doSearch: function() {
-            // TODO: hard coded category ID
-            ProductService.getProductBySearch(this.$route.params.searchText,'PopcAllProducts').then(function (data){
-                this.productList = data.productList;
+            ProductService.getProductBySearch(this.$route.params.searchText, this.$root.storeInfo.productCategoryId).then(function (data){
+                this.searchInfo = data;
             }.bind(this));
         }
     },

@@ -237,7 +237,7 @@ a:hover { text-decoration: none; }
 
 .color-tab { color: #797979; }
 
-.customer-menu { color: #1ec9d9 !important; border: 1px solid #999999; border-radius: 10px; width: 180px; height: 235px; padding: 15px; }
+.customer-menu { color: #1ec9d9 !important; border: 1px solid #999999; border-radius: 10px; width: 180px; padding: 15px; }
 .customer-menu a { color: #1ec9d9 !important; }
 
 .customer-orders-ul { list-style-type: none; font-size: 1em; margin-left: -25px; }

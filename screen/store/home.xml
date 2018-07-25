@@ -14,10 +14,7 @@ along with this software (see the LICENSE.md file). If not, see
 -->
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
         require-authentication="anonymous-view">
-     <parameter name="productCategoryId" />
-     <parameter name="star"  />
-
-     <pre-actions>
+    <pre-actions>
          <set field="star" from="5"/>
 
          <!-- TODO: replace with real category lookup by type for store, separate lists for deals and best sellers -->
@@ -31,8 +28,27 @@ along with this software (see the LICENSE.md file). If not, see
     </pre-actions>
    
     <actions>
-        <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="pcmpList"
-                    in-map="[productCategoryId:productCategoryId]"/>
+        <!-- Deals (Promotions) Category -->
+        <entity-find entity-name="mantle.product.store.ProductStoreCategory" list="promoPscList" cache="true">
+            <date-filter/><econdition field-name="productStoreId"/>
+            <econdition field-name="storeCategoryTypeEnumId" value="PsctPromotions"/>
+        </entity-find>
+        <if condition="promoPscList">
+            <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="promoCatProdOut"
+                    in-map="[productCategoryId:promoPscList[0].productCategoryId]"/>
+            <set field="promoProductList" from="promoCatProdOut.productList"/>
+        </if>
+
+        <!-- Best Selling (Featured) Category -->
+        <entity-find entity-name="mantle.product.store.ProductStoreCategory" list="featPscList" cache="true">
+            <date-filter/><econdition field-name="productStoreId"/>
+            <econdition field-name="storeCategoryTypeEnumId" value="PsctFeatured"/>
+        </entity-find>
+        <if condition="featPscList">
+            <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="featCatProdOut"
+                    in-map="[productCategoryId:featPscList[0].productCategoryId]"/>
+            <set field="featureProductList" from="featCatProdOut.productList"/>
+        </if>
     </actions>
 
     <widgets>

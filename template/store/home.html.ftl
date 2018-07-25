@@ -26,14 +26,15 @@
     </div>
 </div>
 <div class="container">
+    <#if promoProductList?has_content>
     <div class="text-left mt-3 modal-text">This Week's deals</div>
     <div class="carousel">
-        <#list pcmpList.productList as product>
+        <#list promoProductList as product>
             <div>
                 <a class="category-product" href="/store/product/${product.productId}">
                     <figure class="figure">
-                        <img width="90%" class="figure-img img-fluid"
-                                src="/store/content/productImage/${product.smallImageList[0].productContentId}">
+                        <#if product.mediumImageInfo??>
+                            <img width="90%" class="figure-img img-fluid" src="/store/content/productImage/${product.mediumImageInfo.productContentId}"></#if>
                         <figcaption class="text-left title-product-text figure-caption">${product.productName}</figcaption>
                         <figcaption class="text-left figure-caption">
                             <#if product.numberOfRatings??>
@@ -71,15 +72,17 @@
             </div>
         </#list>
     </div>
-    <hr/>
+    </#if>
+    <#if promoProductList?has_content && featureProductList?has_content><hr/></#if>
+    <#if featureProductList?has_content>
     <div class="text-left mt-3 modal-text">Best Sellers</div>
     <div class="carousel">
-        <#list pcmpList.productList as product>
+        <#list featureProductList as product>
             <div>
                 <a class="category-product" href="/store/product/${product.productId}">
                     <figure class="figure">
-                        <img width="90%" class="figure-img img-fluid"
-                                src="/store/content/productImage/${product.smallImageList[0].productContentId}" >
+                        <#if product.mediumImageInfo??>
+                            <img width="90%" class="figure-img img-fluid" src="/store/content/productImage/${product.mediumImageInfo.productContentId}"></#if>
                         <figcaption class="text-left title-product-text figure-caption">${product.productName}</figcaption>
                         <figcaption class="text-left figure-caption">
                             <#if product.numberOfRatings??>
@@ -117,5 +120,6 @@
             </div>
         </#list>
     </div>
+    </#if>
     <br>
 </div>

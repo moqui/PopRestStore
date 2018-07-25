@@ -1,7 +1,7 @@
 <div>
   <navbar sub-bar="true"/>
   <div class="container">
-    <div class="container">
+    <div class="container mt-2">
       <a class="customer-link" href="/store">Home <i class="fas fa-angle-right"></i></a>
       <span class="modal-text">{{category.categoryName}}</span>
     </div>
@@ -9,12 +9,14 @@
       <div class="col col-lg-2 col-12">
         <div class="customer-menu">
           <ul class="deals-ul">
-            <!-- TODO: hard coded category ID -->
+            <!-- TODO: hard coded category ID, look up by type -->
             <router-link :to="'/category/PopcAllProducts'" tag="li"><i class="fas fa-th"></i> All</router-link>
-            <li><i class="fas fa-tag"></i> New</li>
             <li><i class="fa fa-fire" aria-hidden="true"></i> Deals</li>
+            <li><i class="fas fa-tag"></i> New</li>
+            <li><i class="fas fa-bullhorn"></i> Best Sellers</li>
           </ul>
           <span class="deals-subtitle">Categories</span>
+          <!-- TODO: show all children of browse root category, like in navbar -->
           <ul class="deals-ul">
             <li>Clothing</li>
             <li>Office Supplies</li>

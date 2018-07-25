@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mt-2">
     <a class="customer-link" href="/store">Home <i class="fas fa-angle-right"></i></a>
     <#-- TODO: replace demo breadcrumbs with real or get rid of -->
     <span class="customer-link">All Products <i class="fas fa-angle-right"></i></span>

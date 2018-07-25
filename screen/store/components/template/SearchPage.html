@@ -1,11 +1,8 @@
 <div>
     <navbar sub-bar="true"/>
 	<div class="container">
-        <div class="container">
-            <router-link class="customer-link" :to="'/'" tag="span">
-                Home 
-                <i class="fas fa-angle-right"></i>
-            </router-link>
+        <div class="container mt-2">
+            <router-link class="customer-link" :to="'/'" tag="span">Home <i class="fas fa-angle-right"></i></router-link> Search
         </div>
         <div class="row mt-4">
             <div class="col col-lg-2 col-12">
@@ -27,11 +24,11 @@
             <div class="col col-lg-9 offset-lg-1 col-12">
                 <br>
                 <div class="col col-lg-12 col-12 deals-sellers">
-                    <span class="deals-sortby-text col col-lg-4">{{productList.documentListCount}} results</span>
-                    <span class="deals-sortby-text col col-lg-3 offset-lg-5">Sort by Best Sellers <i class="fas fa-angle-down"></i></span>
+                    <span class="deals-sortby-text col col-lg-4">{{searchInfo.productListCount}} results</span>
+                    <!-- <span class="deals-sortby-text col col-lg-3 offset-lg-5">Sort by Best Sellers <i class="fas fa-angle-down"></i></span> -->
                 </div>
                 <div class="row mt-5">
-                    <div class="col col-lg-4" v-for="(product, index) in productList.documentList">
+                    <div class="col col-lg-4" v-for="(product, index) in searchInfo.productList">
                         <a :href="'/store/product/' + product.productId">
                             <category-product :product="product" />
                         </a>
