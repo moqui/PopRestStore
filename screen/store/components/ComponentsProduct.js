@@ -75,7 +75,7 @@ storeComps.Search = {
     data: function() { return { searchInfo: {} }; },
     methods: {
         doSearch: function() {
-            ProductService.getProductBySearch(this.$route.params.searchText, this.$root.storeInfo.productCategoryId).then(function (data){
+            ProductService.getProductBySearch(this.$route.params.searchText).then(function (data){
                 this.searchInfo = data;
             }.bind(this));
         }

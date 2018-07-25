@@ -53,9 +53,8 @@ var ProductService = {
     getFeaturedProducts() {
         return axios.get("/rest/s1/pop/categories/PopcAllProducts/products").then(function (response) { return response.data.productList; });
     },
-    getProductBySearch(searchTerm, productStoreId, categoryId) {
+    getProductBySearch(searchTerm, categoryId) {
         var params = "term=" + searchTerm;
-        if (productStoreId && productStoreId.length) params += "&productStoreId=" + productStoreId;
         if (categoryId && categoryId.length) params += "&productCategoryId=" + categoryId;
         return axios.get("/rest/s1/pop/products/search?" + params).then(function (response) { return response.data; });
     },
