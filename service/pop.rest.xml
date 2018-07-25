@@ -35,6 +35,8 @@ along with this software (see the LICENSE.md file). If not, see
     <resource name="resetPassword" require-authentication="anonymous-all">
         <method type="post"><service name="popstore.CustomerServices.reset#Password"/></method></resource>
 
+
+    <resource name="test"><method type="get"><service name="YotPo.YotPoServices.update#Product"/></method></resource> 
     <!-- Geos --> 
      
     <resource name="geos">
