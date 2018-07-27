@@ -27,99 +27,157 @@
 </div>
 <div class="container">
     <#if promoProductList?has_content>
-    <div class="text-left mt-3 modal-text">This Week's deals</div>
-    <div class="carousel">
-        <#list promoProductList as product>
-            <div>
-                <a class="category-product" href="/store/product/${product.productId}">
-                    <figure class="figure">
-                        <#if product.mediumImageInfo??>
-                            <img width="90%" class="figure-img img-fluid" src="/store/content/productImage/${product.mediumImageInfo.productContentId}"></#if>
-                        <figcaption class="text-left title-product-text figure-caption">${product.productName}</figcaption>
-                        <figcaption class="text-left figure-caption">
-                            <#if product.numberOfRatings??>
-                                <#list 1..5 as x>
-                                    <span class="star-rating">
-                                        <#if (product.numberOfRatings >= x)>
-                                            <i class="fas fa-star"></i>
-                                        <#else>
-                                            <i class="far fa-star"></i>
-                                        </#if>  
-                                    </span>
-                                </#list>
-                            <#else>
-                                <#list 1..5 as x>
-                                    <span class="star-rating">
-                                        <#if (star >= x)>
-                                            <i class="fas fa-star"></i>
-                                        <#else>
-                                            <i class="far fa-star"></i>
-                                        </#if>  
-                                    </span>
-                                </#list>
-                            </#if>
-                        </figcaption>
-                        <figcaption class="text-primary text-left figure-caption">
-                            <span class="product-price-text">$${product.price}</span>
-                            <span class="product-last-price">
-                            <#if product.listPrice??>
-                                <del>$${product.listPrice}</del>
-                            </#if>
-                            </span>
-                        </figcaption>
-                    </figure>
-                </a>
+        <div class="text-left mt-3 modal-text">This Week's deals</div>
+        <div class="carousel">
+            <div class="container text-center my-3">
+                <div class="row mx-auto my-auto">
+                    <div id="recipeCarousel" class="carousel slide w-100" data-ride="carousel">
+                        <div class="carousel-inner w-100" role="listbox">
+                            <#list promoProductList as product>
+                                <#if product?index == 0>
+                                    <div class="carousel-item active">
+                                <#else>
+                                    <div class="carousel-item">
+                                </#if>
+                                    <div class="d-block col-3">
+                                        <a class="category-product" href="/store/product/${product.productId}">
+                                            <figure class="figure">
+                                                <#if product.mediumImageInfo??>
+                                                    <img width="90%" class="figure-img img-fluid" src="/store/content/productImage/${product.mediumImageInfo.productContentId}">
+                                                <#else>
+                                                    <#if product.smallImageInfo??>
+                                                        <img width="90%" class="figure-img img-fluid" src="/store/content/productImage/${product.smallImageInfo.productContentId}" >
+                                                    </#if>
+                                                </#if>
+                                                <figcaption class="text-left title-product-text figure-caption">
+                                                    ${product.productName}
+                                                </figcaption>
+                                                <figcaption class="text-left figure-caption">
+                                                    <#if product.numberOfRatings??>
+                                                        <#list 1..5 as x>
+                                                            <span class="star-rating">
+                                                                <#if (product.numberOfRatings >= x)>
+                                                                    <i class="fas fa-star"></i>
+                                                                <#else>
+                                                                    <i class="far fa-star"></i>
+                                                                </#if>  
+                                                            </span>
+                                                        </#list>
+                                                    <#else>
+                                                        <#list 1..5 as x>
+                                                            <span class="star-rating">
+                                                                <#if (star >= x)>
+                                                                    <i class="fas fa-star"></i>
+                                                                <#else>
+                                                                    <i class="far fa-star"></i>
+                                                                </#if>  
+                                                            </span>
+                                                        </#list>
+                                                    </#if>
+                                                </figcaption>
+                                                <figcaption class="text-primary text-left figure-caption">
+                                                    <span class="product-price-text">$${product.price}</span>
+                                                    <span class="product-last-price">
+                                                        <#if product.listPrice??>
+                                                            <del>$${product.listPrice}</del>
+                                                        </#if>
+                                                    </span>
+                                                </figcaption>
+                                            </figure>
+                                        </a>
+                                    </div>
+                                </div>
+                            </#list>
+                        </div>
+                        <a class="carousel-control-prev" href="#recipeCarousel" role="button" data-slide="prev">
+                            <button type="button" class="carousel-prev"><i class="fas fa-arrow-left"></i></button>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#recipeCarousel" role="button" data-slide="next">
+                            <button type="button" class="carousel-next"><i class="fas fa-arrow-right"></i></button>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
             </div>
-        </#list>
-    </div>
+        </div>
     </#if>
     <#if promoProductList?has_content && featureProductList?has_content><hr/></#if>
     <#if featureProductList?has_content>
-    <div class="text-left mt-3 modal-text">Best Sellers</div>
-    <div class="carousel">
-        <#list featureProductList as product>
-            <div>
-                <a class="category-product" href="/store/product/${product.productId}">
-                    <figure class="figure">
-                        <#if product.mediumImageInfo??>
-                            <img width="90%" class="figure-img img-fluid" src="/store/content/productImage/${product.mediumImageInfo.productContentId}"></#if>
-                        <figcaption class="text-left title-product-text figure-caption">${product.productName}</figcaption>
-                        <figcaption class="text-left figure-caption">
-                            <#if product.numberOfRatings??>
-                            <#list 1..5 as x>
-                                <span class="star-rating">
-                                    <#if (product.numberOfRatings >= x)>
-                                        <i class="fas fa-star"></i>
-                                    <#else>
-                                        <i class="far fa-star"></i>
-                                    </#if>  
-                                </span>
+        <div class="text-left mt-3 modal-text">Best Sellers</div>
+        <div class="carousel">
+            <div class="container text-center my-3">
+                <div class="row mx-auto my-auto">
+                    <div id="recipeCarousel1" class="carousel slide w-100" data-ride="carousel">
+                        <div class="carousel-inner w-100" role="listbox">
+                            <#list featureProductList as product>
+                                <#if product?index == 0>
+                                    <div class="carousel-item active">
+                                <#else>
+                                    <div class="carousel-item">
+                                </#if>
+                                    <div class="d-block col-3">
+                                        <a class="category-product" href="/store/product/${product.productId}">
+                                            <figure class="figure">
+                                                <#if product.mediumImageInfo??>
+                                                    <img width="90%" class="figure-img img-fluid" src="/store/content/productImage/${product.mediumImageInfo.productContentId}">
+                                                <#else>
+                                                    <#if product.smallImageInfo??>
+                                                        <img width="90%" class="figure-img img-fluid" src="/store/content/productImage/${product.smallImageInfo.productContentId}" >
+                                                    </#if>
+                                                </#if>
+                                                <figcaption class="text-left title-product-text figure-caption">
+                                                    ${product.productName}
+                                                </figcaption>
+                                                <figcaption class="text-left figure-caption">
+                                                    <#if product.numberOfRatings??>
+                                                        <#list 1..5 as x>
+                                                            <span class="star-rating">
+                                                                <#if (product.numberOfRatings >= x)>
+                                                                    <i class="fas fa-star"></i>
+                                                                <#else>
+                                                                    <i class="far fa-star"></i>
+                                                                </#if>  
+                                                            </span>
+                                                        </#list>
+                                                    <#else>
+                                                        <#list 1..5 as x>
+                                                            <span class="star-rating">
+                                                                <#if (star >= x)>
+                                                                    <i class="fas fa-star"></i>
+                                                                <#else>
+                                                                    <i class="far fa-star"></i>
+                                                                </#if>  
+                                                            </span>
+                                                        </#list>
+                                                    </#if>
+                                                </figcaption>
+                                                <figcaption class="text-primary text-left figure-caption">
+                                                    <span class="product-price-text">$${product.price}</span>
+                                                    <span class="product-last-price">
+                                                        <#if product.listPrice??>
+                                                            <del>$${product.listPrice}</del>
+                                                        </#if>
+                                                    </span>
+                                                </figcaption>
+                                            </figure>
+                                        </a>
+                                    </div>
+                                </div>
                             </#list>
-                            <#else>
-                            <#list 1..5 as x>
-                                <span class="star-rating">
-                                    <#if (star >= x)>
-                                        <i class="fas fa-star"></i>
-                                    <#else>
-                                        <i class="far fa-star"></i>
-                                    </#if>  
-                                </span>
-                            </#list>
-                            </#if>
-                        </figcaption>
-                        <figcaption class="text-primary text-left figure-caption">
-                            <span class="product-price-text">$${product.price}</span>
-                            <span class="product-last-price">
-                            <#if product.listPrice??>
-                                <del>$${product.listPrice}</del>
-                            </#if>
-                            </span>
-                        </figcaption>
-                    </figure>
-                </a>
+                        </div>
+                        <a class="carousel-control-prev" href="#recipeCarousel1" role="button" data-slide="prev">
+                            <button type="button" class="carousel-prev"><i class="fas fa-arrow-left"></i></button>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#recipeCarousel1" role="button" data-slide="next">
+                            <button type="button" class="carousel-next"><i class="fas fa-arrow-right"></i></button>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
             </div>
-        </#list>
-    </div>
+        </div>
     </#if>
     <br>
 </div>

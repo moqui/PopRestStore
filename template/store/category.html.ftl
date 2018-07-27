@@ -9,13 +9,27 @@
                 <div class="customer-menu">
                     <ul class="deals-ul">
                         <!-- TODO: hard coded category ID, look up by type /category/PopcAllProducts -->
-                        <li><i class="fas fa-th"></i>All</li>
-                        <li><i class="fa fa-fire" aria-hidden="true"></i> Deals</li>
-                        <li><i class="fas fa-tag"></i> New</li>
-                        <li><i class="fas fa-bullhorn"></i> Best Sellers</li>
+                        <li>
+                            <a href="/store/category/${(storeInfo.categoryByType.PsctSearch.productCategoryId)!''}">
+                                <i class="fas fa-th"></i>All
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/store/category/${(storeInfo.categoryByType.PsctPromotions.productCategoryId)!''}">
+                                <i class="fa fa-fire" aria-hidden="true"></i> Deals</li>
+                            </a>
+                        <li>
+                            <a href="/store/category/${(storeInfo.categoryByType.PsctNewProducts.productCategoryId)!''}">
+                                <i class="fas fa-tag"></i> New
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/store/category/${(storeInfo.categoryByType.PsctFeatured.productCategoryId)!''}">
+                                <i class="fas fa-bullhorn"></i> Best Sellers
+                            </a>
+                        </li>
                     </ul>
                     <span class="deals-subtitle">Categories</span>
-                    <!-- TODO: show all children of browse root category, like in navbar -->
                     <ul class="deals-ul">
                         <#list browseCategoriesList.subCategoryList as category>
                             <li>

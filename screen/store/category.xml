@@ -27,6 +27,9 @@ along with this software (see the LICENSE.md file). If not, see
             in-map="[productCategoryId:categoryId]"/>
         <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="category" 
             in-map="[productCategoryId:categoryId]"/>
+
+        <service-call name="popstore.StoreServices.get#StoreInfo" out-map="storeInfo" 
+            in-map="productStoreId:productStoreId"/>
     </actions>
 
 

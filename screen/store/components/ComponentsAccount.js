@@ -387,12 +387,7 @@ storeComps.CustomerOrderPage = {
             }.bind(this));
         },
         formatDate: function(dateArg) {
-            var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
-            var date = new Date(dateArg);
-            var day = date.getDate();
-            var monthIndex = date.getMonth();
-            var year = date.getFullYear();
-            return day + ' ' + monthNames[monthIndex] + ', ' + year;
+            return moment(dateArg).format('Do MMM, YY');
         }
     },
     mounted: function() { this.getCustomerOrderById(); }
@@ -434,12 +429,7 @@ storeComps.CustomerOrdersPage = {
             }
         },
         formatDate: function(date) {
-            var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
-            var date = new Date(date);
-            var day = date.getDate();
-            var monthIndex = date.getMonth();
-            var year = date.getFullYear();
-            return monthNames[monthIndex] + ' ' + day + ', ' + year;
+            return moment(date).format('Do MMM, YY');
         }
     },
     mounted: function() { this.getCustomerOrders(); }
