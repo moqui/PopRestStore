@@ -40,6 +40,7 @@ storeComps.CategoryProductTemplate = getPlaceholderRoute("categoryProductTemplat
 storeComps.LandingPage = {
     name: "landing-page",
     data() { return { products: [] }; },
+    methods: {},
     beforeCreate() {
         ProductService.getFeaturedProducts().then(function (response) {
             this.products = response;
@@ -51,7 +52,7 @@ storeComps.LandingPageTemplate = getPlaceholderRoute("homeTemplate", "LandingPag
 
 storeComps.CategoryPage = {
     name: "category-page",
-    data: function() { return { products: [], category: {} }; },
+    data: function() { return { products: [], category: {}, categories: [], storeInfo: [] }; },
     methods: {
         getProductsList: function() {
             ProductService.getProductsByCategory(this.$route.params.categoryId).then(function (data) {
@@ -66,6 +67,12 @@ storeComps.CategoryPage = {
     },
     watch: { '$route': function(to, from) { this.getProductsList(); this.getCategoryInfoById(); } },
     components: { "category-product": storeComps.CategoryProductTemplate },
+    created() {
+        var vm = this;
+        this.storeInfo = this.$root.storeInfo;
+        if (this.storeInfo.categoryByType && this.storeInfo.categoryByType.PsctBrowseRoot && this.storeInfo.categoryByType.PsctBrowseRoot.productCategoryId) {
+        ProductService.getSubCategories(this.storeInfo.categoryByType.PsctBrowseRoot.productCategoryId).then(function(categories) { vm.categories = categories; }); }
+    },
     mounted: function() { this.getProductsList(); this.getCategoryInfoById(); }
 };
 storeComps.CategoryPageTemplate = getPlaceholderRoute("categoryTemplate", "CategoryPage");
