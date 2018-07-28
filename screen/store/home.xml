@@ -16,15 +16,6 @@ along with this software (see the LICENSE.md file). If not, see
         require-authentication="anonymous-view">
     <pre-actions>
          <set field="star" from="5"/>
-
-         <!-- TODO: replace with real category lookup by type for store, separate lists for deals and best sellers -->
-         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
-         <if condition="extraPathNameList &amp;&amp; !productCategoryId">
-             <set field="productCategoryId" from="extraPathNameList[0]"/></if>
-        <if condition="!productCategoryId"><set field="productCategoryId" value="PopcAllProducts"/></if>
-
-        <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory"/>
-        <set field="html_title" from="productCategory?.categoryName ?: ''"/>
     </pre-actions>
    
     <actions>
