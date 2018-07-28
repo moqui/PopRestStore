@@ -8,35 +8,27 @@
             <div class="col col-lg-2 col-12">
                 <div class="customer-menu">
                     <ul class="deals-ul">
-                        <!-- TODO: hard coded category ID, look up by type /category/PopcAllProducts -->
-                        <li>
-                            <a href="/store/category/${(storeInfo.categoryByType.PsctSearch.productCategoryId)!''}">
-                                <i class="fas fa-th"></i>All
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/store/category/${(storeInfo.categoryByType.PsctPromotions.productCategoryId)!''}">
-                                <i class="fa fa-fire" aria-hidden="true"></i> Deals</li>
-                            </a>
-                        <li>
-                            <a href="/store/category/${(storeInfo.categoryByType.PsctNewProducts.productCategoryId)!''}">
-                                <i class="fas fa-tag"></i> New
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/store/category/${(storeInfo.categoryByType.PsctFeatured.productCategoryId)!''}">
-                                <i class="fas fa-bullhorn"></i> Best Sellers
-                            </a>
-                        </li>
+                        <#if (storeInfo.categoryByType.PsctSearch.productCategoryId)??>
+                            <li><a href="/store/category/${storeInfo.categoryByType.PsctSearch.productCategoryId}">
+                                <i class="fas fa-th"></i> All</a></li>
+                        </#if>
+                        <#if (storeInfo.categoryByType.PsctPromotions.productCategoryId)??>
+                            <li><a href="/store/category/${storeInfo.categoryByType.PsctPromotions.productCategoryId}">
+                                <i class="fa fa-fire" aria-hidden="true"></i> Deals</a></li>
+                        </#if>
+                        <#if (storeInfo.categoryByType.PsctNewProducts.productCategoryId)??>
+                            <li><a href="/store/category/${storeInfo.categoryByType.PsctNewProducts.productCategoryId}">
+                                <i class="fas fa-tag"></i> New</a></li>
+                        </#if>
+                        <#if (storeInfo.categoryByType.PsctFeatured.productCategoryId)??>
+                            <li><a href="/store/category/${storeInfo.categoryByType.PsctFeatured.productCategoryId}">
+                                <i class="fas fa-bullhorn"></i> Best Sellers</a></li>
+                        </#if>
                     </ul>
                     <span class="deals-subtitle">Categories</span>
                     <ul class="deals-ul">
                         <#list browseCategoriesList.subCategoryList as category>
-                            <li>
-                                <a href="/store/category/${category.productCategoryId}">
-                                    ${category.categoryName}
-                                </a>
-                            </li>
+                            <li><a href="/store/category/${category.productCategoryId}">${category.categoryName}</a></li>
                         </#list>
                     </ul>
                 </div>
@@ -62,14 +54,10 @@
                                                     src="/store/content/productImage/${img.productContentId}"
                                                     alt="Product Image">
                                             </#if>
-                                            <figcaption class="text-left title-product-text figure-caption">
-                                                ${localProd.productName}
-                                            </figcaption>
+                                            <figcaption class="text-left title-product-text figure-caption">${localProd.productName}</figcaption>
                                             <figcaption class="text-left figure-caption">
                                                 <#list 1..5 as x>
-                                                    <span class="star-rating">
-                                                        <i class="fas fa-star"></i>
-                                                    </span>
+                                                    <span class="star-rating"><i class="fas fa-star"></i></span>
                                                 </#list>
                                                 <#if localProd.numberOfRatings??>
                                                     <span class="text-dark">${localProd.numberOfRatings}</span>
@@ -78,9 +66,7 @@
                                             <figcaption class="text-primary text-left figure-caption">
                                                 <span class="product-price-text">$${localProd.price}</span>
                                                 <#if localProd.listPrice??>
-                                                    <span class="product-last-price">
-                                                        <del>$${localProd.listPrice}</del>
-                                                    </span>
+                                                    <span class="product-last-price"><del>$${localProd.listPrice}</del></span>
                                                 </#if>
                                             </figcaption>
                                        </figure>
