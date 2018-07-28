@@ -36,7 +36,7 @@
                     
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <#list browseCategoriesList.subCategoryList as category>
-                            <a class="dropdown-item item-color" href="/store/d#/category/${category.productCategoryId}">
+                            <a class="dropdown-item item-color" href="/store/category/${category.productCategoryId}">
                                 ${category.categoryName}
                             </a>
                         </#list>
