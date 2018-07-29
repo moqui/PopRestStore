@@ -4,7 +4,7 @@ storeComps.CheckoutNavbar = {
   data() { return {}; },
   props: ["option"]
 };
-storeComps.CheckoutNavbarTemplate = getPlaceholderRoute("checkoutNavbarTemplate", "CheckoutNavbar", storeComps.CheckoutNavbar.props);
+storeComps.CheckoutNavbarTemplate = getPlaceholderRoute("template_client_checkoutHeader", "CheckoutNavbar", storeComps.CheckoutNavbar.props);
 Vue.component("checkout-navbar", storeComps.CheckoutNavbarTemplate);
 
 storeComps.CheckOutPage = {
@@ -242,7 +242,7 @@ storeComps.CheckOutPage = {
         if (!this.productsInCart) { location.href ="/store"; }
     }
 };
-storeComps.CheckOutPageTemplate = getPlaceholderRoute("checkoutTemplate", "CheckOutPage");
+storeComps.CheckOutPageTemplate = getPlaceholderRoute("template_client_checkout", "CheckOutPage");
 
 storeComps.SuccessCheckOut = {
     name: "success-checkout",
@@ -266,4 +266,4 @@ storeComps.SuccessCheckOut = {
     },
     mounted: function() { this.getCustomerOrderById(); }
 };
-storeComps.SuccessCheckOutTemplate = getPlaceholderRoute("checkoutSuccessTemplate", "SuccessCheckOut");
+storeComps.SuccessCheckOutTemplate = getPlaceholderRoute("template_client_checkoutSuccess", "SuccessCheckOut");

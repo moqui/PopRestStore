@@ -47,6 +47,7 @@ along with this software (see the LICENSE.md file). If not, see
             </iterate>
 
             <set field="settings" from="[:]"/>
+
             <entity-find entity-name="mantle.product.store.ProductStoreSetting" list="storeSettingList" cache="true">
                 <date-filter/><econdition field-name="productStoreId"/><order-by field-name="-fromDate"/></entity-find>
             <iterate list="storeSettingList" entry="storeSetting">
@@ -55,11 +56,13 @@ along with this software (see the LICENSE.md file). If not, see
                 <set field="settingKey" from="typeEnum?.enumCode ?: storeSetting.settingTypeEnumId"/>
                 <script>if (settings.get(settingKey) == null) settings.put(settingKey, storeSetting.settingValue)</script>
             </iterate>
+
+            <!-- TODO: ProductStoreWikiSpace, ProductStoreWikiContent settings -->
         </actions>
     </service>
     <service verb="get" noun="Geos">
         <out-parameters>
-            <parameter name="geoList"></parameter>
+            <parameter name="geoList"/>
         </out-parameters>
         <actions>
             <entity-find entity-name="moqui.basic.Geo" list="geoList">
@@ -68,7 +71,7 @@ along with this software (see the LICENSE.md file). If not, see
             </entity-find>
         </actions>
     </service>
-    <service verb="get" noun="locale">
+    <service verb="get" noun="Locales">
         <out-parameters>
             <parameter name="localeStringList"/>
         </out-parameters>
@@ -82,13 +85,12 @@ along with this software (see the LICENSE.md file). If not, see
             <order-map-list list="localeStringList"><order-by field-name="name"/></order-map-list>
         </actions>
     </service>
-    <service verb="get" noun="TimeZone">
+    <service verb="get" noun="TimeZones">
         <out-parameters>
             <parameter name="timeZoneList"/>
         </out-parameters>
-        <set field="timeZoneList" from="[]"/>
         <actions>
-           timeZoneList = new TreeSet(TimeZone.getAvailableIDs().collect())
+            <set field="timeZoneList" from="new TreeSet(TimeZone.getAvailableIDs().collect())"/>
         </actions>
     </service>
 </services>

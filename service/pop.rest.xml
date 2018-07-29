@@ -35,30 +35,21 @@ along with this software (see the LICENSE.md file). If not, see
     <resource name="resetPassword" require-authentication="anonymous-all">
         <method type="post"><service name="popstore.CustomerServices.reset#Password"/></method></resource>
 
+    <!-- Geo, Locale, TimeZone -->
 
-    <resource name="test"><method type="get"><service name="YotPo.YotPoServices.update#Product"/></method></resource> 
-    <!-- Geos --> 
-     
     <resource name="geos">
-        <method type="get">
-            <service name="popstore.StoreServices.get#Geos"/></method>
+        <method type="get"><service name="popstore.StoreServices.get#Geos"/></method>
         <id name="geoId">
             <method type="get"><entity name="geos" masterName="default" operation="one"/></method>
-            <resource name="regions"><method type="get">
-                    <service name="org.moqui.impl.BasicServices.get#GeoRegionsForDropDown"/></method></resource>
+            <resource name="regions">
+                <method type="get"><service name="org.moqui.impl.BasicServices.get#GeoRegionsForDropDown"/></method></resource>
         </id>
     </resource>  
-
     <resource name="locale">
-        <method type="get">
-            <service name="popstore.StoreServices.get#locale"/>
-        </method>
+        <method type="get"><service name="popstore.StoreServices.get#Locales"/></method>
     </resource>
-   
     <resource name="timeZone">
-        <method type="get">
-            <service name="popstore.StoreServices.get#TimeZone"/>
-        </method>
+        <method type="get"><service name="popstore.StoreServices.get#TimeZones"/></method>
     </resource>
 
     <!-- Product Information -->

@@ -16,7 +16,7 @@ storeComps.StarRating = {
         }
     }
 };
-storeComps.StarRatingTemplate = getPlaceholderRoute("starRatingTemplate", "StarRating", storeComps.StarRating.props);
+storeComps.StarRatingTemplate = getPlaceholderRoute("template_client_starRating", "StarRating", storeComps.StarRating.props);
 
 storeComps.CategoryProduct = {
     name: "category-product",
@@ -35,7 +35,7 @@ storeComps.CategoryProduct = {
     },
     computed: { localProd: function() { return this._props.product } }
 };
-storeComps.CategoryProductTemplate = getPlaceholderRoute("categoryProductTemplate", "CategoryProduct", storeComps.CategoryProduct.props);
+storeComps.CategoryProductTemplate = getPlaceholderRoute("template_client_categoryProduct", "CategoryProduct", storeComps.CategoryProduct.props);
 
 storeComps.LandingPage = {
     name: "landing-page",
@@ -48,7 +48,7 @@ storeComps.LandingPage = {
     },
     components: { "category-product": storeComps.CategoryProductTemplate, "star-rating": storeComps.StarRatingTemplate }
 };
-storeComps.LandingPageTemplate = getPlaceholderRoute("homeTemplate", "LandingPage");
+storeComps.LandingPageTemplate = getPlaceholderRoute("template_client_home", "LandingPage");
 
 storeComps.CategoryPage = {
     name: "category-page",
@@ -75,7 +75,7 @@ storeComps.CategoryPage = {
     },
     mounted: function() { this.getProductsList(); this.getCategoryInfoById(); }
 };
-storeComps.CategoryPageTemplate = getPlaceholderRoute("categoryTemplate", "CategoryPage");
+storeComps.CategoryPageTemplate = getPlaceholderRoute("template_client_category", "CategoryPage");
 
 storeComps.Search = {
     name: "product-search",
@@ -91,7 +91,7 @@ storeComps.Search = {
     components: { "category-product": storeComps.CategoryProductTemplate },
     watch: { '$route': function(to, from) { this.doSearch(); } }
 };
-storeComps.SearchTemplate = getPlaceholderRoute("searchTemplate", "Search");
+storeComps.SearchTemplate = getPlaceholderRoute("template_client_search", "Search");
 
 storeComps.ProductImage = {
     name: "product-image",
@@ -107,7 +107,7 @@ storeComps.ProductImage = {
         ProductService.getProduct(this._props.productId).then(function (data) { this.urlList = data.contentList; }.bind(this));
     }
 };
-storeComps.ProductImageTemplate = getPlaceholderRoute("productImageTemplate", "ProductImage", storeComps.ProductImage.props);
+storeComps.ProductImageTemplate = getPlaceholderRoute("template_client_productImage", "ProductImage", storeComps.ProductImage.props);
 
 storeComps.ProductReview = {
     name: "product-review",
@@ -115,7 +115,7 @@ storeComps.ProductReview = {
     components: { "star-rating": storeComps.StarRatingTemplate },
     props: ["reviews"]
 };
-storeComps.ProductReviewTemplate = getPlaceholderRoute("productReviewTemplate", "ProductReview", storeComps.ProductReview.props);
+storeComps.ProductReviewTemplate = getPlaceholderRoute("template_client_productReview", "ProductReview", storeComps.ProductReview.props);
 
 storeComps.ProductPage = {
     name: "product-page",
@@ -151,4 +151,4 @@ storeComps.ProductPage = {
         }.bind(this));
     }
 };
-storeComps.ProductPageTemplate = getPlaceholderRoute("productTemplate", "ProductPage");
+storeComps.ProductPageTemplate = getPlaceholderRoute("template_client_product", "ProductPage");

@@ -27,7 +27,7 @@
                     </ul>
                     <span class="deals-subtitle">Categories</span>
                     <ul class="deals-ul">
-                        <#list browseCategoriesList.subCategoryList as category>
+                        <#list browseRootCategoryInfo.subCategoryList as category>
                             <li><a href="/store/category/${category.productCategoryId}">${category.categoryName}</a></li>
                         </#list>
                     </ul>

@@ -23,7 +23,7 @@ storeComps.LoginPage = {
     },
     mounted: function() { if (this.$root.apiKey != null) { location.href = "/store"; } },
 };
-storeComps.LoginPageTemplate = getPlaceholderRoute("loginTemplate", "LoginPage");
+storeComps.LoginPageTemplate = getPlaceholderRoute("template_client_login", "LoginPage");
 
 storeComps.ResetPasswordPage = {
     name: "reset-password",
@@ -73,7 +73,7 @@ storeComps.ResetPasswordPage = {
         }
     }
 };
-storeComps.ResetPasswordTemplate = getPlaceholderRoute("resetPasswordTemplate", "ResetPasswordPage");
+storeComps.ResetPasswordTemplate = getPlaceholderRoute("template_client_resetPassword", "ResetPasswordPage");
 
 storeComps.AccountPage = {
     name: "account-page",
@@ -311,7 +311,7 @@ storeComps.AccountPage = {
         }
     }
 };
-storeComps.AccountPageTemplate = getPlaceholderRoute("accountTemplate", "AccountPage");
+storeComps.AccountPageTemplate = getPlaceholderRoute("template_client_account", "AccountPage");
 
 storeComps.CreateAccountPage = {
     name: "create-account",
@@ -371,7 +371,7 @@ storeComps.CreateAccountPage = {
     },
     mounted: function() { if(this.$root.apiKey != null) { this.$router.push({ name: 'landing' }); } },
 };
-storeComps.CreateAccountPageTemplate = getPlaceholderRoute("accountCreateTemplate", "CreateAccountPage");
+storeComps.CreateAccountPageTemplate = getPlaceholderRoute("template_client_accountCreate", "CreateAccountPage");
 
 storeComps.CustomerOrderPage = {
     name: "customerorder-page",
@@ -392,7 +392,7 @@ storeComps.CustomerOrderPage = {
     },
     mounted: function() { this.getCustomerOrderById(); }
 };
-storeComps.CustomerOrderPageTemplate = getPlaceholderRoute("orderDetailTemplate", "CustomerOrderPage");
+storeComps.CustomerOrderPageTemplate = getPlaceholderRoute("template_client_orderDetail", "CustomerOrderPage");
 
 storeComps.CustomerOrdersPage = {
     name: "customerorders-page",
@@ -434,4 +434,4 @@ storeComps.CustomerOrdersPage = {
     },
     mounted: function() { this.getCustomerOrders(); }
 };
-storeComps.CustomerOrdersPageTemplate = getPlaceholderRoute("orderHistoryTemplate", "CustomerOrdersPage");
+storeComps.CustomerOrdersPageTemplate = getPlaceholderRoute("template_client_orderHistory", "CustomerOrdersPage");

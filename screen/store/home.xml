@@ -43,8 +43,8 @@ along with this software (see the LICENSE.md file). If not, see
     </actions>
 
     <widgets>
-        <render-mode><text type="html" location="component://PopRestStore/template/store/navbar.html.ftl"/></render-mode>
-        <render-mode><text type="html" location="component://PopRestStore/template/store/home.html.ftl"/></render-mode>
-        <render-mode><text type="html" location="component://PopRestStore/template/store/footer.html.ftl"/></render-mode>
+        <render-mode><text type="html" location="${template_server_header}"/></render-mode>
+        <render-mode><text type="html" location="${template_server_home}"/></render-mode>
+        <render-mode><text type="html" location="${template_server_footer}"/></render-mode>
     </widgets>
 </screen>

@@ -31,7 +31,7 @@ storeComps.Navbar = {
       this.getCartInfo();
   }
 };
-storeComps.NavbarTemplate = getPlaceholderRoute("navbarTemplate", "Navbar", storeComps.Navbar.props);
+storeComps.NavbarTemplate = getPlaceholderRoute("template_client_header", "Navbar", storeComps.Navbar.props);
 Vue.component("navbar", storeComps.NavbarTemplate);
 
 storeComps.FooterPage = {
@@ -39,5 +39,5 @@ storeComps.FooterPage = {
     data() { return {}; },
     props: ["infoLink"]
 };
-storeComps.FooterPageTemplate = getPlaceholderRoute("footerTemplate", "FooterPage", storeComps.FooterPage.props);
+storeComps.FooterPageTemplate = getPlaceholderRoute("template_client_footer", "FooterPage", storeComps.FooterPage.props);
 Vue.component("footer-page", storeComps.FooterPageTemplate);

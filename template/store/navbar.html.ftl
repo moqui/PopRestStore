@@ -35,7 +35,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
                     
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <#list browseCategoriesList.subCategoryList as category>
+                        <#list browseRootCategoryInfo.subCategoryList as category>
                             <a class="dropdown-item item-color" href="/store/category/${category.productCategoryId}">
                                 ${category.categoryName}
                             </a>
@@ -91,7 +91,7 @@
                         <span class="cart-quantity" id="cart-quantity">
                             <#assign cartCount = 0>
                             <#-- TODO: show total of quantities for product items only (not shipping, discounts, etc) -->
-                            <#if cartList.orderItemList??><#list cartList.orderItemList as item>
+                            <#if cartInfo.orderItemList??><#list cartInfo.orderItemList as item>
                                 <#if item.itemTypeEnumId == "ItemProduct"><#assign cartCount = cartCount + (item.quantity!1)></#if></#list></#if>
                             ${cartCount}
                         </span>

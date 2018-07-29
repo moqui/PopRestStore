@@ -3,7 +3,7 @@
 /* Home Page */
 
 storeComps.HomeOptions = { data: function() { return { testText: "Test Text" } } };
-storeComps.HomeComponent = { template: '<route-placeholder :location="$root.storeConfig.homeTemplate" :options="$root.storeComps.HomeOptions"></route-placeholder>' };
+storeComps.HomeComponent = { template: '<route-placeholder :location="$root.storeConfig.template_client_home" :options="$root.storeComps.HomeOptions"></route-placeholder>' };
 
 /* Product Category Page */
 
@@ -13,7 +13,7 @@ storeComps.CategoryProductOptions = {
 };
 Vue.component('category-product', {
     props: storeComps.CategoryProductProperties,
-    template: '<route-placeholder :location="$root.storeConfig.categoryProductTemplate" :options="$root.storeComps.CategoryProductOptions" :properties="$props"></route-placeholder>'
+    template: '<route-placeholder :location="$root.storeConfig.template_client_categoryProduct" :options="$root.storeComps.CategoryProductOptions" :properties="$props"></route-placeholder>'
 });
 
 storeComps.CategoryProperties = { productCategoryId:{type:String,required:true} };
@@ -54,7 +54,7 @@ storeComps.CategoryOptions = {
 };
 storeComps.CategoryComponent = {
     props: storeComps.CategoryProperties,
-    template: '<route-placeholder :location="$root.storeConfig.categoryTemplate" :options="$root.storeComps.CategoryOptions" :properties="$props"></route-placeholder>'
+    template: '<route-placeholder :location="$root.storeConfig.template_client_category" :options="$root.storeComps.CategoryOptions" :properties="$props"></route-placeholder>'
 };
 
 /* Product Detail Page */
@@ -65,7 +65,7 @@ storeComps.ProductOptions = {
 };
 storeComps.ProductComponent = {
     props: storeComps.ProductProperties,
-    template: '<route-placeholder :location="$root.storeConfig.productTemplate" :options="$root.storeComps.ProductOptions" :properties="$props"></route-placeholder>'
+    template: '<route-placeholder :location="$root.storeConfig.template_client_product" :options="$root.storeComps.ProductOptions" :properties="$props"></route-placeholder>'
 };
 
 /* Content Display */
@@ -130,7 +130,7 @@ storeComps.LoginOptions = {
     }
 };
 storeComps.LoginComponent = {
-    template: '<route-placeholder :location="$root.storeConfig.loginTemplate" :options="$root.storeComps.LoginOptions"></route-placeholder>'
+    template: '<route-placeholder :location="$root.storeConfig.template_client_login" :options="$root.storeComps.LoginOptions"></route-placeholder>'
 };
 
 storeComps.ProfileOptions = {
