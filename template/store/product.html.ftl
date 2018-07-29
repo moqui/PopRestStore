@@ -42,14 +42,15 @@
             </div>
         </div>
         <div class="col col-lg-3">
-            <div class="card cart-div">
-                <#if product.listPrice??>
-                    <span class="save-circle" v-if="product.listPrice">
-                        <span class="save-circle-title">SAVE</span>
-                        <span class="save-circle-text">$${(product.listPrice - product.price)?string(",##0.00")}</span>
-                    </span>
-                </#if>
-                <form id="cart-add-form">
+            <#-- TODO: implement add to cart form target, see old PopCommerce app for example -->
+            <form id="cart-add-form">
+                <div class="card cart-div">
+                    <#if product.listPrice??>
+                        <span class="save-circle" v-if="product.listPrice">
+                            <span class="save-circle-title">SAVE</span>
+                            <span class="save-circle-text">$${(product.listPrice - product.price)?string(",##0.00")}</span>
+                        </span>
+                    </#if>
                     <div class="form-group col">
                         <div class="cart-form-price">
                             <p>
@@ -62,8 +63,10 @@
                                 </#if>
                             </p>
                         </div>
+                        <#--
                         <hr class="product-hr" style="margin-top: -5px;">
                         <span class="product-description">On sale until midnight or until stocks last.</span>
+                        -->
                         <hr class="product-hr">
                     </div>
                     <div class="form-group col">
@@ -77,9 +80,9 @@
                             <option value="3">3</option>
                         </select>
                     </div>
-                </form>
-            </div>
-            <button id="cartAdd" class="btn cart-form-btn col"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                </div>
+                <button id="cartAdd" class="btn cart-form-btn col"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+            </form>
         </div>
     </div>
     <hr>
@@ -124,8 +127,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">Add an Review</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                    <span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <input type="hidden" value="${ec.web.sessionToken}" name="moquiSessionToken" id="moquiSessionToken">
@@ -134,21 +136,11 @@
                 <label>Rating</label>
                 <div class='rating-stars text-center'>
                     <ul id='stars'>
-                        <li class='star' data-value='1'>
-                            <i class='fa fa-star fa-fw'></i>
-                        </li>
-                        <li class='star' data-value='2'>
-                            <i class='fa fa-star fa-fw'></i>
-                        </li>
-                        <li class='star' data-value='3'>
-                            <i class='fa fa-star fa-fw'></i>
-                        </li>
-                        <li class='star' data-value='4'>
-                            <i class='fa fa-star fa-fw'></i>
-                        </li>
-                        <li class='star' data-value='5'>
-                            <i class='fa fa-star fa-fw'></i>
-                        </li>
+                        <li class='star' data-value='1'><i class='fa fa-star fa-fw'></i></li>
+                        <li class='star' data-value='2'><i class='fa fa-star fa-fw'></i></li>
+                        <li class='star' data-value='3'><i class='fa fa-star fa-fw'></i></li>
+                        <li class='star' data-value='4'><i class='fa fa-star fa-fw'></i></li>
+                        <li class='star' data-value='5'><i class='fa fa-star fa-fw'></i></li>
                     </ul>
                 </div>
                 <br>
