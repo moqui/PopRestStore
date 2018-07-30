@@ -43,22 +43,6 @@
             }
         });
        
-
-        $("#cartAdd").click(function() {
-            $.post(storeConfig.restApiLocation + urlCartAdd,$("#cart-add-form").serialize(), function(data) {
-                $("#isSuccessAddCart").show();
-                var quantity = 0;
-                for (var i = 0; i < data.orderItemList.length; i++) {
-                    if (data.orderItemList[i].itemTypeEnumId === "ItemProduct") { quantity++; }
-                }
-                $("#cart-quantity").text(quantity);
-            });
-        });
-        $("#addReview").click(function(){
-            $.post(storeConfig.restApiLocation + urlAddReview,$("#product-review-form").serialize(), function(data) {
-                $('#product-review-form').trigger("reset");
-            });
-        });
         $("#logout").click(function(){
             $.get(storeConfig.restApiLocation + urlLogOut, function(data){
                 window.location.href = "/store";

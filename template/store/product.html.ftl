@@ -5,10 +5,12 @@
     <span class="customer-link">Office Supplies</span>
 </div>
 <div class="container container-text mt-1">
-    <div id="isSuccessAddCart" class="alert alert-primary mt-3 mb-3" role="alert">
-        <i class="far fa-check-square"></i> You added a ${product.productName} to your shopping cart.
-        <a class="float-right" href="/store/d#/checkout">Go to Checkout <i class="fas fa-arrow-right"></i></a>
-    </div>
+    <#if addedCorrect?? && addedCorrect == 'true'>
+        <div class="alert alert-primary mt-3 mb-3" role="alert">
+            <i class="far fa-check-square"></i> You added a ${product.productName} to your shopping cart.
+            <a class="float-right" href="/store/d#/checkout">Go to Checkout <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </#if>
     <div class="row mt-2">
         <div class="col col-lg-1 col-sm-4 col-4">
             <div>
@@ -42,9 +44,8 @@
             </div>
         </div>
         <div class="col col-lg-3">
-            <#-- TODO: implement add to cart form target, see old PopCommerce app for example -->
-            <form id="cart-add-form">
-                <div class="card cart-div">
+            <form class="card cart-div" method="post" action="/store/product/addToCart">
+                <div>
                     <#if product.listPrice??>
                         <span class="save-circle" v-if="product.listPrice">
                             <span class="save-circle-title">SAVE</span>
@@ -63,11 +64,11 @@
                                 </#if>
                             </p>
                         </div>
-                        <#--
                         <hr class="product-hr" style="margin-top: -5px;">
+                        <#--
                         <span class="product-description">On sale until midnight or until stocks last.</span>
-                        -->
                         <hr class="product-hr">
+                        -->
                     </div>
                     <div class="form-group col">
                         <input type="hidden" value="${product.pseudoId}" name="productId" />
@@ -80,8 +81,24 @@
                             <option value="3">3</option>
                         </select>
                     </div>
+                    <#if variantsList??>
+                        <div class="form-group col">
+                            <#assign featureTypes = variantsList.variantOptions.keySet()>
+                            <select class="form-control" name="variant">
+                                <#list featureTypes![] as featureType>
+                                    <#assign variants = variantsList.variantOptions.get(featureType)>
+                                    <#assign checkItem = true >
+                                    <#list variants![] as variant>
+                                        <option value="${variant.productId!}">${variant.description!}</option>
+                                    </#list>
+                                </#list>
+                            </select>
+                        </div>
+                    </#if>
                 </div>
-                <button id="cartAdd" class="btn cart-form-btn col"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                <button id="cartAdd" class="btn cart-form-btn col" type="submit">
+                    <i class="fa fa-shopping-cart"></i> Add to Cart
+                </button>
             </form>
         </div>
     </div>
@@ -123,7 +140,7 @@
 </div>
 <div class="modal fade" id="modal1">
     <div class="modal-dialog" role="document">
-        <form class="modal-content" id="product-review-form">
+        <form class="modal-content" id="product-review-form" method="post" action="/store/product/addReview">
             <div class="modal-header">
                 <h5 class="modal-title">Add an Review</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -148,7 +165,7 @@
                 <textarea class="form-control text-area-review" rows="5" name="productReview" id="productReview"></textarea>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-continue" id="addReview">Add Review</button>
+                <button class="btn btn-continue" id="addReview" type="submit">Add Review</button>
                 <a data-dismiss="modal" class="btn btn-link">Or Cancel</a>
             </div>
         </form>

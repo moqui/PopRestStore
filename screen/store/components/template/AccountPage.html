@@ -234,9 +234,15 @@
                             {{responseMessage}}
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label modal-text">Name <span class="modal-text-required">*</span></label>
+                            <label class="col-sm-3 col-form-label modal-text">To <span class="modal-text-required">*</span></label>
                             <div class="col-sm-9">
                                 <input class="form-control"  type="text" v-model="customerAddress.toName" required/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label modal-text">Attention</label>
+                            <div class="col-sm-9">
+                                <input class="form-control"  type="text" v-model="customerAddress.attnName"/>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -254,15 +260,6 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="city" class="col-sm-3 col-form-label modal-text">
-                                City 
-                                <span class="modal-text-required">*</span>
-                            </label>
-                            <div class="col-sm-9">
-                                <input class="form-control" id="city"  type="text" v-model="customerAddress.city"  required/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
                             <label for="adress1" class="col-sm-3 col-form-label modal-text">
                                 Address 
                                 <span class="modal-text-required">*</span>
@@ -276,6 +273,15 @@
                             <label for="adress2" class="col-sm-3 col-form-label"></label>
                             <div class="col-sm-9">
                                 <input class="form-control" type="text"  v-model="customerAddress.address2"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="city" class="col-sm-3 col-form-label modal-text">
+                                City 
+                                <span class="modal-text-required">*</span>
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="city"  type="text" v-model="customerAddress.city"  required/>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -406,10 +412,16 @@
                         <template v-if="isUpdate || paymentAddressOption == 0">
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label modal-text">
-                                Name <span class="modal-text-required">*</span>
+                                To <span class="modal-text-required">*</span>
                             </label>
                             <div class="col-sm-9">
                                 <input class="form-control"  type="text" v-model="paymentMethod.toName" required/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label modal-text">Attention</label>
+                            <div class="col-sm-9">
+                                <input class="form-control"  type="text" v-model="paymentMethod.attnName"/>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -427,15 +439,6 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="city" class="col-sm-3 col-form-label modal-text">
-                                City 
-                                <span class="modal-text-required">*</span>
-                            </label>
-                            <div class="col-sm-9">
-                                <input class="form-control" id="city"  type="text" v-model="paymentMethod.city"  required/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
                             <label for="adress1" class="col-sm-3 col-form-label modal-text">
                                 Address 
                                 <span class="modal-text-required">*</span>
@@ -449,6 +452,15 @@
                             <label for="adress2" class="col-sm-3 col-form-label"></label>
                             <div class="col-sm-9">
                                 <input class="form-control" type="text"  v-model="paymentMethod.address2"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="city" class="col-sm-3 col-form-label modal-text">
+                                City 
+                                <span class="modal-text-required">*</span>
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="city"  type="text" v-model="paymentMethod.city"  required/>
                             </div>
                         </div>
                         <div class="form-group row">

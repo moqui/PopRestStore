@@ -188,6 +188,7 @@ storeComps.CheckOutPage = {
             this.paymentMethod.address1 = address.postalAddress.address1;
             this.paymentMethod.address2 = address.postalAddress.address2;
             this.paymentMethod.toName = address.postalAddress.toName;
+            this.paymentMethod.attnName = address.postalAddress.attnName;
             this.paymentMethod.city = address.postalAddress.city;
             this.paymentMethod.countryGeoId = address.postalAddress.countryGeoId;
             this.paymentMethod.contactNumber = address.telecomNumber.contactNumber;
@@ -200,6 +201,7 @@ storeComps.CheckOutPage = {
             this.shippingAddress.address1 = address.postalAddress.address1;
             this.shippingAddress.address2 = address.postalAddress.address2;
             this.shippingAddress.toName = address.postalAddress.toName;
+            this.shippingAddress.attnName = address.postalAddress.attnName;
             this.shippingAddress.city = address.postalAddress.city;
             this.shippingAddress.countryGeoId = address.postalAddress.countryGeoId;
             this.shippingAddress.contactNumber = address.telecomNumber.contactNumber;
@@ -207,6 +209,7 @@ storeComps.CheckOutPage = {
             this.shippingAddress.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
             this.shippingAddress.postalContactMechId = address.postalContactMechId;
             this.shippingAddress.telecomContactMechId = address.telecomContactMechId;
+            this.getRegions(address.postalAddress.countryGeoId);
             this.responseMessage = "";
         },
         selectPaymentMethod: function(method) {
