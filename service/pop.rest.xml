@@ -64,6 +64,9 @@ along with this software (see the LICENSE.md file). If not, see
         <resource name="variants">
             <method type="get"><service name="popstore.ProductServices.get#ProductVariantsDisplayInfo"/></method>
         </resource>
+        <resource name="content">
+            <method type="get"><service name="popstore.ProductServices.find#ProductContent"/></method>
+        </resource>
     </resource>
     <resource name="categories" require-authentication="anonymous-view">
         <id name="productCategoryId">

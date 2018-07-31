@@ -123,6 +123,43 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
 
+    <service verb="find" noun="ProductContent">
+        <description>
+            Try to find ProductContent record of a specified type the product. If it is not found then either
+            product does not have a content of this type or this is a variant and we should check its virtual
+            parent for the same.
+        </description>
+        <in-parameters>
+            <parameter name="productId" required="true"/>
+            <parameter name="productContentTypeEnumId" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productContent" type="EntityValue"/>
+        </out-parameters>
+        <actions>
+            <entity-find entity-name="mantle.product.ProductContent" list="productContentList" cache="true">
+                <econdition field-name="productContentTypeEnumId"/>
+                <econdition field-name="productId"/>
+                <date-filter/>
+            </entity-find>
+            <if condition="productContentList">
+                <set field="productContent" from="productContentList[0]"/>
+                <return/>
+            </if>
+            <!-- either no content of this type or productId refers to variant of a virtual product -->
+            <service-call name="ridgecrest.ProductServices.get#CatalogProductId" in-map="context" out-map="prodIdRes"/>
+            <if condition="productId != prodIdRes.productId">
+                <entity-find entity-name="mantle.product.ProductContent" list="productContentList" cache="true">
+                    <econdition field-name="productContentTypeEnumId"/>
+                    <econdition field-name="productId" from="prodIdRes.productId"/>
+                    <date-filter/>
+                </entity-find>
+                <if condition="productContentList">
+                    <set field="productContent" from="productContentList[0]"/>
+                </if>
+            </if>
+        </actions>
+    </service>
 
     <service verb="get" noun="ProductVariantsDisplayInfo">
         <in-parameters>
@@ -131,6 +168,7 @@ along with this software (see the LICENSE.md file). If not, see
             </parameter>
         </in-parameters>
         <out-parameters>
+            <parameter name="featureType"></parameter>
             <parameter name="variantOptions" type="Map">
                 <description>
                     A map where key is feature type (Enumeration) and value is another map
@@ -182,15 +220,17 @@ along with this software (see the LICENSE.md file). If not, see
                     <entity-find-one entity-name="moqui.basic.Enumeration" value-field="featureType" cache="true">
                         <field-map field-name="enumId" from="productFeature.productFeatureTypeEnumId"/>
                     </entity-find-one>
+                    <set field="item" from="[enumId:featureType.enumId, enumTypeId:featureType.enumTypeId, 
+                        description:featureType.description, lastUpdatedStamp:featureType.lastUpdatedStamp]"/> 
                     <script><![CDATA[
                         selectedPrices = (priceSet.price != null && priceSet != 0) ? priceSet : mainPriceSet
                         // we use this flag in UI to emphasis discounted products but important to know if any of variants of discounted
                         if (!isDiscounted) {
                             isDiscounted = (selectedPrices.price && selectedPrices.listPrice) ? selectedPrices.price < selectedPrices.listPrice : false
                         }
-                        def optionSet = variantOptions.get(featureType)
+                        def optionSet = variantOptions.get(item)
                         if (!optionSet) {
-                            variantOptions.put(featureType, [[productId: variantProductAssoc.toProductId, description:productFeature.description,
+                            variantOptions.put(item, [[productId: variantProductAssoc.toProductId, description:productFeature.description,
                             prices:selectedPrices]])
                         } else {
                             optionSet.add([productId: variantProductAssoc.toProductId, description:productFeature.description,

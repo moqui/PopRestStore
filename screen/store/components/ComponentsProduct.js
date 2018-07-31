@@ -95,16 +95,25 @@ storeComps.SearchTemplate = getPlaceholderRoute("template_client_search", "Searc
 
 storeComps.ProductImage = {
     name: "product-image",
-    data: function() { return { urlList: {} } },
+    data: function() { return { content: {} } },
     methods: {
+        getProductContent(productId, contentTypeEnumId) {
+            ProductService.getProductContent(productId, contentTypeEnumId).then(function (data) { this.content = data.productContent; }.bind(this));
+        },
         getProductImage() {
-            if (!this.urlList[0] || !this.urlList[0].productContentId) return null;
-            return storeConfig.productImageLocation + this.urlList[0].productContentId;
+            if(this.content == null || this.content == 'undefined') return null;
+            return storeConfig.productImageLocation + this.content.productContentId;
         }
     },
     props: ["productId"],
     mounted: function() {
-        ProductService.getProduct(this._props.productId).then(function (data) { this.urlList = data.contentList; }.bind(this));
+        this.getProductContent(this._props.productId, "PcntImageSmall");
+        if(this.content == null || this.content == 'undefined') {
+            this.content = this.getProductContent(this._props.productId, "PcntImageMedium");
+            if(this.content == null || this.content == 'undefined') {
+                this.content = this.getProductContent(this._props.productId, "PcntImageLarge");
+            }
+        } 
     }
 };
 storeComps.ProductImageTemplate = getPlaceholderRoute("template_client_productImage", "ProductImage", storeComps.ProductImage.props);

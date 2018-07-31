@@ -49,7 +49,16 @@ along with this software (see the LICENSE.md file). If not, see
         <service-call name="popstore.ProductServices.get#ProductInfo" out-map="product" in-map="[productId:productId]"/>
         <service-call name="popstore.ProductServices.get#ProductReviews" out-map="reviewsList" in-map="[productId:productId]"/>
         <service-call name="popstore.ProductServices.find#ProductAvailability" in-map="context" out-map="context" />
-        <service-call name="popstore.ProductServices.get#ProductVariantsDisplayInfo" in-map="context" out-map="variantsList" />
+        <set field="inStock" from="false"/>
+        <if condition="product.productTypeEnumId == 'PtVirtual'">
+            <service-call name="popstore.ProductServices.get#ProductVariantsDisplayInfo" 
+                in-map="context" out-map="variantsList" />
+        <else>
+            <if condition="productAvailability.get(productId)">
+                <set field="inStock" from="true"/>
+            </if>
+        </else>
+        </if>
     </actions>
 
 

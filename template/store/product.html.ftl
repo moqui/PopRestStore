@@ -84,21 +84,30 @@
                     <#if variantsList??>
                         <div class="form-group col">
                             <#assign featureTypes = variantsList.variantOptions.keySet()>
-                            <select class="form-control" name="variant">
-                                <#list featureTypes![] as featureType>
-                                    <#assign variants = variantsList.variantOptions.get(featureType)>
-                                    <#assign checkItem = true >
+                            <#list featureTypes![] as featureType>
+                                ${featureType.description!}
+                                <#assign variants = variantsList.variantOptions.get(featureType)>
+                                <select class="form-control" name="variantProductId">
                                     <#list variants![] as variant>
-                                        <option value="${variant.productId!}">${variant.description!}</option>
+                                        <#if productAvailability.get(variant.productId)!false><#assign inStock = true></#if>
+                                        <#assign notAvailable = !productAvailability.get(variant.productId)!false>
+                                        <option value="${variant.productId!}" <#if notAvailable> disabled</#if> >
+                                            ${variant.description!} 
+                                            $${variant.prices.price!0?string(",##0.00")} (out of stock)
+                                        </option>
                                     </#list>
-                                </#list>
-                            </select>
+                                </select>
+                            </#list>
                         </div>
                     </#if>
                 </div>
-                <button id="cartAdd" class="btn cart-form-btn col" type="submit">
-                    <i class="fa fa-shopping-cart"></i> Add to Cart
-                </button>
+                <#if inStock>
+                    <button id="cartAdd" class="btn cart-form-btn col" type="submit">
+                        <i class="fa fa-shopping-cart"></i> Add to Cart
+                    </button>
+                <#else>
+                    <h5 class="text-center">Out of Stock</h5>
+                </#if>
             </form>
         </div>
     </div>

@@ -70,6 +70,10 @@ var ProductService = {
     getProduct(productId) {
         return axios.get("/rest/s1/pop/products/" + productId).then(function (response) { return response.data; });
     },
+    getProductContent(productId, contentTypeEnumId) {
+        return axios.get("/rest/s1/pop/products/content?productId=" + productId + "&productContentTypeEnumId=" + contentTypeEnumId)
+            .then(function (response) { return response.data; });
+    },
     addProductCart(product,headers) {
         return axios.post("/rest/s1/pop/cart/add",product,headers).then(function (response) { return response.data; });
     },
