@@ -41,6 +41,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <pre-actions>
      	<set field="star" from="5"/>
+        <set field="imgContent" from="[]"/>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
         <if condition="extraPathNameList &amp;&amp; !productId"><set field="productId" from="extraPathNameList[0]"/></if>
         <if condition="extraPathNameList &amp;&amp; !addedCorrect"><set field="addedCorrect" from="extraPathNameList[1]"/></if>

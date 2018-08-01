@@ -24,8 +24,18 @@ along with this software (see the LICENSE.md file). If not, see
         <out-parameters>
             <parameter name="apiKey"/>
             <parameter name="customerInfo" type="Map"/>
+            <parameter name="forcePasswordChange"/>
         </out-parameters>
         <actions>
+            <set field="forcePasswordChange" value="false" type="Boolean"/>
+            <entity-find-one entity-name="moqui.security.UserAccount" value-field="userAccount" cache="false">
+                <field-map field-name="username"/></entity-find-one>
+            <if condition="userAccount?.requirePasswordChange == 'Y'">
+                <set field="forcePasswordChange" value="true" type="Boolean"/>
+                <return/>
+            </if>
+
+
             <script>ec.user.loginUser(username, password)</script>
 
             <if condition="ec.user.userAccount != null">
@@ -86,7 +96,7 @@ along with this software (see the LICENSE.md file). If not, see
                 out-map="response"/>
         </actions>
     </service>
-    <service verb="logout" noun="Customer">
+    <service verb="logout" noun="Customer" authenticate="anonymous-all">
         <actions>
             <script>ec.user.logoutUser()</script>
         </actions>

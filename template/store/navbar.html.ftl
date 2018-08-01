@@ -74,7 +74,9 @@
                             <a class="dropdown-item item-color" href="/store/d#/account">Account Settings</a>
                             <a class="dropdown-item item-color" href="/store/d#/orders">My Orders</a>
                             <div role="separator" class="dropdown-divider"></div>
-                            <a class="dropdown-item item-color" id="logout">Signout</a>
+                            <form method="get" action="/store/logOut">
+                                <button type="submit" class="dropdown-item item-color">Signout</button>
+                            </form>
                         </div>
                     </li>
                 <#else>

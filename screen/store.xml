@@ -52,6 +52,14 @@ var storeInfo = ${storeInfoJson};
         <default-response type="none"/>
     </transition>
 
+    <transition name="logOut">
+        <actions>
+            <service-call name="popstore.CustomerServices.logout#Customer"/>
+        </actions>
+        <default-response url="."/>
+        <error-response url="."/>
+    </transition>
+
     <subscreens default-item="home" always-use-full-path="true"/>
 
     <pre-actions>

@@ -8,7 +8,6 @@ storeComps.Navbar = {
   }; },
   props: ["subBar"],
   methods: {
-      // TODO: use customerInfo in $root from initial data load in config.js instead of doing another request
     getCustomerInfo: function() { CustomerService.getCustomerInfo(this.axiosConfig).then(function (data) {
         this.customerInfo = data;
     }.bind(this)).catch(function (error)  { console.log('An error has occurred' + error); }); },
@@ -16,9 +15,7 @@ storeComps.Navbar = {
         this.productsQuantity = data.orderItemList ? data.orderItemList.length : 0;
     }.bind(this)); },
     logout: function() { LoginService.logout().then(function (data) {
-        storeInfo = {};
         location.reload();
-        this.$router.push({ name: 'login'});
     }.bind(this)); },
     searchProduct: function() { this.$router.push({ name: 'search', params: { searchText: this.searchText }}); }
   },
@@ -27,7 +24,13 @@ storeComps.Navbar = {
       var storeInfo = this.$root.storeInfo;
       if (storeInfo.categoryByType && storeInfo.categoryByType.PsctBrowseRoot && storeInfo.categoryByType.PsctBrowseRoot.productCategoryId) {
         ProductService.getSubCategories(storeInfo.categoryByType.PsctBrowseRoot.productCategoryId).then(function(categories) { vm.categories = categories; }); }
-      if (this.$root.apiKey != null) { this.getCustomerInfo(); }
+      if (this.$root.apiKey != null) { 
+          if(this.$root.customerInfo != null){
+              this.customerInfo = this.$root.customerInfo;
+          } else {
+              this.getCustomerInfo();
+          } 
+        }
       this.getCartInfo();
   }
 };

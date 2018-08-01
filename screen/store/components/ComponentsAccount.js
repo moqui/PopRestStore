@@ -2,7 +2,8 @@
 storeComps.LoginPage = {
     name: "login",
     data: function() { return {
-        user: {username: "", password: ""}, loginErrormessage: "",
+        user: {username: "", password: ""}, loginErrormessage: "", responseMessage : "", 
+        passwordInfo: { username: "", oldPassword: "", newPassword: "", newPasswordVerify: "" },
         axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
                 "moquiSessionToken": this.$root.moquiSessionToken } }
     }; },
@@ -16,10 +17,39 @@ storeComps.LoginPage = {
                 return;
             }
             LoginService.login(this.user, this.axiosConfig).then(function (data) {
-                this.$root.apiKey = data.apiKey;
-                location.href = "/store";
+                console.log(data);
+                if(data.forcePasswordChange == true) { this.showModal('modal'); } 
+                else { this.$root.apiKey = data.apiKey; location.href = "/store"; }
             }.bind(this)).catch(function (error) { this.loginErrormessage = error.response.data.errors; }.bind(this));
-        }
+        },
+        changePassword: function(event) {
+            event.preventDefault();
+            var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,35}$/;
+            if(this.passwordInfo.username == null || this.passwordInfo.username.trim() == "") {
+                this.responseMessage = "You must enter a valid username";
+                return;
+            }
+
+            if (!expreg.test(this.passwordInfo.newPassword)) {
+                this.responseMessage = "The password must have at least 8 characters, a special character," +
+                    " a lowercase letter, a capital letter and at least one number.";
+                return;
+            }
+
+            if (this.passwordInfo.newPassword !== this.passwordInfo.newPasswordVerify) {
+                this.responseMessage = "Passwords do not match";
+                return;
+            }
+            CustomerService.updateCustomerPassword(this.passwordInfo, this.axiosConfig).then(function (data) {
+                this.user.username = this.passwordInfo.username;
+                this.user.password = this.passwordInfo.newPassword;               
+                this.login();
+            }.bind(this))
+            .catch(function (error) {
+                this.responseMessage = error.response.data.errors;
+            }.bind(this));
+        },
+        showModal: function(modalId) { $('#'+modalId).modal('show'); },
     },
     mounted: function() { if (this.$root.apiKey != null) { location.href = "/store"; } },
 };
@@ -60,9 +90,9 @@ storeComps.ResetPasswordPage = {
                 this.responseMessage = data.messages;
                 this.login();
             }.bind(this))
-                .catch(function (error) {
-                    this.responseMessage = error.response.data.errors;
-                }.bind(this));
+            .catch(function (error) {
+                this.responseMessage = error.response.data.errors;
+            }.bind(this));
         },
         login: function() {
             var user = { username: this.passwordInfo.username, password: this.passwordInfo.newPassword };

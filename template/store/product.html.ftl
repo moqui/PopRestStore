@@ -14,7 +14,18 @@
     <div class="row mt-2">
         <div class="col col-lg-1 col-sm-4 col-4">
             <div>
+                <#assign imgDetail = false/>
                 <#list product.contentList as img>
+                    <#if img.productContentTypeEnumId == "PcntImageDetail">
+                        <#assign imgDetail = true/>
+                        <#if imgContent??>
+                            <#assign imgContent = img>
+                        <#else>
+                            <#if imgContent.sequenceNum > img.sequenceNum>
+                                <#assign imgContent = img>
+                            </#if>
+                        </#if>
+                    </#if>
                     <#if img.productContentTypeEnumId == "PcntImageLarge">
                         <img width="200px" height="200px" onClick="changeLargeImage('${img.productContentId}');"
                             class="figure-img img-fluid product-img"
@@ -25,7 +36,8 @@
             </div>
         </div>
         <div class="col col-lg-4 col-sm-8 col-8">
-            <img id="product-image-large" class="product-img-select">
+            <img id="product-image-large" class="product-img-select" 
+                <#if imgDetail>data-toggle="modal" data-target="#modal2"</#if>>
         </div>
         <div class="col col-lg-4 col-sm-12 col-12">
             <p>
@@ -178,6 +190,24 @@
                 <a data-dismiss="modal" class="btn btn-link">Or Cancel</a>
             </div>
         </form>
+    </div>
+</div>
+<div class="modal fade" id="modal2">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="product-review-form">
+            <div class="modal-header">
+                <h5 class="modal-title">Image Detail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <img width="100%" height="200px" class="figure-img img-fluid product-img"
+                    src="/store/content/productImage/${imgContent.productContentId}" alt="Product Image">
+            </div>
+            <div class="modal-footer">
+                <a data-dismiss="modal" class="btn btn-link">Close</a>
+            </div>
+        </div>
     </div>
 </div>
 
