@@ -39,7 +39,8 @@ a:hover { text-decoration: none; }
 .item-color { color: #36cfdd !important; cursor: pointer; }
 
 /* Footer */
-.footer { background-color: #666666; color: #fff; padding: 30px; position: relative; margin-top: 20px; }
+
+.footer { background-color: #666666; color: #fff; padding: 30px; position: relative; width: 100%; bottom: 0px;}
 .footer p { font-size: 0.8em; color: #04c3d5; }
 .footer-ul { list-style-type: none; font-size: 0.8em; }
 .footer-ul li { margin-top: 10px; cursor: pointer; }
@@ -251,7 +252,7 @@ a:hover { text-decoration: none; }
 
 .color-tab { color: #797979; }
 
-.customer-menu { color: #1ec9d9 !important; border: 1px solid #999999; border-radius: 10px; width: 180px; padding: 15px; }
+.customer-menu { color: #1ec9d9 !important; border: 1px solid #999999; border-radius: 10px; width: 180px; padding: 15px; height: 280px;}
 .customer-menu a { color: #1ec9d9 !important; }
 
 .customer-orders-ul { list-style-type: none; font-size: 1em; margin-left: -25px; }
@@ -268,7 +269,7 @@ a:hover { text-decoration: none; }
 .order-product-status { color: #dd6231; font-size: 0.9em; margin-left: -20px; }
 .order-product-total { display: inline-block; color: #373737; font-weight: 500; position: absolute; right: 25px; bottom: 50px; }
 
-.orders-back-text { color: #1ec9d9; float: right; cursor: pointer; font-size: 0.9em; margin-top: 45px; }
+.orders-back-text { color: #1ec9d9; float: right; cursor: pointer; font-size: 0.9em;}
 
 /* Login, Reset Password, Create Account */
 .btn-login { background-color: #04c3d5; color: #fff; height: 45px; }

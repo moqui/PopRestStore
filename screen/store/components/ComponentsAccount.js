@@ -17,9 +17,15 @@ storeComps.LoginPage = {
                 return;
             }
             LoginService.login(this.user, this.axiosConfig).then(function (data) {
-                console.log(data);
                 if(data.forcePasswordChange == true) { this.showModal('modal'); } 
-                else { this.$root.apiKey = data.apiKey; location.href = "/store"; }
+                else { 
+                    this.$root.apiKey = data.apiKey; 
+                    if(preLoginRoute.name == null || preLoginRoute.name == "createaccount") {
+                        location.href = "/store";
+                    } else {
+                        this.$router.push({ name: preLoginRoute.name});
+                    }
+                }
             }.bind(this)).catch(function (error) { this.loginErrormessage = error.response.data.errors; }.bind(this));
         },
         changePassword: function(event) {
@@ -51,7 +57,7 @@ storeComps.LoginPage = {
         },
         showModal: function(modalId) { $('#'+modalId).modal('show'); },
     },
-    mounted: function() { if (this.$root.apiKey != null) { location.href = "/store"; } },
+    mounted: function() { if (this.$root.apiKey != null) { location.href = "/store"; }},
 };
 storeComps.LoginPageTemplate = getPlaceholderRoute("template_client_login", "LoginPage");
 

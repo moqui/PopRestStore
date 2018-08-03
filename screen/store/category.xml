@@ -15,13 +15,21 @@ along with this software (see the LICENSE.md file). If not, see
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
         require-authentication="anonymous-view" allow-extra-path="true">
     <parameter name="categoryId"/>
+    <parameter name="pageIndex"/>
 
     <pre-actions>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
         <if condition="extraPathNameList &amp;&amp; !categoryId"><set field="categoryId" from="extraPathNameList[0]"/></if>
+        <if condition="extraPathNameList &amp;&amp; !pageIndex">
+            <set field="pageIndex" from="extraPathNameList[1]"/>
+            <if condition="pageIndex == null">
+                <set field="pageIndex" from="0"/>
+            </if>
+        </if>
     </pre-actions>
     <actions>
-        <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="products" in-map="[productCategoryId:categoryId]"/>
+        <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="products" 
+            in-map="[productCategoryId:categoryId, pageIndex:pageIndex ? pageIndex : '0', pageSize:'5']"/>
         <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="category" in-map="[productCategoryId:categoryId]"/>
     </actions>
 

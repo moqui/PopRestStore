@@ -37,7 +37,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <!-- Geo, Locale, TimeZone -->
 
-    <resource name="geos">
+    <resource name="geos" require-authentication="anonymous-view">
         <method type="get"><service name="popstore.StoreServices.get#Geos"/></method>
         <id name="geoId">
             <method type="get"><entity name="geos" masterName="default" operation="one"/></method>
@@ -45,10 +45,10 @@ along with this software (see the LICENSE.md file). If not, see
                 <method type="get"><service name="org.moqui.impl.BasicServices.get#GeoRegionsForDropDown"/></method></resource>
         </id>
     </resource>  
-    <resource name="locale">
+    <resource name="locale" require-authentication="anonymous-view">
         <method type="get"><service name="popstore.StoreServices.get#Locales"/></method>
     </resource>
-    <resource name="timeZone">
+    <resource name="timeZone" require-authentication="anonymous-view">
         <method type="get"><service name="popstore.StoreServices.get#TimeZones"/></method>
     </resource>
 
@@ -114,7 +114,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <!-- Customer Profile and Order History -->
 
-    <resource name="customer">
+    <resource name="customer" require-authentication="anonymous-view">
         <!-- NOTE: allows current session with customerPartyId server side for customers with no UserAccount (current session only), so auth not required -->
         <resource name="info">
             <method type="get"><service name="popstore.CustomerServices.get#CustomerInfo"/></method>

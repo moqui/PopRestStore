@@ -1,5 +1,3 @@
-<#-- TODO: hard coded default stars, maybe better not to show stars if we have no data? -->
-<#assign star = 3>
 <div class="container-fluid features d-none d-sm-none d-md-block">
     <div class="d-flex justify-content-around container">
         <div class="feature">
@@ -57,16 +55,6 @@
                                                         <#list 1..5 as x>
                                                             <span class="star-rating">
                                                                 <#if (product.numberOfRatings >= x)>
-                                                                    <i class="fas fa-star"></i>
-                                                                <#else>
-                                                                    <i class="far fa-star"></i>
-                                                                </#if>  
-                                                            </span>
-                                                        </#list>
-                                                    <#else>
-                                                        <#list 1..5 as x>
-                                                            <span class="star-rating">
-                                                                <#if (star >= x)>
                                                                     <i class="fas fa-star"></i>
                                                                 <#else>
                                                                     <i class="far fa-star"></i>
@@ -134,16 +122,6 @@
                                                         <#list 1..5 as x>
                                                             <span class="star-rating">
                                                                 <#if (product.numberOfRatings >= x)>
-                                                                    <i class="fas fa-star"></i>
-                                                                <#else>
-                                                                    <i class="far fa-star"></i>
-                                                                </#if>  
-                                                            </span>
-                                                        </#list>
-                                                    <#else>
-                                                        <#list 1..5 as x>
-                                                            <span class="star-rating">
-                                                                <#if (star >= x)>
                                                                     <i class="fas fa-star"></i>
                                                                 <#else>
                                                                     <i class="far fa-star"></i>

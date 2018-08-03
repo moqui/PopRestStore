@@ -52,10 +52,11 @@ storeComps.LandingPageTemplate = getPlaceholderRoute("template_client_home", "La
 
 storeComps.CategoryPage = {
     name: "category-page",
-    data: function() { return { products: [], category: {}, categories: [], storeInfo: [] }; },
+    data: function() { return { products: [], category: {}, categories: [], storeInfo: [], pageIndex: 0, pageSize: 5 }; },
     methods: {
-        getProductsList: function() {
-            ProductService.getProductsByCategory(this.$route.params.categoryId).then(function (data) {
+        getProductsList: function(pageIndex) {
+            this.pageIndex = pageIndex;
+            ProductService.getProductsByCategory(this.$route.params.categoryId, this.pageIndex, this.pageSize).then(function (data) {
                 this.products = data;
             }.bind(this));
         },
@@ -63,9 +64,16 @@ storeComps.CategoryPage = {
             ProductService.getCategoryInfoById(this.$route.params.categoryId).then(function (data) {
                 this.category = data;
             }.bind(this));
+        },
+        paginatorItemsCount: function(listCount, listRange) {
+            if(typeof(listCount) == 'undefined') {
+                return 0;
+            }
+            var result = listCount / listRange;
+            return Math.floor(result) + 1;
         }
     },
-    watch: { '$route': function(to, from) { this.getProductsList(); this.getCategoryInfoById(); } },
+    watch: { '$route': function(to, from) { this.getProductsList(0); this.getCategoryInfoById(); } },
     components: { "category-product": storeComps.CategoryProductTemplate },
     created() {
         var vm = this;
@@ -73,23 +81,37 @@ storeComps.CategoryPage = {
         if (this.storeInfo.categoryByType && this.storeInfo.categoryByType.PsctBrowseRoot && this.storeInfo.categoryByType.PsctBrowseRoot.productCategoryId) {
         ProductService.getSubCategories(this.storeInfo.categoryByType.PsctBrowseRoot.productCategoryId).then(function(categories) { vm.categories = categories; }); }
     },
-    mounted: function() { this.getProductsList(); this.getCategoryInfoById(); }
+    mounted: function() { this.getProductsList(0); this.getCategoryInfoById(); }
 };
 storeComps.CategoryPageTemplate = getPlaceholderRoute("template_client_category", "CategoryPage");
 
 storeComps.Search = {
     name: "product-search",
-    data: function() { return { searchInfo: {} }; },
+    data: function() { return { searchInfo: {}, storeInfo: [], categories: [], pageIndex: 0, pageSize: 5 }; },
     methods: {
-        doSearch: function() {
-            ProductService.getProductBySearch(this.$route.params.searchText).then(function (data){
+        doSearch: function(pageIndex) {
+            this.pageIndex = pageIndex;
+            ProductService.getProductBySearch(this.$route.params.searchText, this.pageIndex, this.pageSize).then(function (data){
                 this.searchInfo = data;
             }.bind(this));
+        },
+        paginatorItemsCount: function(listCount, listRange) {
+            if(typeof(listCount) == 'undefined') {
+                return 0;
+            }
+            var result = listCount / listRange;
+            return Math.floor(result) + 1;
         }
     },
-    mounted: function() { this.doSearch(); },
+    created() { 
+        var vm = this;
+        this.storeInfo = this.$root.storeInfo;
+        if (this.storeInfo.categoryByType && this.storeInfo.categoryByType.PsctBrowseRoot && this.storeInfo.categoryByType.PsctBrowseRoot.productCategoryId) {
+        ProductService.getSubCategories(this.storeInfo.categoryByType.PsctBrowseRoot.productCategoryId).then(function(categories) { vm.categories = categories; }); }
+    },
+    mounted: function() { this.doSearch(0); },
     components: { "category-product": storeComps.CategoryProductTemplate },
-    watch: { '$route': function(to, from) { this.doSearch(); } }
+    watch: { '$route': function(to, from) { this.doSearch(0); } }
 };
 storeComps.SearchTemplate = getPlaceholderRoute("template_client_search", "Search");
 
