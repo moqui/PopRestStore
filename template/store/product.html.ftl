@@ -1,8 +1,12 @@
+<#assign inStock = false>
+<#if (product.productTypeEnumId == "PtVirtual")!false>
+    <#assign isVirtual = true >
+<#else>
+    <#assign isVirtual = false >
+    <#if productAvailability.get(productId)!false><#assign inStock = true></#if>
+</#if>
 <div class="container mt-2">
     <a class="customer-link" href="/store">Home <i class="fas fa-angle-right"></i></a>
-    <#-- TODO: replace demo breadcrumbs with real or get rid of -->
-    <span class="customer-link">All Products <i class="fas fa-angle-right"></i></span>
-    <span class="customer-link">Office Supplies</span>
 </div>
 <div class="container container-text mt-1">
     <#if addedCorrect?? && addedCorrect == 'true'>
@@ -83,7 +87,7 @@
                         -->
                     </div>
                     <div class="form-group col">
-                        <input type="hidden" value="${product.pseudoId}" name="productId" />
+                        <input type="hidden" value="${product.pseudoId}" name="productId" id="productId" />
                         <input type="hidden" value="${product.priceUomId}" name="currencyUomId" />
                         <input type="hidden" value="${ec.web.sessionToken}" name="moquiSessionToken"/>
                         <span class="product-description">Quantity</span>
@@ -93,19 +97,20 @@
                             <option value="3">3</option>
                         </select>
                     </div>
-                    <#if variantsList??>
+                    <#if isVirtual>
                         <div class="form-group col">
-                            <#assign featureTypes = variantsList.variantOptions.keySet()>
+                            <#assign featureTypes = variantsList.listFeatures.keySet()>
+                            <#assign arrayIds = [] />
                             <#list featureTypes![] as featureType>
                                 ${featureType.description!}
-                                <#assign variants = variantsList.variantOptions.get(featureType)>
-                                <select class="form-control" name="variantProductId">
+                                <#assign variants = variantsList.listFeatures.get(featureType)>
+                                <select class="form-control" id="variantProduct${featureType?index}" required>
+                                    <option value="" disabled selected>
+                                        Select an Option 
+                                    </option>
                                     <#list variants![] as variant>
-                                        <#if productAvailability.get(variant.productId)!false><#assign inStock = true></#if>
-                                        <#assign notAvailable = !productAvailability.get(variant.productId)!false>
-                                        <option value="${variant.productId!}" <#if notAvailable> disabled</#if> >
+                                        <option value="${variant.abbrev!}">
                                             ${variant.description!} 
-                                            $${variant.prices.price!0?string(",##0.00")} (out of stock)
                                         </option>
                                     </#list>
                                 </select>
@@ -214,6 +219,29 @@
 <script>
     var prodImageUrl = "/store/content/productImage/";
     var $productImageLarge = document.getElementById("product-image-large");
+
+    document.body.onload = function() {
+        <#if isVirtual>
+            var productAvailability = ${productAvailability?replace('=',':')};
+            var variantIdList = [];
+            <#list 0..variantsList.listFeatures.keySet()?size - 1  as x>
+                $('#variantProduct${x}').on('change', function() {
+                    var productVariantId = $('#productId').val();
+                    variantIdList[${x}] = this.value;
+                    if(typeof(variantIdList[1]) != 'undefined') {
+                        productVariantId = productVariantId + '_' + variantIdList[1] + '_' + variantIdList[0];
+                    } else {
+                        productVariantId = productVariantId + '_' + variantIdList[0];
+                    }
+                });
+            </#list>
+        </#if> 
+    }
+
+    function onChangeOption(variantId) {
+        console.log(variantId + $("#productId").val());
+    }
+
     function changeLargeImage(productContentId) { $productImageLarge.src = prodImageUrl + productContentId; }
     //Default image
     <#if product.contentList?has_content>changeLargeImage("${product.contentList[0].productContentId}");</#if>
