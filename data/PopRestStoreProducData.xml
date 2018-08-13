@@ -18,12 +18,6 @@ along with this software (see the LICENSE.md file). If not, see
     <!-- ==================== Product Data ==================== -->
 
     <!-- TODO: get original text instead of binary export, fine for demo images but for text makes it impossible to maintain -->
-    <categories pseudoId="PopcDeals" lastUpdatedStamp="1532986379138" productCategoryId="PopcDeals" productCategoryTypeEnumId="PctCatalog" description="Deals" categoryName="PopcDeals"/>
-    <categories pseudoId="PopcNew" lastUpdatedStamp="1532986440397" productCategoryId="PopcNew" productCategoryTypeEnumId="PctCatalog" description="PopcNew" categoryName="PopcNew"/>
-    <categories pseudoId="PopcFeatured" lastUpdatedStamp="1532986398472" productCategoryId="PopcFeatured" productCategoryTypeEnumId="PctCatalog" description="PopcFeatured" categoryName="PopcFeatured"/>
-
-    <features productFeatureTypeEnumId="PftColor" lastUpdatedStamp="1532987092778" productFeatureId="ColorWhite" description="White" abbrev="WH"/>
-
 
     <mantle.product.category.ProductCategory productCategoryId="DEMO_CLOTHING" productCategoryTypeEnumId="PctCatalog" categoryName="Clothing" description=""/>
     <mantle.product.category.ProductCategoryRollup productCategoryId="DEMO_CLOTHING" parentProductCategoryId="PopcBrowseRoot" fromDate="1265184000000" sequenceNum="1"/>
