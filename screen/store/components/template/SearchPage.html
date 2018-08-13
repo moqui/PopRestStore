@@ -8,16 +8,30 @@
             <div class="col col-lg-2 col-12">
                 <div class="customer-menu">
                     <ul class="deals-ul">
-                        <!-- TODO hard coded category ID -->
-                        <router-link :to="'/category/PopcAllProducts'" tag="li"><i class="fas fa-th"></i> All</router-link>
-                        <li><i class="fas fa-tag"></i> New</li>
-                        <li><i class="fa fa-fire" aria-hidden="true"></i> Deals</li>
+                        <router-link v-if="storeInfo.categoryByType.PsctSearch" 
+                            :to="'/category/'+storeInfo.categoryByType.PsctSearch.productCategoryId" tag="li">
+                            <i class="fas fa-th"></i> {{storeInfo.categoryByType.PsctSearch.categoryName}}
+                        </router-link>
+                        <router-link v-if="storeInfo.categoryByType.PsctPromotions" 
+                            :to="'/category/'+storeInfo.categoryByType.PsctPromotions.productCategoryId" tag="li">
+                            <i class="fa fa-fire" aria-hidden="true"></i> {{storeInfo.categoryByType.PsctPromotions.categoryName}}
+                        </router-link>
+                        <router-link v-if="storeInfo.categoryByType.PsctNewProducts" 
+                            :to="'/category/'+storeInfo.categoryByType.PsctNewProducts.productCategoryId" tag="li">
+                            <i class="fas fa-tag"></i> {{storeInfo.categoryByType.PsctNewProducts.categoryName}}
+                        </router-link>
+                        <router-link v-if="storeInfo.categoryByType.PsctFeatured" 
+                            :to="'/category/'+storeInfo.categoryByType.PsctFeatured.productCategoryId" tag="li">
+                            <i class="fas fa-bullhorn"></i> {{storeInfo.categoryByType.PsctFeatured.categoryName}}
+                        </router-link>
                     </ul>
                     <span class="deals-subtitle">Categories</span>
                     <ul class="deals-ul">
-                        <li>Clothing</li>
-                        <li>Office Supplies</li>
-                        <li>Other</li>
+                        <template v-for="category in categories">
+                            <router-link :to="'/category/'+category.productCategoryId" tag="li">
+                                {{category.categoryName}}
+                            </router-link>
+                        </template>
                     </ul>
                 </div>
             </div>
@@ -34,6 +48,22 @@
                         </a>
                     </div>
                 </div>
+                <nav aria-label="Page navigation" class="row justify-content-center align-items-center">
+                    <ul class="pagination">
+                        <li class="page-item" :class="{ 'disabled' : pageIndex == 0}">
+                            <a class="page-link" @click="doSearch(pageIndex - 1)">Previous</a>
+                        </li>
+                        <template v-for="n in paginatorItemsCount(searchInfo.productListCount, searchInfo.productListPageSize)">
+                            <li class="page-item" :class="{ 'active' : pageIndex == (n-1)}">
+                                <a class="page-link" @click="doSearch(n-1, pageIndex == (n-1))">{{n}}</a>
+                            </li>
+                        </template>
+                        <li class="page-item" :class="{ 'disabled' : searchInfo.productListCount == 
+                            searchInfo.productListPageRangeHigh }">
+                            <a class="page-link" @click="doSearch(pageIndex + 1)">Next</a>
+                        </li>
+                    </ul>
+               </nav>
             </div>
         </div>
     </div>

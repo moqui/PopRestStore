@@ -37,6 +37,55 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Password Change Required</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="modal-body" @submit.prevent="changePassword" method="post">
+                    <div v-if="responseMessage != null && responseMessage != ''" class="alert alert-primary" role="alert">
+                        {{responseMessage}}
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label modal-text">Username *</label>
+                        <div class="col-sm-7">
+                            <input class="form-control" type="text" v-model="passwordInfo.username" required/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label modal-text">Old Password *</label>
+                        <div class="col-sm-7">
+                            <input class="form-control" type="password" v-model="passwordInfo.oldPassword" required/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label modal-text">New Password *</label>
+                            <div class="col-sm-7">
+                                <input class="form-control" type="password" v-model="passwordInfo.newPassword" required/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label modal-text">Confirm New Password *</label>
+                        <div class="col-sm-7">
+                            <input class="form-control" type="password" v-model="passwordInfo.newPasswordVerify" 
+                                required/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-7 offset-sm-4">
+                            <button type="submit" class="btn btn-continue account-btn">Change Password</button>
+                            <br>
+                            <a data-dismiss="modal" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <br>
     <footer-page style="margin-top: 15%;" :infoLink="false" />
 </div>

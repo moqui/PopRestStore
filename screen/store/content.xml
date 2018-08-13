@@ -41,6 +41,14 @@ along with this software (see the LICENSE.md file). If not, see
         <default-response type="none"/>
     </transition>
 
+    <transition name="createRequest">
+        <actions>
+            <service-call name="mantle.request.RequestServices.create#ContactRequest" 
+                in-map="context + [moquiSessionToken:ec.web.sessionToken]" out-map="context"/>
+        </actions>
+        <default-response url="."/>
+    </transition>
+
     <actions>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
         <service-call name="org.moqui.impl.WikiServices.get#PublishedWikiPageText" out-map="context"

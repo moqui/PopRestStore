@@ -38,8 +38,10 @@
                     </div>
                 </li>
 
-                <!-- TODO: hard coded category ID -->
-                <router-link :to="'/category/PopcAllProducts'" tag="a" class="nav-link">Deals</router-link>
+                <router-link v-if="storeInfo.categoryByType.PsctPromotions" 
+                    :to="'/category/'+storeInfo.categoryByType.PsctPromotions.productCategoryId" tag="a" class="nav-link">
+                    {{storeInfo.categoryByType.PsctPromotions.categoryName}}
+                </router-link>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#" id="navbarMenuService" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

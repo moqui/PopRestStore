@@ -84,7 +84,213 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
 
-    <service verb="create" noun="ProductReview">
+    <service verb="find" noun="ProductAvailability">
+        <description>
+            Create collection of product ids with availability flag.
+        </description>
+        <in-parameters>
+            <parameter name="productStoreId" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productAvailability"/>
+        </out-parameters>
+        <actions>
+            <entity-find-one entity-name="mantle.product.store.ProductStore" value-field="productStore"/>
+            <set field="inventoryFacilityIds" type="List" from="[productStore.inventoryFacilityId]"/>
+            <entity-find entity-name="mantle.product.store.ProductStoreFacility" list="productStoreFacilities">
+                <econdition field-name="productStoreId"/>
+                <date-filter/>
+            </entity-find>
+            <iterate list="productStoreFacilities" entry="productStoreFacility">
+                <set field="inventoryFacilityIds" from="inventoryFacilityIds + productStoreFacility.facilityId"/>
+            </iterate>
+            <entity-find entity-name="mantle.product.asset.AssetSummaryView" list="productAssetSumList">
+                <econdition field-name="productAssetTypeEnumId" value="AstTpInventory"/>
+                <econdition field-name="facilityId" operator="in" from="inventoryFacilityIds"/>
+                <having-econditions combine="or">
+                    <econdition field-name="quantityOnHandTotal" operator="not-equals" from="0.0"/>
+                    <econdition field-name="availableToPromiseTotal" operator="not-equals" from="0.0"/>
+                </having-econditions>
+                <select-field field-name="productId"/>
+                <select-field field-name="availableToPromiseTotal"/>
+            </entity-find>
+            <set field="productAvailability" from="[:]"/>
+            <iterate list="productAssetSumList" entry="assetSum">
+                <script>
+                    productAvailability.put(assetSum.productId, assetSum.availableToPromiseTotal>0)
+                </script>
+            </iterate>
+        </actions>
+    </service>
+
+    <service verb="find" noun="ProductContent">
+        <description>
+            Try to find ProductContent record of a specified type the product. If it is not found then either
+            product does not have a content of this type or this is a variant and we should check its virtual
+            parent for the same.
+        </description>
+        <in-parameters>
+            <parameter name="productId" required="true"/>
+            <parameter name="productContentTypeEnumId" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productContent" type="EntityValue"/>
+        </out-parameters>
+        <actions>
+            <entity-find entity-name="mantle.product.ProductContent" list="productContentList" cache="true">
+                <econdition field-name="productContentTypeEnumId"/>
+                <econdition field-name="productId"/>
+                <date-filter/>
+            </entity-find>
+            <if condition="productContentList">
+                <set field="productContent" from="productContentList[0]"/>
+                <return/>
+            </if>
+            <!-- either no content of this type or productId refers to variant of a virtual product -->
+            <service-call name="ridgecrest.ProductServices.get#CatalogProductId" in-map="context" out-map="prodIdRes"/>
+            <if condition="productId != prodIdRes.productId">
+                <entity-find entity-name="mantle.product.ProductContent" list="productContentList" cache="true">
+                    <econdition field-name="productContentTypeEnumId"/>
+                    <econdition field-name="productId" from="prodIdRes.productId"/>
+                    <date-filter/>
+                </entity-find>
+                <if condition="productContentList">
+                    <set field="productContent" from="productContentList[0]"/>
+                </if>
+            </if>
+        </actions>
+    </service>
+
+    <service verb="get" noun="ProductVariantsDisplayInfo">
+        <in-parameters>
+            <parameter name="productId">
+                <description>Only id of a virtual product make sense to get relevant data.</description>
+            </parameter>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="featureType"></parameter>
+            <parameter name="variantOptions" type="Map">
+                <description>
+                    A map where key is feature type (Enumeration) and value is another map
+                    with productId, description and price data exactly as it returned by get#ProductPrice.
+                </description>
+            </parameter>
+            <parameter name="minimalPrice" type="BigDecimal">
+                <description>Minimal price among all variants.</description>
+            </parameter>
+            <parameter name="maximalPrice" type="BigDecimal">
+                <description>Maximal price among all variants.</description>
+            </parameter>
+            <parameter name="isDiscounted" type="Boolean">
+                <description>We use this flag in UI to emphasis discounted products if they are variants</description>
+            </parameter>
+            <parameter name="listFeatures"/>
+        </out-parameters>
+        <actions>
+            <entity-find-one entity-name="mantle.product.Product" value-field="product"/>
+
+            <set field="variantOptions" type="NewMap" value="null"/>
+            <script>variantOptions = new HashMap()</script>
+            <set field="minimalPrice" type="BigDecimal" value="0"/>
+            <set field="maximalPrice" type="BigDecimal" value="0"/>
+            <set field="isDiscounted" type="Boolean" value="false"/>
+
+            <service-call name="mantle.product.PriceServices.get#ProductPrice" in-map="context" out-map="mainPriceSet" />
+
+            <if condition="product &amp;&amp; product.productTypeEnumId == 'PtVirtual'">
+                <entity-find entity-name="mantle.product.ProductAssocAndToFeatureAppl" list="assocs">
+                    <econdition field-name="productAssocTypeEnumId" value="PatVariant"/>
+                    <econdition field-name="applTypeEnumId" operator="in" value="PfatDistinguishing, PfatStandard" />
+                    <econdition field-name="productId" from="product.productId"/>
+                    <date-filter/>
+                </entity-find>
+                <set field="listFeatures" type="NewMap" value="null"/>
+                <script>listFeatures = new HashMap()</script>
+                <iterate list="assocs" entry="variantProductAssoc">
+                    <!-- find variant price first -->
+                    <service-call name="mantle.product.PriceServices.get#ProductPrice" out-map="priceSet"
+                            in-map="context + [productId:variantProductAssoc.toProductId]" />
+                    <entity-find entity-name="mantle.product.feature.ProductFeatureAndAppl" list="features">
+                        <date-filter/>
+                        <econdition field-name="productId" from="variantProductAssoc.toProductId"/>
+                        <econdition field-name="productFeatureId" from="variantProductAssoc.productFeatureId"/>
+                    </entity-find>
+
+                    <!-- we return map keyed by feature type and should find the proper value for the assoc -->
+                    <entity-find-one entity-name="mantle.product.feature.ProductFeature" value-field="productFeature" cache="true">
+                        <field-map field-name="productFeatureId" from="variantProductAssoc.productFeatureId"/>
+                    </entity-find-one>
+                    <entity-find-one entity-name="moqui.basic.Enumeration" value-field="featureType" cache="true">
+                        <field-map field-name="enumId" from="productFeature.productFeatureTypeEnumId"/>
+                    </entity-find-one>
+                    <set field="item" from="[enumId:featureType.enumId, enumTypeId:featureType.enumTypeId, 
+                        description:featureType.description, lastUpdatedStamp:featureType.lastUpdatedStamp]"/> 
+                    <set field="content" from="[productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, 
+                        description:featureType.description]"/>
+                    <script><![CDATA[
+                        selectedPrices = (priceSet.price != null && priceSet != 0) ? priceSet : mainPriceSet
+                        // we use this flag in UI to emphasis discounted products but important to know if any of variants of discounted
+                        if (!isDiscounted) {
+                            isDiscounted = (selectedPrices.price && selectedPrices.listPrice) ? selectedPrices.price < selectedPrices.listPrice : false
+                        }
+                        
+                        def featureSet = listFeatures.get(content)
+                        if (!featureSet) {
+                            listFeatures.put(content, 
+                            [[productFeatureId:productFeature.productFeatureId, 
+                            productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, 
+                            description:productFeature.description, abbrev:productFeature.abbrev]])
+                        } else {
+                            boolean isItemInList = false
+                            for(int i=0; i < featureSet.size(); i++) {
+                                if(featureSet.get(i).productFeatureId.equals(productFeature.productFeatureId)) {
+                                    isItemInList = true
+                                    break
+                                } 
+                            }
+                            if(!isItemInList) {
+                                featureSet.add([productFeatureId:productFeature.productFeatureId, 
+                                productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, 
+                                description:productFeature.description, abbrev:productFeature.abbrev])
+                            }
+                        }
+
+                        def optionSet = variantOptions.get(item)
+                        if (!optionSet) {
+                            variantOptions.put(item, [[productId: variantProductAssoc.toProductId, description:productFeature.description,
+                            prices:selectedPrices]])
+                        } else {
+                            optionSet.add([productId: variantProductAssoc.toProductId, description:productFeature.description,
+                            prices:selectedPrices])
+                        }
+                        priceSet = null
+                    ]]></script>
+                </iterate>
+
+                <!-- sort variants by price and store minimal price -->
+                <script><![CDATA[
+                    variantOptions.each{k, v ->
+                        Collections.sort(v, new Comparator<Map>() {
+                            int compare(Map m1, Map m2) {
+                                def price1 = m1.prices.price?:0
+                                def price2 = m2.prices.price?:0
+                                return price1.compareTo(price2)
+                            }
+                        })
+                        minimalPrice = v.get(0).prices.price
+                        maximalPrice = v.get(v.size() - 1).prices.price
+                    }
+                ]]></script>
+
+                <else>
+                    <set field="minimalPrice" type="BigDecimal" from="mainPriceSet.price"/>
+                    <set field="maximalPrice" type="BigDecimal" from="mainPriceSet.price"/>
+                </else>
+            </if>
+        </actions>
+    </service>
+
+    <service verb="create" noun="ProductReview" authenticate="anonymous-all">
         <in-parameters>
             <parameter name="productId"/>
             <parameter name="productRating"/>

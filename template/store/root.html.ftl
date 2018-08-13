@@ -18,10 +18,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha256-IeI0loa35pfuDxqZbGhQUiZmD2Cywv1/bdqiypGW46o=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js" integrity="sha256-LlN0a0J3hMkDLO1mhcMwy+GIMbIRV7kvKHx4oCxNoxI=" crossorigin="anonymous"></script>
 <script>
-    var urlCartAdd = "s1/pop/cart/add";
-    var urlAddReview = "s1/pop/products/reviews";
-    var urlLogOut = "s1/pop/logout";
-
     $(document).ready(function() {
         $('#recipeCarousel').carousel({
             interval: 10000
@@ -41,29 +37,6 @@
                 }
                 next.children(':first-child').clone().appendTo($(this));
             }
-        });
-       
-
-        $("#cartAdd").click(function() {
-            $.post(storeConfig.restApiLocation + urlCartAdd,$("#cart-add-form").serialize(), function(data) {
-                $("#isSuccessAddCart").show();
-                var quantity = 0;
-                for (var i = 0; i < data.orderItemList.length; i++) {
-                    if (data.orderItemList[i].itemTypeEnumId === "ItemProduct") { quantity++; }
-                }
-                $("#cart-quantity").text(quantity);
-            });
-        });
-        $("#addReview").click(function(){
-            $.post(storeConfig.restApiLocation + urlAddReview,$("#product-review-form").serialize(), function(data) {
-                $('#product-review-form').trigger("reset");
-            });
-        });
-        $("#logout").click(function(){
-            $.get(storeConfig.restApiLocation + urlLogOut, function(data){
-                window.location.href = "/store";
-                location.reload();
-            });
         });
         $("#form-search").submit(function(event){
             event.preventDefault();

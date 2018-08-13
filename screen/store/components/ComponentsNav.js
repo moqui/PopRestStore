@@ -2,32 +2,43 @@
 storeComps.Navbar = {
   name: "navbar",
   data: function() { return {
-      customerInfo: {}, categories: [], searchText: "", productsQuantity: "",
+      customerInfo: {}, categories: [], searchText: "", productsQuantity: 0, storeInfo: [],
       axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
               "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
   }; },
   props: ["subBar"],
   methods: {
-      // TODO: use customerInfo in $root from initial data load in config.js instead of doing another request
     getCustomerInfo: function() { CustomerService.getCustomerInfo(this.axiosConfig).then(function (data) {
         this.customerInfo = data;
     }.bind(this)).catch(function (error)  { console.log('An error has occurred' + error); }); },
     getCartInfo: function() { ProductService.getCartInfo(this.axiosConfig).then(function (data) {
-        this.productsQuantity = data.orderItemList ? data.orderItemList.length : 0;
+        //this.productsQuantity = data.orderItemList ? data.orderItemList.length : 0;
+        if(typeof(data.orderItemList) == 'undefined') return;
+        for(var i = 0; i < data.orderItemList.length; i++) {
+            if(data.orderItemList[i].itemTypeEnumId == 'ItemProduct') {
+                this.productsQuantity = data.orderItemList[i].quantity + this.productsQuantity;
+            }
+        }
     }.bind(this)); },
     logout: function() { LoginService.logout().then(function (data) {
-        storeInfo = {};
         location.reload();
-        this.$router.push({ name: 'login'});
     }.bind(this)); },
     searchProduct: function() { this.$router.push({ name: 'search', params: { searchText: this.searchText }}); }
   },
+  created() {
+      this.storeInfo = this.$root.storeInfo;
+  },
   mounted: function() {
       var vm = this;
-      var storeInfo = this.$root.storeInfo;
-      if (storeInfo.categoryByType && storeInfo.categoryByType.PsctBrowseRoot && storeInfo.categoryByType.PsctBrowseRoot.productCategoryId) {
-        ProductService.getSubCategories(storeInfo.categoryByType.PsctBrowseRoot.productCategoryId).then(function(categories) { vm.categories = categories; }); }
-      if (this.$root.apiKey != null) { this.getCustomerInfo(); }
+      if (this.storeInfo.categoryByType && this.storeInfo.categoryByType.PsctBrowseRoot && this.storeInfo.categoryByType.PsctBrowseRoot.productCategoryId) {
+        ProductService.getSubCategories(this.storeInfo.categoryByType.PsctBrowseRoot.productCategoryId).then(function(categories) { vm.categories = categories; }); }
+      if (this.$root.apiKey != null) { 
+          if(this.$root.customerInfo != null){
+              this.customerInfo = this.$root.customerInfo;
+          } else {
+              this.getCustomerInfo();
+          } 
+        }
       this.getCartInfo();
   }
 };

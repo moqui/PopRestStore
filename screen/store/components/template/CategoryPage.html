@@ -9,22 +9,21 @@
             <div class="col col-lg-2 col-12">
                 <div class="customer-menu">
                     <ul class="deals-ul">
-                        <!-- TODO: hard coded category ID, look up by type -->
                         <router-link v-if="storeInfo.categoryByType.PsctSearch" 
                             :to="'/category/'+storeInfo.categoryByType.PsctSearch.productCategoryId" tag="li">
-                            <i class="fas fa-th"></i> All
+                            <i class="fas fa-th"></i> {{storeInfo.categoryByType.PsctSearch.categoryName}}
                         </router-link>
                         <router-link v-if="storeInfo.categoryByType.PsctPromotions" 
                             :to="'/category/'+storeInfo.categoryByType.PsctPromotions.productCategoryId" tag="li">
-                            <i class="fa fa-fire" aria-hidden="true"></i> Deals
+                            <i class="fa fa-fire" aria-hidden="true"></i> {{storeInfo.categoryByType.PsctPromotions.categoryName}}
                         </router-link>
                         <router-link v-if="storeInfo.categoryByType.PsctNewProducts" 
                             :to="'/category/'+storeInfo.categoryByType.PsctNewProducts.productCategoryId" tag="li">
-                            <i class="fas fa-tag"></i> New
+                            <i class="fas fa-tag"></i> {{storeInfo.categoryByType.PsctNewProducts.categoryName}}
                         </router-link>
                         <router-link v-if="storeInfo.categoryByType.PsctFeatured" 
                             :to="'/category/'+storeInfo.categoryByType.PsctFeatured.productCategoryId" tag="li">
-                            <i class="fas fa-bullhorn"></i> Best Sellers
+                            <i class="fas fa-bullhorn"></i> {{storeInfo.categoryByType.PsctFeatured.categoryName}}
                         </router-link>
                     </ul>
                     <span class="deals-subtitle">Categories</span>
@@ -41,16 +40,33 @@
                 <span class="customer-orders-title">{{category.categoryName}}</span>
                 <br>
                 <div class="col col-lg-12 col-12 deals-sellers">
-                    <span class="deals-sortby-text col col-lg-4">{{products.length}} results</span>
-                    <span class="deals-sortby-text col col-lg-3 offset-lg-5">Sort by Best Sellers <i class="fas fa-angle-down"></i></span>
+                    <span class="deals-sortby-text col col-lg-4">{{products.productListCount}} results</span>
+                    <!--<span class="deals-sortby-text col col-lg-3 offset-lg-5">Sort by Best Sellers <i class="fas fa-angle-down"></i></span> -->
                 </div>
                 <div class="row mt-5">
-                    <div class="col col-lg-4" v-for="(product, index) in products">
+                    <div class="col col-lg-4" v-for="(product, index) in products.productList">
                         <a :href="'/store/product/'+ product.productId">
                             <category-product :product="product" />
                         </a>
                     </div>
                 </div>
+                <nav v-if="products.productListCount != 0" aria-label="Page navigation" 
+                    class="row justify-content-center align-items-center">
+                    <ul class="pagination">
+                        <li class="page-item" :class="{ 'disabled' : pageIndex == 0}">
+                            <a class="page-link" @click="getProductsList(pageIndex - 1)">Previous</a>
+                        </li>
+                        <template v-for="n in paginatorItemsCount(products.productListCount, products.productListPageSize)">
+                            <li class="page-item" :class="{ 'active' : pageIndex == (n-1)}">
+                                <a class="page-link" @click="getProductsList(n-1, pageIndex == (n-1))">{{n}}</a>
+                            </li>
+                        </template>
+                        <li class="page-item" :class="{ 'disabled' : products.productListCount == 
+                            products.productListPageRangeHigh }">
+                            <a class="page-link" @click="getProductsList(pageIndex + 1)">Next</a>
+                        </li>
+                    </ul>
+               </nav>
             </div>
         </div>
     </div>

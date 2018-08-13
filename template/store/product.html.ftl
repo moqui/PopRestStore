@@ -1,18 +1,35 @@
+<#assign inStock = false>
+<#if (product.productTypeEnumId == "PtVirtual")!false>
+    <#assign isVirtual = true >
+<#else>
+    <#assign isVirtual = false >
+    <#if productAvailability.get(productId)!false><#assign inStock = true></#if>
+</#if>
 <div class="container mt-2">
     <a class="customer-link" href="/store">Home <i class="fas fa-angle-right"></i></a>
-    <#-- TODO: replace demo breadcrumbs with real or get rid of -->
-    <span class="customer-link">All Products <i class="fas fa-angle-right"></i></span>
-    <span class="customer-link">Office Supplies</span>
 </div>
 <div class="container container-text mt-1">
-    <div id="isSuccessAddCart" class="alert alert-primary mt-3 mb-3" role="alert">
-        <i class="far fa-check-square"></i> You added a ${product.productName} to your shopping cart.
-        <a class="float-right" href="/store/d#/checkout">Go to Checkout <i class="fas fa-arrow-right"></i></a>
-    </div>
+    <#if addedCorrect?? && addedCorrect == 'true'>
+        <div class="alert alert-primary mt-3 mb-3" role="alert">
+            <i class="far fa-check-square"></i> You added a ${product.productName} to your shopping cart.
+            <a class="float-right" href="/store/d#/checkout">Go to Checkout <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </#if>
     <div class="row mt-2">
         <div class="col col-lg-1 col-sm-4 col-4">
             <div>
+                <#assign imgDetail = false/>
                 <#list product.contentList as img>
+                    <#if img.productContentTypeEnumId == "PcntImageDetail">
+                        <#assign imgDetail = true/>
+                        <#if imgContent??>
+                            <#assign imgContent = img>
+                        <#else>
+                            <#if imgContent.sequenceNum > img.sequenceNum>
+                                <#assign imgContent = img>
+                            </#if>
+                        </#if>
+                    </#if>
                     <#if img.productContentTypeEnumId == "PcntImageLarge">
                         <img width="200px" height="200px" onClick="changeLargeImage('${img.productContentId}');"
                             class="figure-img img-fluid product-img"
@@ -23,7 +40,8 @@
             </div>
         </div>
         <div class="col col-lg-4 col-sm-8 col-8">
-            <img id="product-image-large" class="product-img-select">
+            <img id="product-image-large" class="product-img-select" 
+                <#if imgDetail>data-toggle="modal" data-target="#modal2"</#if>>
         </div>
         <div class="col col-lg-4 col-sm-12 col-12">
             <p>
@@ -42,9 +60,8 @@
             </div>
         </div>
         <div class="col col-lg-3">
-            <#-- TODO: implement add to cart form target, see old PopCommerce app for example -->
-            <form id="cart-add-form">
-                <div class="card cart-div">
+            <form class="card cart-div" method="post" action="/store/product/addToCart">
+                <div>
                     <#if product.listPrice??>
                         <span class="save-circle" v-if="product.listPrice">
                             <span class="save-circle-title">SAVE</span>
@@ -63,14 +80,14 @@
                                 </#if>
                             </p>
                         </div>
-                        <#--
                         <hr class="product-hr" style="margin-top: -5px;">
+                        <#--
                         <span class="product-description">On sale until midnight or until stocks last.</span>
-                        -->
                         <hr class="product-hr">
+                        -->
                     </div>
                     <div class="form-group col">
-                        <input type="hidden" value="${product.pseudoId}" name="productId" />
+                        <input type="hidden" value="${product.pseudoId}" name="productId" id="productId" />
                         <input type="hidden" value="${product.priceUomId}" name="currencyUomId" />
                         <input type="hidden" value="${ec.web.sessionToken}" name="moquiSessionToken"/>
                         <span class="product-description">Quantity</span>
@@ -80,8 +97,34 @@
                             <option value="3">3</option>
                         </select>
                     </div>
+                    <#if isVirtual>
+                        <div class="form-group col">
+                            <#assign featureTypes = variantsList.listFeatures.keySet()>
+                            <#assign arrayIds = [] />
+                            <#list featureTypes![] as featureType>
+                                ${featureType.description!}
+                                <#assign variants = variantsList.listFeatures.get(featureType)>
+                                <select class="form-control" id="variantProduct${featureType?index}" required>
+                                    <option value="" disabled selected>
+                                        Select an Option 
+                                    </option>
+                                    <#list variants![] as variant>
+                                        <option value="${variant.abbrev!}">
+                                            ${variant.description!} 
+                                        </option>
+                                    </#list>
+                                </select>
+                            </#list>
+                        </div>
+                    </#if>
                 </div>
-                <button id="cartAdd" class="btn cart-form-btn col"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                <#if inStock>
+                    <button id="cartAdd" class="btn cart-form-btn col" type="submit">
+                        <i class="fa fa-shopping-cart"></i> Add to Cart
+                    </button>
+                <#else>
+                    <h5 class="text-center">Out of Stock</h5>
+                </#if>
             </form>
         </div>
     </div>
@@ -123,7 +166,7 @@
 </div>
 <div class="modal fade" id="modal1">
     <div class="modal-dialog" role="document">
-        <form class="modal-content" id="product-review-form">
+        <form class="modal-content" id="product-review-form" method="post" action="/store/product/addReview">
             <div class="modal-header">
                 <h5 class="modal-title">Add an Review</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -148,16 +191,57 @@
                 <textarea class="form-control text-area-review" rows="5" name="productReview" id="productReview"></textarea>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-continue" id="addReview">Add Review</button>
+                <button class="btn btn-continue" id="addReview" type="submit">Add Review</button>
                 <a data-dismiss="modal" class="btn btn-link">Or Cancel</a>
             </div>
         </form>
+    </div>
+</div>
+<div class="modal fade" id="modal2">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="product-review-form">
+            <div class="modal-header">
+                <h5 class="modal-title">Image Detail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <img width="100%" height="200px" class="figure-img img-fluid product-img"
+                    src="/store/content/productImage/${imgContent.productContentId}" alt="Product Image">
+            </div>
+            <div class="modal-footer">
+                <a data-dismiss="modal" class="btn btn-link">Close</a>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
     var prodImageUrl = "/store/content/productImage/";
     var $productImageLarge = document.getElementById("product-image-large");
+
+    document.body.onload = function() {
+        <#if isVirtual>
+            var productAvailability = ${productAvailability?replace('=',':')};
+            var variantIdList = [];
+            <#list 0..variantsList.listFeatures.keySet()?size - 1  as x>
+                $('#variantProduct${x}').on('change', function() {
+                    var productVariantId = $('#productId').val();
+                    variantIdList[${x}] = this.value;
+                    if(typeof(variantIdList[1]) != 'undefined') {
+                        productVariantId = productVariantId + '_' + variantIdList[1] + '_' + variantIdList[0];
+                    } else {
+                        productVariantId = productVariantId + '_' + variantIdList[0];
+                    }
+                });
+            </#list>
+        </#if> 
+    }
+
+    function onChangeOption(variantId) {
+        console.log(variantId + $("#productId").val());
+    }
+
     function changeLargeImage(productContentId) { $productImageLarge.src = prodImageUrl + productContentId; }
     //Default image
     <#if product.contentList?has_content>changeLargeImage("${product.contentList[0].productContentId}");</#if>

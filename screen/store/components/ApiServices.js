@@ -53,13 +53,14 @@ var ProductService = {
     getFeaturedProducts() {
         return axios.get("/rest/s1/pop/categories/PopcAllProducts/products").then(function (response) { return response.data.productList; });
     },
-    getProductBySearch(searchTerm, categoryId) {
-        var params = "term=" + searchTerm;
+    getProductBySearch(searchTerm, pageIndex, pageSize, categoryId) {
+        var params = "term=" + searchTerm + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize;
         if (categoryId && categoryId.length) params += "&productCategoryId=" + categoryId;
         return axios.get("/rest/s1/pop/products/search?" + params).then(function (response) { return response.data; });
     },
-    getProductsByCategory(categoryId) {
-        return axios.get("/rest/s1/pop/categories/" + categoryId + "/products").then(function (response) { return response.data.productList; });
+    getProductsByCategory(categoryId, pageIndex, pageSize) {
+        var params = "?pageIndex=" + pageIndex + "&pageSize=" + pageSize;
+        return axios.get("/rest/s1/pop/categories/" + categoryId + "/products" + params).then(function (response) { return response.data; });
     },
     getCategoryInfoById(categoryId) {
         return axios.get("/rest/s1/pop/categories/" + categoryId + "/info").then(function (response) { return response.data; });
@@ -69,6 +70,10 @@ var ProductService = {
     },
     getProduct(productId) {
         return axios.get("/rest/s1/pop/products/" + productId).then(function (response) { return response.data; });
+    },
+    getProductContent(productId, contentTypeEnumId) {
+        return axios.get("/rest/s1/pop/products/content?productId=" + productId + "&productContentTypeEnumId=" + contentTypeEnumId)
+            .then(function (response) { return response.data; });
     },
     addProductCart(product,headers) {
         return axios.post("/rest/s1/pop/cart/add",product,headers).then(function (response) { return response.data; });

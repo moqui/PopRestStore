@@ -1,5 +1,5 @@
 /* This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. */
-
+var preLoginRoute = {};
 var appObjects = {
     // see https://router.vuejs.org/en/essentials/history-mode.html
     // for route path expressions see https://router.vuejs.org/en/essentials/dynamic-matching.html AND https://github.com/vuejs/vue-router/blob/dev/examples/route-matching/app.js
@@ -7,7 +7,11 @@ var appObjects = {
         // TODO sooner or later: base: storeConfig.basePath, mode: 'history',
         routes: [
             { path: "/", name: "landing", component: storeComps.LandingPageTemplate },
-            { path: "/login", name: "login", component: storeComps.LoginPageTemplate },
+            { path: "/login", name: "login", component: storeComps.LoginPageTemplate, 
+               beforeEnter: (to, from, next) => {
+                    preLoginRoute = from;
+                    next();
+               } },
             { path: "/search/:searchText", name: "search", component: storeComps.SearchTemplate },
             { path: "/category/:categoryId/:extra?", name: "category", component: storeComps.CategoryPageTemplate },
             { path: "/product/:productId/:extra?", name: "product", component: storeComps.ProductPageTemplate },

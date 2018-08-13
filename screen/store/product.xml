@@ -14,17 +14,52 @@ along with this software (see the LICENSE.md file). If not, see
 -->
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
         require-authentication="anonymous-view" allow-extra-path="true">
-     <parameter name="productId"/>
-     <parameter name="star"/>
+    <parameter name="productId"/>
+    <parameter name="addedCorrect"/>
+
+    <transition name="addToCart">
+        <actions>
+            <service-call name="popstore.CartServices.add#Product" out-map="addOut"
+                in-map="[productId:productId, quantity:quantity, currencyUomId:currencyUomId]"/> 
+                <set field="addedCorrect" from="false"/>
+                <if condition="addOut.orderHeader != null">
+                    <set field="addedCorrect" from="true"/>
+                </if>
+        </actions>
+        <default-response url="."><parameter name="addedCorrect"/></default-response>
+        <error-response url="."/>
+    </transition>
+
+    <transition name="addReview">
+        <actions>
+            <service-call name="popstore.ProductServices.create#ProductReview" 
+                in-map="[productId:productId, productRating:productRating, productReview:productReview]"/>
+        </actions>
+        <default-response url="."/>
+        <error-response url="."/>
+    </transition>
 
     <pre-actions>
      	<set field="star" from="5"/>
+        <set field="imgContent" from="[]"/>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
         <if condition="extraPathNameList &amp;&amp; !productId"><set field="productId" from="extraPathNameList[0]"/></if>
+        <if condition="extraPathNameList &amp;&amp; !addedCorrect"><set field="addedCorrect" from="extraPathNameList[1]"/></if>
     </pre-actions>
     <actions>
         <service-call name="popstore.ProductServices.get#ProductInfo" out-map="product" in-map="[productId:productId]"/>
         <service-call name="popstore.ProductServices.get#ProductReviews" out-map="reviewsList" in-map="[productId:productId]"/>
+        <service-call name="popstore.ProductServices.find#ProductAvailability" in-map="context" out-map="context" />
+        <set field="inStock" from="false"/>
+        <if condition="product.productTypeEnumId == 'PtVirtual'">
+            <service-call name="popstore.ProductServices.get#ProductVariantsDisplayInfo" 
+                in-map="context" out-map="variantsList" />
+        <else>
+            <if condition="productAvailability.get(productId)">
+                <set field="inStock" from="true"/>
+            </if>
+        </else>
+        </if>
     </actions>
 
 

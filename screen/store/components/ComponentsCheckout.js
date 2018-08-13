@@ -151,14 +151,15 @@ storeComps.CheckOutPage = {
             ProductService.setCartPlace(data,this.axiosConfig).then(function (data) {
                 if(data.orderHeader != null) {
                     this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
+                } else {
+                    this.isSpinner = false;
+                    this.showModal("modal-error");
                 }
                 if(data.messages.includes("error") && data.messages.includes("122")) {
                     this.responseMessage = "Please provide a valid Billing ZIP";
                 } else {
                     this.responseMessage = data.messages;
                 }
-                this.isSpinner = false;
-                this.showModal("modal-error");
             }.bind(this)).catch(function (error) {
                 this.isSpinner = true;
                 this.responseMessage = error;
@@ -188,6 +189,7 @@ storeComps.CheckOutPage = {
             this.paymentMethod.address1 = address.postalAddress.address1;
             this.paymentMethod.address2 = address.postalAddress.address2;
             this.paymentMethod.toName = address.postalAddress.toName;
+            this.paymentMethod.attnName = address.postalAddress.attnName;
             this.paymentMethod.city = address.postalAddress.city;
             this.paymentMethod.countryGeoId = address.postalAddress.countryGeoId;
             this.paymentMethod.contactNumber = address.telecomNumber.contactNumber;
@@ -200,6 +202,7 @@ storeComps.CheckOutPage = {
             this.shippingAddress.address1 = address.postalAddress.address1;
             this.shippingAddress.address2 = address.postalAddress.address2;
             this.shippingAddress.toName = address.postalAddress.toName;
+            this.shippingAddress.attnName = address.postalAddress.attnName;
             this.shippingAddress.city = address.postalAddress.city;
             this.shippingAddress.countryGeoId = address.postalAddress.countryGeoId;
             this.shippingAddress.contactNumber = address.telecomNumber.contactNumber;
@@ -207,6 +210,7 @@ storeComps.CheckOutPage = {
             this.shippingAddress.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
             this.shippingAddress.postalContactMechId = address.postalContactMechId;
             this.shippingAddress.telecomContactMechId = address.telecomContactMechId;
+            this.getRegions(address.postalAddress.countryGeoId);
             this.responseMessage = "";
         },
         selectPaymentMethod: function(method) {
@@ -234,12 +238,16 @@ storeComps.CheckOutPage = {
     },
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
-        this.getCartShippingOptions();
-        this.getCartInfo();
-        this.getCustomerShippingAddresses();
-        this.getCustomerPaymentMethods();
-        this.getCountries();
-        if (!this.productsInCart) { location.href ="/store"; }
+        // query: { url: 'checkout' }
+        if (this.$root.apiKey == null) { 
+            this.$router.push({ name: 'login'}); 
+        } else {
+            this.getCartShippingOptions();
+            this.getCartInfo();
+            this.getCustomerShippingAddresses();
+            this.getCustomerPaymentMethods();
+            this.getCountries();
+        }
     }
 };
 storeComps.CheckOutPageTemplate = getPlaceholderRoute("template_client_checkout", "CheckOutPage");

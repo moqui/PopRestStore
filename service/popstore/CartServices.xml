@@ -187,7 +187,7 @@ General Order Placement and eCommerce Usage
         </actions>
     </service>
 
-    <service verb="add" noun="Product">
+    <service verb="add" noun="Product" authenticate="anonymous-all">
         <implements service="popstore.CartServices.get#CartInfo"/>
         <in-parameters>
             <parameter name="productId" required="true"/>

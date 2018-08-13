@@ -401,12 +401,18 @@
                                 {{responseMessage}}
                             </div>
                             <div class="form-group row">
-                                <label for="name" class="col-sm-3 col-form-label modal-text">Name <span class="modal-text-required">*</span></label>
+                                <label for="name" class="col-sm-3 col-form-label modal-text">To <span class="modal-text-required">*</span></label>
                                 <div class="col-sm-9">
                                     <input class="form-control" id="name"
                                         type="text"
                                         v-model="shippingAddress.toName"
                                         required/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label modal-text">Attention</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control"  type="text" v-model="shippingAddress.attnName"/>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -421,18 +427,6 @@
                                             {{country.geoName}}
                                         </option>
                                     </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="city" class="col-sm-3 col-form-label modal-text">
-                                    City 
-                                    <span class="modal-text-required">*</span>
-                                </label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="city"
-                                        type="text"
-                                        v-model="shippingAddress.city"
-                                        required/>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -453,6 +447,18 @@
                                     <input class="form-control" id="adress2"
                                         type="text"
                                         v-model="shippingAddress.address2"
+                                        required/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="city" class="col-sm-3 col-form-label modal-text">
+                                    City 
+                                    <span class="modal-text-required">*</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" id="city"
+                                        type="text"
+                                        v-model="shippingAddress.city"
                                         required/>
                                 </div>
                             </div>
@@ -502,10 +508,10 @@
                 </div>
             </div>
         </div>
-        <span class="link-text">
+        <p class="link-text mb-5">
             Forgot something? 
             <a href="/store" class="text-add">Head back to the shop.</a>
-        </span>
+        </p>
     </div>
     <footer-page :infoLink="false" />
 </div>

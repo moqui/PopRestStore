@@ -43,8 +43,11 @@
                     </div>
                 </li>
 
-                <#-- TODO: hard coded category ID -->
-                <a class="nav-link" href="/store/d#/category/PopcAllProducts">Deals</a>
+                <#if storeInfo.categoryByType.PsctPromotions??>
+                    <a class="nav-link" href="/store/d#/category/${storeInfo.categoryByType.PsctPromotions.productCategoryId}">
+                        ${storeInfo.categoryByType.PsctPromotions.categoryName}
+                    </a>
+                </#if>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -74,7 +77,9 @@
                             <a class="dropdown-item item-color" href="/store/d#/account">Account Settings</a>
                             <a class="dropdown-item item-color" href="/store/d#/orders">My Orders</a>
                             <div role="separator" class="dropdown-divider"></div>
-                            <a class="dropdown-item item-color" id="logout">Signout</a>
+                            <form method="get" action="/store/logOut">
+                                <button type="submit" class="dropdown-item item-color">Signout</button>
+                            </form>
                         </div>
                     </li>
                 <#else>
@@ -90,7 +95,6 @@
                     <a class="nav-link" href="/store/d#/checkout">
                         <span class="cart-quantity" id="cart-quantity">
                             <#assign cartCount = 0>
-                            <#-- TODO: show total of quantities for product items only (not shipping, discounts, etc) -->
                             <#if cartInfo.orderItemList??><#list cartInfo.orderItemList as item>
                                 <#if item.itemTypeEnumId == "ItemProduct"><#assign cartCount = cartCount + (item.quantity!1)></#if></#list></#if>
                             ${cartCount}
