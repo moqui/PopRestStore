@@ -63,7 +63,7 @@
                 <template v-if="customerInfo.firstName != null">
                     <li class="nav-item dropdown">
                         <a class="nav-link text-capitalize" href="#" id="navbarMenuAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-user"></i> {{customerInfo.firstName}} {{customerInfo.middleName}} Account <i class="fas fa-angle-down icon-down"></i></a>
+                            <i class="fas fa-user"></i> {{customerInfo.firstName}} {{customerInfo.lastName}} <i class="fas fa-angle-down icon-down"></i></a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <router-link :to="'/account'" tag="a" class="dropdown-item item-color">Account Settings</router-link>
                             <router-link :to="'/orders'" tag="a" class="dropdown-item item-color">My Orders</router-link>
