@@ -119,7 +119,7 @@ along with this software (see the LICENSE.md file). If not, see
         </out-parameters>
         <actions>
             <!-- create account and login -->
-            <service-call name="mantle.party.PartyServices.create#Account" in-map="context + [roleTypeId:'Customer']"/>
+            <service-call name="mantle.party.PartyServices.create#Account" in-map="context + [roleTypeId:'Customer', loginAfterCreate:false]"/>
 
             <if condition="ec.user.userAccount != null">
                 <set field="customerPartyId" from="ec.user.userAccount.partyId"/>
