@@ -85,15 +85,19 @@
                         </#list>
                     </#if>
                 </div>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item <#if pageIndex?number == 0>disabled</#if>">
-                            <a class="page-link" href="/store/category/${categoryId}?pageIndex=${pageIndex?number - 1}">Previous</a>
-                        </li>
-                        <#list 0..(products.productListCount / products.productListPageSize)?floor as n>
-                            <li class="page-item <#if pageIndex?number == n>active</#if>">
-                                <a class="page-link" href="/store/category/${categoryId}?pageIndex=${n}">${n + 1}</a>
-                            </li>
+            <nav aria-label="Page navigation" class="m-3 <#if products.productListCount == 0 || products.productListCount <= products.productListPageSize >d-none</#if>"><!-- Pagination bar -->
+                <ul class="pagination justify-content-center">
+                    <li class="page-item <#if pageIndex?number == 0>disabled</#if>">
+                        <a class="page-link" href="/store/category/${categoryId}?pageIndex=${pageIndex?number - 1}">Previous</a>
+                    </li>
+                        <#assign rest = products.productListCount % products.productListPageSize>
+                        <#assign lenght = (products.productListCount / products.productListPageSize)?floor>
+                        <#list 0..lenght as n>
+                            <#if (lenght != n || rest > 0)>
+                                <li class="page-item <#if pageIndex?number == n>active</#if>">
+                                    <a class="page-link" href="/store/category/${categoryId}?pageIndex=${n}">${n + 1}</a>
+                                </li>
+                            </#if>
                         </#list>
                         <li class="page-item <#if products.productListCount == products.productListPageRangeHigh>disabled</#if>">
                             <a class="page-link" href="/store/category/${categoryId}?pageIndex=${pageIndex?number + 1}">Next</a>
