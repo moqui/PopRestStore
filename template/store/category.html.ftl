@@ -1,8 +1,11 @@
 <div>
     <div class="container">
         <div class="container mt-2">
-            <a class="customer-link" href="/store">Home <i class="fas fa-angle-right"></i></a>
-            <span class="modal-text">${category.categoryName}</span>
+            <a class="customer-link" href="/store">Home 
+            <i class="fas fa-angle-right"></i></a>
+            <span class="modal-text">
+                ${category.categoryName}
+            </span>
         </div>
         <div class="row mt-4">
             <div class="col col-lg-2 col-12">
@@ -53,6 +56,12 @@
                                                     class="figure-img img-fluid product-img"
                                                     src="/store/content/productImage/${img.productContentId}"
                                                     alt="Product Image">
+                                            <#--  If no image found at src, use a default placeholder  -->
+                                            <#else>
+                                                <img width="200px" height="200px"
+                                                    class="figure-img img-fluid product-img"
+                                                    src="/store/assets/default.png"
+                                                    alt="Product does not have image">
                                             </#if>
                                             <figcaption class="text-left title-product-text figure-caption">${localProd.productName}</figcaption>
                                             <figcaption class="text-left figure-caption">
