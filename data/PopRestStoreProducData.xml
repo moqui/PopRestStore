@@ -177,6 +177,7 @@ along with this software (see the LICENSE.md file). If not, see
         <categories productCategoryId="DEMO_OFFICE" fromDate="1265184000000" sequenceNum="1"/>
         <dimensions dimensionTypeId="ShippingWeight" value="0.25" valueUomId="WT_lb"/>
 
+        <!-- Adds quantity in stock to the USB product so that the checkout form can be tested -->
         <mantle.product.asset.Asset assetId="DEMO_USB32G" assetTypeEnumId="AstTpInventory" classEnumId="AsClsInventoryFin"
                 statusId="AstAvailable" facilityId="ZIRET_WH" locationSeqId="01010101" ownerPartyId="ORG_ZIZI_RETAIL"
                 hasQuantity="Y" quantityOnHandTotal="10" availableToPromiseTotal="10"
