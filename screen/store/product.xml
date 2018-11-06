@@ -20,7 +20,7 @@ along with this software (see the LICENSE.md file). If not, see
     <transition name="addToCart">
         <actions>
             <service-call name="popstore.CartServices.add#Product" out-map="addOut"
-                in-map="[productId:productId, quantity:quantity, currencyUomId:currencyUomId]"/> 
+                in-map="[productId:productId, quantity:quantity, currencyUomId:currencyUomId, productStoreId: productStoreId]"/>
                 <set field="addedCorrect" from="false"/>
                 <if condition="addOut.orderHeader != null">
                     <set field="addedCorrect" from="true"/>
@@ -48,6 +48,7 @@ along with this software (see the LICENSE.md file). If not, see
     </pre-actions>
     <actions>
         <service-call name="popstore.ProductServices.get#ProductInfo" out-map="product" in-map="[productId:productId]"/>
+        <service-call name="popstore.ProductServices.get#ProductQuantity" out-map="productQuantity" in-map="[productId:productId]"/>
         <service-call name="popstore.ProductServices.get#ProductReviews" out-map="reviewsList" in-map="[productId:productId]"/>
         <service-call name="popstore.ProductServices.find#ProductAvailability" in-map="context" out-map="context" />
         <set field="inStock" from="false"/>

@@ -177,6 +177,14 @@ along with this software (see the LICENSE.md file). If not, see
         <categories productCategoryId="DEMO_OFFICE" fromDate="1265184000000" sequenceNum="1"/>
         <dimensions dimensionTypeId="ShippingWeight" value="0.25" valueUomId="WT_lb"/>
 
+        <mantle.product.asset.Asset assetId="DEMO_USB32G" assetTypeEnumId="AstTpInventory" classEnumId="AsClsInventoryFin"
+                statusId="AstAvailable" facilityId="ZIRET_WH" locationSeqId="01010101" ownerPartyId="ORG_ZIZI_RETAIL"
+                hasQuantity="Y" quantityOnHandTotal="10" availableToPromiseTotal="10"
+                acquireCost="7.50" acquireCostUomId="USD" receivedDate="1265184000000">
+            <mantle.product.asset.AssetDetail assetDetailId="DEMO_USB32G" effectiveDate="1265184000000"
+                    quantityOnHandDiff="100" availableToPromiseDiff="100"/>
+        </mantle.product.asset.Asset>
+
         <contents productContentId="DEMO_USB32G_DL" productContentTypeEnumId="PcntDescriptionLong" locale="en_US"
                 contentLocation="dbresource://mantle/content/product/DEMO_USB32G/description.html"/>
         <contents productContentId="DEMO_USB32G_ILOP" productContentTypeEnumId="PcntImageLarge" locale="" sequenceNum="1" description="USB Open Partial"
@@ -194,7 +202,7 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.resource.DbResourceFile resourceId="DEMO_USB32G_DL" rootVersionName="01" mimeType="text/html" versionName="01">
         <fileData><![CDATA[PHA+SGlnaC1xdWFsaXR5IG1ldGFsIGNhc2luZyBmb3IgZHVyYWJpbGl0eTwvcD4NCg0KPHA+TkFORCBGbGFzaCBUZWNobm9sb2d5PC9wPg0KDQo8cD5XYXRlciBwcm9vZiwgU2hvY2sgcHJvb2YsIG1hZ25ldCBwcm9vZiwgdGVtcCBwcm9vZiBhbmQgWC1yYXkgcHJvb2Ygd2l0aCBhIDUteWVhcnMgd2FycmFudHk8L3A+DQoNCjxwPkhpZ2gtc3BlZWQgVVNCIDMuMCBmbGFzaCBkcml2ZSBmb3IgZmFzdCBkYXRhIHRyYW5zZmVyPC9wPg0KDQo8cD5PcGVyYXRpbmcgdGVtcGVyYXR1cmUgaXMgbWludXMgMTAgdG8gNzAgZGVncmVlIENlbHNpdXM8L3A+]]></fileData>
     </moqui.resource.DbResourceFile>
-
+    
     <!-- Coffee Mug -->
     <mantle.product.Product productId="DEMO_CMUG" productTypeEnumId="PtAsset" assetTypeEnumId="AstTpInventory" assetClassEnumId="AsClsInventoryFin"
             chargeShipping="Y" returnable="Y" productName="Coffee Mug" description="">

@@ -34,14 +34,16 @@
                         <img width="200px" height="200px" onClick="changeLargeImage('${img.productContentId}');"
                             class="figure-img img-fluid product-img"
                             src="/store/content/productImage/${img.productContentId}"
-                            alt="Product Image">
+                            alt="Product Image" onerror="src='/store/assets/default.png'">
                     </#if>
                 </#list>
             </div>
         </div>
         <div class="col col-lg-4 col-sm-8 col-8">
-            <img id="product-image-large" class="product-img-select" 
-                <#if imgDetail>data-toggle="modal" data-target="#modal2"</#if>>
+            <#-- This is still incorrect for the case when no image for the item exists, but the previous
+            code had a syntax error. -->
+                <img id="product-image-large" class="product-img-select" 
+                    data-toggle="modal" data-target="#modal2">
         </div>
         <div class="col col-lg-4 col-sm-12 col-12">
             <p>
@@ -90,11 +92,15 @@
                         <input type="hidden" value="${product.pseudoId}" name="productId" id="productId" />
                         <input type="hidden" value="${product.priceUomId}" name="currencyUomId" />
                         <input type="hidden" value="${ec.web.sessionToken}" name="moquiSessionToken"/>
-                        <span class="product-description">Quantity</span>
-                        <select class="form-control" name="quantity">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
+                        <span class="product-description text-gdark">Quantity</span>
+                        <select class="form-control text-gdark" name="quantity" id="quantity">
+                            <#if productQuantity.productQuantity??>
+                                <#list 1..productQuantity.productQuantity as x>
+                                    <option value="${x}">${x}</option>
+                                </#list>
+                            <#else>
+                                <option value="0">0</option> 
+                            </#if>
                         </select>
                     </div>
                     <#if isVirtual>
@@ -164,7 +170,7 @@
     <br>
     <button data-toggle="modal" data-target="#modal1" class="btn btn-continue review-btn">Write a Review</button>
 </div>
-<div class="modal fade" id="modal1">
+<div class="modal fade" id="modal1"><!-- Image detail -->
     <div class="modal-dialog" role="document">
         <form class="modal-content" id="product-review-form" method="post" action="/store/product/addReview">
             <div class="modal-header">
@@ -236,8 +242,9 @@
                 });
             </#list>
         </#if> 
-    }
 
+    }
+    
     function onChangeOption(variantId) {
         console.log(variantId + $("#productId").val());
     }
