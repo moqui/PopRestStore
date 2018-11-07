@@ -32,10 +32,6 @@ storeComps.CheckOutPage = {
                 this.responseMessage = "Verify the required fields";
                 return;
             }
-            if (this.shippingAddress.postalCode.length < 5 || this.shippingAddress.postalCode.length > 7) {
-                this.responseMessage = "Type a valid postal code";
-                return;
-            }
 
             CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(function (data) {
                 this.shippingAddress = {};

@@ -114,7 +114,7 @@
                         || listShippingAddress == null || listShippingAddress.length == 0 ">
                         Continue
                     </button>
-                    <a data-toggle="modal" data-target="#modal1" @click="cleanShippingAddress()" class="text-add float-right">
+                    <a data-toggle="modal" data-target="#modal1" @click="cleanShippingAddress()" class="text-add">
                         Add a New Address
                     </a>
                 </div>
@@ -468,13 +468,20 @@
                                     <span class="modal-text-required">*</span>
                                 </label>
                                 <div class="col-sm-9">
-                                    <select v-model="shippingAddress.stateProvinceGeoId" class="form-control">
+                                    <select v-if="regionsList.length > 0" v-model="shippingAddress.stateProvinceGeoId" class="form-control">
                                         <option v-for="region in regionsList" :value="region.geoId">{{region.geoName}}</option>
                                     </select>
+                                    <input v-else class="form-control" id="state"
+                                        type="text"
+                                        v-model="shippingAddress.state"
+                                        required/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="postalcode" class="col-sm-3 col-form-label modal-text">Zip Code</label>
+                                <label for="postalcode" class="col-sm-3 col-form-label modal-text">
+                                    Zip Code
+                                    <span class="modal-text-required">*</span>
+                                </label>
                                 <div class="col-sm-9">
                                     <input class="form-control" id="postalcode"
                                         type="text"
@@ -500,7 +507,7 @@
                                     <span v-else>Add Address</span>
                                 </button>
                                 <a @click="hideModal('modal1')" class="btn btn-link text-add col col-sm-9 offset-sm-1">
-                                    Or Cancel
+                                    Cancel
                                 </a>
                             </div>
                         </div>
