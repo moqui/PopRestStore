@@ -65,31 +65,31 @@ storeComps.CheckOutPage = {
         addCustomerShippingAddress: function() {
             var error = false;
             if (this.shippingAddress.toName == null || this.shippingAddress.toName.trim() === "") {
-                this.toNameErrorMessage = "Please enter a recipient name.";
+                this.toNameErrorMessage = "Please enter a recipient name";
                 error = true;
             }
             if (this.shippingAddress.countryGeoId == null || this.shippingAddress.countryGeoId.trim() === "") {
-                this.countryErrorMessage = "Please select a country.";
+                this.countryErrorMessage = "Please select a country";
                 error = true;
             } 
             if (this.shippingAddress.address1 == null || this.shippingAddress.address1.trim() === "") {
-                this.addressErrorMessage = "Please enter a street address.";
+                this.addressErrorMessage = "Please enter a street address";
                 error = true;
             } 
             if (this.shippingAddress.city == null || this.shippingAddress.city.trim() === "") {
-                this.cityErrorMessage = "Please enter a city.";
+                this.cityErrorMessage = "Please enter a city";
                 error = true;
             } 
-            if (this.shippingAddress.state == null || this.shippingAddress.state.trim() === "") {
-                this.stateErrorMessage = "Please enter a state.";
+            if (this.shippingAddress.stateProvinceGeoId == null || this.shippingAddress.stateProvinceGeoId.trim() === "") {
+                this.stateErrorMessage = "Please enter a state";
                 error = true;
             } 
             if (this.shippingAddress.postalCode == null || this.shippingAddress.postalCode.trim() === "") {
-                this.postalCodeErrorMessage = "Please enter a postcode.";
+                this.postalCodeErrorMessage = "Please enter a postcode";
                 error = true;
             } 
             if (this.shippingAddress.contactNumber == null || this.shippingAddress.contactNumber.trim() === "") {
-                this.contactNumberErrorMessage = "Please enter a phone number.";
+                this.contactNumberErrorMessage = "Please enter a phone number";
                 error = true;
             }
             if(error){

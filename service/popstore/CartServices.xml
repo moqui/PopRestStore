@@ -196,6 +196,7 @@ General Order Placement and eCommerce Usage
         </in-parameters>
         <actions>
             <!-- NOTE: use the web session for attributes such as cartOrderId for security; this won't work in a stateless mode or outside a web session -->
+            <set field="carrierPartyId" from="'_NA_'"/>
             <set field="sessionAttributes" from="ec.web.sessionAttributes"/>
 
             <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
