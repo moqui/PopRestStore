@@ -409,7 +409,7 @@
                                 <input class="input-text input-border form-control" id="name"
                                         type="text"
                                         v-model="shippingAddress.toName"
-                                        v-on:click="resetToNameErrorMessage(shippingAddress.toName)"
+                                        @focus="resetToNameErrorMessage(shippingAddress.toName)"
                                         required/>
                                 <div v-if="toNameErrorMessage != null && toNameErrorMessage != ''">
                                     <small class="input-text form-text response-text">{{toNameErrorMessage}}.</small>
@@ -429,7 +429,7 @@
                             <div class="form-group">
                                 <label for="country" class="form-heading form-text-align">Country</label>
                                     <select v-model="shippingAddress.countryGeoId" class="input-text input-border form-control"
-                                        @change="getRegions(shippingAddress.countryGeoId)" v-on:click="resetCountryErrorMessage(shippingAddress.countryGeoId)">
+                                        @change="getRegions(shippingAddress.countryGeoId)" @focus="resetCountryErrorMessage(shippingAddress.countryGeoId)">
                                         <option v-for="country in countriesList" :value="country.geoId">
                                             {{country.geoName}}
                                         </option>
@@ -445,7 +445,7 @@
                                         type="text"
                                         placeholder="Line 1"
                                         v-model="shippingAddress.address1"
-                                        v-on:click="resetAddressErrorMessage(shippingAddress.address1)"
+                                        @focus="resetAddressErrorMessage(shippingAddress.address1)"
                                         required/>
                                 <!-- <small id="requiredMessage" class="input-text form-text text-muted">Line 1</small> -->
                                 <div v-if="addressErrorMessage != null && addressErrorMessage != ''">
@@ -464,7 +464,7 @@
                                 <input class="input-text input-border form-control" id="city"
                                         type="text"
                                         v-model="shippingAddress.city"
-                                        v-on:click="resetCityErrorMessage(shippingAddress.city)"
+                                        @focus="resetCityErrorMessage(shippingAddress.city)"
                                         required/>
                                 <div v-if="cityErrorMessage != null && cityErrorMessage != ''">
                                     <small class="input-text form-text response-text">{{cityErrorMessage}}.</small>
@@ -474,13 +474,13 @@
                             <div class="form-group">
                                 <label for="state" class="form-heading form-text-align">State</label>
                                 <select v-if="regionsList.length > 0" v-model="shippingAddress.stateProvinceGeoId" class="input-text input-border form-control"
-                                        v-on:click="resetStateErrorMessage(shippingAddress.stateProvinceGeoId)">
+                                        @focus="resetStateErrorMessage(shippingAddress.stateProvinceGeoId)">
                                         <option v-for="region in regionsList" :value="region.geoId">{{region.geoName}}</option>
                                 </select>
                                 <input v-else class="input-text input-border form-control" id="state"
                                     type="text"
                                     v-model="shippingAddress.state"
-                                    v-on:click="resetStateErrorMessage(shippingAddress.stateProvinceGeoId)"
+                                    @focus="resetStateErrorMessage(shippingAddress.stateProvinceGeoId)"
                                     required/>
                                 <div v-if="stateErrorMessage != null && stateErrorMessage != ''">
                                     <small class="input-text form-text response-text">{{stateErrorMessage}}.</small>
@@ -492,7 +492,7 @@
                                 <input class="input-text input-border form-control" id="postalcode"
                                     type="text"
                                     v-model="shippingAddress.postalCode"
-                                    v-on:click="resetPostalCodeErrorMessage(shippingAddress.postalCode)"
+                                    @focus="resetPostalCodeErrorMessage(shippingAddress.postalCode)"
                                     required/>
                                 <div v-if="postalCodeErrorMessage != null && postalCodeErrorMessage != ''">
                                     <small class="input-text form-text response-text">{{postalCodeErrorMessage}}.</small>
@@ -504,7 +504,7 @@
                                 <input class="input-text input-border form-control" id="contactnumber"
                                     type="tel"
                                     v-model="shippingAddress.contactNumber"
-                                    v-on:click="resetContactNumberErrorMessage(shippingAddress.contactNumber)"
+                                    @focus="resetContactNumberErrorMessage(shippingAddress.contactNumber)"
                                     required/>
                                 <div v-if="contactNumberErrorMessage != null && contactNumberErrorMessage != ''">
                                     <small class="input-text form-text response-text">{{contactNumberErrorMessage}}.</small>
