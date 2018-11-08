@@ -312,5 +312,7 @@ a:hover { text-decoration: none; }
 
 .input-text { line-height: 1; padding: .375rem .5rem; }
 
+.response-text { color: #dc3545; }
+
 /* #country-dropdown { border-style: solid; border-color: rgb(206, 212, 218); border-width: 0 0 1px 0; border-radius: 0; box-shadow: none; } */
 

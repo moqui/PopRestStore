@@ -13,7 +13,12 @@ storeComps.CheckOutPage = {
         productsInCart: [], shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {},
         billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],
         countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0",
-        isUpdate: false, isSpinner: false, responseMessage: "", paymentId: {}, urlList: {},
+        isUpdate: false, isSpinner: false, responseMessage: "", 
+
+        toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", cityErrorMessage: "", stateErrorMessage: "",
+        postalCodeErrorMessage: "", contactNumberErrorMessage: "", 
+        
+        paymentId: {}, urlList: {},
         stateShippingAddress:1, stateShippingMethod:0, statePaymentMethod:0, listShippingOptions: [], optionNavbar:1,
         axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
                 "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
@@ -24,12 +29,74 @@ storeComps.CheckOutPage = {
                 this.listShippingAddress = data.postalAddressList;
             }.bind(this));
         },
+        
+        resetToNameErrorMessage: function(formField) {
+           if (this.formField != "") {
+            this.toNameErrorMessage = "";
+           } 
+        }, 
+        resetCountryErrorMessage: function(formField) {
+            if (this.formField != "") {
+             this.countryErrorMessage = "";
+            } 
+         }, 
+         resetAddressErrorMessage: function(formField) {
+            if (this.formField != "") {
+             this.addressErrorMessage = "";
+            } 
+         }, 
+         resetCityErrorMessage: function(formField) {
+            if (this.formField != "") {
+             this.cityErrorMessage = "";
+            } 
+         }, 
+         resetStateErrorMessage: function(formField) {
+            if (this.formField != "") {
+             this.stateErrorMessage = "";
+            } 
+         }, 
+         resetPostalCodeErrorMessage: function(formField) {
+            if (this.formField != "") {
+             this.postalCodeErrorMessage = "";
+            } 
+         }, 
+         resetContactNumberErrorMessage: function(formField) {
+            if (this.formField != "") {
+             this.contactNumberErrorMessage = "";
+            } 
+         },
+
         addCustomerShippingAddress: function() {
-            if (this.shippingAddress.toName == null || this.shippingAddress.toName.trim() === "" ||
-                this.shippingAddress.countryGeoId == null || this.shippingAddress.countryGeoId.trim() === "" ||
-                this.shippingAddress.city == null || this.shippingAddress.city.trim() === "" ||
-                this.shippingAddress.address1 == null || this.shippingAddress.address1.trim() === "") {
-                this.responseMessage = "Verify the required fields";
+            var error = false;
+            if (this.shippingAddress.toName == null || this.shippingAddress.toName.trim() === "") {
+                this.toNameErrorMessage = "Please enter a recipient name.";
+                error = true;
+            }
+            if (this.shippingAddress.countryGeoId == null || this.shippingAddress.countryGeoId.trim() === "") {
+                this.countryErrorMessage = "Please select a country.";
+                error = true;
+            } 
+            if (this.shippingAddress.address1 == null || this.shippingAddress.address1.trim() === "") {
+                this.addressErrorMessage = "Please enter a street address.";
+                error = true;
+            } 
+            if (this.shippingAddress.city == null || this.shippingAddress.city.trim() === "") {
+                this.cityErrorMessage = "Please enter a city.";
+                error = true;
+            } 
+            if (this.shippingAddress.state == null || this.shippingAddress.state.trim() === "") {
+                this.stateErrorMessage = "Please enter a state.";
+                error = true;
+            } 
+            if (this.shippingAddress.postalCode == null || this.shippingAddress.postalCode.trim() === "") {
+                this.postalCodeErrorMessage = "Please enter a postcode.";
+                error = true;
+            } 
+            if (this.shippingAddress.contactNumber == null || this.shippingAddress.contactNumber.trim() === "") {
+                this.contactNumberErrorMessage = "Please enter a phone number.";
+                error = true;
+            }
+            if(error){
                 return;
             }
 
