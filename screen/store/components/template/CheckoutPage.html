@@ -386,7 +386,7 @@
             <div class="modal fade" id="modal1">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <!-- <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">
                                 <span v-if="isUpdate">Update Address</span>
                                 <span v-else>Add Address</span>
@@ -394,113 +394,90 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                        </div>
+                        </div> -->
                         <div class="modal-body">
                             <div v-if="responseMessage != null && responseMessage != ''" 
                                 class="alert alert-primary" role="alert">
                                 {{responseMessage}}
                             </div>
-                            <div class="form-group row">
-                                <label for="name" class="col-sm-3 col-form-label modal-text">To <span class="modal-text-required">*</span></label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="name"
+                            <!-- Recipient Field -->
+                            <div class="form-group">
+                                <label for="name" class="form-heading form-text-align">To</label>
+                                <input class="input-text input-border form-control" id="name"
                                         type="text"
                                         v-model="shippingAddress.toName"
                                         required/>
-                                </div>
+                                <!-- <small id="requiredMessage" class="form-text text-muted">Required</small> -->
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label modal-text">Attention</label>
-                                <div class="col-sm-9">
-                                    <input class="form-control"  type="text" v-model="shippingAddress.attnName"/>
-                                </div>
+                            <!-- Attention Field-->
+                            <div class="form-group">
+                                <label class="form-heading form-text-align">Attention</label>
+                                    <input class="input-text input-border form-control"  
+                                            type="text" 
+                                            v-model="shippingAddress.attnName"/>
+                                    <small id="requiredMessage" class="input-text form-text text-muted">Optional</small>
                             </div>
-                            <div class="form-group row">
-                                <label for="country" class="col-sm-3 col-form-label modal-text">
-                                    Country 
-                                    <span class="modal-text-required">*</span>
-                                </label>
-                                <div class="col-sm-9">
-                                    <select v-model="shippingAddress.countryGeoId" class="form-control"
+                            <!-- Country Field-->
+                            <div class="form-group">
+                                <label for="country" class="form-heading form-text-align">Country</label>
+                                    <select v-model="shippingAddress.countryGeoId" class="input-text input-border form-control"
                                         @change="getRegions(shippingAddress.countryGeoId)">
                                         <option v-for="country in countriesList" :value="country.geoId">
                                             {{country.geoName}}
                                         </option>
                                     </select>
-                                </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="adress1" class="col-sm-3 col-form-label modal-text">
-                                    Address 
-                                    <span class="modal-text-required">*</span>
-                                </label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="adress1"
+                            <!-- Address -->
+                            <div class="form-group">
+                                <label for="adress1" class="form-heading form-text-align">Address</label>
+                                <input class="input-text input-border form-control" input-border id="adress1"
                                         type="text"
                                         v-model="shippingAddress.address1"
                                         required/>
-                                </div>
+                                <small id="requiredMessage" class="input-text form-text text-muted">Line 1</small>
                             </div>
-                            <div class="form-group row">
-                                <label for="adress2" class="col-sm-3 col-form-label"></label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="adress2"
-                                        type="text"
-                                        v-model="shippingAddress.address2"
-                                        required/>
-                                </div>
+                            <div class="form-group">
+                                <input class="input-text input-border form-control" id="adress2"
+                                    type="text"
+                                    v-model="shippingAddress.address2"/>
+                                <small id="requiredMessage" class="input-text form-text text-muted">Line 2 (optional)</small>
                             </div>
-                            <div class="form-group row">
-                                <label for="city" class="col-sm-3 col-form-label modal-text">
-                                    City 
-                                    <span class="modal-text-required">*</span>
-                                </label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="city"
+                            <!-- City -->
+                            <div class="form-group">
+                                <label for="city" class="form-heading form-text-align">City</label>
+                                <input class="input-text input-border form-control" id="city"
                                         type="text"
                                         v-model="shippingAddress.city"
                                         required/>
-                                </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="state" class="col-sm-3 col-form-label modal-text">
-                                    State
-                                    <span class="modal-text-required">*</span>
-                                </label>
-                                <div class="col-sm-9">
-                                    <select v-if="regionsList.length > 0" v-model="shippingAddress.stateProvinceGeoId" class="form-control">
+                            <!-- State -->
+                            <div class="form-group">
+                                <label for="state" class="form-heading form-text-align">State</label>
+                                <select v-if="regionsList.length > 0" v-model="shippingAddress.stateProvinceGeoId" class="input-text input-border form-control">
                                         <option v-for="region in regionsList" :value="region.geoId">{{region.geoName}}</option>
-                                    </select>
-                                    <input v-else class="form-control" id="state"
-                                        type="text"
-                                        v-model="shippingAddress.state"
-                                        required/>
-                                </div>
+                                </select>
+                                <input v-else class="input-text input-border form-control" id="state"
+                                    type="text"
+                                    v-model="shippingAddress.state"
+                                    required/>
                             </div>
-                            <div class="form-group row">
-                                <label for="postalcode" class="col-sm-3 col-form-label modal-text">
-                                    Zip Code
-                                    <span class="modal-text-required">*</span>
-                                </label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="postalcode"
-                                        type="text"
-                                        v-model="shippingAddress.postalCode"
-                                        required/>
-                                </div>
+
+                            <div class="form-group">
+                                <label for="postalcode" class="form-heading form-text-align">Postcode</label>
+                                <input class="input-text input-border form-control" id="postalcode"
+                                    type="text"
+                                    v-model="shippingAddress.postalCode"
+                                    required/>
                             </div>
-                            <div class="form-group row">
-                                <label for="contactnumber" class="col-sm-3 col-form-label modal-text">
-                                    Phone Number 
-                                    <span class="modal-text-required">*</span>
-                                </label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="contactnumber"
-                                        type="text"
-                                        v-model="shippingAddress.contactNumber"
-                                        required/>
-                                </div>
+
+                            <div class="form-group">
+                                <label for="postalcode" class="form-heading form-text-align">Phone Number</label>
+                                <input class="input-text input-border form-control" id="contactnumber"
+                                    type="text"
+                                    v-model="shippingAddress.contactNumber"
+                                    required/>
                             </div>
+
                             <div class="row justify-content-center">
                                 <button @click="addCustomerShippingAddress" class="btn btn-continue col col-sm-6 offset-sm-1">
                                     <span v-if="isUpdate">Update Address</span>

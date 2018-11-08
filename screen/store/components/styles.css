@@ -301,3 +301,16 @@ a:hover { text-decoration: none; }
 .spinner:before { background: #555; } .spinner:after { transform: rotate(-45deg); background: #777; }
 .spinner > div:before { transform: rotate(-90deg); background: #999; }
 .spinner > div:after { transform: rotate(-135deg); background: #bbb; }
+
+/* Forms */
+.form-heading { line-height: 1; font-size: 1.5rem; margin-bottom: 0; }
+.form-text-align { padding: 0 0.5rem; } 
+
+.input-border { border-style: solid; border-color: rgb(206, 212, 218); border-width: 0 0 1px 0; border-radius: 0; box-shadow: none; }
+.input-border:hover { border-style: solid; border-color: #80bdff; border-width: 0 0 2px 0; border-radius: 0; box-shadow: none; }
+.input-border:focus { border-style: solid; border-color: #80bdff; border-width: 0 0 2px 0; border-radius: 0; box-shadow: none; }
+
+.input-text { line-height: 1; padding: .375rem .5rem; }
+
+/* #country-dropdown { border-style: solid; border-color: rgb(206, 212, 218); border-width: 0 0 1px 0; border-radius: 0; box-shadow: none; } */
+
