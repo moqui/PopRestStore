@@ -13,13 +13,9 @@ storeComps.CheckOutPage = {
         productsInCart: [], shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {},
         billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],
         countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0",
-        isUpdate: false, isSpinner: false, responseMessage: "", 
-
-        toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", cityErrorMessage: "", stateErrorMessage: "",
-        postalCodeErrorMessage: "", contactNumberErrorMessage: "", 
-        
-        paymentId: {}, urlList: {},
-        stateShippingAddress:1, stateShippingMethod:0, statePaymentMethod:0, listShippingOptions: [], optionNavbar:1,
+        isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
+        cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: {}, 
+        urlList: {}, stateShippingAddress:1, stateShippingMethod:0, statePaymentMethod:0, listShippingOptions: [], optionNavbar:1,
         axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
                 "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
     }; },
