@@ -114,7 +114,7 @@
                         || listShippingAddress == null || listShippingAddress.length == 0 ">
                         Continue
                     </button>
-                    <a data-toggle="modal" data-target="#modal1" @click="cleanShippingAddress()" class="text-add float-right">
+                    <a data-toggle="modal" data-target="#modal1" @click="cleanShippingAddress()" class="text-add">
                         Add a New Address
                     </a>
                 </div>
@@ -386,7 +386,7 @@
             <div class="modal fade" id="modal1">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <!-- <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">
                                 <span v-if="isUpdate">Update Address</span>
                                 <span v-else>Add Address</span>
@@ -394,113 +394,130 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                        </div>
+                        </div> -->
+
+                        
                         <div class="modal-body">
-                            <div v-if="responseMessage != null && responseMessage != ''" 
+                            <!-- <div v-if="responseMessage != null && responseMessage != ''" 
                                 class="alert alert-primary" role="alert">
                                 {{responseMessage}}
-                            </div>
-                            <div class="form-group row">
-                                <label for="name" class="col-sm-3 col-form-label modal-text">To <span class="modal-text-required">*</span></label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="name"
+                            </div> -->
+
+                            <!-- Recipient Field -->
+                            <div class="form-group">
+                                <label for="name" class="form-heading form-text-align">To</label>
+                                <input class="input-text input-border form-control" id="name"
                                         type="text"
                                         v-model="shippingAddress.toName"
+                                        @focus="resetToNameErrorMessage(shippingAddress.toName)"
                                         required/>
+                                <div v-if="toNameErrorMessage != null && toNameErrorMessage != ''">
+                                    <small class="input-text form-text response-text">{{toNameErrorMessage}}</small>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label modal-text">Attention</label>
-                                <div class="col-sm-9">
-                                    <input class="form-control"  type="text" v-model="shippingAddress.attnName"/>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="country" class="col-sm-3 col-form-label modal-text">
-                                    Country 
-                                    <span class="modal-text-required">*</span>
+                            <!-- Attention Field-->
+                            <div class="form-group">
+                                <label class="form-heading form-text-align">Attention of
+                                    <small class="text-muted">(optional)</small>
                                 </label>
-                                <div class="col-sm-9">
-                                    <select v-model="shippingAddress.countryGeoId" class="form-control"
-                                        @change="getRegions(shippingAddress.countryGeoId)">
+                                    <input class="input-text input-border form-control"  
+                                            type="text" 
+                                            v-model="shippingAddress.attnName"/>
+                                    <!-- <small id="requiredMessage" class="input-text form-text text-muted">Optional</small> -->
+                            </div>
+                            <!-- Country Field-->
+                            <div class="form-group">
+                                <label for="country" class="form-heading form-text-align">Country</label>
+                                    <select v-model="shippingAddress.countryGeoId" class="input-text input-border form-control"
+                                        @change="getRegions(shippingAddress.countryGeoId)" @focus="resetCountryErrorMessage(shippingAddress.countryGeoId)">
                                         <option v-for="country in countriesList" :value="country.geoId">
                                             {{country.geoName}}
                                         </option>
                                     </select>
-                                </div>
+                                    <div v-if="countryErrorMessage != null && countryErrorMessage != ''">
+                                        <small class="input-text form-text response-text">{{countryErrorMessage}}</small>
+                                    </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="adress1" class="col-sm-3 col-form-label modal-text">
-                                    Address 
-                                    <span class="modal-text-required">*</span>
-                                </label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="adress1"
+                            <!-- Address -->
+                            <div class="form-group">
+                                <label for="adress1" class="form-heading form-text-align">Address</label>
+                                <input class="input-text input-border form-control" input-border id="adress1"
                                         type="text"
+                                        placeholder="Line 1"
                                         v-model="shippingAddress.address1"
+                                        @focus="resetAddressErrorMessage(shippingAddress.address1)"
                                         required/>
+                                <!-- <small id="requiredMessage" class="input-text form-text text-muted">Line 1</small> -->
+                                <div v-if="addressErrorMessage != null && addressErrorMessage != ''">
+                                    <small class="input-text form-text response-text">{{addressErrorMessage}}</small>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="adress2" class="col-sm-3 col-form-label"></label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="adress2"
-                                        type="text"
-                                        v-model="shippingAddress.address2"
-                                        required/>
-                                </div>
+                            <div class="form-group">
+                                <input class="input-text input-border form-control" id="adress2"
+                                    type="text"
+                                    placeholder="Line 2 (optional)"
+                                    v-model="shippingAddress.address2"/>
                             </div>
-                            <div class="form-group row">
-                                <label for="city" class="col-sm-3 col-form-label modal-text">
-                                    City 
-                                    <span class="modal-text-required">*</span>
-                                </label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="city"
+                            <!-- City -->
+                            <div class="form-group">
+                                <label for="city" class="form-heading form-text-align">City</label>
+                                <input class="input-text input-border form-control" id="city"
                                         type="text"
                                         v-model="shippingAddress.city"
+                                        @focus="resetCityErrorMessage(shippingAddress.city)"
                                         required/>
+                                <div v-if="cityErrorMessage != null && cityErrorMessage != ''">
+                                    <small class="input-text form-text response-text">{{cityErrorMessage}}</small>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="state" class="col-sm-3 col-form-label modal-text">
-                                    State
-                                    <span class="modal-text-required">*</span>
-                                </label>
-                                <div class="col-sm-9">
-                                    <select v-model="shippingAddress.stateProvinceGeoId" class="form-control">
+                            <!-- State -->
+                            <div class="form-group">
+                                <label for="state" class="form-heading form-text-align">State</label>
+                                <select v-if="regionsList.length > 0" v-model="shippingAddress.stateProvinceGeoId" class="input-text input-border form-control"
+                                        @focus="resetStateErrorMessage(shippingAddress.stateProvinceGeoId)">
                                         <option v-for="region in regionsList" :value="region.geoId">{{region.geoName}}</option>
-                                    </select>
+                                </select>
+                                <input v-else class="input-text input-border form-control" id="state"
+                                    type="text"
+                                    v-model="shippingAddress.stateProvinceGeoId"
+                                    @focus="resetStateErrorMessage(shippingAddress.stateProvinceGeoId)"
+                                    required/>
+                                <div v-if="stateErrorMessage != null && stateErrorMessage != ''">
+                                    <small class="input-text form-text response-text">{{stateErrorMessage}}</small>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="postalcode" class="col-sm-3 col-form-label modal-text">Zip Code</label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="postalcode"
-                                        type="text"
-                                        v-model="shippingAddress.postalCode"
-                                        required/>
+                            <!-- Postal code -->
+                            <div class="form-group">
+                                <label for="postalcode" class="form-heading form-text-align">Postcode</label>
+                                <input class="input-text input-border form-control" id="postalcode"
+                                    type="text"
+                                    v-model="shippingAddress.postalCode"
+                                    @focus="resetPostalCodeErrorMessage(shippingAddress.postalCode)"
+                                    required/>
+                                <div v-if="postalCodeErrorMessage != null && postalCodeErrorMessage != ''">
+                                    <small class="input-text form-text response-text">{{postalCodeErrorMessage}}</small>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="contactnumber" class="col-sm-3 col-form-label modal-text">
-                                    Phone Number 
-                                    <span class="modal-text-required">*</span>
-                                </label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="contactnumber"
-                                        type="text"
-                                        v-model="shippingAddress.contactNumber"
-                                        required/>
+                            <!-- Phone number -->
+                            <div class="form-group">
+                                <label for="contactnumber" class="form-heading form-text-align">Phone Number</label>
+                                <input class="input-text input-border form-control" id="contactnumber"
+                                    type="text"
+                                    v-model="shippingAddress.contactNumber"
+                                    @focus="resetContactNumberErrorMessage(shippingAddress.contactNumber)"
+                                    required/>
+                                <div v-if="contactNumberErrorMessage != null && contactNumberErrorMessage != ''">
+                                    <small class="input-text form-text response-text">{{contactNumberErrorMessage}}</small>
                                 </div>
                             </div>
+
                             <div class="row justify-content-center">
-                                <button @click="addCustomerShippingAddress" class="btn btn-continue col col-sm-6 offset-sm-1">
+                                <button @click="addCustomerShippingAddress" class="btn btn-continue col col-sm-6">
                                     <span v-if="isUpdate">Update Address</span>
                                     <span v-else>Add Address</span>
                                 </button>
-                                <a @click="hideModal('modal1')" class="btn btn-link text-add col col-sm-9 offset-sm-1">
-                                    Or Cancel
+                                <a @click="hideModal('modal1')" class="btn btn-link text-add col col-sm-9">
+                                    Cancel
                                 </a>
                             </div>
                         </div>

@@ -72,7 +72,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <#-- TODO: use Person/Org name fields -->
-                            <i class="fas fa-user"></i> ${user.userFullName} Account</a>
+                            <i class="fas fa-user"></i> ${user.userFullName}</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item item-color" href="/store/d#/account">Account Settings</a>
                             <a class="dropdown-item item-color" href="/store/d#/orders">My Orders</a>

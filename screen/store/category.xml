@@ -29,7 +29,7 @@ along with this software (see the LICENSE.md file). If not, see
     </pre-actions>
     <actions>
         <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="products" 
-            in-map="[productCategoryId:categoryId, pageIndex:pageIndex ? pageIndex : '0', pageSize:'5']"/>
+            in-map="[productCategoryId:categoryId, pageIndex:pageIndex ? pageIndex : '0', pageSize:'6']"/>
         <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="category" in-map="[productCategoryId:categoryId]"/>
     </actions>
 

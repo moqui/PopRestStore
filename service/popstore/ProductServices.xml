@@ -84,6 +84,26 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
 
+    <service verb="get" noun="ProductQuantity">
+        <in-parameters>
+            <parameter name="productId" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productQuantity"/>
+        </out-parameters>
+        <actions>
+            <entity-find-one entity-name="mantle.product.asset.AssetAndDetail" value-field="asset">
+                <field-map field-name="productId" from="productId"/>
+                <field-map field-name="statusId" from="'AstAvailable'"/>
+                <field-map field-name="assetTypeEnumId" from="'AstTpInventory'"/>
+            </entity-find-one>
+            <if condition="!asset">
+                <return message="Asset not found"/>
+            </if>
+            <set field="productQuantity" from="asset.quantityOnHandTotal ? asset.quantityOnHandTotal : 0"/>
+        </actions>
+    </service>
+
     <service verb="find" noun="ProductAvailability">
         <description>
             Create collection of product ids with availability flag.
@@ -147,7 +167,7 @@ along with this software (see the LICENSE.md file). If not, see
                 <return/>
             </if>
             <!-- either no content of this type or productId refers to variant of a virtual product -->
-            <service-call name="ridgecrest.ProductServices.get#CatalogProductId" in-map="context" out-map="prodIdRes"/>
+            <service-call name="popstore.ProductServices.get#CatalogProductId" in-map="context" out-map="prodIdRes"/>
             <if condition="productId != prodIdRes.productId">
                 <entity-find entity-name="mantle.product.ProductContent" list="productContentList" cache="true">
                     <econdition field-name="productContentTypeEnumId"/>
@@ -322,10 +342,10 @@ along with this software (see the LICENSE.md file). If not, see
         <in-parameters>
             <parameter name="term"/>
             <parameter name="productCategoryId"/>
+            <parameter name="productStoreId"/>
             <parameter name="productFeatureIds" type="List"><parameter name="productFeatureId"/></parameter>
             <parameter name="priceUomId"/>
             <parameter name="locale"/>
-
             <parameter name="orderByFields" type="List"><parameter name="orderByField"/></parameter>
             <parameter name="pageIndex" type="Integer" default="0"/>
             <parameter name="pageSize" type="Integer" default="20"/>
@@ -529,4 +549,31 @@ along with this software (see the LICENSE.md file). If not, see
             </iterate>
         </actions>
     </service>
+
+    <service verb="get" noun="CatalogProductId">
+        <description>
+            If product ID on input is a variant product then this service find associated virtual product
+            and return its ID. Otherwise just return input ID. This service is used to build url to product
+            in catalog. We cannot use variant product id exactly because variants are not browsable.
+        </description>
+        <in-parameters>
+            <parameter name="productId"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productId"/>
+        </out-parameters>
+        <actions>
+            <if condition="productId">
+                <entity-find entity-name="mantle.product.ProductAssoc" list="productAssocs">
+                    <date-filter/>
+                    <econdition field-name="toProductId" from="productId"/>
+                    <econdition field-name="productAssocTypeEnumId" value="PatVariant"/>
+                </entity-find>
+                <if condition="productAssocs">
+                    <set field="productId" from="productAssocs.get(0).productId"/>
+                </if>
+            </if>
+        </actions>
+    </service>
+    
 </services>
