@@ -430,9 +430,13 @@
                                 <label for="country" class="form-heading form-text-align">Country</label>
                                     <select v-model="shippingAddress.countryGeoId" class="input-text input-border form-control"
                                         @change="getRegions(shippingAddress.countryGeoId)" @focus="resetCountryErrorMessage(shippingAddress.countryGeoId)">
-                                        <option v-for="country in countriesList" :value="country.geoId">
-                                            {{country.geoName}}
-                                        </option>
+                                        <option disabled value="">Select from the list</option>
+                                        <option value="CAN">Canada</option>
+                                        <option value="CHN">China</option>
+                                        <option value="ITA">Italy</option>
+                                        <option value="JPN">Japan</option>
+                                        <option value="PRT">Portugal</option>
+                                        <option value="USA">United States</option>
                                     </select>
                                     <div v-if="countryErrorMessage != null && countryErrorMessage != ''">
                                         <small class="input-text form-text response-text">{{countryErrorMessage}}</small>
@@ -473,15 +477,10 @@
                             <!-- State -->
                             <div class="form-group">
                                 <label for="state" class="form-heading form-text-align">State</label>
-                                <select v-if="regionsList.length > 0" v-model="shippingAddress.stateProvinceGeoId" class="input-text input-border form-control"
+                                <select v-model="shippingAddress.stateProvinceGeoId" class="input-text input-border form-control"
                                         @focus="resetStateErrorMessage(shippingAddress.stateProvinceGeoId)">
                                         <option v-for="region in regionsList" :value="region.geoId">{{region.geoName}}</option>
                                 </select>
-                                <input v-else class="input-text input-border form-control" id="state"
-                                    type="text"
-                                    v-model="shippingAddress.stateProvinceGeoId"
-                                    @focus="resetStateErrorMessage(shippingAddress.stateProvinceGeoId)"
-                                    required/>
                                 <div v-if="stateErrorMessage != null && stateErrorMessage != ''">
                                     <small class="input-text form-text response-text">{{stateErrorMessage}}</small>
                                 </div>
