@@ -16,9 +16,8 @@ along with this software (see the LICENSE.md file). If not, see
         standalone="true" require-authentication="anonymous-view" allow-extra-path="true">
 
     <always-actions>
-        <!-- TODO: make this configurable, perhaps through a productStoreGroupId constant instead of productStoreId constant -->
-        <!-- TODO: better yet add some to lookup based on hostname or other info that distinguishes multiple stores in the same system -->
-        <set field="productStoreId" value="POPC_DEFAULT"/>
+        <service-call name="popstore.StoreServices.get#ProductStoreIdFromHostName" in-map="[requestHostName:ec.web.getHostName(false)]" out-map="productStoreIdContext"/>
+        <set field="productStoreId" value="${productStoreIdContext.productStoreId ?: 'POPC_DEFAULT'}"/>
 
         <service-call name="popstore.StoreServices.get#StoreInfo" in-map="[productStoreId:productStoreId]" out-map="storeInfo"/>
         <set field="productStore" from="storeInfo.productStore"/>

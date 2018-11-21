@@ -14,6 +14,23 @@ along with this software (see the LICENSE.md file). If not, see
 -->
 <services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
 
+    <service verb="get" noun="ProductStoreIdFromHostName">
+        <in-parameters>
+            <parameter name="requestHostName" type="String" />
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productStoreId"/>
+        </out-parameters>
+        <actions>
+            <entity-find entity-name="mantle.product.store.ProductStoreSetting" list="productStoreIdList">
+                <econdition field-name="settingTypeEnumId" value="PsstProductStoreIdFromHostname"/>    
+                <econdition field-name="settingValue" value="${requestHostName}"/>
+                <date-filter/>
+            </entity-find>
+            <set field="productStoreId" from="productStoreIdList ? productStoreIdList[0].productStoreId : null"/>
+        </actions>
+    </service>
+
     <service verb="get" noun="StoreInfo">
         <in-parameters>
             <parameter name="productStoreId" required="true"/>
