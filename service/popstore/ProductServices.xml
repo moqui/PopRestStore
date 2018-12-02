@@ -18,7 +18,7 @@ along with this software (see the LICENSE.md file). If not, see
         <in-parameters>
             <parameter name="productId" required="true"/>
             <parameter name="priceUomId"/>
-            <parameter name="locale"/>
+            <parameter name="locale" default="ec.user.locale?.toString()"/>
         </in-parameters>
         <out-parameters>
             <auto-parameters entity-name="mantle.product.Product" include="nonpk"/>

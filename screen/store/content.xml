@@ -23,6 +23,7 @@ along with this software (see the LICENSE.md file). If not, see
                       in-map="[wikiSpaceId:wikiSpaceId, pagePath:extraPathNameList?.join('/'), filename:filename]"/>
         <script>ec.web.sendResourceResponse(attachmentReference?.location, true)</script>
     </actions><default-response type="none"/></transition>
+
     <transition name="productImage" read-only="true">
         <parameter name="productContentId"/>
         <actions>
@@ -40,6 +41,40 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
         <default-response type="none"/>
     </transition>
+
+    <!-- get store wiki page content based on 'store space type' (spaceTypeEnumId) and path -->
+    <transition name="sst">
+        <actions>
+            <!-- FUTURE: consider adding optional locale to path to avoid issues with browser cache and locale changes during use, see also StoreServices.get#StoreInfo service -->
+            <set field="extraPathNameList" from="new ArrayList(sri.screenUrlInfo.extraPathNameList)"/>
+            <if condition="!extraPathNameList"><script>ec.web.sendError(404, "No page specified", null)</script><return/></if>
+            <!-- is the first path element a spaceTypeEnumId? -->
+            <set field="spaceTypeEnumId" from="extraPathNameList.remove(0)"/>
+            <entity-find-one entity-name="moqui.basic.Enumeration" value-field="spaceTypeEnum">
+                <field-map field-name="enumId" from="spaceTypeEnumId"/></entity-find-one>
+            <if condition="spaceTypeEnum == null || spaceTypeEnum.enumTypeId != 'ProductStoreWikiSpaceType'">
+                <log level="warn" message="First path segment ${spaceTypeEnumId} not a valid space type"/>
+                <script>ec.web.sendError(404, "First path segment not a valid space type", null)</script>
+                <return/>
+            </if>
+            <!-- get the wikiSpaceId for the store space type -->
+            <!-- FUTURE: pass locale here if pulled from path or somewhere -->
+            <service-call name="popstore.StoreServices.get#WikiSpaceByType" out-map="spaceOut" out-map-add-to-existing="false"
+                    in-map="[productStoreId:productStoreId, spaceTypeEnumId:spaceTypeEnumId]"/>
+            <if condition="!spaceOut.wikiSpaceId">
+                <log level="warn" message="In content/sst no wiki space found for store ${productStoreId} and space type ${spaceTypeEnumId}"/>
+                <script>ec.web.sendError(404, "No content space found for type ${spaceTypeEnumId}", null)</script>
+                <return/>
+            </if>
+            <!-- get the page content -->
+            <service-call name="org.moqui.impl.WikiServices.get#PublishedWikiPageText" out-map="pageTextOut" out-map-add-to-existing="false"
+                    in-map="[wikiSpaceId:spaceOut.wikiSpaceId, pagePath:extraPathNameList?.join('/'), versionName:ver]"/>
+            <!-- NOTE: could pass filename (pageTextOut.pageReference.getFileName()) but want inline Content-Disposition -->
+            <script>ec.web.sendTextResponse(pageTextOut.pageText, pageTextOut.pageReference.getContentType(), null)</script>
+        </actions>
+        <default-response type="none"/>
+    </transition>
+    <!-- FUTURE: (if needed...) get store wiki content based on store content type (contentTypeEnumId) with ProductStoreWikiContent lookup -->
 
     <transition name="createRequest">
         <actions>
