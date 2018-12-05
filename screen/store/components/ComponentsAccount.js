@@ -1,4 +1,6 @@
 /* This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. */
+const STORE_COUNTRY = "USA";
+
 storeComps.LoginPage = {
     name: "login",
     data: function() { return {
@@ -11,7 +13,7 @@ storeComps.LoginPage = {
         apiKey: function() { return this.$root.apiKey }
     },
     methods: {
-        login: function(event) {
+        login: function() {
             if (this.user.username.length < 3 || this.user.password.length < 3) {
                 this.loginErrormessage = "You must type a valid Username and Password";
                 return;
@@ -27,6 +29,31 @@ storeComps.LoginPage = {
                     }
                 }
             }.bind(this)).catch(function (error) { this.loginErrormessage = error.response.data.errors; }.bind(this));
+        },
+        checkLoginState: function() {
+            var em = this;
+            FB.login(function(response) {
+                if(response && response.status == 'connected') {
+                    $.ajax({
+                        type: "GET",
+                        url: 'https://graph.facebook.com/v3.2/me?fields=id,first_name,last_name,email',
+                        data: { 'access_token':response.authResponse.accessToken },
+                        success: (result) => {
+                            var userData = {
+                                firstName: result.first_name,
+                                lastName: result.last_name,
+                                email: result.email
+                            };
+                            LoginService.loginFB(userData, em.axiosConfig).then(function (data) {
+                                em.$root.apiKey = data.apiKey;
+                                location.href = "/store";
+                            });
+                        },
+                        error: (error) => { console.error(error) } 
+                    });
+                } else
+                    console.error(response);
+            }, {scope: 'public_profile,email'});
         },
         changePassword: function(event) {
             event.preventDefault();
@@ -114,37 +141,97 @@ storeComps.ResetPasswordTemplate = getPlaceholderRoute("template_client_resetPas
 storeComps.AccountPage = {
     name: "account-page",
     data: function() { return {
-        customerInfo: {}, passwordInfo: {}, customerAddressList: [],
+        customerInfo: {}, passwordInfo: {}, shippingAddressList: [],
         countriesList: [], regionsList: [], localeList: [], timeZoneList: [],
-        customerAddress: {}, addressOption: "", customerPaymentMethods: [],
+        shippingAddress: {}, addressOption: "", customerPaymentMethods: [],
         paymentAddressOption: {}, paymentOption: "", paymentMethod: {},
-        responseMessage: "", isUpdate: false, message: { state: "", message: "" },
+        responseMessage: "", 
+        toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
+        cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "",
+        isUpdate: false, message: { state: "", message: "" },
         axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
                 "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
     }; },
     methods: {
         getCustomerInfo: function() { CustomerService.getCustomerInfo(this.axiosConfig)
-            .then(function (data) { this.customerInfo = data; }.bind(this)); },
+            .then(function (data) { this.setCustomerInfo(data); }.bind(this)); },
         getCustomerAddress: function() { CustomerService.getShippingAddresses(this.axiosConfig)
-            .then(function (data) { this.customerAddressList = data.postalAddressList; }.bind(this)); },
+            .then(function (data) { this.shippingAddressList = data.postalAddressList; }.bind(this)); },
         getCustomerPaymentMethods: function() { CustomerService.getPaymentMethods(this.axiosConfig)
             .then(function (data) { this.customerPaymentMethods = data.methodInfoList; }.bind(this)); },
-        addCustomerAddress: function() {
-            if (this.customerAddress.toName == null || this.customerAddress.toName.trim() === "" ||
-                this.customerAddress.countryGeoId == null || this.customerAddress.countryGeoId.trim() === "" ||
-                this.customerAddress.city == null || this.customerAddress.city.trim() === "" ||
-                this.customerAddress.address1 == null || this.customerAddress.address1.trim() === "" ||
-                this.customerAddress.contactNumber == null || this.customerAddress.contactNumber.trim() === "") {
-                this.responseMessage = "Verify the required fields";
-                return;
+
+        resetToNameErrorMessage: function(formField) {
+            if (this.formField != "") {
+                this.toNameErrorMessage = "";
+                } 
+            }, 
+        resetCountryErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.countryErrorMessage = "";
+            } 
+        }, 
+        resetAddressErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.addressErrorMessage = "";
+            } 
+        }, 
+        resetCityErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.cityErrorMessage = "";
+            } 
+        }, 
+        resetStateErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.stateErrorMessage = "";
+            } 
+        }, 
+        resetPostalCodeErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.postalCodeErrorMessage = "";
+            } 
+        }, 
+        resetContactNumberErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.contactNumberErrorMessage = "";
+            } 
+        },
+
+        addCustomerShippingAddress: function() {
+            var error = false;
+            if (this.shippingAddress.toName == null || this.shippingAddress.toName.trim() === "") {
+                this.toNameErrorMessage = "Please enter a recipient name";
+                error = true;
             }
-            if (this.customerAddress.postalCode.length < 5 || this.customerAddress.postalCode.length > 7) {
-                this.responseMessage = "Type a valid postal code";
+            if (this.shippingAddress.countryGeoId == null || this.shippingAddress.countryGeoId.trim() === "") {
+                this.countryErrorMessage = "Please select a country";
+                error = true;
+            } 
+            if (this.shippingAddress.address1 == null || this.shippingAddress.address1.trim() === "") {
+                this.addressErrorMessage = "Please enter a street address";
+                error = true;
+            } 
+            if (this.shippingAddress.city == null || this.shippingAddress.city.trim() === "") {
+                this.cityErrorMessage = "Please enter a city";
+                error = true;
+            } 
+            if (this.shippingAddress.stateProvinceGeoId == null || this.shippingAddress.stateProvinceGeoId.trim() === "") {
+                this.stateErrorMessage = "Please enter a state";
+                error = true;
+            } 
+            if (this.shippingAddress.postalCode == null || this.shippingAddress.postalCode.trim() === "") {
+                this.postalCodeErrorMessage = "Please enter a postcode";
+                error = true;
+            } 
+            if (this.shippingAddress.contactNumber == null || this.shippingAddress.contactNumber.trim() === "") {
+                this.contactNumberErrorMessage = "Please enter a phone number";
+                error = true;
+            }
+            if(error){
                 return;
             }
 
-            CustomerService.addShippingAddress(this.customerAddress,this.axiosConfig).then(function (data) {
-                this.customerAddress = {};
+            CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(function (data) {
+                this.shippingAddress = {};
                 this.getCustomerAddress();
                 this.hideModal("modal1");
                 this.responseMessage = "";
@@ -153,16 +240,16 @@ storeComps.AccountPage = {
         addCustomerPaymentMethod: function(event) {
             event.preventDefault();
             this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
+            this.paymentMethod.countryGeoId = STORE_COUNTRY;
 
             if (this.paymentMethod.titleOnAccount == null || this.paymentMethod.titleOnAccount.trim() === "" ||
                 this.paymentMethod.cardNumber == null || this.paymentMethod.cardNumber.trim() === "" ||
                 this.paymentMethod.expireMonth == null || this.paymentMethod.expireMonth.trim() === "" ||
-                this.paymentMethod.expireYear == null || this.paymentMethod.expireYear.trim() === "" ||
+                this.paymentMethod.expireYear == null || this.paymentMethod.expireYear === "" ||
                 this.paymentMethod.cardSecurityCode == null || this.paymentMethod.cardSecurityCode.trim() === "" ||
                 this.paymentMethod.address1 == null || this.paymentMethod.address1.trim() === "" ||
                 this.paymentMethod.toName == null || this.paymentMethod.toName.trim() === "" ||
                 this.paymentMethod.city == null || this.paymentMethod.city.trim() === "" ||
-                this.paymentMethod.countryGeoId == null || this.paymentMethod.countryGeoId.trim() === "" ||
                 this.paymentMethod.contactNumber == null || this.paymentMethod.contactNumber.trim() === "") {
                 this.responseMessage = "Verify the required fields";
                 return;
@@ -196,7 +283,7 @@ storeComps.AccountPage = {
         },
         resetData: function() {
             this.paymentMethod = {};
-            this.customerAddress = {};
+            this.shippingAddress = {};
             this.paymentAddressOption = {};
             this.isUpdate = false;
         },
@@ -205,17 +292,26 @@ storeComps.AccountPage = {
                   || this.customerInfo.firstName == null || this.customerInfo.firstName.trim() === ""
                   || this.customerInfo.lastName == null || this.customerInfo.lastName.trim() === ""
                   || this.customerInfo.emailAddress == null || this.customerInfo.emailAddress.trim() === ""
-                  || this.customerInfo.locale == null || this.customerInfo.locale.trim() === ""
-                  || this.customerInfo.timeZone == null || this.customerInfo.timeZone.trim() === "") {
+                  || this.customerInfo.contactNumber == null || this.customerInfo.contactNumber.trim() === "") {
                 this.message.state = 2;
                 this.message.message = "Verify the required fields";
                 return;
             }
             CustomerService.updateCustomerInfo(this.customerInfo,this.axiosConfig).then(function (data) {
-                this.customerInfo = data.customerInfo;
+                this.setCustomerInfo(data.customerInfo);
+                //this.customerInfo = data.customerInfo;
                 this.message.state = 1;
                 this.message.message = "Correct! Your data has been updated.";
             }.bind(this));
+        },
+        setCustomerInfo: function(data) {
+            this.customerInfo.username = data.username;
+            this.customerInfo.partyId = data.partyId;
+            this.customerInfo.firstName = data.firstName;
+            this.customerInfo.lastName = data.lastName;
+            this.customerInfo.emailAddress = data.emailAddress;
+            this.customerInfo.contactMechId = data.telecomNumber ? data.telecomNumber.contactMechId : "";
+            this.customerInfo.contactNumber = data.telecomNumber ? data.telecomNumber.contactNumber : "";
         },
         updateCustomerPassword: function(event) {
             event.preventDefault();
@@ -266,23 +362,20 @@ storeComps.AccountPage = {
         getLocale: function() { GeoService.getLocale().then(function (data) { this.localeList = data.localeStringList; }.bind(this)); },
         getTimeZone: function() { GeoService.getTimeZone().then(function (data) { this.timeZoneList = data.timeZoneList; }.bind(this)); },
         selectAddress: function(address) {
-            this.customerAddress = {};
-            this.customerAddress.address1 = address.postalAddress.address1;
-            this.customerAddress.address2 = address.postalAddress.address2;
-            this.customerAddress.toName = address.postalAddress.toName;
-            this.customerAddress.city = address.postalAddress.city;
-            this.customerAddress.countryGeoId = address.postalAddress.countryGeoId;
-            this.customerAddress.contactNumber = address.telecomNumber.contactNumber;
-            this.customerAddress.postalCode = address.postalAddress.postalCode;
-            this.customerAddress.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
-            this.customerAddress.postalContactMechId = address.postalContactMechId;
-            this.customerAddress.telecomContactMechId = address.telecomContactMechId;
-            this.customerAddress.postalContactMechPurposeId = address.postalContactMechPurposeId;
-            this.customerAddress.attnName = address.postalAddress.attnName;
+            this.shippingAddress = {};
+            this.shippingAddress.address1 = address.postalAddress.address1;
+            this.shippingAddress.address2 = address.postalAddress.address2;
+            this.shippingAddress.toName = address.postalAddress.toName;
+            this.shippingAddress.city = address.postalAddress.city;
+            this.shippingAddress.countryGeoId = address.postalAddress.countryGeoId;
+            this.shippingAddress.contactNumber = address.telecomNumber.contactNumber;
+            this.shippingAddress.postalCode = address.postalAddress.postalCode;
+            this.shippingAddress.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
+            this.shippingAddress.postalContactMechId = address.postalContactMechId;
+            this.shippingAddress.telecomContactMechId = address.telecomContactMechId;
+            this.shippingAddress.postalContactMechPurposeId = address.postalContactMechPurposeId;
+            this.shippingAddress.attnName = address.postalAddress.attnName;
             this.responseMessage = "";
-            if (this.customerAddress.countryGeoId != null){
-                this.getRegions(this.customerAddress.countryGeoId);
-            }
         },
         selectBillingAddress: function(address) {
             if (address != 0) {
@@ -296,7 +389,7 @@ storeComps.AccountPage = {
                 this.paymentMethod.postalCode = address.postalAddress.postalCode;
                 this.paymentMethod.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
                 this.responseMessage = "";
-                this.getRegions(this.paymentMethod.countryGeoId);
+                this.getRegions(STORE_COUNTRY);
             } else {
                 this.paymentMethod.address1 = "";
                 this.paymentMethod.address2 = "";
@@ -329,7 +422,7 @@ storeComps.AccountPage = {
             this.paymentMethod.postalCode = method.postalAddress.postalCode;
             this.paymentMethod.stateProvinceGeoId = method.postalAddress.stateProvinceGeoId;
 
-            this.getRegions(this.paymentMethod.countryGeoId);
+            this.getRegions(STORE_COUNTRY);
 
             this.paymentMethod.cardSecurityCode = "";
             this.responseMessage = "";
@@ -344,7 +437,7 @@ storeComps.AccountPage = {
             this.getCustomerAddress();
             this.getCustomerPaymentMethods();
             this.getCountries();
-            this.getRegions();
+            this.getRegions(STORE_COUNTRY);
             this.getLocale();
             this.getTimeZone();
         }
@@ -424,6 +517,20 @@ storeComps.CustomerOrderPage = {
             CustomerService.getCustomerOrderById(this.$route.params.orderId,this.axiosConfig).then(function (data) {
                 this.orderList = data;
             }.bind(this));
+        },
+        getExpectedArrivalDate: function(tt) {
+            var date = moment(tt);
+            var newdate = new Date(date);
+
+            newdate.setDate(newdate.getDate() + 7);
+            
+            var dd = newdate.getDate();
+            var mm = newdate.getMonth();
+            var yy = newdate.getFullYear();
+            months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+            var newDATE = dd + ' ' + months[mm] + ', ' + yy.toString().substring(2);
+            return  newDATE;
         },
         formatDate: function(dateArg) {
             return moment(dateArg).format('Do MMM, YY');
