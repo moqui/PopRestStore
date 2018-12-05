@@ -29,11 +29,12 @@ along with this software (see the LICENSE.md file). If not, see
 
             <parameter name="productClassDescription"/>
             <parameter name="descriptionLong"/>
+            <parameter name="descriptionSmall"/>
             <parameter name="contentList" type="List"><parameter name="content" type="Map">
                 <parameter name="productContentId"/><parameter name="productContentTypeEnumId"/>
                 <parameter name="description"/><parameter name="sequenceNum"/>
             </parameter></parameter>
-
+            <parameter name="productRating"/>
             <parameter name="standardFeatureList" type="List"><parameter name="dimension" type="Map"/></parameter>
             <parameter name="dimensionList" type="List"><parameter name="dimension" type="Map"/></parameter>
         </out-parameters>
@@ -72,6 +73,22 @@ along with this software (see the LICENSE.md file). If not, see
                 <date-filter/><econdition field-name="productId"/>
                 <order-by field-name="sequenceNum,-fromDate"/>
             </entity-find>
+
+            <set field="productRating" from="0"/>
+            <!--<entity-find entity-name="mantle.product.ProductReview" list="productReviewList">
+                <date-filter/><econdition field-name="productId"/>
+                <order-by field-name="sequenceNum,-fromDate"/>
+            </entity-find>
+            <set field="sumaReview" from="0"/>
+            <set field="productReviewListSize" from="0"/>
+            <iterate list="productReviewList" entry="productReviewItem">
+                <set field="sumaReview" from="sumaReview + productReviewItem.productRating"/>
+                <set field="productReviewListSize" from="productReviewListSize + 1"/>
+            </iterate>
+            <if condition="productReviewListSize > 0">
+                <set field="productRating" from="sumaReview / productReviewListSize"/>
+            </if>-->
+
             <if condition="locale">
                 <!-- filter after by locale to streamline cached find -->
                 <set field="langLocale" from="locale.contains('_') ? locale.substring(locale.indexOf('_')) : null"/>
@@ -80,6 +97,9 @@ along with this software (see the LICENSE.md file). If not, see
             <!-- some content types may have more than one record, long description just has one -->
             <set field="descLongLocation" from="contentList.find({ 'PcntDescriptionLong' == it.productContentTypeEnumId })?.contentLocation"/>
             <if condition="descLongLocation"><set field="descriptionLong" from="ec.resource.getLocationText(descLongLocation, true)"/></if>
+
+            <set field="descSmallLocation" from="contentList.find({ 'PcntDescription' == it.productContentTypeEnumId })?.contentLocation"/>
+            <if condition="descSmallLocation"><set field="descriptionSmall" from="ec.resource.getLocationText(descSmallLocation, true)"/></if>
             <!-- <set field="imageSmallList" from="contentList.findAll({ 'PcntImageSmall' == it.productContentTypeEnumId })"/> -->
         </actions>
     </service>
@@ -360,7 +380,7 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="productListPageRangeHigh" type="Integer"/>
         </out-parameters>
         <actions>
-            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
+            <!--<service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>-->
             <if condition="productStoreId">
                 <entity-find-one entity-name="mantle.product.store.ProductStore" value-field="productStore" cache="true"/>
                 <if condition="!priceUomId"><set field="priceUomId" from="productStore?.defaultCurrencyUomId"/></if>
@@ -378,9 +398,9 @@ along with this software (see the LICENSE.md file). If not, see
                 <if condition="!productCategoryId">
                     <entity-find entity-name="mantle.product.store.ProductStoreCategory" list="searchPscList" cache="true">
                         <date-filter/><econdition field-name="productStoreId"/>
-                        <econdition field-name="storeCategoryTypeEnumId" value="PsctViewAllow"/>
+                        <econdition field-name="storeCategoryTypeEnumId" value="PsctBrowseRoot"/>
                     </entity-find>
-                    <set field="productCategoryId" from="searchPscList?.first()?.productCategoryId"/>
+                    <set field="productCategoryId" from="searchPscList?.first()?.PsctSearch"/>
                 </if>
             </if>
 
@@ -391,7 +411,10 @@ along with this software (see the LICENSE.md file). If not, see
             <set field="queryString" from="(term ? term + ' AND ' : '') + 'categories.productCategoryId:' + productCategoryId"/>
 
             <service-call name="org.moqui.search.SearchServices.search#DataDocuments" out-map="searchOut"
-                    in-map="[queryString:queryString, indexName:'popc', documentType:'PopcProduct', pageIndex:pageIndex, pageSize:pageSize]"/>
+                    in-map="[queryString:queryString, indexName:'rcherbals', documentType:'RchProduct', pageIndex:pageIndex, pageSize:pageSize]"/>
+                    <!-- in-map="[queryString:queryString, indexName:'popc', documentType:'PopcProduct', pageIndex:pageIndex, pageSize:pageSize]"/> -->
+                    
+
             <set field="productList" from="searchOut.documentList"/>
             <set field="productListCount" from="searchOut.documentListCount"/>
             <set field="productListPageIndex" from="searchOut.documentListPageIndex"/>
@@ -472,14 +495,54 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
 
+    <service verb="get" noun="RandomCategoryProduct">
+        <description>
+            Return Product that is selected randomly from products which are members of category of certain type.
+        </description>
+        <in-parameters>
+            <parameter name="productCategoryTypeEnumId" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="product"/>
+        </out-parameters>
+        <actions>
+            <script>
+                import org.moqui.context.ExecutionContext
+                import org.moqui.entity.EntityCondition
+                ExecutionContext ec = context.ec
+
+                def categories = ec.entity.find("mantle.product.category.ProductCategory").condition("productCategoryTypeEnumId", productCategoryTypeEnumId).list()
+                if (!categories) {
+                    return;
+                }
+
+                def productCategoryIds = []
+                categories.each{category ->
+                    productCategoryIds.add(category.productCategoryId)
+                }
+
+                // query list of products
+                def products = ec.entity.find("mantle.product.category.ProductCategoryMemberProduct")
+                    .conditionDate("fromDate", "thruDate", ec.user.nowTimestamp)
+                    .condition("productCategoryId", EntityCondition.IN, productCategoryIds).distinct(true).list()
+                if (!products) {
+                    return;
+                }
+
+                Random gen = new Random(new Date().getTime())
+                product = products.get(gen.nextInt(products.size()))
+            </script>
+        </actions>
+    </service>
+
     <service verb="get" noun="CategoryProducts">
         <in-parameters>
             <parameter name="productCategoryId" required="true"/>
             <parameter name="priceUomId"/>
             <parameter name="locale"/>
             <parameter name="orderBy" default-value="sequenceNum"/>
-            <parameter name="pageIndex" type="Integer" default="0"/>
-            <parameter name="pageSize" type="Integer" default="20"/>
+            <parameter name="pageIndex" default="0"/>
+            <parameter name="pageSize" default="6"/>
         </in-parameters>
         <out-parameters>
             <parameter name="productList" type="List"><parameter name="productInfo" type="Map">
@@ -550,6 +613,55 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
 
+    <service verb="find" noun="CurrentPromoProduct">
+        <description>
+            Randomly select on of the products that have current price active and this current price is different
+            then list price.
+        </description>
+        <in-parameters>
+            <parameter name="productStoreId"/>
+            <parameter name="priceUomId" default-value="USD"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="product"/>
+        </out-parameters>
+        <actions>
+            <set field="currentPricesConds"
+                    from="[pricePurposeEnumId:'PppPurchase',priceTypeEnumId:'PptCurrent',priceUomId:priceUomId]"/>
+            <if condition="productStoreId">
+                <set field="currentPricesConds.productStoreId" from="productStoreId"/>
+            </if>
+            <entity-find entity-name="mantle.product.ProductPrice" list="currentPrices" cache="true">
+                <econdition-object field="currentPricesConds"/>
+                <date-filter/>
+                <order-by field-name="productId"/><order-by field-name="-fromDate"/>
+            </entity-find>
+            <script><![CDATA[
+                processedProducts = [] as Set
+                def productCandidates = []
+
+                if (!currentPrices) {
+                    return
+                }
+
+                for (EntityValue productPrice : currentPrices) {
+                    if (processedProducts.contains(productPrice.productId)) continue;
+                    def srvcParams = [productId:productPrice.productId, priceUomId:priceUomId, productStoreId:productStoreId]
+                    def prices = ec.service.sync().name('mantle.product.PriceServices.get#ProductPrice').parameters(srvcParams).call()
+                    if (prices.listPrice > 0 && prices.listPrice != prices.price) {
+                        productCandidates.add(productPrice.productId);
+                    }
+                }
+
+                if (productCandidates) {
+                    Random gen = new Random(new Date().getTime())
+                    def productId = productCandidates.get(gen.nextInt(productCandidates.size()))
+                    product = ec.entity.find("mantle.product.Product").condition("productId", productId).one()
+                }
+            ]]></script>
+        </actions>
+    </service>
+
     <service verb="get" noun="CatalogProductId">
         <description>
             If product ID on input is a variant product then this service find associated virtual product
@@ -575,5 +687,4 @@ along with this software (see the LICENSE.md file). If not, see
             </if>
         </actions>
     </service>
-    
 </services>
