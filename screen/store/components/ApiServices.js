@@ -7,6 +7,7 @@ var GeoService = {
 
 var LoginService = {
     login(user, headers) { return axios.post("/rest/s1/pop/login", user, headers).then(function (response) { return response.data; }); },
+    loginFB(user, headers) { return axios.post("/rest/s1/pop/loginFB", user, headers).then(function (response) { return response.data; }); },
     createAccount(account, headers) { return axios.post("/rest/s1/pop/register", account, headers).then(function (response) { return response.data; }); },
     logout() { return axios.get("/rest/s1/pop/logout").then(function (response) { return response.data; }); },
     resetPassword(username, headers) { return axios.post("/rest/s1/pop/resetPassword", username, headers).then(function (response) { return response.data; }); }
@@ -96,5 +97,11 @@ var ProductService = {
     deleteOrderProduct(orderId, orderItemSeqId,headers) {
         return axios.delete("/rest/s1/pop/cart/deleteOrderItem?orderId="+orderId+"&orderItemSeqId="+orderItemSeqId,headers)
             .then(function (response) { return response.data; });
+    },
+    addPromoCode(data, headers) {
+        return axios.post("/rest/s1/pop/cart/promoCode",data,headers).then(function (response) { return response.data; });
+    },
+    deletePromoCode(data, headers) {
+        return axios.delete("/rest/s1/pop/cart/promoCode",data,headers).then(function (response) { return response.data; });
     }
 };
