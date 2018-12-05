@@ -28,6 +28,8 @@ along with this software (see the LICENSE.md file). If not, see
 
     <resource name="login" require-authentication="anonymous-view">
         <method type="post"><service name="popstore.CustomerServices.login#Customer"/></method></resource>
+    <resource name="loginFB" require-authentication="anonymous-view">
+        <method type="post"><service name="popstore.CustomerServices.loginFB#Customer"/></method></resource>
     <resource name="logout" require-authentication="anonymous-view">
         <method type="get"><service name="popstore.CustomerServices.logout#Customer"/></method></resource>
     <resource name="register" require-authentication="anonymous-all">
@@ -67,6 +69,15 @@ along with this software (see the LICENSE.md file). If not, see
         <resource name="content">
             <method type="get"><service name="popstore.ProductServices.find#ProductContent"/></method>
         </resource>
+         <resource name="productQuantity">
+            <method type="get"><service name="popstore.ProductServices.get#ProductQuantity"/></method>
+        </resource>
+        <resource name="CategoryProducts">
+            <method type="get"><service name="popstore.ProductServices.get#CategoryProducts"/></method>
+        </resource>
+        <resource name="SearchProducts">
+            <method type="get"><service name="ridgecrest.ProductServices.get#SortedProductList"/></method>
+        </resource>
     </resource>
     <resource name="categories" require-authentication="anonymous-view">
         <id name="productCategoryId">
@@ -84,7 +95,7 @@ along with this software (see the LICENSE.md file). If not, see
             <method type="get"><service name="popstore.CartServices.get#CartInfo"/></method>
         </resource>
         <resource name="add">
-            <method type="post"><service name="popstore.CartServices.add#Product"/></method>
+            <method type="get"><service name="popstore.CartServices.add#Product"/></method>
         </resource>
 
         <resource name="updateProductQuantity">
