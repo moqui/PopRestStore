@@ -23,8 +23,15 @@ along with this software (see the LICENSE.md file). If not, see
         <set field="productStore" from="storeInfo.productStore"/>
         <set field="wikiSpaceId" from="productStore?.wikiSpaceId"/>
 
-        <!-- TODO: evaluate all use of this, most likely eliminate all... found use showing name from UserAccount instead of PartyDetail (Person/Organization) -->
-        <set field="user" from="ec.user.userAccount"/>
+        <!-- CURRENTLY REQUIRED FOR RIDGECREST LOGIN/ACCOUNT -->
+        <if condition="ec.user.userId">
+            <entity-find-one entity-name="mantle.party.PartyDetail" value-field="partyDetail">
+                <field-map field-name="partyId" from="ec.user.userId"/>
+            </entity-find-one>
+        </if>
+
+        <!-- CURRENTLY REQUIRED FOR POPRESTSTORE LOGIN/ACCOUNT-->
+        <!-- <set field="user" from="ec.user.userAccount"/> -->
     </always-actions>
 
     <transition name="config.js" read-only="true">
@@ -68,6 +75,11 @@ var storeInfo = ${storeInfoJson};
         <!-- get browseRootCategoryInfo for subCategoryList used in header, etc -->
         <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="browseRootCategoryInfo"
                 in-map="[productCategoryId:browseRootCategoryId]"/>
+        <!-- get allProductsInfo for subCategoryList used in header, etc --> 
+        <set field="allProducts" from="storeInfo.categoryByType.PsctSearch"/>
+        <set field="allProductsId" from="storeInfo.categoryByType.PsctSearch?.productCategoryId"/>
+        <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="allProductsInfo"
+            in-map="[productCategoryId:allProductsId]"/>
 
         <!-- cartInfo for cart count in header/navbar -->
         <service-call name="popstore.CartServices.get#CartInfo" out-map="cartInfo" in-map="context"/>
@@ -79,6 +91,7 @@ var storeInfo = ${storeInfoJson};
         <set field="template_server_home" from="storeInfo.settings.template_server_home" default-value="component://PopRestStore/template/store/home.html.ftl"/>
         <set field="template_server_category" from="storeInfo.settings.template_server_category" default-value="component://PopRestStore/template/store/category.html.ftl"/>
         <set field="template_server_product" from="storeInfo.settings.template_server_product" default-value="component://PopRestStore/template/store/product.html.ftl"/>
+        <set field="template_server_content" from="storeInfo.settings.template_server_content" default-value="component://PopRestStore/template/store/content.html.ftl"/>
     </pre-actions>
 
     <widgets>
