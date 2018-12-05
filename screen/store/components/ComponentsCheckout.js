@@ -10,16 +10,34 @@ Vue.component("checkout-navbar", storeComps.CheckoutNavbarTemplate);
 storeComps.CheckOutPage = {
     name: "checkout-page",
     data: function() { return {
-        productsInCart: [], shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {},
-        billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],
-        countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0",
-        isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
-        cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: {}, 
-        urlList: {}, stateShippingAddress:1, stateShippingMethod:0, statePaymentMethod:0, listShippingOptions: [], optionNavbar:1,
-        axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
-                "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
-    }; },
+            customerInfo: {}, productsInCart: [], shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {},
+            billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "",
+            countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0",
+            isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
+            cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: {}, urlList: {}, 
+            freeShipping:false, promoSuccess: "", stateGuestCustomer:2, stateShippingAddress:1, stateShippingMethod:0, statePaymentMethod:0, listShippingOptions: [], 
+            optionNavbar:1, axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
+            "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
+        }; 
+    },
+    computed: {
+        shippingItemPrice: function() {
+            var item = this.productsInCart.orderItemList?this.productsInCart.orderItemList.find(function(item) {
+                return item.itemTypeEnumId == 'ItemShipping'; }):0;
+            return item ? item.unitAmount : 0;
+        }
+    },
     methods: {
+        notAddressSeleted: function() {
+            return (this.addressOption == null || this.addressOption == '' 
+                || this.listShippingAddress == null || this.listShippingAddress.length == 0);
+        },
+        notPaymentSeleted: function() {
+            return (this.paymentOption == null || this.paymentOption == '' 
+                || this.listPaymentMethods == null || this.listPaymentMethods.length == 0);
+        },
+        getCustomerInfo: function() { CustomerService.getCustomerInfo(this.axiosConfig)
+            .then(function (data) { this.customerInfo = data; }.bind(this)); },
         getCustomerShippingAddresses: function() {
             CustomerService.getShippingAddresses(this.axiosConfig).then(function (data) {
                 this.listShippingAddress = data.postalAddressList;
@@ -27,74 +45,74 @@ storeComps.CheckOutPage = {
         },
         
         resetToNameErrorMessage: function(formField) {
-           if (this.formField != "") {
-            this.toNameErrorMessage = "";
-           } 
-        }, 
-        resetCountryErrorMessage: function(formField) {
             if (this.formField != "") {
-             this.countryErrorMessage = "";
+             this.toNameErrorMessage = "";
             } 
          }, 
-         resetAddressErrorMessage: function(formField) {
-            if (this.formField != "") {
-             this.addressErrorMessage = "";
-            } 
-         }, 
-         resetCityErrorMessage: function(formField) {
-            if (this.formField != "") {
-             this.cityErrorMessage = "";
-            } 
-         }, 
-         resetStateErrorMessage: function(formField) {
-            if (this.formField != "") {
-             this.stateErrorMessage = "";
-            } 
-         }, 
-         resetPostalCodeErrorMessage: function(formField) {
-            if (this.formField != "") {
-             this.postalCodeErrorMessage = "";
-            } 
-         }, 
-         resetContactNumberErrorMessage: function(formField) {
-            if (this.formField != "") {
-             this.contactNumberErrorMessage = "";
-            } 
-         },
-
-        addCustomerShippingAddress: function() {
-            var error = false;
-            if (this.shippingAddress.toName == null || this.shippingAddress.toName.trim() === "") {
-                this.toNameErrorMessage = "Please enter a recipient name";
-                error = true;
-            }
-            if (this.shippingAddress.countryGeoId == null || this.shippingAddress.countryGeoId.trim() === "") {
-                this.countryErrorMessage = "Please select a country";
-                error = true;
-            } 
-            if (this.shippingAddress.address1 == null || this.shippingAddress.address1.trim() === "") {
-                this.addressErrorMessage = "Please enter a street address";
-                error = true;
-            } 
-            if (this.shippingAddress.city == null || this.shippingAddress.city.trim() === "") {
-                this.cityErrorMessage = "Please enter a city";
-                error = true;
-            } 
-            if (this.shippingAddress.stateProvinceGeoId == null || this.shippingAddress.stateProvinceGeoId.trim() === "") {
-                this.stateErrorMessage = "Please enter a state";
-                error = true;
-            } 
-            if (this.shippingAddress.postalCode == null || this.shippingAddress.postalCode.trim() === "") {
-                this.postalCodeErrorMessage = "Please enter a postcode";
-                error = true;
-            } 
-            if (this.shippingAddress.contactNumber == null || this.shippingAddress.contactNumber.trim() === "") {
-                this.contactNumberErrorMessage = "Please enter a phone number";
-                error = true;
-            }
-            if(error){
-                return;
-            }
+         resetCountryErrorMessage: function(formField) {
+             if (this.formField != "") {
+              this.countryErrorMessage = "";
+             } 
+          }, 
+          resetAddressErrorMessage: function(formField) {
+             if (this.formField != "") {
+              this.addressErrorMessage = "";
+             } 
+          }, 
+          resetCityErrorMessage: function(formField) {
+             if (this.formField != "") {
+              this.cityErrorMessage = "";
+             } 
+          }, 
+          resetStateErrorMessage: function(formField) {
+             if (this.formField != "") {
+              this.stateErrorMessage = "";
+             } 
+          }, 
+          resetPostalCodeErrorMessage: function(formField) {
+             if (this.formField != "") {
+              this.postalCodeErrorMessage = "";
+             } 
+          }, 
+          resetContactNumberErrorMessage: function(formField) {
+             if (this.formField != "") {
+              this.contactNumberErrorMessage = "";
+             } 
+          },
+ 
+         addCustomerShippingAddress: function() {
+             var error = false;
+             if (this.shippingAddress.toName == null || this.shippingAddress.toName.trim() === "") {
+                 this.toNameErrorMessage = "Please enter a recipient name";
+                 error = true;
+             }
+             if (this.shippingAddress.countryGeoId == null || this.shippingAddress.countryGeoId.trim() === "") {
+                 this.countryErrorMessage = "Please select a country";
+                 error = true;
+             } 
+             if (this.shippingAddress.address1 == null || this.shippingAddress.address1.trim() === "") {
+                 this.addressErrorMessage = "Please enter a street address";
+                 error = true;
+             } 
+             if (this.shippingAddress.city == null || this.shippingAddress.city.trim() === "") {
+                 this.cityErrorMessage = "Please enter a city";
+                 error = true;
+             } 
+             if (this.shippingAddress.stateProvinceGeoId == null || this.shippingAddress.stateProvinceGeoId.trim() === "") {
+                 this.stateErrorMessage = "Please enter a state";
+                 error = true;
+             } 
+             if (this.shippingAddress.postalCode == null || this.shippingAddress.postalCode.trim() === "") {
+                 this.postalCodeErrorMessage = "Please enter a postcode";
+                 error = true;
+             } 
+             if (this.shippingAddress.contactNumber == null || this.shippingAddress.contactNumber.trim() === "") {
+                 this.contactNumberErrorMessage = "Please enter a phone number";
+                 error = true;
+             }
+             if(error){
+                 return;
+             }
 
             CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(function (data) {
                 this.shippingAddress = {};
@@ -104,9 +122,8 @@ storeComps.CheckOutPage = {
         },
         getCartShippingOptions: function() {
             ProductService.getCartShippingOptions(this.axiosConfig)
-                .then(function (data) { this.listShippingOptions = data.shippingOptions; }.bind(this));
+                .then(function (data) { this.listShippingOptions = data.shippingOptions;}.bind(this));
         },
-        getCountries: function() { GeoService.getCountries().then(function (data) { this.countriesList = data.geoList; }.bind(this)); },
         getRegions: function(geoId) { GeoService.getRegions(geoId).then(function (data){ this.regionsList = data.resultList; }.bind(this)); },
         getCartInfo: function() {
             ProductService.getCartInfo(this.axiosConfig).then(function (data) {
@@ -144,7 +161,7 @@ storeComps.CheckOutPage = {
             if (this.paymentMethod.titleOnAccount == null || this.paymentMethod.titleOnAccount.trim() === "" ||
                 this.paymentMethod.cardNumber == null || this.paymentMethod.cardNumber.trim() === "" ||
                 this.paymentMethod.expireMonth == null || this.paymentMethod.expireMonth.trim() === "" ||
-                this.paymentMethod.expireYear == null || this.paymentMethod.expireYear.trim() === "" ||
+                this.paymentMethod.expireYear == null || this.paymentMethod.expireYear === "" ||
                 this.paymentMethod.cardSecurityCode == null || this.paymentMethod.cardSecurityCode.trim() === "") {
                 this.responseMessage = "Verify the required fields";
                 return;
@@ -163,14 +180,19 @@ storeComps.CheckOutPage = {
                 this.paymentMethod.telecomContactMechId = this.addressOption.split(':')[1];
             }
             if (this.isUpdate) { this.paymentMethod.cardNumber = ""; }
-
+            
             CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
                 this.hideModal("modal2");
                 this.paymentMethod = {};
                 this.getCustomerPaymentMethods();
                 this.responseMessage = "";
             }.bind(this)).catch(function (error) {
-                this.responseMessage = "An error occurred";
+                var errorMmessages = error.response.data.errors;
+                if (errorMmessages.includes('Value entered is not a valid credit card number'))
+                    this.responseMessage = 'Value entered is not a valid credit card number.';
+                else
+                    this.responseMessage = errorMmessages;
+                console.error(this.responseMessage);
             }.bind(this));
         },
         addCartBillingShipping: function(option){
@@ -180,8 +202,8 @@ storeComps.CheckOutPage = {
             };
             switch (option){
                 case 1:
-                    this.stateShippingAddress = 2;
-                    this.stateShippingMethod = 1;
+                    //this.stateGuestCustomer = 2;
+                    this.stateShippingAddress = 1;
                     $('#collapse2').collapse("show");
                     break;
                 case 2:
@@ -225,6 +247,16 @@ storeComps.CheckOutPage = {
                 this.showModal("modal-error");
             }.bind(this));
         },
+        applyPromotionCode: function() {
+            var dataCode = {promoCode: this.promoCode, orderId: this.productsInCart.orderHeader.orderId};
+            ProductService.addPromoCode(dataCode,this.axiosConfig).then(function (data) {
+                if(data.messages.includes("not valid")) {
+                    this.promoError = data.messages;
+                } else {
+                    this.promoSuccess = data.messages;
+                }
+            }.bind(this));
+        },
         deletePaymentMethod: function(paymentMethodId) {
             CustomerService.deletePaymentMethod(paymentMethodId,this.axiosConfig).then(function (data) {
                 this.getCustomerPaymentMethods();
@@ -251,7 +283,9 @@ storeComps.CheckOutPage = {
             this.paymentMethod.attnName = address.postalAddress.attnName;
             this.paymentMethod.city = address.postalAddress.city;
             this.paymentMethod.countryGeoId = address.postalAddress.countryGeoId;
-            this.paymentMethod.contactNumber = address.telecomNumber.contactNumber;
+            if(typeof(address.telecomNumber) != 'undefined') {
+                this.paymentMethod.contactNumber = address.telecomNumber.contactNumber;
+            }
             this.paymentMethod.postalCode = address.postalAddress.postalCode;
             this.paymentMethod.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
             this.responseMessage = "";
@@ -269,7 +303,6 @@ storeComps.CheckOutPage = {
             this.shippingAddress.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
             this.shippingAddress.postalContactMechId = address.postalContactMechId;
             this.shippingAddress.telecomContactMechId = address.telecomContactMechId;
-            this.getRegions(address.postalAddress.countryGeoId);
             this.responseMessage = "";
         },
         selectPaymentMethod: function(method) {
@@ -297,28 +330,26 @@ storeComps.CheckOutPage = {
     },
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
-        // query: { url: 'checkout' }
-        if (this.$root.apiKey == null) { 
-            this.$router.push({ name: 'login'}); 
-        } else {
-            this.getCartShippingOptions();
-            this.getCartInfo();
-            this.getCustomerShippingAddresses();
-            this.getCustomerPaymentMethods();
-            this.getCountries();
-        }
-    }
+        this.getCustomerInfo();
+        this.getCartShippingOptions();
+        this.getCartInfo();
+        this.getCustomerShippingAddresses();
+        this.getCustomerPaymentMethods();
+        this.getRegions('USA');
+    },
 };
 storeComps.CheckOutPageTemplate = getPlaceholderRoute("template_client_checkout", "CheckOutPage");
 
 storeComps.SuccessCheckOut = {
     name: "success-checkout",
     data: function() { return {
-        ordersList:[], orderList:{},
+        customerInfo: {}, deliveryPrice:0, ordersList:[], orderList:{},
         axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
                 "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
     }; },
     methods: {
+        getCustomerInfo: function() { CustomerService.getCustomerInfo(this.axiosConfig)
+            .then(function (data) { this.customerInfo = data; }.bind(this)); },
         getCustomerOrders: function() {
             CustomerService.getCustomerOrders(this.axiosConfig)
                 .then(function (data) { this.ordersList = data.orderInfoList; }.bind(this));
@@ -331,6 +362,9 @@ storeComps.SuccessCheckOut = {
             return moment(date).format('Do MMM, YY');
         }
     },
-    mounted: function() { this.getCustomerOrderById(); }
+    mounted: function() {
+        this.getCustomerInfo();
+        this.getCustomerOrderById();
+    }
 };
 storeComps.SuccessCheckOutTemplate = getPlaceholderRoute("template_client_checkoutSuccess", "SuccessCheckOut");
