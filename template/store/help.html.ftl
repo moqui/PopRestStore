@@ -41,7 +41,7 @@
             <a class="account-back-top" href="/store/content/help">Back to Top</a>
             <hr class="account-hr">
             <p class="modal-text">
-                Standar shipping takes between 1 and 2 weeks. Express shipping takes 1 to 2 days.
+                Standard shipping takes between 1 and 2 weeks. Express shipping takes 1 to 2 days.
             </p>
             <p class="order-text-color account-subtitle mt-5" id="how-to-pay">Customer Pick Up</p>
             <a class="account-back-top" href="/store/content/help">Back to Top</a>
