@@ -79,8 +79,10 @@ along with this software (see the LICENSE.md file). If not, see
         <service-call name="popstore.ProductServices.get#RandomCategoryProduct" out-map="npResult"
             in-map="[productCategoryTypeEnumId:'PctNew']"/>
         <set field="newProduct" from="npResult.product"/>
-        <service-call name="popstore.ProductServices.get#ProductInfo" out-map="product" in-map="[productId:newProduct.productId]"/>
-        <set field="specialInstrLocation" from="product.contentList.find({'PcntMetaDescription' == it.productContentTypeEnumId})?.contentLocation"/>
+        <if condition="newProduct">
+            <service-call name="popstore.ProductServices.get#ProductInfo" out-map="product" in-map="[productId:newProduct.productId]"/>
+            <set field="specialInstrLocation" from="product.contentList.find({'PcntMetaDescription' == it.productContentTypeEnumId})?.contentLocation"/>
+        </if>
         <if condition="specialInstrLocation">
             <set field="specialInstructions" from="ec.resource.getLocationText(specialInstrLocation, true)"/>
         </if>

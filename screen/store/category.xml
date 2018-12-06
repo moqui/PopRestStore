@@ -66,7 +66,7 @@ along with this software (see the LICENSE.md file). If not, see
         <set field="inStock" from="false"/>
 
         <service-call name="popstore.CartServices.get#CartInfo" in-map="context" out-map="productsInCart" />
-        <service-call name="ridgecrest.ProductServices.get#SortedProductList" in-map="context + [productCategoryId:categoryId]" out-map="context"/>
+        <service-call name="popstore.ProductServices.get#SortedProductList" in-map="context + [productCategoryId:categoryId]" out-map="context"/>
 
         <set field="pageSize" from="pageSize ?: 6"/>
         <script>paginateList("productList", null, context)</script>

@@ -163,6 +163,134 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
 
+    <service verb="get" noun="SortedProductList">
+        <in-parameters>
+            <parameter name="productCategoryId"/>
+            <parameter name="productStoreId"/>
+            <parameter name="orderBy" default-value="${ec.web.sessionAttributes.defaultSorting}"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productList"/>
+        </out-parameters>
+        <actions>
+            <script>
+                import org.moqui.entity.EntityCondition
+                import org.moqui.entity.EntityConditionFactory
+            </script>
+            <if condition="orderBy=='popularity'">
+                <then>
+                    <script>
+                        def cal = ec.user.nowCalendar
+                        cal.add(Calendar.YEAR, -1)
+                        def yearAgo = new Timestamp(cal.getTimeInMillis())
+                    </script>
+                    <entity-find entity-name="ProductCategoryProductOrderItemSort" list="productList">
+                        <econdition field-name="productCategoryId"/>
+                        <econdition field-name="lastUpdatedStamp" operator="greater" from="yearAgo" or-null="true"/>
+                        <date-filter/>
+                        <date-filter thru-field-name="salesDiscontinuationDate"/>
+                        <select-field field-name="productId"/>
+                        <select-field field-name="productTypeEnumId"/>
+                        <select-field field-name="productName"/>
+                        <select-field field-name="orderedTotal"/>
+                        <order-by field-name="-orderedTotal,sequenceNum,productName"/>
+                    </entity-find>
+                    <script><![CDATA[
+                        def sortedList = [] as List
+                        productList.each{ product ->
+                            if ('PtVirtual' == product.productTypeEnumId) {
+                                def virtualSumQuantity = 0
+                                // sum of ordered variants
+                                def variants = ec.entity.find("mantle.product.ProductAssoc")
+                                        .condition([productId:product.productId, productAssocTypeEnumId:'PatVariant'])
+                                        .conditionDate("fromDate", "thruDate", ec.user.nowTimestamp).list();
+                                if (variants) {
+                                    variants.each{variant ->
+                                        def variantOrderItems = ec.entity.find("mantle.order.OrderItem")
+                                                .condition('lastUpdatedStamp', 'greater-than', yearAgo)
+                                                .condition([productId:variant.toProductId]).list()
+                                        variantOrderItems.each { orderItem ->
+                                            virtualSumQuantity += orderItem.quantity
+                                        }
+                                    }
+                                }
+                                product.orderedTotal = virtualSumQuantity
+                            }
+                            if (!product.orderedTotal) {
+                                product.orderedTotal = 0
+                            }
+                            sortedList.add(product)
+                        }
+                        sortedList.sort({-it.orderedTotal})
+                        productList = sortedList
+                        ec.web.sessionAttributes.defaultSorting = orderBy
+                    ]]></script>
+                    <return/>
+                </then>
+            </if>
+            <if condition="orderBy=='price-asc' || orderBy=='price-desc'">
+                <then>
+                    <set field="orderByField" value="price"/>
+                    <if condition="orderBy=='price-desc'">
+                        <set field="orderByField" value="-price"/>
+                    </if>
+                    <entity-find entity-name="ProductCategoryProductPriceSort" list="productList">
+                        <econdition field-name="productCategoryId"/>
+                        <econdition field-name="variantProductStoreId" from="productStoreId" or-null="true"/>
+                        <econditions combine="or">
+                            <econdition field-name="priceTypeEnumId" operator="in" from="['PptList','PptCurrent']"/>
+                            <econdition field-name="variantPriceTypeEnumId" operator="in" from="['PptList','PptCurrent']"/>
+                        </econditions>
+                        <econditions combine="or">
+                            <econdition field-name="pricePurposeEnumId" value="PppPurchase"/>
+                            <econdition field-name="variantPricePurposeEnumId" value="PppPurchase"/>
+                        </econditions>
+                        <date-filter/>
+                        <date-filter from-field-name="priceFromDate" thru-field-name="priceThruDate"/>
+                        <date-filter from-field-name="variantPriceFromDate" thru-field-name="variantPriceThruDate"/>
+                        <date-filter thru-field-name="salesDiscontinuationDate"/>
+                        <order-by field-name="${orderByField}"/>
+                    </entity-find>
+                    <script>
+                        // list of products are postprocessed to remove list prices if a current price exists
+                        def currentPriceProductIds = [] as Set
+                        productList.each{product ->
+                            if (product.priceTypeEnumId == 'PptCurrent' || product.variantPricePurposeEnumId == 'PptCurrent') {
+                                if (!currentPriceProductIds.contains(product.productId)) {
+                                    currentPriceProductIds.add(product.productId)
+                                }
+                            }
+                        }
+                        def sortedList = [] as List
+                        productList.each{product ->
+                            if ((product.priceTypeEnumId == 'PptList' || product.variantPricePurposeEnumId == 'PptList')) {
+                                if (!currentPriceProductIds.contains(product.productId)) {
+                                    sortedList.add(product)
+                                }
+                            } else {
+                                sortedList.add(product)
+                            }
+                        }
+                        productList = sortedList
+                        ec.web.sessionAttributes.defaultSorting = orderBy
+                    </script>
+                    <return/>
+                </then>
+            </if>
+
+            <!-- default sorting -->
+            <entity-find entity-name="ProductCategoryMemberProduct" list="productList">
+                <econdition field-name="productCategoryId"/>
+                <date-filter/>
+                <date-filter thru-field-name="salesDiscontinuationDate"/>
+                <order-by field-name="sequenceNum,productName"/>
+            </entity-find>
+            <if condition="orderBy=='default'">
+                <script>ec.web.sessionAttributes.remove('defaultSorting')</script>
+            </if>
+        </actions>
+    </service>
+    
     <service verb="find" noun="ProductContent">
         <description>
             Try to find ProductContent record of a specified type the product. If it is not found then either
