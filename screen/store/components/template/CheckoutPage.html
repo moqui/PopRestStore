@@ -10,7 +10,7 @@
                     <span class="col col-lg-1">Price</span>
                 </p>
                 <hr class="hr">
-                <div class="row" v-for="i   orderItemList" :key="item.productId" >
+                <div class="row" v-for="item in productsInCart.orderItemList" :key="item.productId" >
                     <div class="col col-lg-2">
                         <product-image :productId="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'"
                            class="mb-1"/>
