@@ -23,15 +23,11 @@ along with this software (see the LICENSE.md file). If not, see
         <set field="productStore" from="storeInfo.productStore"/>
         <set field="wikiSpaceId" from="productStore?.wikiSpaceId"/>
 
-        <!-- CURRENTLY REQUIRED FOR RIDGECREST LOGIN/ACCOUNT -->
         <if condition="ec.user.userId">
             <entity-find-one entity-name="mantle.party.PartyDetail" value-field="partyDetail">
                 <field-map field-name="partyId" from="ec.user.userId"/>
             </entity-find-one>
         </if>
-
-        <!-- CURRENTLY REQUIRED FOR POPRESTSTORE LOGIN/ACCOUNT-->
-        <!-- <set field="user" from="ec.user.userAccount"/> -->
     </always-actions>
 
     <transition name="config.js" read-only="true">

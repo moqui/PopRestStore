@@ -68,11 +68,12 @@
 
             <!-- Right aligned nav items -->
             <ul class="navbar-nav ml-auto">
-                <#if user??>
+                <#if partyDetail??>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <#-- TODO: use Person/Org name fields -->
-                            <i class="fas fa-user"></i> ${user.userFullName}</a>
+                        <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> 
+                            ${partyDetail.firstName} ${partyDetail.lastName} ${partyDetail.organizationName!} <i class="fas fa-angle-down icon-down"></i>
+                        </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item item-color" href="/store/d#/account">Account Settings</a>
                             <a class="dropdown-item item-color" href="/store/d#/orders">My Orders</a>
