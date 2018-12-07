@@ -76,7 +76,7 @@ along with this software (see the LICENSE.md file). If not, see
             <method type="get"><service name="popstore.ProductServices.get#CategoryProducts"/></method>
         </resource>
         <resource name="SearchProducts">
-            <method type="get"><service name="ridgecrest.ProductServices.get#SortedProductList"/></method>
+            <method type="get"><service name="popstore.ProductServices.get#SortedProductList"/></method>
         </resource>
     </resource>
     <resource name="categories" require-authentication="anonymous-view">
