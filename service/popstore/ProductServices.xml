@@ -508,15 +508,12 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="productListPageRangeHigh" type="Integer"/>
         </out-parameters>
         <actions>
-            <!--<service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>-->
             <if condition="productStoreId">
                 <entity-find-one entity-name="mantle.product.store.ProductStore" value-field="productStore" cache="true"/>
                 <if condition="!priceUomId"><set field="priceUomId" from="productStore?.defaultCurrencyUomId"/></if>
                 <set field="vendorPartyId" from="productStore?.organizationPartyId"/>
             </if>
-            <set field="productStoreId" from="productStoreId ?: ec.web.sessionAttributes.productStoreId"/>
-            <!-- TODO: if no productStoreId lookup somehow? should be set from initial call to content/config.js transition -->
-
+            
             <if condition="!productCategoryId &amp;&amp; productStoreId">
                 <entity-find entity-name="mantle.product.store.ProductStoreCategory" list="searchPscList" cache="true">
                     <date-filter/><econdition field-name="productStoreId"/>
