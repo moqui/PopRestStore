@@ -539,9 +539,7 @@ along with this software (see the LICENSE.md file). If not, see
             <set field="queryString" from="(term ? term + ' AND ' : '') + 'categories.productCategoryId:' + productCategoryId"/>
 
             <service-call name="org.moqui.search.SearchServices.search#DataDocuments" out-map="searchOut"
-                    in-map="[queryString:queryString, indexName:'rcherbals', documentType:'RchProduct', pageIndex:pageIndex, pageSize:pageSize]"/>
-                    <!-- in-map="[queryString:queryString, indexName:'popc', documentType:'PopcProduct', pageIndex:pageIndex, pageSize:pageSize]"/> -->
-                    
+                    in-map="[queryString:queryString, indexName:'popc', documentType:'PopcProduct', pageIndex:pageIndex, pageSize:pageSize]"/>
 
             <set field="productList" from="searchOut.documentList"/>
             <set field="productListCount" from="searchOut.documentListCount"/>
