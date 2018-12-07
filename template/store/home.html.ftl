@@ -17,8 +17,8 @@
         <div class="feature">
             <div class="feature-icon"><i class="fa fa-lock" aria-hidden="true"></i></div>
             <div class="feature-info">
-                <div class="title text-left">FAST SHIPPING</div>
-                <div class="subtitle">Nationwide delivery whitin 3 days</div>
+                <div class="title text-left">SECURE ORDERING</div>
+                <div class="subtitle">Safe shopping guaranteed</div>
             </div>
         </div>
     </div>
@@ -37,7 +37,7 @@
                                 <#else>
                                     <div class="carousel-item">
                                 </#if>
-                                    <div class="d-block col-3">
+                                    <div class="d-block col-lg-3 col-12">
                                         <a class="category-product" href="/store/product/${product.productId}">
                                             <figure class="figure">
                                                 <#if product.mediumImageInfo??>
@@ -104,7 +104,7 @@
                                 <#else>
                                     <div class="carousel-item">
                                 </#if>
-                                    <div class="d-block col-3">
+                                    <div class="d-block col-lg-3 col-12">
                                         <a class="category-product" href="/store/product/${product.productId}">
                                             <figure class="figure">
                                                 <#if product.mediumImageInfo??>

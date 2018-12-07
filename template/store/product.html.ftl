@@ -7,6 +7,7 @@
 </#if>
 <div class="container mt-2">
     <a class="customer-link" href="/store">Home <i class="fas fa-angle-right"></i></a>
+    <a class="customer-link">${product.productName}</a>
 </div>
 <div class="container container-text mt-1">
     <#if addedCorrect?? && addedCorrect == 'true'>
@@ -15,10 +16,14 @@
             <a class="float-right" href="/store/d#/checkout">Go to Checkout <i class="fas fa-arrow-right"></i></a>
         </div>
     </#if>
+    <#--  <div class="row d-flex justify-content-center">
+        <img id="spinner" class="product-spinner" src="/store/assets/spinner.gif">
+    </div>  -->
     <div class="row mt-2">
         <div class="col col-lg-1 col-sm-4 col-4">
             <div>
                 <#assign imgDetail = false/>
+                <#assign imgExists = false/>
                 <#list product.contentList as img>
                     <#if img.productContentTypeEnumId == "PcntImageDetail">
                         <#assign imgDetail = true/>
@@ -31,29 +36,31 @@
                         </#if>
                     </#if>
                     <#if img.productContentTypeEnumId == "PcntImageLarge">
-                        <img width="200px" height="200px" onClick="changeLargeImage('${img.productContentId}');"
+                        <#assign imgExists = true/>
+                        <img onClick="changeLargeImage('${img.productContentId}');"
                             class="figure-img img-fluid product-img"
                             src="/store/content/productImage/${img.productContentId}"
-                            alt="Product Image" onerror="src='/store/assets/default.png'">
+                            alt="Product Image">
                     </#if>
                 </#list>
             </div>
         </div>
         <div class="col col-lg-4 col-sm-8 col-8">
-            <#-- This is still incorrect for the case when no image for the item exists, but the previous
-            code had a syntax error. -->
-                <img id="product-image-large" class="product-img-select" 
-                    data-toggle="modal" data-target="#modal2">
+            <img id="product-image-large" class="product-img-select" 
+                <#if imgDetail>data-toggle="modal" data-target="#modal2"</#if>>
         </div>
         <div class="col col-lg-4 col-sm-12 col-12">
             <p>
                 <span class="product-title">${product.productName}</span>
                 <br>
-                <#list 1..5 as x>
+                <span class="product-review-text">${reviewsList.productReviewList?size} reviews</span>
+                <hr style="margin-top: -10px;">
+                <br>
+                <!--<#list 1..5 as x>
                     <span class="star-rating">
                         <i class="fas fa-star"></i>
                     </span>
-                </#list>
+                </#list> -->
             </p>
             <div class="product-description">
                 <#if product.descriptionLong??>
@@ -92,7 +99,7 @@
                         <input type="hidden" value="${product.pseudoId}" name="productId" id="productId" />
                         <input type="hidden" value="${product.priceUomId}" name="currencyUomId" />
                         <input type="hidden" value="${ec.web.sessionToken}" name="moquiSessionToken"/>
-                        <span class="product-description text-gdark">Quantity</span>
+                        <span class="product-description">Quantity</span>
                         <select class="form-control text-gdark" name="quantity" id="quantity">
                             <#if productQuantity.productQuantity??>
                                 <#list 1..productQuantity.productQuantity as x>
@@ -125,7 +132,7 @@
                     </#if>
                 </div>
                 <#if inStock>
-                    <button id="cartAdd" class="btn cart-form-btn col" type="submit">
+                    <button onclick="onClickAddButton();" id="cartAdd" class="btn cart-form-btn col" type="submit" onclick="">
                         <i class="fa fa-shopping-cart"></i> Add to Cart
                     </button>
                 <#else>
@@ -168,9 +175,12 @@
     </div>
     </#list>
     <br>
+    <#if reviewsList.productReviewList?size == 0>
+       <p class="review-message">There are no reviews yet. Be the first.</p>
+    </#if>
     <button data-toggle="modal" data-target="#modal1" class="btn btn-continue review-btn">Write a Review</button>
 </div>
-<div class="modal fade" id="modal1"><!-- Image detail -->
+<div class="modal fade" id="modal1">
     <div class="modal-dialog" role="document">
         <form class="modal-content" id="product-review-form" method="post" action="/store/product/addReview">
             <div class="modal-header">
@@ -212,8 +222,10 @@
                     <span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <img width="100%" height="200px" class="figure-img img-fluid product-img"
-                    src="/store/content/productImage/${imgContent.productContentId}" alt="Product Image">
+                <#if imgContent.productContentId??>
+                    <img width="100%" height="200px" class="figure-img img-fluid product-img"
+                        src="/store/content/productImage/${imgContent.productContentId}" alt="Product Image">
+                </#if>
             </div>
             <div class="modal-footer">
                 <a data-dismiss="modal" class="btn btn-link">Close</a>
@@ -242,16 +254,19 @@
                 });
             </#list>
         </#if> 
-
     }
-    
-    function onChangeOption(variantId) {
-        console.log(variantId + $("#productId").val());
+
+    function onClickAddButton() {
+        $('#spinner').show();
     }
 
     function changeLargeImage(productContentId) { $productImageLarge.src = prodImageUrl + productContentId; }
     //Default image
-    <#if product.contentList?has_content>changeLargeImage("${product.contentList[0].productContentId}");</#if>
+    <#if product.contentList?has_content && imgExists>
+        changeLargeImage("${product.contentList[0].productContentId}");
+    <#else>
+        $productImageLarge.src = "/store/assets/default.png";
+    </#if>
     function setStarNumber(number) {
         var productRating = document.getElementById("productRating");
         productRating.value = number;
