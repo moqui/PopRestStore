@@ -23,7 +23,7 @@ along with this software (see the LICENSE.md file). If not, see
         </out-parameters>
         <actions>
             <entity-find entity-name="mantle.product.store.ProductStoreSetting" list="productStoreIdList">
-                <econdition field-name="settingTypeEnumId" value="PsstProductStoreIdFromHostname"/>    
+                <econdition field-name="settingTypeEnumId" value="PsstHostname"/>    
                 <econdition field-name="settingValue" value="${requestHostName}"/>
                 <date-filter/>
             </entity-find>
