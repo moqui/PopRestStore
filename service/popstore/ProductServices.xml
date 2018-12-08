@@ -535,8 +535,19 @@ along with this software (see the LICENSE.md file). If not, see
             <if condition="term"><set field="term" from="term.split(' ').collect({ (!it || it in ['AND', 'OR', 'NOT'] || it.contains('*')) ? it : it + '*' }).join(' ')"/></if>
             <set field="queryString" from="(term ? term + ' AND ' : '') + 'categories.productCategoryId:' + productCategoryId"/>
 
+            <!-- To make indexName dynamic, we query DataDocument from storeid -->
+            <entity-find-one entity-name="moqui.entity.document.DataDocumentCondition" value-field="dataDocumentCond" cache="true">
+                    <field-map field-name="fieldNameAlias" value="productStoreId"/>
+                    <field-map field-name="fieldValue" from="productStoreId"/></entity-find-one>
+
+            <if condition="!dataDocumentCond"><return type="danger" message="No search index configured for ${productStoreId}"/></if>
+
+            <entity-find-one entity-name="moqui.entity.document.DataDocument" value-field="dataDocument" cache="true">
+                    <field-map field-name="dataDocumentId" from="dataDocumentCond.dataDocumentId"/></entity-find-one>
+            
+            <!-- TODO - clarify this as documentType:dataDocument.dataDocumentId seems wrong but couldn't find any other value -->
             <service-call name="org.moqui.search.SearchServices.search#DataDocuments" out-map="searchOut"
-                    in-map="[queryString:queryString, indexName:'popc', documentType:'PopcProduct', pageIndex:pageIndex, pageSize:pageSize]"/>
+                    in-map="[queryString:queryString, indexName:dataDocument.indexName, documentType:dataDocument.dataDocumentId, pageIndex:pageIndex, pageSize:pageSize]"/>
 
             <set field="productList" from="searchOut.documentList"/>
             <set field="productListCount" from="searchOut.documentListCount"/>
