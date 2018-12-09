@@ -43,24 +43,16 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.basic.Enumeration enumCode="template_client_search" description="Template Client Search" enumId="PsstTemplateClientSearch" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_client_starRating" description="Template Client Star Rating" enumId="PsstTemplateClientStarRating" enumTypeId="ProductStoreSettingType"/>
 
-     <!-- server template setting types -->
-    <moqui.basic.Enumeration enumCode="template_server_about" description="Template Server About Page" enumId="PsstTemplateServerAbout" enumTypeId="ProductStoreSettingType"/>
-    <moqui.basic.Enumeration enumCode="template_server_article" description="Template Server Article" enumId="PsstTemplateServerArticle" enumTypeId="ProductStoreSettingType"/>
-    <moqui.basic.Enumeration enumCode="template_server_blog" description="Template Server Blog" enumId="PsstTemplateServerBlog" enumTypeId="ProductStoreSettingType"/>
-    <moqui.basic.Enumeration enumCode="template_server_category" description="Template Server Category" enumId="PsstTemplateServerCategory" enumTypeId="ProductStoreSettingType"/>
-    <moqui.basic.Enumeration enumCode="template_server_confirm" description="Template Server Confirm" enumId="PsstTemplateServerConfirm" enumTypeId="ProductStoreSettingType"/>
-    <moqui.basic.Enumeration enumCode="template_server_contact" description="Template Server Contact" enumId="PsstTemplateServerContact" enumTypeId="ProductStoreSettingType"/>
+     <!-- server template setting types these should be moved ot mantle-udm ...-->
+    <moqui.basic.Enumeration enumCode="template_server_root" description="Template Server Root" enumId="PsstTemplateServerRoot" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_content" description="Template Server Content" enumId="PsstTemplateServerContent" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_error" description="Template Server Error" enumId="PsstTemplateServerError" enumTypeId="ProductStoreSettingType"/>
-    <moqui.basic.Enumeration enumCode="template_server_find_us" description="Template Server Find Us" enumId="PsstTemplateServerFindUs" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_footer" description="Template Server Footer" enumId="PsstTemplateServerFooter" enumTypeId="ProductStoreSettingType"/>
-    <moqui.basic.Enumeration enumCode="template_server_help" description="Template Server Help" enumId="PsstTemplateServerHelp" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_home" description="Template Server Home" enumId="PsstTemplateServerHome" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_header" description="Template Server Header" enumId="PsstTemplateServerHeader" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_product" description="Template Server Product" enumId="PsstTemplateServerProduct" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_search" description="Template Server Search" enumId="PsstTemplateServerSearch" enumTypeId="ProductStoreSettingType"/>
-    <moqui.basic.Enumeration enumCode="template_server_request" description="Template Server Request" enumId="PsstTemplateServerRequest" enumTypeId="ProductStoreSettingType"/>
-    <moqui.basic.Enumeration enumCode="template_server_root" description="Template Server Root" enumId="PsstTemplateServerRoot" enumTypeId="ProductStoreSettingType"/>
+    <moqui.basic.Enumeration enumCode="template_server_category" description="Template Server Category" enumId="PsstTemplateServerCategory" enumTypeId="ProductStoreSettingType"/>
 
     <!-- store setting stype used for dynamically setting the productStoreId depending on the hostname -->
     <moqui.basic.Enumeration enumCode="product_store_id_from_hostname" description="Product Store ID From Hostname" enumId="PsstHostname" enumTypeId="ProductStoreSettingType"/>
