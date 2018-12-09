@@ -45,7 +45,6 @@ along with this software (see the LICENSE.md file). If not, see
 
      <!-- server template setting types -->
     <moqui.basic.Enumeration enumCode="template_server_about" description="Template Server About Page" enumId="PsstTemplateServerAbout" enumTypeId="ProductStoreSettingType"/>
-    <moqui.basic.Enumeration enumCode="template_server_almanac" description="Template Server Almanac" enumId="PsstTemplateServerAlmanac" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_article" description="Template Server Article" enumId="PsstTemplateServerArticle" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_blog" description="Template Server Blog" enumId="PsstTemplateServerBlog" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_category" description="Template Server Category" enumId="PsstTemplateServerCategory" enumTypeId="ProductStoreSettingType"/>

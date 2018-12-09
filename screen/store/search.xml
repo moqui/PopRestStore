@@ -24,7 +24,7 @@ along with this software (see the LICENSE.md file). If not, see
     </pre-actions>
     <actions>
         <service-call name="popstore.ProductServices.search#Products" out-map="products" 
-            in-map="[term:searchParameter, pageIndex:pageIndex ? pageIndex : '0', pageSize:'5',productStoreId:productStoreId]"/>
+            in-map="[term:searchParameter, pageIndex:pageIndex ? pageIndex : '0', pageSize:'12', productStoreId:productStoreId]"/>
     </actions>
     <widgets>
         <render-mode><text type="html" location="${template_server_header}"/></render-mode>
