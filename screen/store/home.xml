@@ -19,14 +19,6 @@ along with this software (see the LICENSE.md file). If not, see
     </pre-actions>
    
     <actions>
-        <!-- Featured Products -->
-        <service-call name="popstore.ProductServices.find#ProductAvailability" in-map="context" out-map="context" />
-
-        <entity-find entity-name="ProductCategoryMemberProduct" list="featuredProductList">
-            <econdition field-name="productCategoryId" value="FEATURED_PRODUCTS"/>
-            <date-filter/>
-            <order-by field-name="sequenceNum"/>
-        </entity-find>
 
          <!-- single products from those that has current price bellow then list price -->
         <service-call name="popstore.ProductServices.find#CurrentPromoProduct" out-map="promoResult"/>
