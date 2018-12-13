@@ -63,5 +63,15 @@
 </script>
     <#-- for scripts/etc from d.xml or others, ie client rendered part of site that needs more JS -->
     <#if footerScriptText?has_content>${footerScriptText}</#if>
+    <script src="/store/config.js"></script>
+    <script src="/store/components/utilities.js"></script>
+    <script src="/store/components/ApiServices.js"></script>
+
+    <script src="/store/components/ComponentsNav.js"></script>
+    <script src="/store/components/ComponentsProduct.js"></script>
+    <script src="/store/components/ComponentsAccount.js"></script>
+    <script src="/store/components/ComponentsCheckout.js"></script>
+
+    <script src="/store/components/main.js"></script>
 </body>
 </html>
