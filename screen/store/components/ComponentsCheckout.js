@@ -132,15 +132,6 @@ storeComps.CheckOutPage = {
                     this.shippingAddressSelect = data.postalAddress;
                     this.shippingAddressSelect.contactNumber = data.telecomNumber.contactNumber;
                 }
-                if (data.orderPart.carrierPartyId) {
-                    this.shippingOption = data.orderPart.carrierPartyId + ':' + data.orderPart.shipmentMethodEnumId;
-                    for(var x in this.listShippingOptions) {
-                        if(this.shippingOption === this.listShippingOptions[x].carrierPartyId +':'+ this.listShippingOptions[x].shipmentMethodEnumId) {
-                            this.shippingMethod = this.listShippingOptions[x];
-                            break;
-                        }
-                    }
-                }
                 if (data.paymentInfoList && data.paymentInfoList.length) {
                     this.paymentOption = data.paymentInfoList[0].payment.paymentMethodId;
                     this.billingAddressOption = data.paymentInfoList[0].paymentMethod.postalContactMechId + ':' +data.paymentInfoList[0].paymentMethod.telecomContactMechId;
@@ -202,9 +193,9 @@ storeComps.CheckOutPage = {
             };
             switch (option){
                 case 1:
-                    //this.stateGuestCustomer = 2;
-                    this.stateShippingAddress = 1;
-                    $('#collapse2').collapse("show");
+                    // this.stateGuestCustomer = 2;
+                    this.stateShippingAddress = 2;
+                    $('#collapse3').collapse("show");
                     break;
                 case 2:
                     this.stateShippingMethod = 2;
