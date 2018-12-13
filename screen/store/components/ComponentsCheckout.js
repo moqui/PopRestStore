@@ -193,9 +193,9 @@ storeComps.CheckOutPage = {
             };
             switch (option){
                 case 1:
-                    // this.stateGuestCustomer = 2;
                     this.stateShippingAddress = 2;
-                    $('#collapse3').collapse("show");
+                    this.stateShippingMethod = 1;
+                    $('#collapse2').collapse("show");
                     break;
                 case 2:
                     this.stateShippingMethod = 2;

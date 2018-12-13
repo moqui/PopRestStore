@@ -289,10 +289,11 @@ storeComps.AccountPage = {
         },
         updateCustomerInfo: function() {
             if(this.customerInfo.username == null || this.customerInfo.username.trim() === ""
-                  || this.customerInfo.firstName == null || this.customerInfo.firstName.trim() === ""
-                  || this.customerInfo.lastName == null || this.customerInfo.lastName.trim() === ""
-                  || this.customerInfo.emailAddress == null || this.customerInfo.emailAddress.trim() === ""
-                  || this.customerInfo.contactNumber == null || this.customerInfo.contactNumber.trim() === "") {
+            || this.customerInfo.firstName == null || this.customerInfo.firstName.trim() === ""
+            || this.customerInfo.lastName == null || this.customerInfo.lastName.trim() === ""
+            || this.customerInfo.emailAddress == null || this.customerInfo.emailAddress.trim() === ""
+            || this.customerInfo.locale == null || this.customerInfo.locale.trim() === ""
+            || this.customerInfo.timeZone == null || this.customerInfo.timeZone.trim() === "") {
                 this.message.state = 2;
                 this.message.message = "Verify the required fields";
                 return;

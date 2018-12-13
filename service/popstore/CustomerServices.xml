@@ -172,11 +172,13 @@ along with this software (see the LICENSE.md file). If not, see
                 out-map="response"/>
         </actions>
     </service>
+
     <service verb="logout" noun="Customer" authenticate="anonymous-all">
         <actions>
             <script>ec.user.logoutUser()</script>
         </actions>
     </service>
+    
     <service verb="register" noun="Customer" require-authentication="anonymous-all">
         <in-parameters>
             <parameter name="firstName" required="true"/><parameter name="middleName"/><parameter name="lastName" required="true"/>
