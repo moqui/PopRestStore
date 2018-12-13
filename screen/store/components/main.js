@@ -33,7 +33,7 @@ var appObjects = {
 
 // TODO: leave this, reminder to use vue.min.js for production: Vue.config.productionTip = false;
 
-var sotreApp = new Vue({
+var storeApp = new Vue({
     el: "#app",
     router: appObjects.router,
     // state: { categories: [], user: null },
