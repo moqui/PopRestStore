@@ -15,7 +15,7 @@ storeComps.CheckOutPage = {
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0",
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
             cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: {}, urlList: {}, 
-            freeShipping:false, promoSuccess: "", stateGuestCustomer:2, stateShippingAddress:1, stateShippingMethod:0, statePaymentMethod:0, listShippingOptions: [], 
+            freeShipping:false, promoSuccess: "", stateGuestCustomer:2, stateShippingAddress: 'incomplete', stateShippingMethod:0, statePaymentMethod:0, listShippingOptions: [], 
             optionNavbar:1, axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
             "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
         }; 
@@ -193,9 +193,8 @@ storeComps.CheckOutPage = {
             };
             switch (option){
                 case 1:
-                    this.stateShippingAddress = 2;
-                    this.stateShippingMethod = 1;
-                    $('#collapse2').collapse("show");
+                    this.stateShippingAddress = 'complete';
+                    $('#collapse3').collapse("show");
                     break;
                 case 2:
                     this.stateShippingMethod = 2;

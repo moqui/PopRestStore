@@ -54,19 +54,28 @@
                     </span>
                 </div>
             </div>
+
+            <!-- The whole checkout stage column -->
             <div class="col col-lg-5 offset-lg-1 col-sm-12 col-12">
-                <p class="title-check-text" :class="{ 'state': stateShippingAddress == 1, 'state1': stateShippingAddress == 2}">
-                    <span v-if="stateShippingAddress == 2" class="circle">
+
+                <p class="title-check-text" :class="{ 'step-incomplete': stateShippingAddress == 'incomplete', 'step-complete': stateShippingAddress == 'complete'}">
+                    
+                    
+                    <span v-if="stateShippingAddress == 'complete'" class="circle">
                         <i class="fa fa-check"></i>
                     </span>
-                    <span v-if="stateShippingAddress != 2" class="circle">1</span>
+                    <span v-if="stateShippingAddress == 'incomplete'" class="circle">1</span>
                     <span class="text-address">Shipping Address</span>
                     <span data-toggle="collapse" data-target="#collapse1" v-if="stateShippingAddress == 2" 
                         class="text-address change-info float-right" @click="setOptionNavbar(1)">
                         Change
                     </span>
                 </p>
-                <hr class="hr" :class="{ 'hr1': stateShippingAddress == 1, 'hr2':stateShippingAddress == 2 }">
+
+                <!-- Horizontal line under heading -->
+                <hr class="hr" :class="{ 'hr1': stateShippingAddress == 1, 'hr2':stateShippingAddress == 2 }"> 
+
+
                 <div v-if="stateShippingAddress == 2" class="div-total">
                     <span class="span-description">{{shippingAddressSelect.toName}}</span>
                     <span class="span-description">
@@ -277,6 +286,7 @@
                     <button class="btn btn-place-order col col-lg-12" @click="setCartPlace">Place Order</button>
                 </div>
             </div>
+
         </div>
         <div>
             <div class="modal fade" id="modal2">

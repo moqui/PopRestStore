@@ -171,10 +171,10 @@ a:hover { text-decoration: none; }
 .title-check-text { cursor: pointer; margin-top: 15px; }
 .title-cart-item { color: #666666 !important; margin-top: 15px; font-size: 1.2em; }
 
-.state .circle { color: #fff; background-color: #dd6231; width: 25px; height: 25px; position: absolute; text-align: center; border-radius: 50%; border: none; }
-.state .text-address { margin-left: 30px; color: #dd6231; font-size: 1.2em; }
-.state1 .circle { color: #fff; background-color: #04c3d5; width: 25px; height: 25px; position: absolute; text-align: center; border-radius: 50%; border: none; }
-.state1 .text-address { margin-left: 30px; color: #04c3d5; font-size: 1.2em; }
+.step-incomplete .circle { color: #fff; background-color: #dd6231; width: 25px; height: 25px; position: absolute; text-align: center; border-radius: 50%; border: none; }
+.step-incomplete .text-address { margin-left: 30px; color: #dd6231; font-size: 1.2em; }
+.step-complete .circle { color: #fff; background-color: #04c3d5; width: 25px; height: 25px; position: absolute; text-align: center; border-radius: 50%; border: none; }
+.step-complete .text-address { margin-left: 30px; color: #04c3d5; font-size: 1.2em; }
 
 .circle { color: #666666; width: 25px; height: 25px; position: absolute; text-align: center; display: flex;
     justify-content: center; align-items: center; border-radius: 50%; border: 1px solid #666666; }
