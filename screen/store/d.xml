@@ -26,8 +26,6 @@ along with this software (see the LICENSE.md file). If not, see
             apiKey: null, moquiSessionToken: null,
             // base path for the router, by default the app page should load from '/store'
             basePath: "/store/d/",
-            // Where the user should be sent when clicking on logo or after logging out
-            homePath: "/store",
             // REST API base location, default on the same server
             // if the Moqui server is running on a different server use something like "https://api.domain.com/rest/"
             restApiLocation: "/rest/",

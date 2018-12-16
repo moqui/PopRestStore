@@ -2,7 +2,6 @@
 storeComps.Navbar = {
   name: "navbar",
   data: function() { return {
-      homePath : this.$root.storeConfig.homePath, 
       customerInfo: {}, categories: [], searchText: "", productsQuantity: 0, storeInfo: [],
       axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
               "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
@@ -22,12 +21,14 @@ storeComps.Navbar = {
         }
     }.bind(this)); },
     logout: function() { LoginService.logout().then(function (data) {
-        location.reload();
-    }.bind(this)); },
+        this.$root.apiKey = null;
+        this.$router.push({ name: "login"});
+      }.bind(this)); 
+    },
     searchProduct: function() { location.href ="/store/search/"+this.searchText; }
   },
   created() {
-      this.storeInfo = this.$root.storeInfo;
+    this.storeInfo = this.$root.storeInfo;
   },
   mounted: function() {
       var vm = this;
@@ -39,7 +40,7 @@ storeComps.Navbar = {
           } else {
               this.getCustomerInfo();
           } 
-        }
+      }
       this.getCartInfo();
   }
 };
