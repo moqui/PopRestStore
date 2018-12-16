@@ -102,13 +102,13 @@ storeComps.CheckOutPage = {
                  this.stateErrorMessage = "Please enter a state";
                  error = true;
              } 
-             if (this.shippingAddress.postalCode == null || this.shippingAddress.postalCode.trim() === "") {
-                 this.postalCodeErrorMessage = "Please enter a postcode";
-                 error = true;
-             } 
-             if (this.shippingAddress.contactNumber == null || this.shippingAddress.contactNumber.trim() === "") {
-                 this.contactNumberErrorMessage = "Please enter a phone number";
-                 error = true;
+             if ( !(/^\d{5}$/.test(this.shippingAddress.postalCode)) ) {
+                this.postalCodeErrorMessage = "Please enter a valid 5 digit ZIP code";
+                error = true;
+            } 
+             if ( !(/^\d\d[-\. \d]*\d\d$/.test(this.shippingAddress.contactNumber)) ) {
+                this.contactNumberErrorMessage = "Please enter a valid phone number";
+                error = true;
              }
              if(error){
                  return;
