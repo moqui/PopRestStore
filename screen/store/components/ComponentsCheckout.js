@@ -15,8 +15,8 @@ storeComps.CheckOutPage = {
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0",
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
             cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: {}, urlList: {}, 
-            freeShipping:false, promoSuccess: "", stateGuestCustomer:2, stateShippingAddress: 'incomplete', stateShippingMethod:0, statePaymentMethod:0, listShippingOptions: [], 
-            optionNavbar:1, axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
+            freeShipping:false, promoSuccess: "", stateGuestCustomer:2, selectShippingAddressStatus: 'active', selectShippingMethodStatus:0, selectPaymentMethodStatus:0, placeOrderStatus:0,
+            listShippingOptions: [], optionNavbar:1, axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
             "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
         }; 
     },
@@ -38,7 +38,7 @@ storeComps.CheckOutPage = {
         },
         getCustomerInfo: function() { CustomerService.getCustomerInfo(this.axiosConfig)
             .then(function (data) { this.customerInfo = data; }.bind(this)); },
-        getCustomerShippingAddresses: function() {
+        getCustomerAddress: function() {
             CustomerService.getShippingAddresses(this.axiosConfig).then(function (data) {
                 this.listShippingAddress = data.postalAddressList;
             }.bind(this));
@@ -116,8 +116,8 @@ storeComps.CheckOutPage = {
 
             CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(function (data) {
                 this.shippingAddress = {};
-                this.getCustomerShippingAddresses();
-                this.hideModal("modal1");
+                this.getCustomerAddress();
+                this.hideModal("addressFormModal");
             }.bind(this));
         },
         getCartShippingOptions: function() {
@@ -173,7 +173,7 @@ storeComps.CheckOutPage = {
             if (this.isUpdate) { this.paymentMethod.cardNumber = ""; }
             
             CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
-                this.hideModal("modal2");
+                this.hideModal("creditCardModal");
                 this.paymentMethod = {};
                 this.getCustomerPaymentMethods();
                 this.responseMessage = "";
@@ -190,20 +190,23 @@ storeComps.CheckOutPage = {
             var info = {
                 "shippingPostalContactMechId":this.addressOption.split(':')[0], "shippingTelecomContactMechId":this.addressOption.split(':')[1],
                 "paymentMethodId":this.paymentOption, "carrierPartyId":this.shippingOption.split(':')[0], "shipmentMethodEnumId":this.shippingOption.split(':')[1]
-            };
+            };  
+            
             switch (option){
-                case 1:
-                    this.stateShippingAddress = 'complete';
-                    $('#collapse3').collapse("show");
+                case "selectShippingMethod":
+                    this.selectShippingAddressStatus = "complete";
+                    this.selectShippingMethodStatus = "active";
+                    $('#selectShippingMethod').collapse("show");
                     break;
-                case 2:
-                    this.stateShippingMethod = 2;
-                    this.statePaymentMethod = 1;
-                    $('#collapse3').collapse("show");
+                case "selectPaymentMethod":
+                    this.selectShippingMethodStatus = "complete";
+                    this.selectPaymentMethodStatus = "active";
+                    $('#selectPaymentMethod').collapse("show");
                     break;
-                case 3:
-                    this.statePaymentMethod = 2;
-                    $('#collapse4').collapse("show");
+                case "placeOrder":
+                    this.selectPaymentMethodStatus = "complete";
+                    this.placeOrderStatus = "active";
+                    $('#placeOrder').collapse("show");
                     break;
             }
             ProductService.addCartBillingShipping(info,this.axiosConfig).then(function (data) {
@@ -254,7 +257,7 @@ storeComps.CheckOutPage = {
         },
         deleteShippingAddress: function(contactMechId,contactMechPurposeId) {
             CustomerService.deleteShippingAddress(contactMechId,contactMechPurposeId, this.axiosConfig).then(function (data) {
-                this.getCustomerShippingAddresses();
+                this.getCustomerAddress();
             }.bind(this));
         },
         updateProductQuantity: function(item) {
@@ -326,7 +329,7 @@ storeComps.CheckOutPage = {
         this.getCustomerInfo();
         this.getCartShippingOptions();
         this.getCartInfo();
-        this.getCustomerShippingAddresses();
+        this.getCustomerAddress();
         this.getCustomerPaymentMethods();
         this.getRegions('USA');
         }

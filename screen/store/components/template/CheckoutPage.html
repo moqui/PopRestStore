@@ -57,26 +57,20 @@
 
             <!-- The whole checkout stage column -->
             <div class="col col-lg-5 offset-lg-1 col-sm-12 col-12">
-
-                <p class="title-check-text" :class="{ 'step-incomplete': stateShippingAddress == 'incomplete', 'step-complete': stateShippingAddress == 'complete'}">
-                    
-                    
-                    <span v-if="stateShippingAddress == 'complete'" class="circle">
-                        <i class="fa fa-check"></i>
-                    </span>
-                    <span v-if="stateShippingAddress == 'incomplete'" class="circle">1</span>
+                <!-- Shipping Address section title and change button -->
+                <p class="title-check-text" :class="{ 'step-active': selectShippingAddressStatus == 'active', 'step-complete': selectShippingAddressStatus == 'complete'}">                
+                    <span v-if="selectShippingAddressStatus == 'active'" class="circle">1</span>
+                    <span v-if="selectShippingAddressStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
                     <span class="text-address">Shipping Address</span>
-                    <span data-toggle="collapse" data-target="#collapse1" v-if="stateShippingAddress == 2" 
+                    <span data-toggle="collapse" data-target="#selectShippingAddress" v-if="selectShippingAddressStatus == 'complete'" 
                         class="text-address change-info float-right" @click="setOptionNavbar(1)">
                         Change
                     </span>
                 </p>
-
-                <!-- Horizontal line under heading -->
-                <hr class="hr" :class="{ 'hr1': stateShippingAddress == 1, 'hr2':stateShippingAddress == 2 }"> 
-
-
-                <div v-if="stateShippingAddress == 2" class="div-total">
+                <!-- Horizontal dividing line -->
+                <hr class="hr" :class="{ 'hr-active': selectShippingAddressStatus == 'active', 'hr-complete':selectShippingAddressStatus == 'complete' }"> 
+                <!-- The selected shipping address -->
+                <div v-if="selectShippingAddressStatus == 'complete'" class="div-total">
                     <span class="span-description">{{shippingAddressSelect.toName}}</span>
                     <span class="span-description">
                         {{shippingAddressSelect.address1}} {{shippingAddressSelect.address2}}
@@ -87,7 +81,8 @@
                         {{shippingAddressSelect.contactNumber}}
                     </span>
                 </div>
-                <div id="collapse1" class="collapse show">
+                <!-- The address collapses -->
+                <div id="selectShippingAddress" class="collapse show">
                     <div v-for="(option, index) in listShippingAddress">
                         <div :class="{ 'div-checkmark': addressOption == option.postalContactMechId + ':' +
                             option.telecomContactMechId }">
@@ -106,7 +101,8 @@
                                     {{option.telecomNumber.contactNumber}}
                                 </span>
                             </label>
-                            <span data-toggle="modal" data-target="#modal1" 
+                            <!-- Update and delete address icons -->
+                            <span data-toggle="modal" data-target="#addressFormModal" 
                                 @click="selectAddress(option),isUpdate = true" class="edit-icon">
                                 <i class="fas fa-edit"></i>
                             </span>
@@ -116,35 +112,39 @@
                             </span>
                         </div>
                     </div>
-                    <br>   
-                    <button data-toggle="collapse" data-target="#collapse1" 
-                        @click="addCartBillingShipping(1),setOptionNavbar(2)" class="btn btn-continue float-right" 
+                    <br>
+                    <!-- Buttons    -->
+                    <button data-toggle="collapse" data-target="#selectShippingAddress" 
+                        @click="addCartBillingShipping('selectShippingMethod'),setOptionNavbar(2)" class="btn btn-continue float-right" 
                         :disabled="addressOption == null || addressOption == '' 
                         || listShippingAddress == null || listShippingAddress.length == 0 ">
                         Continue
                     </button>
-                    <a data-toggle="modal" data-target="#modal1" @click="cleanShippingAddress()" class="text-add">
+                    <a data-toggle="modal" data-target="#addressFormModal" @click="cleanShippingAddress()" class="text-add">
                         Add a New Address
                     </a>
                 </div>
                 <br>
-                <p class="title-check-text"  :class="{ 'state': stateShippingMethod == 1, 'state1': stateShippingMethod == 2 }">
-                    <span v-if="stateShippingMethod == 2" class="circle">
-                        <i class="fa fa-check"></i>
-                    </span>
-                    <span v-if="stateShippingMethod != 2" class="circle">2</span>
+                
+                <!-- Shipping method section title-->
+                <p class="title-check-text"  :class="{ 'step-active': selectShippingMethodStatus == 'active', 'step-complete': selectShippingMethodStatus == 'complete' }">
+                    <span v-if="selectShippingMethodStatus != 'complete'" class="circle">2</span>
+                    <span v-if="selectShippingMethodStatus == 'complete'" class="circle"> <i class="fa fa-check"></i></span>
                     <span class="text-address">Shipping Method</span>
-                    <span data-toggle="collapse" data-target="#collapse2" v-if="stateShippingMethod == 2" 
+                    <span data-toggle="collapse" data-target="#selectShippingMethod" v-if="selectShippingMethodStatus == 'complete'" 
                         class="text-address change-info float-right">Change</span>
                 </p>
-                <hr class="hr" :class="{ 'hr1': stateShippingMethod == 1, 'hr2':stateShippingMethod == 2 }">
-                <div v-if="stateShippingMethod == 2" class="div-total">
+                <!-- The selected shipping method -->
+                <hr class="hr" :class="{ 'hr-active': selectShippingMethodStatus == 'active', 'hr-complete':selectShippingMethodStatus == 'complete' }">
+                <div v-if="selectShippingMethodStatus == 'complete'" class="div-total">
                     <span class="span-description">
                     {{shippingMethod.shipmentMethodDescription}}
-                    <span class="float-right">${{shippingMethod.shippingTotal.toFixed(2)}}</span>
+                    <span class="float-right" v-if="shippingMethod.shippingTotal">${{shippingMethod.shippingTotal.toFixed(2)}}</span>
                     </span>    
                 </div>
-                <div id="collapse2" class="collapse">
+
+                <!-- Shipping method collapses -->
+                <div id="selectShippingMethod" class="collapse">
                     <div v-for="(option, index) in listShippingOptions">
                         <div :class="{ 'div-checkmark': shippingOption == option.carrierPartyId + ':' + option.shipmentMethodEnumId }">
                             <label :for="index + 'r2'" class="container-input">
@@ -157,46 +157,41 @@
                         </div>
                     </div>
                     <br>
-                    <button data-toggle="collapse" data-target="#collapse2"  
-                        @click="addCartBillingShipping(2),setOptionNavbar(3)" class="btn btn-continue float-right" 
+                    <button data-toggle="collapse" data-target="#selectShippingMethod"  
+                        @click="addCartBillingShipping('selectPaymentMethod'),setOptionNavbar(3)" class="btn btn-continue float-right" 
                         :disabled="shippingOption == null || shippingOption == '' || 
                         listShippingOptions == null || listShippingOptions.length == 0">
                         Continue
                     </button>
                 </div>
                 <br>
-                <p class="title-check-text" 
-                    :class="{ 'state': statePaymentMethod == 1, 'state1': statePaymentMethod == 2 }">
-                    <span v-if="statePaymentMethod == 2" class="circle">
-                        <i class="fa fa-check"></i>
-                    </span>
-                    <span v-if="statePaymentMethod != 2" class="circle">3</span>
+
+                <!-- Payment method section -->
+                <p class="title-check-text" :class="{ 'step-active': selectPaymentMethodStatus == 'active', 'step-complete': selectPaymentMethodStatus == 'complete' }">
+                    <span v-if="selectPaymentMethodStatus != 'complete'" class="circle">3</span>
+                    <span v-if="selectPaymentMethodStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
                     <span class="text-address">Payment Methods</span>
-                    <span data-toggle="collapse" data-target="#collapse3" v-if="statePaymentMethod == 2" 
-                        class="text-address change-info float-right">Change</span>
+                    <span data-toggle="collapse" data-target="#selectPaymentMethod" v-if="selectPaymentMethodStatus == 'complete'" class="text-address change-info float-right">Change</span>
                 </p>
-                <hr class="hr" :class="{ 'hr1': statePaymentMethod == 1, 'hr2':statePaymentMethod == 2 }">
-                <div v-if="statePaymentMethod == 2" class="div-total">
+                <hr class="hr" :class="{ 'hr-active': selectPaymentMethodStatus == 'active', 'hr-complete':selectPaymentMethodStatus == 'complete' }">
+                <div v-if="selectPaymentMethodStatus == 'complete'" class="div-total">
                     <span class="span-description">{{paymentMethod.description}}</span>
                     <span class="span-description">{{paymentMethod.titleOnAccount}}</span>
                     <span class="span-description">{{paymentMethod.expireMonth}}/{{paymentMethod.expireYear}}</span>
                     <br>
-                    <template v-if="isSameAddress == 2 && statePaymentMethod == 2">
+                    <template v-if="isSameAddress == 'complete' && selectPaymentMethodStatus == 'complete'">
                         <span>Billing address:</span> 
                         <br>
                         <span class="span-description">{{paymentMethod.toName}}</span>
                         <span class="span-description">{{paymentMethod.address1}} {{paymentMethod.address2}}</span>
                         <span class="span-description">{{paymentMethod.city}}</span>
-                        <span class="span-description">
-                            <i class="fa fa-phone phone-icon"></i>
-                            {{paymentMethod.contactNumber}}
-                        </span>
+                        <span class="span-description"><i class="fa fa-phone phone-icon"></i>{{paymentMethod.contactNumber}}</span>
                     </template>
                 </div>
-                <span v-if="isSameAddress == 0 && statePaymentMethod == 2">
+                <span v-if="isSameAddress == 0 && selectPaymentMethodStatus == 'complete'">
                     My billing address is the same as my shipping address
                 </span>
-                <div id="collapse3" class="collapse">
+                <div id="selectPaymentMethod" class="collapse">
                     <div v-for="(item,index) in listPaymentMethods">
                         <div :class="{ 'div-checkmark': paymentOption == item.paymentMethodId }">
                             <label  :for="index + 'r3'" class="container-input">
@@ -207,7 +202,7 @@
                                 <span class="span-description">{{item.paymentMethod.titleOnAccount}}</span>
                                 <span class="span-description">Expires on {{item.creditCard.expireDate}}</span>
                             </label>
-                            <span data-toggle="modal" data-target="#modal2" 
+                            <span data-toggle="modal" data-target="#creditCardModal" 
                                 @click="selectPaymentMethod(item),isUpdate = true" 
                                 class="edit-icon icon-margin-top">
                                 <i class="fas fa-edit"></i>
@@ -251,30 +246,31 @@
                         <button  @click="addCustomerPaymentMethod(),isSameAddress = '2'" class="btn btn-continue float-right">
                            Use Address
                         </button>
-                        <a data-toggle="modal" data-target="#modal1" @click="cleanShippingAddress()" 
+                        <a data-toggle="modal" data-target="#addressFormModal" @click="cleanShippingAddress()" 
                             class="text-add float-right">
                             Add a New Address
                         </a>
                     </div>
                     <br>
-                    <a v-if="isSameAddress == 0 || isSameAddress ==2" data-toggle="modal" data-target="#modal2" @click="cleanPaymentMethod()" class="text-add col-4 offset-lg-3">
+                    <a v-if="isSameAddress == 0 || isSameAddress ==2" data-toggle="modal" data-target="#creditCardModal" @click="cleanPaymentMethod()" class="text-add">
                         Add a Credit Card
                     </a>
                     <button v-if="isSameAddress == 0 || isSameAddress ==2" data-toggle="collapse" 
-                        data-target="#collapse3"  class="btn btn-continue" 
-                        @click="addCartBillingShipping(3),setOptionNavbar(4)" 
+                        data-target="#selectPaymentMethod"  class="btn btn-continue float-right" 
+                        @click="addCartBillingShipping('placeOrder'),setOptionNavbar(4)" 
                         :disabled="paymentOption == null || paymentOption == '' || listPaymentMethods == null ||
                         listPaymentMethods.length == 0">
                         Continue
                     </button>
                 </div>
                 <br>
-                <p class="title-check-text">
-                    <span class="circle">4</span>
+                <p class="title-check-text" :class="{ 'step-active': placeOrderStatus == 'active', 'step-complete': placeOrderStatus == 'complete' }">
+                    <span v-if="placeOrderStatus != 'complete'" class="circle">4</span>
+                    <span v-if="placeOrderStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
                     <span class="text-address">Complete Purchase</span>
                 </p>
                 <hr class="hr">
-                <div id="collapse4" class="collapse">
+                <div id="placeOrder" class="collapse">
                     <div class="div-place-order">
                         <p class="text-center">YOUR TOTAL IS: 
                             <span class="place-order-total">
@@ -289,7 +285,7 @@
 
         </div>
         <div>
-            <div class="modal fade" id="modal2">
+            <div class="modal fade" id="creditCardModal">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -369,7 +365,7 @@
                                     <span v-if="isUpdate">Update Credit Card</span>
                                     <span v-else>Add Credit Card</span>
                                 </button>
-                                <a @click="hideModal('modal2')" class="btn btn-link text-add col col-sm-9 offset-sm-1">
+                                <a @click="hideModal('creditCardModal')" class="btn btn-link text-add col col-sm-9 offset-sm-1">
                                     Or Cancel
                                 </a>
                             </div>
@@ -393,7 +389,7 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modal1">
+            <div class="modal fade" id="addressFormModal">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-body">
@@ -501,7 +497,7 @@
                                     <span v-if="isUpdate">Update Address</span>
                                     <span v-else>Add Address</span>
                                 </button>
-                                <a @click="hideModal('modal1')" class="btn btn-link text-add col col-sm-9">
+                                <a @click="hideModal('addressFormModal')" class="btn btn-link text-add col col-sm-9">
                                     Cancel
                                 </a>
                             </div>
