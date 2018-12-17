@@ -20,6 +20,9 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.security.ArtifactAuthz artifactAuthzId="POPRS_API_ALL" userGroupId="ALL_USERS" artifactGroupId="POPRS_API"
             authzTypeEnumId="AUTHZT_ALWAYS" authzActionEnumId="AUTHZA_ALL"/>
 
+    <!-- TODO - move this somewehre else -->
+    <mantle.product.store.ProductStoreShipOption carrierPartyId="_NA_" lastUpdatedStamp="1545005379532" productStoreId="POPC_DEFAULT" shipmentMethodEnumId="ShMthGround" sequenceNum="2"/>
+    <mantle.product.store.ProductStoreShipOption carrierPartyId="_NA_" lastUpdatedStamp="1545005214226" productStoreId="POPC_DEFAULT" shipmentMethodEnumId="ShMthPickUp" sequenceNum="1"/>
 
 
     <!-- client template setting types -->

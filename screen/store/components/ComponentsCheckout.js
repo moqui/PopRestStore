@@ -326,12 +326,12 @@ storeComps.CheckOutPage = {
         if (this.$root.apiKey == null) { 
             this.$router.push({ name: 'login'}); 
         } else {
-        this.getCustomerInfo();
-        this.getCartShippingOptions();
-        this.getCartInfo();
-        this.getCustomerAddress();
-        this.getCustomerPaymentMethods();
-        this.getRegions('USA');
+            this.getCustomerInfo();
+            this.getCartShippingOptions();
+            this.getCartInfo();
+            this.getCustomerShippingAddresses();
+            this.getCustomerPaymentMethods();
+            this.getRegions('USA');
         }
     }
 };

@@ -21,12 +21,14 @@ storeComps.Navbar = {
         }
     }.bind(this)); },
     logout: function() { LoginService.logout().then(function (data) {
-        location.reload();
-    }.bind(this)); },
+        this.$root.apiKey = null;
+        this.$router.push({ name: "login"});
+      }.bind(this)); 
+    },
     searchProduct: function() { location.href ="/store/search/"+this.searchText; }
   },
   created() {
-      this.storeInfo = this.$root.storeInfo;
+    this.storeInfo = this.$root.storeInfo;
   },
   mounted: function() {
       var vm = this;
@@ -38,7 +40,7 @@ storeComps.Navbar = {
           } else {
               this.getCustomerInfo();
           } 
-        }
+      }
       this.getCartInfo();
   }
 };

@@ -19,11 +19,12 @@ storeComps.LoginPage = {
                 return;
             }
             LoginService.login(this.user, this.axiosConfig).then(function (data) {
-                if(data.forcePasswordChange == true) { this.showModal('modal'); } 
-                else { 
+                if(data.forcePasswordChange == true) { 
+                    this.showModal('modal'); 
+                } else { 
                     this.$root.apiKey = data.apiKey; 
                     if(preLoginRoute.name == null || preLoginRoute.name == "createaccount") {
-                        location.href = "/store";
+                        this.$router.push({ name: "account"});
                     } else {
                         this.$router.push({ name: preLoginRoute.name});
                     }
@@ -46,13 +47,14 @@ storeComps.LoginPage = {
                             };
                             LoginService.loginFB(userData, em.axiosConfig).then(function (data) {
                                 em.$root.apiKey = data.apiKey;
-                                location.href = "/store";
+                                this.$router.push({ name: "account"});
                             });
                         },
                         error: (error) => { console.error(error) } 
                     });
-                } else
+                } else {
                     console.error(response);
+                }
             }, {scope: 'public_profile,email'});
         },
         changePassword: function(event) {
@@ -84,7 +86,7 @@ storeComps.LoginPage = {
         },
         showModal: function(modalId) { $('#'+modalId).modal('show'); },
     },
-    mounted: function() { if (this.$root.apiKey != null) { location.href = "/store"; }},
+    mounted: function() { if (this.$root.apiKey != null) { this.$router.push({ name: "account"}) }},
 };
 storeComps.LoginPageTemplate = getPlaceholderRoute("template_client_login", "LoginPage");
 
@@ -100,7 +102,7 @@ storeComps.ResetPasswordPage = {
     methods: {
         resetPassword: function(event) {
             event.preventDefault();
-            LoginService.resetPassword(this.data,this.axiosConfig).then(function (data) {
+            LoginService.resetPassword(this.data, this.axiosConfig).then(function (data) {
                 this.nextStep = 1;
                 this.responseMessage = "";
             }.bind(this)).catch(function (error) { this.responseMessage = error.response.data.errors; }.bind(this));
@@ -131,7 +133,7 @@ storeComps.ResetPasswordPage = {
             var user = { username: this.passwordInfo.username, password: this.passwordInfo.newPassword };
             LoginService.login(user, this.axiosConfig).then(function (data) {
                 this.$root.apiKey = data.apiKey;
-                location.href ="/store";
+                this.$router.push({ name: 'account'});
             }.bind(this));
         }
     }
@@ -432,7 +434,7 @@ storeComps.AccountPage = {
     },
     mounted: function() {
         if (this.$root.apiKey == null) {
-            this.$router.push({ name: 'landing'});
+            this.$router.push({ name: 'login'});
         } else {
             this.getCustomerInfo();
             this.getCustomerAddress();
@@ -496,13 +498,18 @@ storeComps.CreateAccountPage = {
             var user = { username: userName, password: password };
             LoginService.login(user, this.axiosConfig).then(function (data) {
                 this.$root.apiKey = data.apiKey;
-                location.href ="/store";
+                this.$router.push({ name: 'account'});
             }.bind(this)).catch(function (error) {
                 this.errorMessage = error.response.data.errors;
             }.bind(this));
         }
     },
-    mounted: function() { if(this.$root.apiKey != null) { this.$router.push({ name: 'landing' }); } },
+    mounted: function() { 
+        // If this user is logged in, send to account
+        if(this.$root.apiKey != null) { 
+            this.$router.push({ name: 'account' }); 
+        } 
+    },
 };
 storeComps.CreateAccountPageTemplate = getPlaceholderRoute("template_client_accountCreate", "CreateAccountPage");
 
@@ -537,7 +544,13 @@ storeComps.CustomerOrderPage = {
             return moment(dateArg).format('Do MMM, YY');
         }
     },
-    mounted: function() { this.getCustomerOrderById(); }
+    mounted: function() { 
+        if(this.$root.apiKey == null) { 
+            this.$router.push({ name: 'login' }); 
+        } else {
+            this.getCustomerOrderById(); 
+        }
+    }
 };
 storeComps.CustomerOrderPageTemplate = getPlaceholderRoute("template_client_orderDetail", "CustomerOrderPage");
 
@@ -579,6 +592,12 @@ storeComps.CustomerOrdersPage = {
             return moment(date).format('Do MMM, YY');
         }
     },
-    mounted: function() { this.getCustomerOrders(); }
+    mounted: function() { 
+        if(this.$root.apiKey == null) { 
+            this.$router.push({ name: 'login' }); 
+        } else {
+            this.getCustomerOrders(); 
+        }
+    }
 };
 storeComps.CustomerOrdersPageTemplate = getPlaceholderRoute("template_client_orderHistory", "CustomerOrdersPage");
