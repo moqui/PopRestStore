@@ -62,11 +62,6 @@
     });
 </script>
     <#-- for scripts/etc from d.xml or others, ie client rendered part of site that needs more JS -->
-    <#if footerScriptText?has_content>
-    ${footerScriptText}
-    <script src="/store/components/ComponentsAccount.js"></script>
-    <script src="/store/components/ComponentsCheckout.js"></script>
-    <script src="/store/components/main.js"></script>
-    </#if>
+    <#if footerScriptText?has_content>${footerScriptText}</#if>
 </body>
 </html>

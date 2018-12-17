@@ -89,6 +89,10 @@ along with this software (see the LICENSE.md file). If not, see
 
     <script src="/store/components/ComponentsNav.js"></script>
     <script src="/store/components/ComponentsProduct.js"></script>
+    <script src="/store/components/ComponentsAccount.js"></script>
+    <script src="/store/components/ComponentsCheckout.js"></script>
+    
+    <script src="/store/components/main.js"></script>
     
             """
         }
