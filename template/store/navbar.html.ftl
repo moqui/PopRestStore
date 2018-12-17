@@ -92,12 +92,22 @@
                     </li>
                 </#if>
 
+                 <#assign cartCount = 0>
+                    <#if cartInfo.orderItemList??>
+                        <#list cartInfo.orderItemList as item>
+                            <#if item.itemTypeEnumId == "ItemProduct">
+                                <#assign cartCount = cartCount + (item.quantity!1)>
+                            </#if>
+                        </#list>
+                    </#if>
                 <li class="nav-item">
-                    <a class="nav-link" href="/store/d#/checkout">
+                    <#if cartCount gt 0>
+                        <a class="nav-link" href="/store/d#/checkout">
+                    <#else>
+                        <a class="nav-link pointer" data-toggle="modal" data-target="#emptyCartModal">
+                    </#if>
                         <span class="cart-quantity" id="cart-quantity">
-                            <#assign cartCount = 0>
-                            <#if cartInfo.orderItemList??><#list cartInfo.orderItemList as item>
-                                <#if item.itemTypeEnumId == "ItemProduct"><#assign cartCount = cartCount + (item.quantity!1)></#if></#list></#if>
+
                             ${cartCount}
                         </span>
                         <i class="fa fa-shopping-cart"></i>  
@@ -116,3 +126,22 @@
         </div>
     </div>
 </nav>
+<div class="modal fade" id="emptyCartModal" tabindex="-1" role="dialog" aria-labelledby="emptyCartModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title justify-content-center" id="emptyCartModalLabel">Your cart is empty.</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            Add a product to your cart (or a few!) before going to the check out.
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
