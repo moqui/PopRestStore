@@ -38,7 +38,7 @@ storeComps.CheckOutPage = {
         },
         getCustomerInfo: function() { CustomerService.getCustomerInfo(this.axiosConfig)
             .then(function (data) { this.customerInfo = data; }.bind(this)); },
-        getCustomerAddress: function() {
+        getCustomerShippingAddresses: function() {
             CustomerService.getShippingAddresses(this.axiosConfig).then(function (data) {
                 this.listShippingAddress = data.postalAddressList;
             }.bind(this));
@@ -116,7 +116,7 @@ storeComps.CheckOutPage = {
 
             CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(function (data) {
                 this.shippingAddress = {};
-                this.getCustomerAddress();
+                this.getCustomerShippingAddresses();
                 this.hideModal("addressFormModal");
             }.bind(this));
         },
@@ -257,7 +257,7 @@ storeComps.CheckOutPage = {
         },
         deleteShippingAddress: function(contactMechId,contactMechPurposeId) {
             CustomerService.deleteShippingAddress(contactMechId,contactMechPurposeId, this.axiosConfig).then(function (data) {
-                this.getCustomerAddress();
+                this.getCustomerShippingAddresses();
             }.bind(this));
         },
         updateProductQuantity: function(item) {
