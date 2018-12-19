@@ -188,8 +188,11 @@ storeComps.CheckOutPage = {
         },
         addCartBillingShipping: function(){
             var info = {
-                "shippingPostalContactMechId":this.addressOption.split(':')[0], "shippingTelecomContactMechId":this.addressOption.split(':')[1],
-                "paymentMethodId":this.paymentOption, "carrierPartyId":this.shippingOption.split(':')[0], "shipmentMethodEnumId":this.shippingOption.split(':')[1]
+                "shippingPostalContactMechId":this.addressOption.split(':')[0], 
+                "shippingTelecomContactMechId":this.addressOption.split(':')[1],
+                "paymentMethodId":this.paymentOption, 
+                "carrierPartyId":this.shippingOption.split(':')[0], 
+                "shipmentMethodEnumId":this.shippingOption.split(':')[1]
             };
             ProductService.addCartBillingShipping(info,this.axiosConfig).then(function (data) {
                 this.paymentId = data;
@@ -239,10 +242,10 @@ storeComps.CheckOutPage = {
             CustomerService.getPaymentMethods(this.axiosConfig)
                 .then(function (data) { this.listPaymentMethods = data.methodInfoList; }.bind(this));
         },
-        setCartPlace: function() {
+        placeCartOrder: function() {
             var data = { "cardSecurityCodeByPaymentId": this.paymentId };
             this.isSpinner = true;
-            ProductService.setCartPlace(data,this.axiosConfig).then(function (data) {
+            ProductService.placeCartOrder(data,this.axiosConfig).then(function (data) {
                 if(data.orderHeader != null) {
                     this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
                 } else {

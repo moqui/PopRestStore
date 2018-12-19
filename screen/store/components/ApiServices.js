@@ -88,7 +88,7 @@ var ProductService = {
     getCartShippingOptions(headers) {
         return axios.get("/rest/s1/pop/cart/shippingOptions", headers).then(function (response) { return response.data; });
     },
-    setCartPlace(data, headers) {
+    placeCartOrder(data, headers) {
         return axios.post("/rest/s1/pop/cart/place",data,headers).then(function (response) { return response.data; });
     },
     updateProductQuantity(data, headers) {
