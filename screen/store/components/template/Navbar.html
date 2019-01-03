@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="d-flex flex-column moqui-navbar">
         <div class="container d-flex flex-row main-navbar">
-            <a class="navbar-brand d-none d-sm-block" href="/store">
+            <a class="navbar-brand d-none d-sm-block" href="/store" >
                 <img height="60px" class="moqui-logo moqui-logo1" src="./assets/moqui-logo.svg" alt="">
                 <span class="font-italic navbar-title">POP Shop</span>
             </a>
@@ -33,16 +33,14 @@
                         Shop <i class="fas fa-angle-down icon-down"></i></a>
                     
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <router-link class="dropdown-item item-color" :to="'/category/'+category.productCategoryId" tag="a" v-for="category in categories" :key="category.productCategoryId">
-                            {{category.categoryName}}</router-link>
+                        <a class="dropdown-item item-color" :href="'/store/category/' + category.productCategoryId" v-for="category in categories" :key="category.productCategoryId">
+                            {{category.categoryName}}</a>
                     </div>
                 </li>
-
-                <router-link v-if="storeInfo.categoryByType.PsctPromotions" 
-                    :to="'/category/'+storeInfo.categoryByType.PsctPromotions.productCategoryId" tag="a" class="nav-link">
+                <a v-if="storeInfo.categoryByType.PsctPromotions" 
+                    :href="'/store/category/' + storeInfo.categoryByType.PsctPromotions.productCategoryId" class="nav-link">
                     {{storeInfo.categoryByType.PsctPromotions.categoryName}}
-                </router-link>
-
+                </a>
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#" id="navbarMenuService" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Customer Service <i class="fas fa-angle-down icon-down"></i></a>
@@ -80,9 +78,14 @@
                         <router-link :to="'/login'" tag="a" class="nav-link"><i class="fas fa-user"></i> Sign In</router-link>
                     </li>
                 </template>
-                <li class="nav-item">
+                <li class="nav-item nav-link" v-if="productsQuantity == 0">
+                    <span class="cart-quantity">{{productsQuantity}}</span> <i class="fa fa-shopping-cart"></i> 
+                    <span class="pointer" data-toggle="modal" data-target="#emptyCartModal">Cart</span>
+                </li>
+                <li class="nav-item" v-else>
                     <router-link :to="'/checkout'" tag="a" class="nav-link">
-                        <span class="cart-quantity">{{productsQuantity}}</span> <i class="fa fa-shopping-cart"></i> Cart</router-link>
+                        <span class="cart-quantity">{{productsQuantity}}</span> <i class="fa fa-shopping-cart"></i> Cart
+                    </router-link>
                 </li>
                 <li class="nav-item d-block d-sm-block d-md-none">
                     <form class="search-input" @submit.prevent="searchProduct" method="post">
@@ -93,4 +96,25 @@
             </ul>
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="emptyCartModal" tabindex="-1" role="dialog" aria-labelledby="emptyCartModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title justify-content-center" id="emptyCartModalLabel">Your cart is empty.</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Add a product to your cart (or a few!) before going to the check out.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </nav>

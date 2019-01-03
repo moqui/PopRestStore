@@ -16,16 +16,18 @@ along with this software (see the LICENSE.md file). If not, see
         standalone="true" require-authentication="anonymous-view" allow-extra-path="true">
 
     <always-actions>
-        <!-- TODO: make this configurable, perhaps through a productStoreGroupId constant instead of productStoreId constant -->
-        <!-- TODO: better yet add some to lookup based on hostname or other info that distinguishes multiple stores in the same system -->
-        <set field="productStoreId" value="POPC_DEFAULT"/>
+        <service-call name="popstore.StoreServices.get#ProductStoreIdFromHostName" in-map="[requestHostName:ec.web.getHostName(false)]" out-map="productStoreIdContext"/>
+        <set field="productStoreId" value="${productStoreIdContext.productStoreId ?: 'POPC_DEFAULT'}"/>
 
         <service-call name="popstore.StoreServices.get#StoreInfo" in-map="[productStoreId:productStoreId]" out-map="storeInfo"/>
         <set field="productStore" from="storeInfo.productStore"/>
         <set field="wikiSpaceId" from="productStore?.wikiSpaceId"/>
 
-        <!-- TODO: evaluate all use of this, most likely eliminate all... found use showing name from UserAccount instead of PartyDetail (Person/Organization) -->
-        <set field="user" from="ec.user.userAccount"/>
+        <if condition="ec.user.userId">
+            <entity-find-one entity-name="mantle.party.PartyDetail" value-field="partyDetail">
+                <field-map field-name="partyId" from="ec.user.userId"/>
+            </entity-find-one>
+        </if>
     </always-actions>
 
     <transition name="config.js" read-only="true">
@@ -52,12 +54,12 @@ var storeInfo = ${storeInfoJson};
         <default-response type="none"/>
     </transition>
 
-    <transition name="logOut">
+    <transition name="logOut" read-only="true">
         <actions>
             <service-call name="popstore.CustomerServices.logout#Customer"/>
         </actions>
-        <default-response url="."/>
-        <error-response url="."/>
+        <default-response url="${redirectPath ? redirectPath : '.'}"/>
+        <error-response url="${redirectPath ? redirectPath : '.'}"/>
     </transition>
 
     <subscreens default-item="home" always-use-full-path="true"/>
@@ -69,6 +71,11 @@ var storeInfo = ${storeInfoJson};
         <!-- get browseRootCategoryInfo for subCategoryList used in header, etc -->
         <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="browseRootCategoryInfo"
                 in-map="[productCategoryId:browseRootCategoryId]"/>
+        <!-- get allProductsInfo for subCategoryList used in header, etc --> 
+        <set field="allProducts" from="storeInfo.categoryByType.PsctSearch"/>
+        <set field="allProductsId" from="storeInfo.categoryByType.PsctSearch?.productCategoryId"/>
+        <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="allProductsInfo"
+            in-map="[productCategoryId:allProductsId]"/>
 
         <!-- cartInfo for cart count in header/navbar -->
         <service-call name="popstore.CartServices.get#CartInfo" out-map="cartInfo" in-map="context"/>
@@ -80,6 +87,8 @@ var storeInfo = ${storeInfoJson};
         <set field="template_server_home" from="storeInfo.settings.template_server_home" default-value="component://PopRestStore/template/store/home.html.ftl"/>
         <set field="template_server_category" from="storeInfo.settings.template_server_category" default-value="component://PopRestStore/template/store/category.html.ftl"/>
         <set field="template_server_product" from="storeInfo.settings.template_server_product" default-value="component://PopRestStore/template/store/product.html.ftl"/>
+        <set field="template_server_content" from="storeInfo.settings.template_server_content" default-value="component://PopRestStore/template/store/help.html.ftl"/>
+        <set field="template_server_search" from="storeInfo.settings.template_server_search" default-value="component://PopRestStore/template/store/search.html.ftl"/>
     </pre-actions>
 
     <widgets>

@@ -20,7 +20,7 @@ along with this software (see the LICENSE.md file). If not, see
     <transition name="addToCart">
         <actions>
             <service-call name="popstore.CartServices.add#Product" out-map="addOut"
-                in-map="[productId:productId, quantity:quantity, currencyUomId:currencyUomId, productStoreId: productStoreId]"/>
+                in-map="[productId:productId, quantity:quantity, currencyUomId:currencyUomId, productStoreId: productStoreId]"/> 
                 <set field="addedCorrect" from="false"/>
                 <if condition="addOut.orderHeader != null">
                     <set field="addedCorrect" from="true"/>
@@ -28,6 +28,13 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
         <default-response url="."><parameter name="addedCorrect"/></default-response>
         <error-response url="."/>
+    </transition>
+
+    <transition name="removeCartItem">
+        <actions>
+            <service-call name="popstore.CartServices.delete#OrderItem" in-map="[orderId: orderId, orderItemSeqId: orderItemSeqId]"/>
+        </actions>
+        <default-response url="."/>
     </transition>
 
     <transition name="addReview">
@@ -51,6 +58,11 @@ along with this software (see the LICENSE.md file). If not, see
         <service-call name="popstore.ProductServices.get#ProductQuantity" out-map="productQuantity" in-map="[productId:productId]"/>
         <service-call name="popstore.ProductServices.get#ProductReviews" out-map="reviewsList" in-map="[productId:productId]"/>
         <service-call name="popstore.ProductServices.find#ProductAvailability" in-map="context" out-map="context" />
+
+        <service-call name="popstore.CartServices.get#CartInfo" in-map="context" out-map="productsInCart" />
+        <service-call name="popstore.ProductServices.search#Products" out-map="products"/>
+
+
         <set field="inStock" from="false"/>
         <if condition="product.productTypeEnumId == 'PtVirtual'">
             <service-call name="popstore.ProductServices.get#ProductVariantsDisplayInfo" 
@@ -60,6 +72,29 @@ along with this software (see the LICENSE.md file). If not, see
                 <set field="inStock" from="true"/>
             </if>
         </else>
+        </if>
+        
+        <set field="specialInstrLocation" from="product.contentList.find({'PcntSpecialInstr' == it.productContentTypeEnumId})?.contentLocation"/>
+        <if condition="specialInstrLocation">
+            <set field="specialInstructions" from="ec.resource.getLocationText(specialInstrLocation, true)"/>
+        </if>
+        <set field="faqLocation" from="product.contentList.find({'PcntFAQ' == it.productContentTypeEnumId})?.contentLocation"/>
+        <if condition="faqLocation">
+            <set field="faq" from="ec.resource.getLocationText(faqLocation, true)"/>
+        </if>
+        <set field="lifestyleLocation" from="product.contentList.find({'PcntDirections' == it.productContentTypeEnumId})?.contentLocation"/>
+        <if condition="lifestyleLocation">
+            <set field="lifestyle" from="ec.resource.getLocationText(lifestyleLocation, true)"/>
+        </if>
+        <set field="labelLocation" from="product.contentList.find({'PcntLabelText' == it.productContentTypeEnumId})?.contentLocation"/>
+        <if condition="labelLocation">
+            <set field="label" from="ec.resource.getLocationText(labelLocation, true)"/>
+        </if>
+        <set field="imageLabel" from="product.contentList.find({'PcntLabelImage' == it.productContentTypeEnumId})"/>
+        <set field="imageDetail" from="product.contentList.find({'PcntImageDetail' == it.productContentTypeEnumId})"/>
+        <set field="transparencyLocation" from="product.contentList.find({'PcntProductTransparency' == it.productContentTypeEnumId})?.contentLocation"/>
+        <if condition="transparencyLocation">
+            <set field="transparency" from="ec.resource.getLocationText(transparencyLocation, true)"/>
         </if>
     </actions>
 

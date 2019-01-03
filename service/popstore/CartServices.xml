@@ -187,16 +187,28 @@ General Order Placement and eCommerce Usage
         </actions>
     </service>
 
+    <service verb="add" noun="OrderPromoCode">
+        <in-parameters>
+            <parameter name="cartOrderId" />
+            <parameter name="promoCode" />
+        </in-parameters>
+        <actions>
+            <service-call name="mantle.product.PromotionServices.add#OrderPromoCode" in-map="[orderId:cartOrderId, promoCode:promoCode]"/>
+        </actions>
+    </service>
+
     <service verb="add" noun="Product" authenticate="anonymous-all">
         <implements service="popstore.CartServices.get#CartInfo"/>
         <in-parameters>
             <parameter name="productId" required="true"/>
             <parameter name="quantity" type="BigDecimal" default="1.0"/>
             <parameter name="currencyUomId"/>
+            <parameter name="productStoreId"/>
         </in-parameters>
         <actions>
             <!-- NOTE: use the web session for attributes such as cartOrderId for security; this won't work in a stateless mode or outside a web session -->
             <set field="carrierPartyId" from="'_NA_'"/>
+            <set field="shipmentMethodEnumId" from="'ShMthGround'"/>
             <set field="sessionAttributes" from="ec.web.sessionAttributes"/>
 
             <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
@@ -209,19 +221,26 @@ General Order Placement and eCommerce Usage
         </actions>
     </service>
 
-    <service verb="update" noun="OrderProductQuantity">
+    <service verb="update" noun="OrderProductQuantity" authenticate="anonymous-all">
         <in-parameters>
             <parameter name="orderId" required="true"/>
             <parameter name="orderItemSeqId" required="true"/>
             <parameter name="quantity" type="BigDecimal" required="true"/>
         </in-parameters>
         <actions>
-            <service-call name="mantle.order.OrderServices.update#OrderItem"
-                    in-map="[orderId:orderId, orderItemSeqId:orderItemSeqId, quantity:quantity]"/>
+
+           <if condition="quantity == 0">
+                <service-call name="popstore.CartServices.delete#OrderItem"
+                    in-map="[orderId:orderId, orderItemSeqId:orderItemSeqId]"/>
+                <else>
+                    <service-call name="mantle.order.OrderServices.update#OrderItem"
+                        in-map="[orderId:orderId, orderItemSeqId:orderItemSeqId, quantity:quantity]"/>
+                </else>
+            </if>
         </actions>
     </service>
 
-    <service verb="delete" noun="OrderItem">
+    <service verb="delete" noun="OrderItem" authenticate="anonymous-all">
         <in-parameters>
             <parameter name="orderId" />
             <parameter name="orderItemSeqId" />

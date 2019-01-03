@@ -84,6 +84,82 @@ along with this software (see the LICENSE.md file). If not, see
             </if>
         </actions>
     </service>
+
+    <!-- Login with facebook -->
+    <service verb="loginFB" noun="Customer">
+        <in-parameters>
+            <parameter name="firstName" required="true"/>
+            <parameter name="lastName" required="true"/>
+            <parameter name="email" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="apiKey"/>
+            <parameter name="customerInfo" type="Map"/>
+        </out-parameters>
+        <actions>
+            <script>
+                import org.moqui.impl.context.UserFacadeImpl
+
+                ec.artifactExecution.disableAuthz()
+                if (ec.entity.find("moqui.security.UserAccount").condition("username", email).count() == 0) {
+                    // no UserAccount for the email and we should create one with corresponding party
+                    Map partiesByEmail = ec.service.sync().name("popstore.CustomerServices.find#PartyByEmail")
+                            .parameters(emailAddress: email).call();
+                    def partyId
+                    Set partyIds = partiesByEmail.partyIds;
+                    if (!partyIds) {
+                        Map personRes = ec.service.sync().name("mantle.party.PartyServices.create#Person")
+                                .parameters([firstName: firstName, lastName: lastName, roleTypeId: "Customer"]).call()
+                        partyId = personRes.partyId
+                        ec.service.sync().name("mantle.party.ContactServices.create#EmailAddress")
+                                .parameters(emailAddress: email, partyId: partyId, contactMechPurposeId: "EmailPrimary").call()
+                    } else {
+                        partyId = partyIds.first();
+                    }
+                    ec.service.sync().name("mantle.party.PartyServices.create#PartyUserAccount")
+                            .parameters([partyId: partyId, emailAddress: email]).call()
+                }
+                UserFacadeImpl userFacade = ec.user as UserFacadeImpl
+                userFacade.internalLoginUser(email)
+            </script>
+            <!-- create the login key to return -->
+            <set field="apiKey" from="ec.user.getLoginKey()"/>
+
+            <service-call name="popstore.CustomerServices.get#CustomerInfo" out-map="customerInfo"/>
+        </actions>
+    </service>
+
+    <service verb="find" noun="PartyByEmail">
+        <description>Try to find parties who have specified emails and return list of party ids. We expect that
+        the list will have just one entry. A few parties with the same emails probably are duplicates. The first id
+        on the list belongs to a party where specified email was registered last.</description>
+        <in-parameters>
+            <parameter name="emailAddress" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="partyIds" type="Set"/>
+        </out-parameters>
+        <actions>
+            <entity-find entity-name="mantle.party.contact.PartyContactMechInfo" list="partyInfoList" distinct="true">
+                <econdition field-name="infoString" from="emailAddress" ignore-if-empty="true" ignore-case="true"/>
+                <econdition field-name="contactMechTypeEnumId" value="CmtEmailAddress"/>
+                <date-filter />
+                <select-field field-name="partyId"/><select-field field-name="infoString"/>
+                <order-by field-name="fromDate DESC"/>
+            </entity-find>
+            <set field="partyIds" from="[] as Set"/>
+            <iterate list="partyInfoList" entry="partyInfo">
+                <entity-find-count entity-name="mantle.party.Party" count-field="isDisabled">
+                    <econdition field-name="partyId" from="partyInfo.partyId"/>
+                    <econdition field-name="disabled" value="Y" ignore-case="true"/>
+                </entity-find-count>
+                <if condition="isDisabled==0">
+                    <set field="partyIds" from="partyIds + [partyInfo.partyId]"/>
+                </if>
+            </iterate>
+        </actions>
+    </service>
+
     <service verb="reset" noun="Password" require-authentication="anonymous-all">
         <in-parameters>
             <parameter name="username"/>
@@ -96,11 +172,13 @@ along with this software (see the LICENSE.md file). If not, see
                 out-map="response"/>
         </actions>
     </service>
+
     <service verb="logout" noun="Customer" authenticate="anonymous-all">
         <actions>
             <script>ec.user.logoutUser()</script>
         </actions>
     </service>
+    
     <service verb="register" noun="Customer" require-authentication="anonymous-all">
         <in-parameters>
             <parameter name="firstName" required="true"/><parameter name="middleName"/><parameter name="lastName" required="true"/>
@@ -157,9 +235,8 @@ along with this software (see the LICENSE.md file). If not, see
         <out-parameters>
             <parameter name="userId"/><parameter name="partyId"/><parameter name="username"/>
             <parameter name="firstName"/><parameter name="middleName"/><parameter name="lastName"/>
-            <parameter name="locale"/><parameter name="timeZone"/>
-            <parameter name="disabled"/>
-            <parameter name="emailAddress"/>
+            <parameter name="locale"/><parameter name="timeZone"/><parameter name="disabled"/>
+            <parameter name="emailAddress"/><parameter name="telecomNumber"/>
         </out-parameters>
         <actions>
             <!-- NOTE: use the web session for attributes such as customerPartyId for security; this won't work in a stateless mode or outside a web session -->
@@ -172,8 +249,7 @@ along with this software (see the LICENSE.md file). If not, see
             <entity-find-one entity-name="mantle.party.PersonAndUserAccount" value-field="personAndUserAccount"/>
             <script>context.putAll(personAndUserAccount)</script>
 
-            <service-call name="mantle.party.ContactServices.get#PrimaryEmailAddress" in-map="[partyId:partyId]" out-map="primaryEmail"/>
-            <if condition="primaryEmail.emailAddress"><set field="emailAddress" from="primaryEmail.emailAddress"/></if>
+            <service-call name="mantle.party.ContactServices.get#PartyContactInfo" in-map="[partyId:partyId, telecomContactMechPurposeId: 'PhonePrimary', emailContactMechPurposeId:'EmailPrimary']" out-map="context"/>
         </actions>
     </service>
 
@@ -186,6 +262,8 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="lastName"/>
             <parameter name="middleName"/>
             <parameter name="emailAddress"/>
+            <parameter name="contactMechId"/>
+            <parameter name="contactNumber"/>
             <parameter name="locale"/>
             <parameter name="timeZone"/>
         </in-parameters>
@@ -199,7 +277,10 @@ along with this software (see the LICENSE.md file). If not, see
             <set field="orderId" from="cartOrderId"/>
 
             <service-call name="mantle.party.PartyServices.update#Account" in-map="context"/>
-            
+
+            <service-call name="mantle.party.ContactServices.store#PartyContactInfo" in-map="[partyId:partyId, telecomContactMechPurposeId: 'PhonePrimary', contactNumber: contactNumber, contactMechId: contactMechId]"
+                out-map="context"/>
+
             <service-call name="popstore.CustomerServices.get#CustomerInfo" out-map="customerInfo"/>
         </actions>
     </service>

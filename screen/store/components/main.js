@@ -6,15 +6,11 @@ var appObjects = {
     router: new VueRouter({
         // TODO sooner or later: base: storeConfig.basePath, mode: 'history',
         routes: [
-            { path: "/", name: "landing", component: storeComps.LandingPageTemplate },
             { path: "/login", name: "login", component: storeComps.LoginPageTemplate, 
                beforeEnter: (to, from, next) => {
                     preLoginRoute = from;
                     next();
                } },
-            { path: "/search/:searchText", name: "search", component: storeComps.SearchTemplate },
-            { path: "/category/:categoryId/:extra?", name: "category", component: storeComps.CategoryPageTemplate },
-            { path: "/product/:productId/:extra?", name: "product", component: storeComps.ProductPageTemplate },
             { path: "/checkout", name: "checkout", component: storeComps.CheckOutPageTemplate },
             { path: "/checkout/:orderId", name: "successcheckout", component: storeComps.SuccessCheckOutTemplate },
             { path: "/orders/:orderId", name: "order", component: storeComps.CustomerOrderPageTemplate },
@@ -33,7 +29,7 @@ var appObjects = {
 
 // TODO: leave this, reminder to use vue.min.js for production: Vue.config.productionTip = false;
 
-var sotreApp = new Vue({
+var storeApp = new Vue({
     el: "#app",
     router: appObjects.router,
     // state: { categories: [], user: null },

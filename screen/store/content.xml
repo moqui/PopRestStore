@@ -91,12 +91,15 @@ along with this software (see the LICENSE.md file). If not, see
         <!-- TODO: consider removing versionName:ver above in production so only published versions can be seen -->
     </actions>
     <widgets>
-        <render-mode><text type="html" location="component://PopRestStore/template/store/navbar.html.ftl"/></render-mode>
-        <section name="PageTextSection" condition="pageText"><widgets>
-            <label text="${pageText}" type="div" style="content-page" encode="false"/>
-        </widgets><fail-widgets>
-            <render-mode><text type="html" location="component://PopRestStore/template/store/error.html.ftl"/></render-mode>
-        </fail-widgets></section>
-        <render-mode><text type="html" location="component://PopRestStore/template/store/footer.html.ftl"/></render-mode>
+        <render-mode><text type="html" location="${template_server_header}"/></render-mode>
+        <section name="PageTextSection" condition="pageText">
+            <widgets>
+                <render-mode><text type="html" location="${template_server_content}"/></render-mode>
+            </widgets> 
+            <fail-widgets>
+                <render-mode><text type="html" location="component://PopRestStore/template/store/error.html.ftl"/></render-mode>
+            </fail-widgets>
+        </section>
+        <render-mode><text type="html" location="${template_server_footer}"/></render-mode>
     </widgets>
 </screen>

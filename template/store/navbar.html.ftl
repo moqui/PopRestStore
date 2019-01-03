@@ -32,7 +32,7 @@
         <div id="nav_collapse1" class="container navbar-collapse collapse">
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
+                    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop <i class="fas fa-angle-down icon-down"></i></a>
                     
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <#list browseRootCategoryInfo.subCategoryList as category>
@@ -44,14 +44,14 @@
                 </li>
 
                 <#if storeInfo.categoryByType.PsctPromotions??>
-                    <a class="nav-link" href="/store/d#/category/${storeInfo.categoryByType.PsctPromotions.productCategoryId}">
+                    <a class="nav-link" href="/store/category/${storeInfo.categoryByType.PsctPromotions.productCategoryId}">
                         ${storeInfo.categoryByType.PsctPromotions.categoryName}
                     </a>
                 </#if>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Customer Service
+                    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Customer Service <i class="fas fa-angle-down icon-down"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item item-color" href="/store/content/help">Help Center</a>
@@ -68,11 +68,12 @@
 
             <!-- Right aligned nav items -->
             <ul class="navbar-nav ml-auto">
-                <#if user??>
+                <#if partyDetail??>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <#-- TODO: use Person/Org name fields -->
-                            <i class="fas fa-user"></i> ${user.userFullName}</a>
+                        <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> 
+                            ${partyDetail.firstName} ${partyDetail.lastName} ${partyDetail.organizationName!} <i class="fas fa-angle-down icon-down"></i>
+                        </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item item-color" href="/store/d#/account">Account Settings</a>
                             <a class="dropdown-item item-color" href="/store/d#/orders">My Orders</a>
@@ -91,12 +92,22 @@
                     </li>
                 </#if>
 
+                 <#assign cartCount = 0>
+                    <#if cartInfo.orderItemList??>
+                        <#list cartInfo.orderItemList as item>
+                            <#if item.itemTypeEnumId == "ItemProduct">
+                                <#assign cartCount = cartCount + (item.quantity!1)>
+                            </#if>
+                        </#list>
+                    </#if>
                 <li class="nav-item">
-                    <a class="nav-link" href="/store/d#/checkout">
+                    <#if cartCount gt 0>
+                        <a class="nav-link" href="/store/d#/checkout">
+                    <#else>
+                        <a class="nav-link pointer" data-toggle="modal" data-target="#emptyCartModal">
+                    </#if>
                         <span class="cart-quantity" id="cart-quantity">
-                            <#assign cartCount = 0>
-                            <#if cartInfo.orderItemList??><#list cartInfo.orderItemList as item>
-                                <#if item.itemTypeEnumId == "ItemProduct"><#assign cartCount = cartCount + (item.quantity!1)></#if></#list></#if>
+
                             ${cartCount}
                         </span>
                         <i class="fa fa-shopping-cart"></i>  
@@ -115,3 +126,22 @@
         </div>
     </div>
 </nav>
+<div class="modal fade" id="emptyCartModal" tabindex="-1" role="dialog" aria-labelledby="emptyCartModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title justify-content-center" id="emptyCartModalLabel">Your cart is empty.</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-body">
+            Add a product to your cart (or a few!) before going to the check out.
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+</div>
+</div>

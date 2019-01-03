@@ -21,12 +21,14 @@ storeComps.Navbar = {
         }
     }.bind(this)); },
     logout: function() { LoginService.logout().then(function (data) {
-        location.reload();
-    }.bind(this)); },
-    searchProduct: function() { this.$router.push({ name: 'search', params: { searchText: this.searchText }}); }
+        this.$root.apiKey = null;
+        this.$router.push({ name: "login"});
+      }.bind(this)); 
+    },
+    searchProduct: function() { location.href ="/store/search/"+this.searchText; }
   },
   created() {
-      this.storeInfo = this.$root.storeInfo;
+    this.storeInfo = this.$root.storeInfo;
   },
   mounted: function() {
       var vm = this;
@@ -38,7 +40,7 @@ storeComps.Navbar = {
           } else {
               this.getCustomerInfo();
           } 
-        }
+      }
       this.getCartInfo();
   }
 };
@@ -52,3 +54,11 @@ storeComps.FooterPage = {
 };
 storeComps.FooterPageTemplate = getPlaceholderRoute("template_client_footer", "FooterPage", storeComps.FooterPage.props);
 Vue.component("footer-page", storeComps.FooterPageTemplate);
+
+storeComps.MenuLeft = {
+    name: "menu-left",
+    data() { return {}; },
+    props: ["type"]
+};
+storeComps.MenuLeftTemplate = getPlaceholderRoute("template_client_menu", "MenuLeft", storeComps.MenuLeft.props);
+Vue.component("menu-left", storeComps.MenuLeftTemplate);
