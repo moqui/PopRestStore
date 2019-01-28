@@ -34,25 +34,23 @@ along with this software (see the LICENSE.md file). If not, see
             contentLocation: "/store/content/",
             contentAttachmentLocation: "/store/content/attachment/",
             productImageLocation: "/store/content/productImage/",
+
             // nav/etc page template locations (may be path or full URL)
-            template_client_header: "/store/components/template/Navbar.html",
-            template_client_footer: "/store/components/template/FooterPage.html",
-            template_client_home: "/store/components/template/HomePage.html",
-            template_client_search: "/store/components/template/SearchPage.html",
-            // product/etc page template locations (may be path or full URL)
-            template_client_category: "/store/components/template/CategoryPage.html",
-            template_client_categoryProduct: "/store/components/template/CategoryProduct.html",
-            template_client_product: "/store/components/template/ProductPage.html",
-            template_client_productImage: "/store/components/template/ProductImage.html",
-            template_client_productReview: "/store/components/template/ProductReview.html",
-            template_client_starRating: "/store/components/template/StarRating.html",
-            // account/checkout/etc page template locations (may be path or full URL)
+            template_client_header: "/store/components/template/Header.html",
+            template_client_footer: "/store/components/template/Footer.html",
+            template_client_menu: "/store/components/template/MenuLeft.html",
+
+            // Login and password screens
             template_client_login: "/store/components/template/LoginPage.html",
             template_client_resetPassword: "/store/components/template/ResetPasswordPage.html",
-            template_client_account: "/store/components/template/AccountPage.html",
-            template_client_accountCreate: "/store/components/template/CreateAccountPage.html",
-            template_client_orderHistory: "/store/components/template/OrderHistoryTemplate.html",
-            template_client_orderDetail: "/store/components/template/OrderDetailTemplate.html",
+
+            // account page template locations (may be path or full URL)
+            template_client_accountCreate: "/store/components/template/AccountCreatePage.html",
+            template_client_account:       "/store/components/template/AccountPage.html",
+            template_client_orderHistory:  "/store/components/template/AccountOrders.html",
+            template_client_orderDetail:   "/store/components/template/AccountOrderDetail.html",
+
+            // Checkout templates
             template_client_checkout: "/store/components/template/CheckoutPage.html",
             template_client_checkoutHeader: "/store/components/template/CheckoutNavbar.html",
             template_client_checkoutSuccess: "/store/components/template/CheckoutSuccess.html"

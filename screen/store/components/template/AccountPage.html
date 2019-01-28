@@ -1,184 +1,168 @@
-<div ref="top">
+<div>
     <navbar sub-bar="true"/>
-    <div class="container mt-2">
-        <div class="container">
-            <a class="customer-link" href="/store">
-            Home 
-            <i class="fas fa-angle-right"></i>
-            </a>
-            <span class="modal-text">Account Settings</span>
-        </div>
-        <div class="row mt-4">
-            <div class="col col-lg-2 col-12">
-                <div class="customer-menu">
-                    <span class="color-tab font-weight-bold">Account Settings</span>
-                    <ul class="customer-orders-ul">
-                        <li>Profile</li>
-                        <li class="item-info" @click="scrollTo('delivery')">Delivery Address</li>
-                        <li class="item-info" @click="scrollTo('credit')">Payment Method</li>
-                    </ul>
-                    <router-link class="customer-link font-weight-bold" :to="'/orders'" tag="span">
-                        My Orders
-                    </router-link>
-                    <ul class="customer-orders-ul">
-                        <router-link :to="'/orders'" tag="li">
-                            Current Orders
-                        </router-link>
-                        <router-link :to="'/orders'" tag="li">
-                            Order History
-                        </router-link>
-                    </ul>
-                </div>
+    <div class="container-fluid px-lg-6 px-4 py-4 body-padding">
+        <div class="row no-gutters align-left">
+            <div class="col">
+                <a class="customer-link" href="/rcsite">Home </a><i class="fas fa-angle-right mx-2 fa-line-height"></i>
+                Account
             </div>
-            <div class="col col-lg-9 offset-lg-1 col-12">
-                <span class="customer-orders-title">Account Settings</span>
-                <br>
+        </div>
+        <div class="row mb-8">
+            <div class="d-none d-lg-block col-lg-3">
+                <menu-left type="true"/>
+            </div>
+            <div class="col-lg-9 col-12">
+                <div class="row">
+                    <div class="col">
+                        <h1 class="page-heading text-uppercase"><span class="text-green">ACCOUNT </span>SETTINGS</h1>
+                    </div>
+                </div>
                 <div v-if="message.state != '' " :class="{ 'alert-primary': message.state == 1, 'alert-danger': message.state == 2}" class="alert" role="alert">
                     {{message.message}}
                 </div>
-                <p class="order-text-color account-subtitle mt-3">Profile</p>
-                <hr class="account-hr">
+
+                <!-- profile section -->
+                <router-link :to="'/account#profile'" tag="div" id="profile" class="lead">PROFILE</router-link>
+                <div class="breakline no-gutters mb-3"></div>
                 <div class="form-group row">
-                    <label for="username" class="col-sm-2 col-form-label modal-text">Username*</label>
-                    <div class="col-sm-6">
-                        <input class="form-control" id="username" type="text" v-model="customerInfo.username" required/>
+                    <label for="username" class="col-sm-3 col-form-label modal-text left-menu-heading">Username</label>
+                    <div class="col-12 col-sm-6 mt-2 pl-4">
+                        <label id="username">{{customerInfo.username}}</label>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="firstname" class="col-sm-2 col-form-label modal-text">First Name*</label>
-                    <div class="col-sm-6">
+                    <label for="firstname" class="col-sm-3 col-form-label modal-text left-menu-heading">First Name</label>
+                    <div class="col-12 col-sm-6">
                         <input class="form-control" id="firstname" type="text" v-model="customerInfo.firstName" required/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="middleName" class="col-sm-2 col-form-label modal-text">Middle Name</label>
-                    <div class="col-sm-6">
-                        <input class="form-control" id="middleName" type="text" v-model="customerInfo.middleName" required/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="lastName" class="col-sm-2 col-form-label modal-text">Last Name*</label>
-                    <div class="col-sm-6">
+                    <label for="lastName" class="col-sm-3 col-form-label modal-text left-menu-heading">Last Name</label>
+                    <div class="col-12 col-sm-6">
                         <input class="form-control" id="lastName" type="text" v-model="customerInfo.lastName" required/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="emailAddress" class="col-sm-2 col-form-label modal-text">Contact Email*</label>
-                    <div class="col-sm-6">
+                    <label for="emailAddress" class="col-sm-3 col-form-label modal-text left-menu-heading">Email</label>
+                    <div class="col-12 col-sm-6">
                         <input class="form-control" id="emailAddress" type="email" v-model="customerInfo.emailAddress" required/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label modal-text">Locale*</label>
-                    <div class="col-sm-6">
-                        <select v-model="customerInfo.locale" class="form-control">
-                            <option v-for="locale in localeList" :value="locale.locale">{{locale.name}}</option>
-                        </select>
+                    <label for="phone" class="col-sm-3 col-form-label modal-text left-menu-heading">Phone</label>
+                    <div class="col-12 col-sm-6">
+                        <input class="form-control" id="contactNumber" type="text" v-model="customerInfo.contactNumber" required/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label modal-text">Time Zone*</label>
-                    <div class="col-sm-6">
-                        <select v-model="customerInfo.timeZone" class="form-control">
-                            <option v-for="time in timeZoneList" :value="time">{{time}}</option>
-                        </select>
+                    <div class="col-12 col-sm-6 offset-sm-3">
+                        <button data-toggle="modal" data-target="#changePasswordModal" class="btn btn-info account-btn mr-2">Change Password</button>
+                        <button @click="updateCustomerInfo" class="btn btn-info account-btn">Save</button>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <div class="col-sm-6 offset-sm-2">
-                        <button @click="updateCustomerInfo" class="btn btn-continue account-btn">Save</button>
-                    </div>
-                    <div class="col-sm-6 offset-sm-2 mt-3">
-                        <button data-toggle="modal" data-target="#modal" class="btn btn-continue account-btn">Change Password</button>
-                    </div>
+
+                <!-- shipping addresses -->
+                <div class="d-flex justify-content-between mt-5">
+                    <router-link :to="'/account#shipping'" tag="span" id="shipping" class="lead">
+                    SHIPPING ADDRESSES</router-link>
+                    <span class="pointer text-cyan" @click="scrollTo()">Back to Top</span>
                 </div>
-                <p class="order-text-color account-subtitle mt-5" id="delivery" ref="delivery">Delivery Address</p>
-                <span class="account-back-top" @click="scrollTo()">Back to Top</span>
-                <hr class="account-hr">
+                <div class="breakline no-gutters mb-3"></div>
                 <div class="row">
                     <template v-for="(address, index) in shippingAddressList">
                         <div :class="{ 'div-checkmark': addressOption == address.postalContactMechId + ':' +
-                            address.telecomContactMechId }" class="col col-lg-6 account-div-container">
-                            <label :for="index + 'r1'" class="container-input">
-                                <input :id="index + 'r1'" type="radio" :value="address.postalContactMechId + ':' +
-                                    address.telecomContactMechId" v-model="addressOption"/>
-                                <span class="checkmark"></span>
-                                <span class="span-description">{{address.postalAddress.toName}}</span>
-                                <span class="span-description mt-1">{{address.postalAddress.address1}}</span>
-                                <span class="span-description mt-1">
-                                    {{address.postalAddress.city}}, 
-                                    {{address.postalAddress.address2}} 
-                                    {{address.postalAddress.countryGeoId}}
-                                </span>
-                                <span class="span-description mt-1">
-                                    <i class="fa fa-phone phone-icon"></i>
-                                    {{address.telecomNumber.contactNumber}}
-                                </span>
-                            </label>
-                            <span class="span-link-container mt-1">
-                                <span data-toggle="modal" data-target="#modal1" 
-                                    @click="selectAddress(address),isUpdate = true" class="span-link">
-                                    Update
-                                </span>
-                                <span>|</span>
-                                <span data-toggle="modal" data-target="#modal4" @click="selectAddress(address)" 
-                                    class="span-link">
-                                    Delete
-                                </span>
-                            </span>
+                            address.telecomContactMechId }" class="col-12 col-sm-6">
+                            <div class="row mx-auto mt-3">
+                                <div class="col-2">
+                                    <input :id="index + 'r1'" type="radio" :value="address.postalContactMechId + ':' +
+                                    address.telecomContactMechId" v-model="addressOption" class=""/>
+                                </div>
+                                <div class="col d-flex flex-column">
+                                    <div class="row">
+                                        {{address.postalAddress.address1}} {{address.postalAddress.address2}}<br>
+                                        {{address.postalAddress.city}}, {{address.postalAddressStateGeo.geoCodeAlpha2}} 
+                                        {{address.postalAddress.postalCode}}
+                                    </div>
+                                    <div class="row mt-2 text-cyan">
+                                        <span data-toggle="modal" data-target="#addressModal" 
+                                            @click="selectAddress(address),isUpdate = true" class="pointer">
+                                            Update &nbsp;
+                                        </span>
+                                        <span>| &nbsp;</span>
+                                        <span data-toggle="modal" data-target="#deleteAddressModal" @click="selectAddress(address)" 
+                                            class="pointer">
+                                            Delete
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </template>
                 </div>
                 <br>
-                <div class="row">
-                    <button data-toggle="modal" data-target="#modal1" 
-                        class="btn btn-continue col col-lg-6 account-btn" @click="resetData()">
+                <div>
+                    <button data-toggle="modal" data-target="#addressModal" 
+                        class="btn btn-info col col-lg-6 account-btn" @click="resetData()">
                         Add an Address
                     </button>
                 </div>
-                <p class="order-text-color account-subtitle mt-5" id="credit" ref="credit">Credit Card</p>
-                <span class="account-back-top" @click="scrollTo()">Back to Top</span>
-                <hr class="account-hr">
+
+                <!-- payment methods -->
+                <div class="d-flex justify-content-between mt-5">
+                    <router-link :to="'/account#payment'" tag="span" id="payment" class="lead">
+                    PAYMENT METHODS</router-link>
+                    <span class="text-cyan pointer" @click="scrollTo()">Back to Top</span>
+                </div>
+                <div class="breakline no-gutters mb-3"></div>
                 <div class="row">
                     <template v-for="(item, index) in customerPaymentMethods">
-                        <div :class="{ 'div-checkmark': paymentOption == item.paymentMethodId }"
-                            class="col col-lg-6 account-div-container">
-                            <label  :for="index + 'r3'" class="container-input">
-                                <input :id="index + 'r3'"  type="radio" :value="item.paymentMethodId" 
-                                    v-model="paymentOption"/>
-                                <span class="checkmark"></span>
-                                <span class="span-description">{{item.paymentMethod.description}}</span>
-                                <span class="span-description mt-1">{{item.paymentMethod.titleOnAccount}}</span>
-                                <span class="span-description mt-1">Expires on {{item.creditCard.expireDate}}</span>
-                            </label>
-                            <span class="span-link-container mt-1">
-                                <span @click="selectPaymentMethod(item),isUpdate = true" 
-                                    data-toggle="modal" data-target="#modal2" class="span-link">
-                                    Update
-                                </span>
-                                <span>|</span>
-                                <span @click="selectPaymentMethod(item)" data-toggle="modal" 
-                                    data-target="#modal5" class="span-link">
-                                    Delete
-                                </span>
-                            </span>
+                        <div :class="{ 'div-checkmark': paymentOption == item.paymentMethodId }" class="col-12 col-sm-6">
+                            <div class="row mx-auto mt-3">
+                                <div class="col-2">
+                                    <input :id="index + 'r3'"  type="radio" :value="item.paymentMethodId" v-model="paymentOption"/>
+                                </div> 
+                                <div class="col d-flex flex-column">
+                                    <div class="row">
+                                        {{item.paymentMethod.titleOnAccount}}
+                                        <br>
+                                        {{item.paymentMethod.description}}
+                                        <br>
+                                        Expires on {{item.creditCard.expireDate}}
+                                    </div>
+                                    <div class="row mt-2 text-cyan">
+                                        <span @click="selectPaymentMethod(item),isUpdate = true" 
+                                            data-toggle="modal" data-target="#creditCardModal" class="pointer">
+                                            Update &nbsp;
+                                        </span>
+                                        <span>| &nbsp;</span>
+                                        <span @click="selectPaymentMethod(item)" data-toggle="modal" 
+                                            data-target="#deletePaymentMethodModal" class="pointer">
+                                            Delete
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </template>
                 </div>
                 <br>
-                <div class="row">
-                    <button @click="resetData()" data-toggle="modal" data-target="#modal2" 
-                        class="btn btn-continue col col-lg-6 account-btn">
+                <div>
+                    <button @click="resetData()" data-toggle="modal" data-target="#creditCardModal" 
+                        class="btn btn-info col col-lg-6 account-btn">
                         Add a Credit Card
                     </button>
                 </div>
-            </div>
+                <!-- <div class="breakline no-gutters my-3"></div> -->
+            </div> 
         </div>
-        <div class="modal fade" id="modal"> <!-- change password -->
+    </div>
+    <footer-page class="footer-relative" :infoLink="false" />
+
+        <div class="modal fade" id="changePasswordModal"> <!-- Change Password Modal -->
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Change Password</h5>
+                        <h5 class="title" id="exampleModalLongTitle">Change Password</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -206,18 +190,19 @@
                                     required/>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-sm-7 offset-sm-4">
-                                <button type="submit" class="btn btn-continue account-btn">Change Password</button>
+                        <div class="row justify-content-center">
+                            <!-- <div class="col-sm-7 offset-sm-4"> -->
+                                <button type="submit" class="btn btn-info col-sm-6">Change Password</button>
                                 <br>
-                                <a data-dismiss="modal" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
-                            </div>
+                                <a data-dismiss="modal" class="btn btn-link text-add col-sm-6">Cancel</a>
+                            <!-- </div> -->
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="modal1">
+
+        <div class="modal fade" id="addressModal"> <!-- Address Modal -->
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -230,7 +215,7 @@
                                     @focus="resetToNameErrorMessage(shippingAddress.toName)"
                                     required/>
                             <div v-if="toNameErrorMessage != null && toNameErrorMessage != ''">
-                                <small class="input-text form-text response-text">{{toNameErrorMessage}}</small>
+                                <small class="input-text form-text text-danger">{{toNameErrorMessage}}</small>
                             </div>
                         </div>
                         <!-- Attention Field-->
@@ -250,7 +235,7 @@
                                     <option value="USA" selected>United States</option>
                                 </select>
                                 <div v-if="countryErrorMessage != null && countryErrorMessage != ''">
-                                    <small class="input-text form-text response-text">{{countryErrorMessage}}</small>
+                                    <small class="input-text form-text text-danger">{{countryErrorMessage}}</small>
                                 </div>
                         </div>
                         <!-- Address -->
@@ -263,7 +248,7 @@
                                     @focus="resetAddressErrorMessage(shippingAddress.address1)"
                                     required/>
                             <div v-if="addressErrorMessage != null && addressErrorMessage != ''">
-                                <small class="input-text form-text response-text">{{addressErrorMessage}}</small>
+                                <small class="input-text form-text text-danger">{{addressErrorMessage}}</small>
                             </div>
                         </div>
                         <div class="form-group">
@@ -281,7 +266,7 @@
                                     @focus="resetCityErrorMessage(shippingAddress.city)"
                                     required/>
                             <div v-if="cityErrorMessage != null && cityErrorMessage != ''">
-                                <small class="input-text form-text response-text">{{cityErrorMessage}}</small>
+                                <small class="input-text form-text text-danger">{{cityErrorMessage}}</small>
                             </div>
                         </div>
                         <!-- State -->
@@ -292,7 +277,7 @@
                                     <option v-for="region in regionsList" :value="region.geoId">{{region.geoName}}</option>
                             </select>
                             <div v-if="stateErrorMessage != null && stateErrorMessage != ''">
-                                <small class="input-text form-text response-text">{{stateErrorMessage}}</small>
+                                <small class="input-text form-text text-danger">{{stateErrorMessage}}</small>
                             </div>
                         </div>
                         <!-- Postal code -->
@@ -304,7 +289,7 @@
                                 @focus="resetPostalCodeErrorMessage(shippingAddress.postalCode)"
                                 required/>
                             <div v-if="postalCodeErrorMessage != null && postalCodeErrorMessage != ''">
-                                <small class="input-text form-text response-text">{{postalCodeErrorMessage}}</small>
+                                <small class="input-text form-text text-danger">{{postalCodeErrorMessage}}</small>
                             </div>
                         </div>
                         <!-- Phone number -->
@@ -316,7 +301,7 @@
                                 @focus="resetContactNumberErrorMessage(shippingAddress.contactNumber)"
                                 required/>
                             <div v-if="contactNumberErrorMessage != null && contactNumberErrorMessage != ''">
-                                <small class="input-text form-text response-text">{{contactNumberErrorMessage}}</small>
+                                <small class="input-text form-text text-danger">{{contactNumberErrorMessage}}</small>
                             </div>
                         </div>
 
@@ -325,7 +310,7 @@
                                 <span v-if="isUpdate">Update Address</span>
                                 <span v-else>Add Address</span>
                             </button>
-                            <a @click="hideModal('modal1')" class="btn btn-link text-add col col-sm-9">
+                            <a @click="hideModal('addressModal')" class="btn btn-link text-add col col-sm-9">
                                 Cancel
                             </a>
                         </div>
@@ -333,230 +318,238 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="modal2">
+        
+        <div class="modal fade" id="creditCardModal"><!-- Credit Card Modal -->
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">
-                            <span v-if="isUpdate">Update Credit Card</span>
-                            <span v-else>Add Credit Card</span>
+                    <div class="modal-header"><!-- Title -->
+                        <h5 class="modal-title text-gdark" id="exampleModalLongTitle">
+                            <span v-if="isUpdate"><span class="text-glight">UPDATE</span> CREDIT CARD</span>
+                            <span v-else><span class="text-glight">ADD</span> A CREDIT CARD</span>
                         </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close text-cyan" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form class="modal-body" @submit.prevent="addCustomerPaymentMethod" method="post">
-                        <div v-if="responseMessage != null && responseMessage != ''" class="alert alert-primary" role="alert">
-                            {{responseMessage}}
-                        </div>
-                        <div class="form-group row">
-                            <label for="card" class="col-sm-3 col-form-label modal-text">
-                                Card Number 
-                                <span class="modal-text-required">*</span>
-                            </label>
-                            <div class="col-sm-9">
-                                <input class="form-control" id="card"
-                                    type="text"
-                                    v-model="paymentMethod.cardNumber"
-                                    placeholder="13 to 16 digits Spaces are optional" required :disabled="isUpdate"/>
+                    <div class="modal-body">
+                        <form class="modal-body" @submit.prevent="addCustomerPaymentMethod" method="post">
+                            <div v-if="responseMessage != null && responseMessage != ''" 
+                                class="alert alert-primary" role="alert">
+                                {{responseMessage}}
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="nameCard" class="col-sm-3 col-form-label">Name on Card *</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" id="nameCard"
-                                    type="text"
-                                    v-model="paymentMethod.titleOnAccount"
-                                    placeholder="The name printed on the front of the card" required/>
+                            <div class="form-group row justify-content-between">
+                                <label for="nameCard" class="col-form-label modal-text ml-3">Name on Card</label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <input class="form-control" id="nameCard"
+                                        type="text" required
+                                        v-model="paymentMethod.titleOnAccount"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Expiry Date *</label>
-                            <div class="form-group col-sm-4">
-                                <select v-model="paymentMethod.expireMonth" class="form-control">
-                                    <option value="01">01</option>
-                                    <option value="02">02</option>
-                                    <option value="03">03</option>
-                                    <option value="04">04</option>
-                                    <option value="05">05</option>
-                                    <option value="06">06</option>
-                                    <option value="07">07</option>
-                                    <option value="08">08</option>
-                                    <option value="09">09</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                </select>
+                            <div class="form-group row justify-content-between">
+                                <label for="card" class="col-form-label modal-text ml-3">
+                                    Card Number 
+                                    <span class="text-required">*</span>
+                                </label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <input class="form-control" id="card"
+                                        type="text"
+                                        v-model="paymentMethod.cardNumber"
+                                        placeholder="13 to 16 digits Spaces are optional" required :disabled="isUpdate"/>
+                                </div>
                             </div>
-                            <div class="form-group col-sm-5">
-                                <select v-model="paymentMethod.expireYear" class="form-control">
-                                    <option value="" selected disabled>Year</option>
-                                    <option value="2018">2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
-                                    <option value="2021">2021</option>
-                                </select>
+                            <div class="form-group row justify-content-between">
+                                <label class="col-form-label ml-3">Expiry Date</label>
+                                <div class="col-sm-8 col-xs-12 d-inline-flex">
+                                    <select v-model="paymentMethod.expireMonth" class="form-control"
+                                        required>
+                                        <option value="" disabled selected>Month</option>
+                                        <option v-for="n in 12" :value="(n < 10) ? '0'+n : ''+n">
+                                            {{(n < 10) ? '0'+n : n}}</option>
+                                    </select>
+                                    <select v-model="paymentMethod.expireYear" class="form-control ml-3"
+                                        required>
+                                        <option value="" disabled selected>Year</option>
+                                        <option v-for="n in 10" :value="(2017 + n)">{{2017 + n}}</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="security" class="col-sm-3 col-form-label">Card Security Code*</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" id="security"
-                                    type="text"
-                                    v-model="paymentMethod.cardSecurityCode"
-                                    placeholder="3 or 4 Digits" required/>
+                            <div class="form-group row justify-content-between">
+                                <label for="security" class="col-form-label ml-3">Security Code</label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <input class="form-control" id="security"
+                                        type="text"
+                                        v-model="paymentMethod.cardSecurityCode"
+                                        placeholder="3 or 4 Digits" required/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row" v-if="!isUpdate">
-                            <label class="col-sm-3 col-form-label">Select an Address*</label>
-                            <div class="col-sm-9">
-                                <select v-model="paymentAddressOption" class="form-control" 
-                                    @change="selectBillingAddress(paymentAddressOption)">
-                                    <option value="0" >New Address</option>
-                                    <option v-for="item in shippingAddressList" 
-                                        :value="item">
-                                        {{item.postalAddress.toName}}, {{item.postalAddress.address1}}, 
-                                        {{item.postalAddress.city}}
-                                    </option>
-                                </select>
+                            <div class="form-group row justify-content-between" v-if="!isUpdate">
+                                <label class="col-form-label ml-3">Select an Address*</label>
+                                <div class="col-sm-8 col-xs-12">
+                                    <select v-model="paymentAddressOption" class="form-control" 
+                                        @change="selectBillingAddress(paymentAddressOption)">
+                                        <option value="0" >New Address</option>
+                                        <option v-for="item in shippingAddressList" 
+                                            :value="item">
+                                            {{item.postalAddress.toName}}, {{item.postalAddress.address1}}, 
+                                            {{item.postalAddress.city}}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <template v-if="isUpdate || paymentAddressOption == 0">
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label modal-text">
-                                To <span class="modal-text-required">*</span>
-                            </label>
-                            <div class="col-sm-9">
-                                <input class="form-control"  type="text" v-model="paymentMethod.toName" required/>
+                            <template v-if="isUpdate || paymentAddressOption == 0">
+                                <div class="form-group row justify-content-between">
+                                    <label for="name" class="col-form-label modal-text ml-3">To <span class="text-required">*</span></label>
+                                    <div class="col-sm-8 col-xs-12">
+                                        <input class="form-control" id="name"
+                                            type="text"
+                                            v-model="paymentMethod.toName"
+                                            required/>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-between">
+                                    <label class="col-form-label modal-text ml-3">Attention
+                                        <span class="text-cyan">(Optional)</span>
+                                    </label>
+                                    <div class="col-sm-8 col-xs-12">
+                                        <input class="form-control" type="text" v-model="paymentMethod.attnName"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-between">
+                                    <label class="col-form-label modal-text ml-3">
+                                        Country
+                                    </label>
+                                    <div class="col-sm-8 col-xs-12">
+                                        <label class="form-control">
+                                            United States
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-between">
+                                    <label for="adress1" class="col-form-label modal-text ml-3">
+                                        Address 
+                                        <span class="text-required">*</span>
+                                    </label>
+                                    <div class="col-sm-8 col-xs-12">
+                                        <input class="form-control" id="adress1"
+                                            type="text"
+                                            v-model="paymentMethod.address1"
+                                            required/>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-between">
+                                    <label for="adress2" class="col-form-label"></label>
+                                    <div class="col-sm-8 col-xs-12">
+                                        <input class="form-control" id="adress2"
+                                            type="text"
+                                            v-model="paymentMethod.address2"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-between">
+                                    <label for="city" class="col-form-label modal-text ml-3">
+                                        City / Town 
+                                        <span class="text-required">*</span>
+                                    </label>
+                                    <div class="col-sm-8 col-xs-12">
+                                        <input class="form-control" id="city"
+                                            type="text"
+                                            v-model="paymentMethod.city"
+                                            required/>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-between">
+                                    <label for="state" class="col-form-label modal-text ml-3">
+                                        State
+                                        <span class="text-required">*</span>
+                                    </label>
+                                    <div class="col-sm-8 col-xs-12">
+                                        <select v-model="paymentMethod.stateProvinceGeoId" class="form-control">
+                                            <option v-for="region in regionsList" :value="region.geoId">{{region.geoName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-between">
+                                    <label for="postalcode" class="col-form-label modal-text ml-3">Zip Code</label>
+                                    <div class="col-sm-8 col-xs-12">
+                                        <input class="form-control" id="postalcode"
+                                            type="text"
+                                            v-model="paymentMethod.postalCode"
+                                            required/>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-between">
+                                    <label for="contactnumber" class="col-form-label modal-text ml-3">
+                                        Phone Number 
+                                        <span class="text-required">*</span>
+                                    </label>
+                                    <div class="col-sm-8 col-xs-12">
+                                        <input class="form-control" id="contactnumber"
+                                            type="text"
+                                            v-model="paymentMethod.contactNumber"
+                                            required/>
+                                    </div>
+                                </div>
+                            </template>
+                            <div class="row justify-content-center button-spacing">
+                                <button type="submit" class="btn btn-info col-sm-6">
+                                    <span v-if="isUpdate">Update Card</span>
+                                    <span v-else>Add Card</span>
+                                </button>
+                                <a data-dismiss="modal" class="btn btn-link text-add col-sm-6">Cancel</a>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label modal-text">Attention</label>
-                            <div class="col-sm-9">
-                                <input class="form-control"  type="text" v-model="paymentMethod.attnName"/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="country" class="col-sm-3 col-form-label modal-text">
-                                Country 
-                                <span class="modal-text-required">*</span>
-                            </label>
-                            <div class="col-sm-9">
-                                <select v-model="paymentMethod.countryGeoId" class="form-control" 
-                                    @change="getRegions(paymentMethod.countryGeoId)">
-                                    <option v-for="country in countriesList" :value="country.geoId">
-                                        {{country.geoName}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="adress1" class="col-sm-3 col-form-label modal-text">
-                                Address 
-                                <span class="modal-text-required">*</span>
-                            </label>
-                            <div class="col-sm-9">
-                                <input class="form-control" id="adress1" type="text"  v-model="paymentMethod.address1" 
-                                    required/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="adress2" class="col-sm-3 col-form-label"></label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text"  v-model="paymentMethod.address2"/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="city" class="col-sm-3 col-form-label modal-text">
-                                City 
-                                <span class="modal-text-required">*</span>
-                            </label>
-                            <div class="col-sm-9">
-                                <input class="form-control" id="city"  type="text" v-model="paymentMethod.city"  required/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="state" class="col-sm-3 col-form-label modal-text">
-                                State 
-                                <span class="modal-text-required">*</span>
-                            </label>
-                            <div class="col-sm-9">
-                                <select v-model="paymentMethod.stateProvinceGeoId" class="form-control">
-                                    <option v-for="region in regionsList" :value="region.geoId">{{region.geoName}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="postalcode" class="col-sm-3 col-form-label modal-text">Zip Code</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text"  v-model="paymentMethod.postalCode" required/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="contactnumber" class="col-sm-3 col-form-label modal-text">
-                                Phone Number 
-                                <span class="modal-text-required">*</span>
-                            </label>
-                            <div class="col-sm-9">
-                                <input class="form-control" type="text" v-model="paymentMethod.contactNumber" required/>
-                            </div>
-                        </div>
-                        </template>
-                        <div class="row justify-content-center">
-                            <button type="submit" class="btn btn-continue col col-sm-6 offset-sm-1">
-                                <span v-if="isUpdate">Update Credit Card</span>
-                                <span v-else>Add Credit Card</span>
-                            </button>
-                            <a data-dismiss="modal" class="btn btn-link text-add col col-sm-9 offset-sm-1">Or Cancel</a>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="modal4">
+
+        <div class="modal fade" id="deleteAddressModal"><!-- Confirm Delete -->
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                        <h5 class="title" id="exampleModalLabel">CONFIRM</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p class="text-center">Are you sure to delete this record?</p>
                         <div class="row justify-content-center">
-                            <button class="btn btn-continue col col-sm-6 offset-sm-1" @click="deleteShippingAddress(
-                                    shippingAddress.postalContactMechId,shippingAddress.postalContactMechPurposeId)">
-                                Delete
-                            </button>
-                            <a data-dismiss="modal" class="btn btn-link text-add mr-0 col col-sm-6 offset-sm-1">Cancel</a>
+                            <p class="col-12 text-center">Are you sure to delete this record?</p>
+                            <div class="d-flex mt-4">
+                                <a data-dismiss="modal" class="btn btn-outline-info btn-lg flex-fill mr-3">Cancel</a>
+                                <button class="btn btn-info col col-sm-6 col-lg-6 col-12 offset-sm-1 
+                                offset-lg-1 offset-md-1" @click="deleteShippingAddress(shippingAddress.postalContactMechId,shippingAddress.postalContactMechPurposeId)">
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="modal5">
+
+        <div class="modal fade" id="deletePaymentMethodModal"><!-- Confirm Delete -->
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                        <h5 class="title" id="exampleModalLabel">CONFIRM</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p class="text-center">Are you sure to delete this record?</p>
                         <div class="row justify-content-center">
-                            <button class="btn btn-continue col col-sm-6 offset-sm-1"  
-                                @click="deletePaymentMethod(paymentMethod.paymentMethodId)">
-                                Delete
-                            </button>
-                            <a data-dismiss="modal" class="btn btn-link text-add mr-0 col col-sm-6 offset-sm-1">Cancel</a>
+                            <p class="col-12 text-center">Are you sure to delete this record?</p>
+                            <div class="d-flex mt-4">
+                                <a data-dismiss="modal" class="btn btn-outline-info btn-lg flex-fill mr-3">Cancel</a>
+                                <button class="btn btn-info col col-sm-6 col-lg-6 col-12 offset-sm-1 
+                                offset-lg-1 offset-md-1" @click="deletePaymentMethod(paymentMethod.paymentMethodId)">
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>   
     </div>
-    <footer-page :infoLink="true" class="mt-5"/>
 </div>

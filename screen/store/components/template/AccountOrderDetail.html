@@ -7,34 +7,8 @@
             <span class="modal-text">#{{orderList.orderHeader.orderId}}</span>
         </div>
         <div class="row mt-4">
-            <div class="col col-lg-2 col-12">
-                <div class="customer-menu">
-                    <router-link class="customer-link font-weight-bold" :to="'/account'" tag="span">
-                        Account Settings 
-                    </router-link>
-                    <ul class="customer-orders-ul">
-                        <router-link  :to="'/account'" tag="li">
-                            Profile 
-                        </router-link>
-                        <router-link  :to="'/account'" tag="li">
-                            Delivery Address 
-                        </router-link>
-                        <router-link  :to="'/account'" tag="li">
-                            Payment Method 
-                        </router-link>
-                    </ul>
-                    <router-link class="customer-link font-weight-bold" :to="'/orders'" tag="span">
-                        My Orders
-                    </router-link>
-                    <ul class="customer-orders-ul">
-                        <router-link :to="'/orders'" tag="li">
-                            Current Orders
-                        </router-link>
-                        <router-link :to="'/orders'" tag="li">
-                            Order History
-                        </router-link>
-                    </ul>
-                </div>
+            <div class="d-none d-lg-block col-lg-3">
+                <menu-left type="true"/>
             </div>
             <div class="col col-lg-9 offset-lg-1 col-12">
                 <span class="customer-orders-title">Order #{{orderList.orderHeader.orderId}}</span>

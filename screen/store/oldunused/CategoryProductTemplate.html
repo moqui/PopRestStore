@@ -1,7 +1,0 @@
-<div>
-    <h4><router-link :to="{ name: 'product', params: { productId: productInfo.productId }}">{{productInfo.productName}}</router-link></h4>
-    <h6>Price: {{productInfo.price}} List: {{productInfo.listPrice}}</h6>
-    <div v-if="productInfo.smallImageList">
-        <img v-for="smallImageInfo in productInfo.smallImageList" :src="$root.getProductImageSrc(smallImageInfo)" :alt="smallImageInfo.description ? smallImageInfo.description : 'Small Image'">
-    </div>
-</div>
