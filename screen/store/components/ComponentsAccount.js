@@ -235,7 +235,7 @@ storeComps.AccountPage = {
             CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(function (data) {
                 this.shippingAddress = {};
                 this.getCustomerAddress();
-                this.hideModal("modal1");
+                this.hideModal("addressModal");
                 this.responseMessage = "";
             }.bind(this));
         },
@@ -244,20 +244,30 @@ storeComps.AccountPage = {
             this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
             this.paymentMethod.countryGeoId = STORE_COUNTRY;
 
-            if (this.paymentMethod.titleOnAccount == null || this.paymentMethod.titleOnAccount.trim() === "" ||
-                this.paymentMethod.cardNumber == null || this.paymentMethod.cardNumber.trim() === "" ||
-                this.paymentMethod.expireMonth == null || this.paymentMethod.expireMonth.trim() === "" ||
-                this.paymentMethod.expireYear == null || this.paymentMethod.expireYear === "" ||
-                this.paymentMethod.cardSecurityCode == null || this.paymentMethod.cardSecurityCode.trim() === "" ||
-                this.paymentMethod.address1 == null || this.paymentMethod.address1.trim() === "" ||
-                this.paymentMethod.toName == null || this.paymentMethod.toName.trim() === "" ||
-                this.paymentMethod.city == null || this.paymentMethod.city.trim() === "" ||
-                this.paymentMethod.contactNumber == null || this.paymentMethod.contactNumber.trim() === "") {
-                this.responseMessage = "Verify the required fields";
+            if (this.paymentMethod.titleOnAccount == null || this.paymentMethod.titleOnAccount.trim() === "") {
+                this.responseMessage = "Please privide the name on the card";
                 return;
             }
-            if (this.paymentMethod.postalCode.length < 5 || this.paymentMethod.postalCode.length > 7) {
-                this.responseMessage = "Type a valid postal code";
+            if (this.paymentMethod.cardNumber == null || this.paymentMethod.cardNumber.trim() === "") {
+                this.responseMessage = "Please privide the card number";
+                return;
+            }
+            if (this.paymentMethod.expireMonth == null || this.paymentMethod.expireMonth.trim() === ""
+                || this.paymentMethod.expireYear == null || this.paymentMethod.expireYear === "") {
+                this.responseMessage = "Please privide the card expiry month and year";
+                return;
+            }
+            if (this.paymentMethod.cardSecurityCode == null || this.paymentMethod.cardSecurityCode.trim() === "") {
+                this.responseMessage = "Please privide the card security code";
+                return;
+            }
+            if (this.paymentMethod.cardSecurityCode.length < 3 || this.paymentMethod.cardSecurityCode.length > 4) {
+                this.responseMessage = "Card security code must be either 3 or 4 characters";
+                return;
+            }
+            if (this.paymentMethod.address1 == null || this.paymentMethod.address1.trim() === "" ||
+                this.paymentMethod.city == null || this.paymentMethod.city.trim() === "") {
+                this.responseMessage = "Please provide a billing address";
                 return;
             }
             if (this.paymentMethod.cardNumber.startsWith("5")) {
@@ -265,10 +275,7 @@ storeComps.AccountPage = {
             } else if (this.paymentMethod.cardNumber.startsWith("4")){
                 this.paymentMethod.creditCardTypeEnumId = "CctVisa";
             }
-            if (this.paymentMethod.cardSecurityCode.length < 3 || this.paymentMethod.cardSecurityCode.length > 4) {
-                this.responseMessage = "Must type a valid CSC";
-                return;
-            }
+           
             if (this.paymentMethod.postalContactMechId == null) {
                 this.paymentMethod.postalContactMechId = this.paymentAddressOption.postalContactMechId;
                 this.paymentMethod.telecomContactMechId = this.paymentAddressOption.telecomContactMechId;
@@ -276,7 +283,7 @@ storeComps.AccountPage = {
             if (this.isUpdate) { this.paymentMethod.cardNumber = ""; }
 
             CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
-                this.hideModal("modal2");
+                this.hideModal("creditCardModal");
                 this.paymentMethod = {};
                 this.getCustomerPaymentMethods();
                 this.responseMessage = "";
@@ -290,19 +297,24 @@ storeComps.AccountPage = {
             this.isUpdate = false;
         },
         updateCustomerInfo: function() {
-            if(this.customerInfo.username == null || this.customerInfo.username.trim() === ""
-            || this.customerInfo.firstName == null || this.customerInfo.firstName.trim() === ""
-            || this.customerInfo.lastName == null || this.customerInfo.lastName.trim() === ""
-            || this.customerInfo.emailAddress == null || this.customerInfo.emailAddress.trim() === ""
-            || this.customerInfo.locale == null || this.customerInfo.locale.trim() === ""
-            || this.customerInfo.timeZone == null || this.customerInfo.timeZone.trim() === "") {
+            if (this.customerInfo.username == null || this.customerInfo.username.trim() === "") {
                 this.message.state = 2;
-                this.message.message = "Verify the required fields";
+                this.message.message = "Please provide username";
+                return;
+            }
+            if (this.customerInfo.firstName == null || this.customerInfo.firstName.trim() === ""
+            || this.customerInfo.lastName == null || this.customerInfo.lastName.trim() === "") {
+                this.message.state = 2;
+                this.message.message = "Please provide first and last name";
+                return;
+            }
+            if (this.customerInfo.emailAddress == null || this.customerInfo.emailAddress.trim() === "") {
+                this.message.state = 2;
+                this.message.message = "Please provide a valid email address";
                 return;
             }
             CustomerService.updateCustomerInfo(this.customerInfo,this.axiosConfig).then(function (data) {
                 this.setCustomerInfo(data.customerInfo);
-                //this.customerInfo = data.customerInfo;
                 this.message.state = 1;
                 this.message.message = "Correct! Your data has been updated.";
             }.bind(this));
