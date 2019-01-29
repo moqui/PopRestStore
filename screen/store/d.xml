@@ -50,10 +50,13 @@ along with this software (see the LICENSE.md file). If not, see
             template_client_orderHistory:  "/store/components/template/AccountOrders.html",
             template_client_orderDetail:   "/store/components/template/AccountOrderDetail.html",
 
+            template_client_modalAddress:   "/store/components/template/ModalAddress.html",
+
             // Checkout templates
             template_client_checkout: "/store/components/template/CheckoutPage.html",
             template_client_checkoutHeader: "/store/components/template/CheckoutNavbar.html",
-            template_client_checkoutSuccess: "/store/components/template/CheckoutSuccess.html"
+            template_client_checkoutSuccess: "/store/components/template/CheckoutSuccess.html",
+            template_client_productImage: "/store/components/template/ProductImage.html",
         };
     </script>
         """

@@ -87,7 +87,7 @@
                                 <a class="page-link" href="/store/search/${searchParameter}?pageIndex=${n}">${n + 1}</a>
                             </li>
                         </#list>
-                        <li class="page-item <#if products.productListCount!0 == products.productListPageRangeHigh>disabled</#if>">
+                        <li class="page-item <#if products.productListCount!0 == products.productListPageRangeHigh!0>disabled</#if>">
                             <a class="page-link" href="/store/search/${searchParameter}?pageIndex=${pageIndex?number + 1}">Next</a>
                         </li>
                     </ul>

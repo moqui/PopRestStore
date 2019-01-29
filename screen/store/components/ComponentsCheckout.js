@@ -43,83 +43,19 @@ storeComps.CheckOutPage = {
                 this.listShippingAddress = data.postalAddressList;
             }.bind(this));
         },
-        
-        resetToNameErrorMessage: function(formField) {
-            if (this.formField != "") {
-             this.toNameErrorMessage = "";
-            } 
-         }, 
-         resetCountryErrorMessage: function(formField) {
-             if (this.formField != "") {
-              this.countryErrorMessage = "";
-             } 
-          }, 
-          resetAddressErrorMessage: function(formField) {
-             if (this.formField != "") {
-              this.addressErrorMessage = "";
-             } 
-          }, 
-          resetCityErrorMessage: function(formField) {
-             if (this.formField != "") {
-              this.cityErrorMessage = "";
-             } 
-          }, 
-          resetStateErrorMessage: function(formField) {
-             if (this.formField != "") {
-              this.stateErrorMessage = "";
-             } 
-          }, 
-          resetPostalCodeErrorMessage: function(formField) {
-             if (this.formField != "") {
-              this.postalCodeErrorMessage = "";
-             } 
-          }, 
-          resetContactNumberErrorMessage: function(formField) {
-             if (this.formField != "") {
-              this.contactNumberErrorMessage = "";
-             } 
-          },
- 
-         addCustomerShippingAddress: function() {
-             var error = false;
-             if (this.shippingAddress.toName == null || this.shippingAddress.toName.trim() === "") {
-                 this.toNameErrorMessage = "Please enter a recipient name";
-                 error = true;
-             }
-             if (this.shippingAddress.countryGeoId == null || this.shippingAddress.countryGeoId.trim() === "") {
-                 this.countryErrorMessage = "Please select a country";
-                 error = true;
-             } 
-             if (this.shippingAddress.address1 == null || this.shippingAddress.address1.trim() === "") {
-                 this.addressErrorMessage = "Please enter a street address";
-                 error = true;
-             } 
-             if (this.shippingAddress.city == null || this.shippingAddress.city.trim() === "") {
-                 this.cityErrorMessage = "Please enter a city";
-                 error = true;
-             } 
-             if (this.shippingAddress.stateProvinceGeoId == null || this.shippingAddress.stateProvinceGeoId.trim() === "") {
-                 this.stateErrorMessage = "Please enter a state";
-                 error = true;
-             } 
-             if ( !(/^\d{5}$/.test(this.shippingAddress.postalCode)) ) {
-                this.postalCodeErrorMessage = "Please enter a valid 5 digit ZIP code";
-                error = true;
-            } 
-             if ( !(/^\d\d[-\. \d]*\d\d$/.test(this.shippingAddress.contactNumber)) ) {
-                this.contactNumberErrorMessage = "Please enter a valid phone number";
-                error = true;
-             }
-             if(error){
-                 return;
-             }
 
-            CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(function (data) {
-                this.shippingAddress = {};
-                this.getCustomerShippingAddresses();
-                this.hideModal("addressFormModal");
-            }.bind(this));
+        onAddressCancel: function() {
+            this.hideModal("addressFormModal");
         },
+
+        onAddressUpserted: function(data) {
+            this.shippingAddress = {};
+            this.addressOption = data.postalContactMechId + ':' + data.telecomContactMechId;
+            console.log(this.addressOption);
+            this.getCustomerShippingAddresses();
+            this.hideModal("addressFormModal");
+        },
+
         getCartShippingOptions: function() {
             ProductService.getCartShippingOptions(this.axiosConfig)
                 .then(function (data) { this.listShippingOptions = data.shippingOptions;}.bind(this));

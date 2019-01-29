@@ -62,3 +62,102 @@ storeComps.MenuLeft = {
 };
 storeComps.MenuLeftTemplate = getPlaceholderRoute("template_client_menu", "MenuLeft", storeComps.MenuLeft.props);
 Vue.component("menu-left", storeComps.MenuLeftTemplate);
+
+
+storeComps.ModalAddress = {
+    name: "modal-address",
+    data() { return { 
+      axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
+              "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken }},
+      toNameErrorMessage: "", 
+      countryErrorMessage: "",
+      addressErrorMessage: "",
+      cityErrorMessage: "",
+      postalCodeErrorMessage: "",
+      stateErrorMessage: "",
+      contactNumberErrorMessage: "",
+      regionsList: []
+    }; },
+    props: ["shippingAddress", "isUpdate", "cancelCallback", "completeCallback"],
+    methods: {
+        getRegions: function(geoId) { 
+            GeoService.getRegions(geoId).then(function (data){ this.regionsList = data.resultList; }.bind(this));
+        },
+        resetToNameErrorMessage: function(formField) {
+            if (this.formField != "") {
+                this.toNameErrorMessage = "";
+            } 
+        }, 
+        resetCountryErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.countryErrorMessage = "";
+            } 
+        }, 
+        resetAddressErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.addressErrorMessage = "";
+            } 
+        }, 
+        resetCityErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.cityErrorMessage = "";
+            } 
+        }, 
+        resetStateErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.stateErrorMessage = "";
+            } 
+        }, 
+        resetPostalCodeErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.postalCodeErrorMessage = "";
+            } 
+        }, 
+        resetContactNumberErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.contactNumberErrorMessage = "";
+            } 
+        },
+        addCustomerShippingAddress: function() {
+            var error = false;
+            if (this.shippingAddress.toName == null || this.shippingAddress.toName.trim() === "") {
+                this.toNameErrorMessage = "Please enter a recipient name";
+                error = true;
+            }
+            if (this.shippingAddress.countryGeoId == null || this.shippingAddress.countryGeoId.trim() === "") {
+                this.countryErrorMessage = "Please select a country";
+                error = true;
+            } 
+            if (this.shippingAddress.address1 == null || this.shippingAddress.address1.trim() === "") {
+                this.addressErrorMessage = "Please enter a street address";
+                error = true;
+            } 
+            if (this.shippingAddress.city == null || this.shippingAddress.city.trim() === "") {
+                this.cityErrorMessage = "Please enter a city";
+                error = true;
+            } 
+            if (this.shippingAddress.stateProvinceGeoId == null || this.shippingAddress.stateProvinceGeoId.trim() === "") {
+                this.stateErrorMessage = "Please enter a state";
+                error = true;
+            } 
+            if (this.shippingAddress.postalCode == null || this.shippingAddress.postalCode.trim() === "") {
+                this.postalCodeErrorMessage = "Please enter a postcode";
+                error = true;
+            } 
+            if (this.shippingAddress.contactNumber == null || this.shippingAddress.contactNumber.trim() === "") {
+                this.contactNumberErrorMessage = "Please enter a phone number";
+                error = true;
+            }
+            if(error){
+                return;
+            }
+
+            CustomerService.addShippingAddress(this.shippingAddress, this.axiosConfig).then(function (data) {
+                this.responseMessage = "";
+                this.completeCallback(data);
+            }.bind(this));
+        }
+    }
+};
+storeComps.ModalAddressTemplate = getPlaceholderRoute("template_client_modalAddress", "ModalAddress", storeComps.ModalAddress.props);
+Vue.component("modal-address", storeComps.ModalAddressTemplate);

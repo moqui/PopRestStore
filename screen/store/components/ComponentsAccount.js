@@ -157,88 +157,13 @@ storeComps.AccountPage = {
     methods: {
         getCustomerInfo: function() { CustomerService.getCustomerInfo(this.axiosConfig)
             .then(function (data) { this.setCustomerInfo(data); }.bind(this)); },
-        getCustomerAddress: function() { CustomerService.getShippingAddresses(this.axiosConfig)
+        getCustomerAddresses: function() { CustomerService.getShippingAddresses(this.axiosConfig)
             .then(function (data) { this.shippingAddressList = data.postalAddressList; }.bind(this)); },
         getCustomerPaymentMethods: function() { CustomerService.getPaymentMethods(this.axiosConfig)
             .then(function (data) { this.customerPaymentMethods = data.methodInfoList; }.bind(this)); },
 
-        resetToNameErrorMessage: function(formField) {
-            if (this.formField != "") {
-                this.toNameErrorMessage = "";
-                } 
-            }, 
-        resetCountryErrorMessage: function(formField) {
-            if (this.formField != "") {
-            this.countryErrorMessage = "";
-            } 
-        }, 
-        resetAddressErrorMessage: function(formField) {
-            if (this.formField != "") {
-            this.addressErrorMessage = "";
-            } 
-        }, 
-        resetCityErrorMessage: function(formField) {
-            if (this.formField != "") {
-            this.cityErrorMessage = "";
-            } 
-        }, 
-        resetStateErrorMessage: function(formField) {
-            if (this.formField != "") {
-            this.stateErrorMessage = "";
-            } 
-        }, 
-        resetPostalCodeErrorMessage: function(formField) {
-            if (this.formField != "") {
-            this.postalCodeErrorMessage = "";
-            } 
-        }, 
-        resetContactNumberErrorMessage: function(formField) {
-            if (this.formField != "") {
-            this.contactNumberErrorMessage = "";
-            } 
-        },
 
-        addCustomerShippingAddress: function() {
-            var error = false;
-            if (this.shippingAddress.toName == null || this.shippingAddress.toName.trim() === "") {
-                this.toNameErrorMessage = "Please enter a recipient name";
-                error = true;
-            }
-            if (this.shippingAddress.countryGeoId == null || this.shippingAddress.countryGeoId.trim() === "") {
-                this.countryErrorMessage = "Please select a country";
-                error = true;
-            } 
-            if (this.shippingAddress.address1 == null || this.shippingAddress.address1.trim() === "") {
-                this.addressErrorMessage = "Please enter a street address";
-                error = true;
-            } 
-            if (this.shippingAddress.city == null || this.shippingAddress.city.trim() === "") {
-                this.cityErrorMessage = "Please enter a city";
-                error = true;
-            } 
-            if (this.shippingAddress.stateProvinceGeoId == null || this.shippingAddress.stateProvinceGeoId.trim() === "") {
-                this.stateErrorMessage = "Please enter a state";
-                error = true;
-            } 
-            if (this.shippingAddress.postalCode == null || this.shippingAddress.postalCode.trim() === "") {
-                this.postalCodeErrorMessage = "Please enter a postcode";
-                error = true;
-            } 
-            if (this.shippingAddress.contactNumber == null || this.shippingAddress.contactNumber.trim() === "") {
-                this.contactNumberErrorMessage = "Please enter a phone number";
-                error = true;
-            }
-            if(error){
-                return;
-            }
-
-            CustomerService.addShippingAddress(this.shippingAddress,this.axiosConfig).then(function (data) {
-                this.shippingAddress = {};
-                this.getCustomerAddress();
-                this.hideModal("addressModal");
-                this.responseMessage = "";
-            }.bind(this));
-        },
+        
         addCustomerPaymentMethod: function(event) {
             event.preventDefault();
             this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
@@ -368,7 +293,7 @@ storeComps.AccountPage = {
         },
         deleteShippingAddress: function(contactMechId,contactMechPurposeId) {
             CustomerService.deleteShippingAddress(contactMechId,contactMechPurposeId, this.axiosConfig).then(function (data) {
-                this.getCustomerAddress();
+                this.getCustomerAddresses();
                 this.hideModal("modal4");
             }.bind(this));
         },
@@ -442,19 +367,31 @@ storeComps.AccountPage = {
             this.paymentMethod.cardSecurityCode = "";
             this.responseMessage = "";
         },
-        hideModal: function(modalid) { $('#'+modalid).modal('hide'); }
+        hideModal: function(modalid) { $('#'+modalid).modal('hide'); },
+
+        onAddressCancel: function() {
+            console.log("onAddressCancel");
+            console.log($('#addressModal'));
+            this.hideModal("addressModal");
+        },
+
+        onAddressUpserted: function(address) {
+            this.getCustomerAddresses();
+            this.hideModal("addressModal");
+        }
     },
     mounted: function() {
         if (this.$root.apiKey == null) {
             this.$router.push({ name: 'login'});
         } else {
             this.getCustomerInfo();
-            this.getCustomerAddress();
+            this.getCustomerAddresses();
             this.getCustomerPaymentMethods();
             this.getCountries();
             this.getRegions(STORE_COUNTRY);
             this.getLocale();
             this.getTimeZone();
+            this.onAddressUpserted();
         }
     }
 };
