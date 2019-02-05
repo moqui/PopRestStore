@@ -64,10 +64,10 @@
                     <p>For more info about RidgeCrest Herbals and California Prop 65, see our page <a href="/store/content/California+Prop+65?m=2">here</a>.</p>
                 </div>
                 <div class="row">
-                    <p>Do you have a Promotion Code?</p>
+                    <p class="col">Do you have a Promotion Code?</p>
                 </div>
                 <div class="row">
-                    <div class="input-group">
+                    <div class="input-group col">
                         <input type="text" class="col-lg-7 form-control" placeholder="Enter it here..." aria-label="Input group promotion" aria-describedby="btnGroupAddon" name="promoCode" id="promoCode" v-model="promoCode">
                         <div class="input-group-append">
                             <button class="btn btn-outline-info" @click="applyPromotionCode">Apply</button>
@@ -75,8 +75,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <span v-if="promoError" class="text-error">{{promoError}}</span>
-                    <span v-else class="text-green">{{promoSuccess}}</span>
+                    <span v-if="promoError" class="col text-danger">{{promoError}}</span>
+                    <span v-else class="col text-green">{{promoSuccess}}</span>
                 </div>
             </div>
 
