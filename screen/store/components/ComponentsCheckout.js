@@ -324,3 +324,6 @@ storeComps.SuccessCheckOut = {
     }
 };
 storeComps.SuccessCheckOutTemplate = getPlaceholderRoute("template_client_checkoutSuccess", "SuccessCheckOut");
+
+storeComps.CheckoutContactInfoTemplate = getPlaceholderRoute("template_client_checkoutContactInfo", "contactInfo");
+Vue.component("contact-info", storeComps.CheckoutContactInfoTemplate);
