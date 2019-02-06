@@ -56,6 +56,21 @@ storeComps.CheckOutPage = {
             this.hideModal("addressFormModal");
         },
 
+        onCreditCardCancel: function() {
+            this.hideModal("creditCardModal");
+        },
+
+        /**
+         * Data is like so: 
+         * "postalContactMechId" : "CustJqpAddr",
+         * "paymentMethodId" : "100004",
+         * "telecomContactMechId" : "CustJqpTeln"
+        **/
+        onCreditCardSet: function(data) {
+            this.getCustomerPaymentMethods();
+            this.hideModal("creditCardModal");
+        },
+
         getCartShippingOptions: function() {
             ProductService.getCartShippingOptions(this.axiosConfig)
                 .then(function (data) { this.listShippingOptions = data.shippingOptions;}.bind(this));
@@ -81,45 +96,6 @@ storeComps.CheckOutPage = {
                     }
                 }
                 this.productsInCart = data;
-            }.bind(this));
-        },
-        addCustomerPaymentMethod: function() {
-            this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
-            if (this.paymentMethod.titleOnAccount == null || this.paymentMethod.titleOnAccount.trim() === "" ||
-                this.paymentMethod.cardNumber == null || this.paymentMethod.cardNumber.trim() === "" ||
-                this.paymentMethod.expireMonth == null || this.paymentMethod.expireMonth.trim() === "" ||
-                this.paymentMethod.expireYear == null || this.paymentMethod.expireYear === "" ||
-                this.paymentMethod.cardSecurityCode == null || this.paymentMethod.cardSecurityCode.trim() === "") {
-                this.responseMessage = "Verify the required fields";
-                return;
-            }
-            if (this.paymentMethod.cardSecurityCode.length < 3 || this.paymentMethod.cardSecurityCode.length > 4) {
-                this.responseMessage = "Must type a valid CSC";
-                return;
-            }
-            if (this.paymentMethod.cardNumber.startsWith("5")) {
-                this.paymentMethod.creditCardTypeEnumId = "CctMastercard";
-            } else if (this.paymentMethod.cardNumber.startsWith("4")){
-                this.paymentMethod.creditCardTypeEnumId = "CctVisa";
-            }
-            if (this.isSameAddress && this.paymentMethod.postalContactMechId == null) {
-                this.paymentMethod.postalContactMechId = this.addressOption.split(':')[0];
-                this.paymentMethod.telecomContactMechId = this.addressOption.split(':')[1];
-            }
-            if (this.isUpdate) { this.paymentMethod.cardNumber = ""; }
-            
-            CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
-                this.hideModal("creditCardModal");
-                this.paymentMethod = {};
-                this.getCustomerPaymentMethods();
-                this.responseMessage = "";
-            }.bind(this)).catch(function (error) {
-                var errorMmessages = error.response.data.errors;
-                if (errorMmessages.includes('Value entered is not a valid credit card number'))
-                    this.responseMessage = 'Value entered is not a valid credit card number.';
-                else
-                    this.responseMessage = errorMmessages;
-                console.error(this.responseMessage);
             }.bind(this));
         },
         addCartBillingShipping: function(){

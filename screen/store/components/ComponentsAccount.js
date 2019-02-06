@@ -162,59 +162,6 @@ storeComps.AccountPage = {
         getCustomerPaymentMethods: function() { CustomerService.getPaymentMethods(this.axiosConfig)
             .then(function (data) { this.customerPaymentMethods = data.methodInfoList; }.bind(this)); },
 
-
-        
-        addCustomerPaymentMethod: function(event) {
-            event.preventDefault();
-            this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
-            this.paymentMethod.countryGeoId = STORE_COUNTRY;
-
-            if (this.paymentMethod.titleOnAccount == null || this.paymentMethod.titleOnAccount.trim() === "") {
-                this.responseMessage = "Please privide the name on the card";
-                return;
-            }
-            if (this.paymentMethod.cardNumber == null || this.paymentMethod.cardNumber.trim() === "") {
-                this.responseMessage = "Please privide the card number";
-                return;
-            }
-            if (this.paymentMethod.expireMonth == null || this.paymentMethod.expireMonth.trim() === ""
-                || this.paymentMethod.expireYear == null || this.paymentMethod.expireYear === "") {
-                this.responseMessage = "Please privide the card expiry month and year";
-                return;
-            }
-            if (this.paymentMethod.cardSecurityCode == null || this.paymentMethod.cardSecurityCode.trim() === "") {
-                this.responseMessage = "Please privide the card security code";
-                return;
-            }
-            if (this.paymentMethod.cardSecurityCode.length < 3 || this.paymentMethod.cardSecurityCode.length > 4) {
-                this.responseMessage = "Card security code must be either 3 or 4 characters";
-                return;
-            }
-            if (this.paymentMethod.address1 == null || this.paymentMethod.address1.trim() === "" ||
-                this.paymentMethod.city == null || this.paymentMethod.city.trim() === "") {
-                this.responseMessage = "Please provide a billing address";
-                return;
-            }
-            if (this.paymentMethod.cardNumber.startsWith("5")) {
-                this.paymentMethod.creditCardTypeEnumId = "CctMastercard";
-            } else if (this.paymentMethod.cardNumber.startsWith("4")){
-                this.paymentMethod.creditCardTypeEnumId = "CctVisa";
-            }
-           
-            if (this.paymentMethod.postalContactMechId == null) {
-                this.paymentMethod.postalContactMechId = this.paymentAddressOption.postalContactMechId;
-                this.paymentMethod.telecomContactMechId = this.paymentAddressOption.telecomContactMechId;
-            }
-            if (this.isUpdate) { this.paymentMethod.cardNumber = ""; }
-
-            CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
-                this.hideModal("creditCardModal");
-                this.paymentMethod = {};
-                this.getCustomerPaymentMethods();
-                this.responseMessage = "";
-                this.paymentAddressOption = {};
-            }.bind(this));
-        },
         resetData: function() {
             this.paymentMethod = {};
             this.shippingAddress = {};
@@ -317,31 +264,7 @@ storeComps.AccountPage = {
             this.shippingAddress.attnName = address.postalAddress.attnName;
             this.responseMessage = "";
         },
-        selectBillingAddress: function(address) {
-            if (address != 0) {
-                this.paymentMethod.address1 = address.postalAddress.address1;
-                this.paymentMethod.address2 = address.postalAddress.address2;
-                this.paymentMethod.toName = address.postalAddress.toName;
-                this.paymentMethod.attnName = address.postalAddress.attnName;
-                this.paymentMethod.city = address.postalAddress.city;
-                this.paymentMethod.countryGeoId = address.postalAddress.countryGeoId;
-                this.paymentMethod.contactNumber = address.telecomNumber.contactNumber;
-                this.paymentMethod.postalCode = address.postalAddress.postalCode;
-                this.paymentMethod.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
-                this.responseMessage = "";
-                this.getRegions(STORE_COUNTRY);
-            } else {
-                this.paymentMethod.address1 = "";
-                this.paymentMethod.address2 = "";
-                this.paymentMethod.toName = "";
-                this.paymentMethod.attnName = "";
-                this.paymentMethod.city = "";
-                this.paymentMethod.countryGeoId = "";
-                this.paymentMethod.contactNumber = "";
-                this.paymentMethod.postalCode = "";
-                this.paymentMethod.stateProvinceGeoId = "";
-            }
-        },
+        
         selectPaymentMethod: function(method) {
             this.paymentMethod = {};
             this.paymentMethod.paymentMethodId = method.paymentMethodId;
@@ -370,14 +293,21 @@ storeComps.AccountPage = {
         hideModal: function(modalid) { $('#'+modalid).modal('hide'); },
 
         onAddressCancel: function() {
-            console.log("onAddressCancel");
-            console.log($('#addressModal'));
             this.hideModal("addressModal");
         },
 
         onAddressUpserted: function(address) {
             this.getCustomerAddresses();
             this.hideModal("addressModal");
+        },
+
+        onCreditCardCancel: function() {
+            this.hideModal("creditCardModal");
+        },
+
+        onCreditCardSet: function(address) {
+            this.getCustomerPaymentMethods();
+            this.hideModal("creditCardModal");
         }
     },
     mounted: function() {

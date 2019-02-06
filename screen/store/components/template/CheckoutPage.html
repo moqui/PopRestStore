@@ -230,8 +230,8 @@
                         </div>
                     </div>
                     <br>
-                    <a href="/store/d#/account" @click="cleanPaymentMethod()" class="col text-add">
-                        Add or update a credit card
+                    <a data-toggle="modal" data-target="#creditCardModal" class="text-add">
+                        Add a Credit Card
                     </a>
                     <button data-toggle="collapse" 
                         data-target="#paymentMethodCollapse"  class="btn btn-continue float-right" 
@@ -263,94 +263,7 @@
 
         </div>
         <div>
-            <div class="modal fade" id="creditCardModal">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="Update Credit Card">
-                                <span v-if="isUpdate">Update Credit Card</span>
-                                <span v-else>Add Credit Card</span>
-                            </h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div v-if="responseMessage != null && responseMessage != ''" 
-                                class="alert alert-primary" role="alert">
-                                {{responseMessage}}
-                            </div>
-                            <div class="form-group row">
-                                <label for="card" class="col-sm-3 col-form-label modal-text">
-                                    Card Number 
-                                    <span class="modal-text-required">*</span>
-                                </label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="card"
-                                        type="text"
-                                        v-model="paymentMethod.cardNumber"
-                                        placeholder="13 to 16 digits Spaces are optional" required :disabled="isUpdate"/>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="nameCard" class="col-sm-3 col-form-label">Name on Card *</label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="nameCard"
-                                        type="text"
-                                        v-model="paymentMethod.titleOnAccount"
-                                        placeholder="The name printed on the front of the card" required/>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Expiry Date *</label>
-                                <div class="form-group col-sm-4">
-                                    <select v-model="paymentMethod.expireMonth" class="form-control">
-                                        <option value="01">01</option>
-                                        <option value="02">02</option>
-                                        <option value="03">03</option>
-                                        <option value="04">04</option>
-                                        <option value="05">05</option>
-                                        <option value="06">06</option>
-                                        <option value="07">07</option>
-                                        <option value="08">08</option>
-                                        <option value="09">09</option>
-                                        <option value="10">10</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-sm-5">
-                                    <select v-model="paymentMethod.expireYear" class="form-control">
-                                        <option value="" selected disabled>Year</option>
-                                        <option value="2018">2018</option>
-                                        <option value="2019">2019</option>
-                                        <option value="2020">2020</option>
-                                        <option value="2021">2021</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="security" class="col-sm-3 col-form-label">Card Security Code*</label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="security"
-                                        type="text"
-                                        v-model="paymentMethod.cardSecurityCode"
-                                        placeholder="3 or 4 Digits" required/>
-                                </div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <button @click="addCustomerPaymentMethod" class="btn btn-continue col col-sm-6 offset-sm-1">
-                                    <span v-if="isUpdate">Update Credit Card</span>
-                                    <span v-else>Add Credit Card</span>
-                                </button>
-                                <a @click="hideModal('creditCardModal')" class="btn btn-link text-add col col-sm-9 offset-sm-1">
-                                    Or Cancel
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
             <div class="modal fade" id="modal-error">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -371,6 +284,12 @@
                 <div class="modal-dialog" role="document">
                     <modal-address :shippingAddress="shippingAddress" :isUpdate="isUpdate" :cancelCallback="onAddressCancel" :completeCallback="onAddressUpserted" />
                  </div>
+            </div>
+
+            <div class="modal fade" id="creditCardModal"><!-- Credit Card Modal -->
+                <div class="modal-dialog" role="document">
+                    <modal-credit-card :paymentMethod="paymentMethod" :isUpdate="isUpdate" :addressList="listShippingAddress" :cancelCallback="onCreditCardCancel" :completeCallback="onCreditCardSet" />
+                </div>
             </div>
         </div>
         <!-- <p class="link-text mb-5">
