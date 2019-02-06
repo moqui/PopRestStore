@@ -57,7 +57,7 @@ along with this software (see the LICENSE.md file). If not, see
             template_client_checkoutHeader: "/store/components/template/CheckoutNavbar.html",
             template_client_checkoutSuccess: "/store/components/template/CheckoutSuccess.html",
             template_client_productImage: "/store/components/template/ProductImage.html",
-            template_client_checkoutContactInfo: "/store/components/template/contactInfo.html",
+            template_client_contactInfo: "/store/components/template/contactInfo.html",
             show_prop_65_warning: "false",
         };
     </script>

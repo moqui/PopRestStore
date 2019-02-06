@@ -30,6 +30,7 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.basic.Enumeration enumCode="template_client_addAddress" description="Template Client Add Address" enumId="PsstTemplateClientAddAddress" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_client_checkoutHeader" description="Template Client Checkout Header" enumId="PsstTemplateClientCheckoutHeader" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_client_checkout" description="Template Client Checkout" enumId="PsstTemplateClientCheckout" enumTypeId="ProductStoreSettingType"/>
+    <moqui.basic.Enumeration enumCode="template_client_contactInfo" description="Template Client Contact Info" enumId="PsstTemplateClientContactInfo" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_client_checkoutSuccess" description="Template Client Checkout Success" enumId="PsstTemplateClientCheckoutSuccess" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_client_accountCreate" description="Template Client Account Create" enumId="PsstTemplateClientAccountCreate" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_client_login" description="Template Client Login Page" enumId="PsstTemplateClientLogin" enumTypeId="ProductStoreSettingType"/>
