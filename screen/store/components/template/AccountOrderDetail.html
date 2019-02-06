@@ -1,74 +1,100 @@
-<div>
+<div class="">
     <navbar sub-bar="true"/>
-    <div class="container" v-if="orderList.orderPart">
-        <div class="container mt-2">
-            <router-link class="customer-link" :to="'/'" tag="span">Home <i class="fas fa-angle-right"></i></router-link>
-            <router-link class="customer-link" :to="'/orders'" tag="span">My Orders <i class="fas fa-angle-right"></i></router-link>
-            <span class="modal-text">#{{orderList.orderHeader.orderId}}</span>
+    <div class="container-fluid px-lg-6 px-4 py-4 body-padding min-height-for-footer">
+        <div class="row no-gutters align-left">
+            <div class="col mb-3">
+                <a class="customer-link" href="/rcsite">Home </a><i class="fas fa-angle-right mx-2 fa-line-height"></i>
+                <router-link class="customer-link" :to="'/orders'" tag="a">My Orders <i class="fas fa-angle-right mx-2 fa-line-height"></i></router-link>
+                Order Detail
+            </div>
         </div>
-        <div class="row mt-4">
+        <div class="row mb-8">
             <div class="d-none d-lg-block col-lg-3">
                 <menu-left type="true"/>
             </div>
-            <div class="col col-lg-9 offset-lg-1 col-12">
-                <span class="customer-orders-title">Order #{{orderList.orderHeader.orderId}}</span>
-                <br>
-                <div class="mt-4">
-                    <span class="order-text-color mr-5">Order Status: <span class="order-status">{{orderList.orderHeader.statusId}}</span></span>
-                    <span class="order-text-color mr-5">Order Date: {{formatDate(orderList.orderHeader.placedDate)}}</span>
-                    <span class="order-text-color mr-5">Expected Arrival: 7 April, 2018</span>
+            <div class="col-lg-9 col-12" v-if="orderList.orderHeader">
+                <div class="row">
+                    <div class="col">
+                        <h1 class="page-heading text-uppercase"><span class="text-green">ORDER</span> #{{orderList.orderHeader.orderId}}</h1>
+                    </div>
                 </div>
-                <div class="row mt-5">
-                    <div class="col col-lg-12">
-                        <div class="row item-title-text">
-                            <span class="col col-lg-8 order-link-text">Item</span>  
-                            <span class="col col-lg-2 order-text-color text-center">Quantity</span>
-                            <span class="col col-lg-2 order-text-color text-center">Price</span>
-                        </div>
-                        <hr class="order-hr">
-                        <div class="row">
+                <!-- <div class="breakline no-gutters mb-3"></div> -->
+                <div class="row mb-3">
+                    <div class="col-12 col-lg-4">
+                        <span class="text-green">Order Status: </span><span class="font-size-09">{{orderList.orderHeader.statusId}}</span>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <span class="text-green">Order Date: </span><span class="font-size-09">{{formatDate(orderList.orderHeader.placedDate)}}</span>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <span class="text-green">Expected Arrival: </span><span class="font-size-09">{{formatDate(getExpectedArrivalDate(orderList.orderHeader.placedDate))}}</span>
+                    </div>
+                </div>
+                <div class="breakline no-gutters mb-3"></div>
+                <div class="row mb-3">
+                    <div class="col-6 col-sm-8">
+                        <h2 class="lead text-cyan">Item</h2>
                             <template v-for="(item, index) in orderList.orderItemList">
-                                <template>
-                                    <a v-if="item.itemTypeEnumId == 'ItemProduct'" class="col col-lg-8 order-link-text" 
+                                    <a v-if="item.itemTypeEnumId == 'ItemProduct'" class="row no-gutters font-size-09" 
                                         :href="'/store/product/' + item.productId">
                                         {{item.itemDescription}}
                                     </a>
-                                    <span v-if="item.itemTypeEnumId != 'ItemProduct'" class="col col-lg-8 order-link-text">
+                                    <span v-if="item.itemTypeEnumId != 'ItemProduct'" class="row no-gutters font-size-09">
                                         {{item.itemDescription}}
                                     </span>
-                                    <span class="col col-lg-2 order-text-color text-center">{{item.quantity}}</span>
-                                    <span class="col col-lg-2 order-text-color text-center">${{item.unitAmount.toFixed(2)}}</span> 
-                                </template>
                             </template>
-                        </div>
-                        <hr>
-                        <div class="row order-text-color">
-                            <span class="col col-lg-3 offset-lg-6 ">SubTotal</span>
-                            <span class="col col-lg-2 offset-lg-1 text-center">${{orderList.orderPart.partTotal.toFixed(2)}}</span>
-                            <span class="col col-lg-3 offset-lg-6 mt-4">Delivery</span>
-                            <span class="col col-lg-2 offset-lg-1 mt-4 text-center">$0.00</span>
-                            <span class="col col-lg-3 offset-lg-6 mt-4">TOTAL</span>
-                            <span class="col col-lg-2 offset-lg-1 mt-4 text-center">${{orderList.orderHeader.grandTotal.toFixed(2)}}</span>
-                            <span class="col col-lg-6 offset-lg-6">
-                                <hr>
-                            </span>
-                        </div>
                     </div>
-                    <div class="col col-lg-6 order-text-color mt-5">
-                        <span class="col col-lg-6">Delivery Address</span>
-                        <hr class="order-hr">
-                        <ul v-if="orderList.postalAddress" class="ul-customer-order">
-                            <li>{{orderList.postalAddress.toName}}</li>
-                            <li>{{orderList.postalAddress.address1}}</li>
-                            <li>{{orderList.postalAddress.city}} {{orderList.postalAddress.address2}}</li>
-                            <li><i class="fa fa-phone phone-icon"></i> {{orderList.telecomNumber.contactNumber}}</li>
-                        </ul>
+                    <div class="col-3 col-sm-2">
+                        <h2 class="lead text-cyan text-center">Quantity</h2>
+                        <template v-for="(item, index) in orderList.orderItemList">
+                            <span class="row no-gutters justify-content-center font-size-09">{{item.quantity}}</span>
+                        </template>
                     </div>
-                    <div class="col col-lg-6 order-text-color mt-5">
-                        <span class="col col-lg-6">Billing Address</span>
-                        <hr class="order-hr">
-                        <ul v-if="orderList.paymentInfoList && orderList.paymentInfoList.length" class="ul-customer-order">
-                            <li>{{orderList.paymentInfoList[0].postalAddress.toName}}</li>
+                    <div class="col-3 col-sm-2">
+                        <h2 class="lead text-cyan text-center">Price</h2>
+                        <template v-for="(item, index) in orderList.orderItemList">
+                            <span class="row no-gutters justify-content-center font-size-09">${{item.unitAmount.toFixed(2)}}</span>
+                        </template>
+                    </div>
+                </div>
+                <div class="breakline no-gutters mb-3"></div>
+                <div class="row justify-content-end mb-3">
+                    <div class="col-3 col-sm-2">
+                        <span class="row no-gutters justify-content-center font-size-09">SubTotal</span>
+                    </div>
+                    <div class="col-3 col-sm-2">
+                        <span class="row no-gutters justify-content-center font-size-09">${{orderList.orderPart.partTotal.toFixed(2)}}</span>
+                    </div>
+                </div>
+                <div class="row justify-content-end mb-3">
+                    <div class="col-3 col-sm-2">
+                        <span class="row no-gutters justify-content-center font-size-09">Delivery</span>
+                    </div>
+                    <div class="col-3 col-sm-2">
+                        <span class="row no-gutters justify-content-center font-size-09">NA</span>
+                    </div>
+                </div>
+                <div class="row justify-content-end mb-3">
+                    <div class="col-3 col-sm-2">
+                        <span class="row no-gutters justify-content-center font-size-09">Total</span>
+                    </div>
+                    <div class="col-3 col-sm-2">
+                        <span class="row no-gutters justify-content-center font-size-09">${{orderList.orderHeader.grandTotal.toFixed(2)}}</span>
+                    </div>
+                </div>
+                <div class="breakline no-gutters mb-3"></div>
+                <!-- Addresses -->
+                <div class="row mt-5">
+                    <ul v-if="orderList.postalAddress" class="col-12 col-sm-6 list-unstyled">
+                        <li><h2 class="lead text-cyan">Delivery Address</h2></li>
+                        <li>{{orderList.postalAddress.toName}}</li>
+                        <li>{{orderList.postalAddress.address1}}</li>
+                        <li>{{orderList.postalAddress.city}} {{orderList.postalAddress.address2}}</li>
+                        <li><i class="fa fa-phone phone-icon"></i> {{orderList.telecomNumber.contactNumber}}</li>
+                    </ul>
+                    <ul v-if="orderList.paymentInfoList && orderList.paymentInfoList.length" class="col-12 col-sm-6 list-unstyled">
+                        <li><h2 class="lead text-cyan">Billing Address<Address></Address></h2></li>
+                        <li>{{orderList.paymentInfoList[0].postalAddress.toName}}</li>
                             <li>{{orderList.paymentInfoList[0].postalAddress.address1}}</li>
                             <li>
                                 {{orderList.paymentInfoList[0].postalAddress.city}} 
@@ -78,11 +104,10 @@
                                 <i class="fa fa-phone phone-icon"></i> 
                                 {{orderList.paymentInfoList[0].telecomNumber.contactNumber}}
                             </li>
-                        </ul>
-                    </div>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
-    <footer-page :infoLink="true" />
+    <footer-page class="footer-relative" :infoLink="false" />
 </div>

@@ -247,12 +247,12 @@
                     <span v-if="placeOrderStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
                     <span class="text-address">Complete Purchase</span>
                 </p>
-                <hr class="hr">
+                <hr class="hr" :class="{ 'hr-active': placeOrderStatus == 'active', 'hr-complete': placeOrderStatus == 'complete' }">
                 <div id="placeOrderCollapse" class="collapse">
                     <div class="div-place-order">
                         <p class="text-center">YOUR TOTAL IS: 
-                            <span class="place-order-total">
-                                ${{productsInCart.paymentsTotal}}
+                            <span class="place-order-total" v-if="productsInCart.orderHeader">
+                                ${{productsInCart.orderHeader.grandTotal.toFixed(2)}}
                             </span>
                         </p>
                         <p class="text-center place-order-text">Place order below to complete your purchase</p>
