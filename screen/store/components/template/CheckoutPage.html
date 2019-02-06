@@ -78,6 +78,9 @@
                     <span v-if="promoError" class="col text-danger">{{promoError}}</span>
                     <span v-else class="col text-green">{{promoSuccess}}</span>
                 </div>
+                <div class="row mt-5">
+                    <contact-info/>
+                </div>
             </div>
 
             <!-- The whole checkout stage column -->
@@ -289,10 +292,9 @@
                 </div>
             </div>
         </div>
-        <p class="link-text mb-5">
-            Forgot something? 
-            <a href="/store" class="text-add">Head back to the shop.</a>
-        </p>
+        <!-- <p class="link-text mb-5">
+            Forgot something?<a href="/store" class="text-add">Head back to the shop.</a>
+        </p> -->
     </div>
     <footer-page :infoLink="false" />
 </div>
