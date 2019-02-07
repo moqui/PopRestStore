@@ -23,6 +23,7 @@ storeComps.LoginPage = {
                     this.showModal('modal'); 
                 } else { 
                     this.$root.apiKey = data.apiKey; 
+                    this.$root.moquiSessionToken = data.moquiSessionToken; 
                     if(preLoginRoute.name == null || preLoginRoute.name == "createaccount") {
                         this.$router.push({ name: "account"});
                     } else {
