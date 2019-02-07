@@ -62,3 +62,205 @@ storeComps.MenuLeft = {
 };
 storeComps.MenuLeftTemplate = getPlaceholderRoute("template_client_menu", "MenuLeft", storeComps.MenuLeft.props);
 Vue.component("menu-left", storeComps.MenuLeftTemplate);
+
+
+storeComps.ModalAddress = {
+    name: "modal-address",
+    data() { return { 
+      axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
+              "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken }},
+      toNameErrorMessage: "", 
+      countryErrorMessage: "",
+      addressErrorMessage: "",
+      cityErrorMessage: "",
+      postalCodeErrorMessage: "",
+      stateErrorMessage: "",
+      contactNumberErrorMessage: "",
+      regionsList: []
+    }; },
+    props: ["shippingAddress", "isUpdate", "cancelCallback", "completeCallback"],
+    methods: {
+        getRegions: function(geoId) { 
+            GeoService.getRegions(geoId).then(function (data){ this.regionsList = data.resultList; }.bind(this));
+        },
+        resetToNameErrorMessage: function(formField) {
+            if (this.formField != "") {
+                this.toNameErrorMessage = "";
+            } 
+        }, 
+        resetCountryErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.countryErrorMessage = "";
+            } 
+        }, 
+        resetAddressErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.addressErrorMessage = "";
+            } 
+        }, 
+        resetCityErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.cityErrorMessage = "";
+            } 
+        }, 
+        resetStateErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.stateErrorMessage = "";
+            } 
+        }, 
+        resetPostalCodeErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.postalCodeErrorMessage = "";
+            } 
+        }, 
+        resetContactNumberErrorMessage: function(formField) {
+            if (this.formField != "") {
+            this.contactNumberErrorMessage = "";
+            } 
+        },
+        addCustomerShippingAddress: function() {
+            var error = false;
+            if (this.shippingAddress.toName == null || this.shippingAddress.toName.trim() === "") {
+                this.toNameErrorMessage = "Please enter a recipient name";
+                error = true;
+            }
+            if (this.shippingAddress.countryGeoId == null || this.shippingAddress.countryGeoId.trim() === "") {
+                this.countryErrorMessage = "Please select a country";
+                error = true;
+            } 
+            if (this.shippingAddress.address1 == null || this.shippingAddress.address1.trim() === "") {
+                this.addressErrorMessage = "Please enter a street address";
+                error = true;
+            } 
+            if (this.shippingAddress.city == null || this.shippingAddress.city.trim() === "") {
+                this.cityErrorMessage = "Please enter a city";
+                error = true;
+            } 
+            if (this.shippingAddress.stateProvinceGeoId == null || this.shippingAddress.stateProvinceGeoId.trim() === "") {
+                this.stateErrorMessage = "Please enter a state";
+                error = true;
+            } 
+            if (this.shippingAddress.postalCode == null || this.shippingAddress.postalCode.trim() === "") {
+                this.postalCodeErrorMessage = "Please enter a postcode";
+                error = true;
+            } 
+            if (this.shippingAddress.contactNumber == null || this.shippingAddress.contactNumber.trim() === "") {
+                this.contactNumberErrorMessage = "Please enter a phone number";
+                error = true;
+            }
+            if(error){
+                return;
+            }
+
+            CustomerService.addShippingAddress(this.shippingAddress, this.axiosConfig).then(function (data) {
+                this.responseMessage = "";
+                this.completeCallback(data);
+            }.bind(this));
+        }
+    }
+};
+storeComps.ModalAddressTemplate = getPlaceholderRoute("template_client_modalAddress", "ModalAddress", storeComps.ModalAddress.props);
+Vue.component("modal-address", storeComps.ModalAddressTemplate);
+
+
+
+storeComps.ModalCreditCard = {
+    name: "modal-credit-card",
+    data() { return { 
+      axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
+              "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken }},
+      responseMessage: "", 
+      paymentAddressOption: "",
+      countryErrorMessage: "",
+      addressErrorMessage: "",
+      cityErrorMessage: "",
+      postalCodeErrorMessage: "",
+      stateErrorMessage: "",
+      contactNumberErrorMessage: "",
+      regionsList: []
+    }; },
+    props: ["paymentMethod", "isUpdate", "addressList", "cancelCallback", "completeCallback"],
+    methods: {
+        getRegions: function(geoId) { 
+            GeoService.getRegions(geoId).then(function (data){ this.regionsList = data.resultList; }.bind(this));
+        },
+        selectBillingAddress: function(address) {
+            if (address == 'NEW_ADDRESS') {
+                this.paymentMethod.address1 = "";
+                this.paymentMethod.address2 = "";
+                this.paymentMethod.toName = "";
+                this.paymentMethod.attnName = "";
+                this.paymentMethod.city = "";
+                this.paymentMethod.countryGeoId = "";
+                this.paymentMethod.contactNumber = "";
+                this.paymentMethod.postalCode = "";
+                this.paymentMethod.stateProvinceGeoId = "";
+            } else if (typeof address.postalAddress === 'object' && address.postalAddress !== null) {
+                this.paymentMethod.address1 = address.postalAddress.address1;
+                this.paymentMethod.address2 = address.postalAddress.address2;
+                this.paymentMethod.toName = address.postalAddress.toName;
+                this.paymentMethod.attnName = address.postalAddress.attnName;
+                this.paymentMethod.city = address.postalAddress.city;
+                this.paymentMethod.countryGeoId = address.postalAddress.countryGeoId;
+                this.paymentMethod.contactNumber = address.telecomNumber.contactNumber;
+                this.paymentMethod.postalCode = address.postalAddress.postalCode;
+                this.paymentMethod.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
+                this.responseMessage = "";
+            }
+            this.getRegions(STORE_COUNTRY);
+        },
+        addCustomerPaymentMethod: function(event) {
+            event.preventDefault();
+            this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
+            this.paymentMethod.countryGeoId = STORE_COUNTRY;
+
+            if (this.paymentMethod.titleOnAccount == null || this.paymentMethod.titleOnAccount.trim() === "") {
+                this.responseMessage = "Please privide the name on the card";
+                return;
+            }
+            if (this.paymentMethod.cardNumber == null || this.paymentMethod.cardNumber.trim() === "") {
+                this.responseMessage = "Please privide the card number";
+                return;
+            }
+            if (this.paymentMethod.expireMonth == null || this.paymentMethod.expireMonth.trim() === ""
+                || this.paymentMethod.expireYear == null || this.paymentMethod.expireYear === "") {
+                this.responseMessage = "Please privide the card expiry month and year";
+                return;
+            }
+            if (this.paymentMethod.cardSecurityCode == null || this.paymentMethod.cardSecurityCode.trim() === "") {
+                this.responseMessage = "Please privide the card security code";
+                return;
+            }
+            if (this.paymentMethod.cardSecurityCode.length < 3 || this.paymentMethod.cardSecurityCode.length > 4) {
+                this.responseMessage = "Card security code must be either 3 or 4 characters";
+                return;
+            }
+            if (this.paymentMethod.address1 == null || this.paymentMethod.address1.trim() === "" ||
+                this.paymentMethod.city == null || this.paymentMethod.city.trim() === "") {
+                this.responseMessage = "Please provide a billing address";
+                return;
+            }
+            if (this.paymentMethod.cardNumber.startsWith("5")) {
+                this.paymentMethod.creditCardTypeEnumId = "CctMastercard";
+            } else if (this.paymentMethod.cardNumber.startsWith("4")){
+                this.paymentMethod.creditCardTypeEnumId = "CctVisa";
+            }
+           
+            if (this.paymentMethod.postalContactMechId == null) {
+                this.paymentMethod.postalContactMechId = this.paymentAddressOption.postalContactMechId;
+                this.paymentMethod.telecomContactMechId = this.paymentAddressOption.telecomContactMechId;
+            }
+            if (this.isUpdate) { this.paymentMethod.cardNumber = ""; }
+
+            CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
+                this.responseMessage = "";
+                this.completeCallback(data);
+            }.bind(this)).catch(function (error) {
+              // handle error
+              this.responseMessage = error.response.data.errors;
+            });
+        }
+    }
+};
+storeComps.ModalCreditCardTemplate = getPlaceholderRoute("template_client_modalCreditCard", "ModalCreditCard", storeComps.ModalCreditCard.props);
+Vue.component("modal-credit-card", storeComps.ModalCreditCardTemplate);

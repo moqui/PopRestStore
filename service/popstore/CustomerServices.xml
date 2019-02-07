@@ -23,6 +23,7 @@ along with this software (see the LICENSE.md file). If not, see
         </in-parameters>
         <out-parameters>
             <parameter name="apiKey"/>
+            <parameter name="moquiSessionToken"/>
             <parameter name="customerInfo" type="Map"/>
             <parameter name="forcePasswordChange"/>
         </out-parameters>
@@ -78,6 +79,7 @@ along with this software (see the LICENSE.md file). If not, see
 
                 <!-- create the login key to return -->
                 <set field="apiKey" from="ec.user.getLoginKey()"/>
+                <set field="moquiSessionToken" from="ec.web.sessionToken"/>
 
                 <!-- get customer info for convenience -->
                 <service-call name="popstore.CustomerServices.get#CustomerInfo" out-map="customerInfo"/>

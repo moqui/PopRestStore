@@ -238,13 +238,18 @@ a:hover { text-decoration: none; }
 }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+.body-padding { padding-left: 6rem !important; padding-right: 6rem !important; }
 /* Account, Order History */
 .account-subtitle { font-size: 1.5em; }
 .account-hr { margin-top: -20px; }
-.account-btn { width: 100%; }
+/* .account-btn { width: 100%; } */
 
 .account-back-top { color: #1ec9d9 !important; float: right; margin-top: -40px; cursor: pointer; font-size: 0.9em; }
 .account-div-container { padding: 10px; }
+
+.left-menu-heading {font-size: 1.1rem; color: #8AC8BE; padding-top: 0.7rem;}
+.breakline { border-top: 2px solid #8AC8BE; opacity: 0.3; }
+.router-link-active { color: #5FB846; }
 
 .span-description { display: block; margin-top: -5px; }
 .span-link { color: #1ec9d9; cursor: pointer; }

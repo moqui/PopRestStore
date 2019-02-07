@@ -53,6 +53,34 @@
                         ${{productsInCart.orderHeader.grandTotal.toFixed(2)}}
                     </span>
                 </div>
+                <!-- Prop 65 Warning -->
+                <div v-if="shippingAddressSelect.stateProvinceGeoId == 'USA_CA'" class="alert alert-warning" role="alert">
+                    <p><strong>The following Prop 65 warning is required for sales in California:</strong></p>
+                    <br>
+                    <p><img width="20px" src="/store/assets/warning.png" alt="Warning Image">
+                        <strong>WARNING:</strong> Consuming this product can expose you to lead which is known to the State of California to cause cancer and reproductive harm. 
+                        For more information go to <a href="www.P65Warnings.ca.gov/food">www.P65Warnings.ca.gov/food</a>.</p>
+                    <br>
+                    <p>For more info about RidgeCrest Herbals and California Prop 65, see our page <a href="/store/content/California+Prop+65?m=2">here</a>.</p>
+                </div>
+                <div class="row">
+                    <p class="col">Do you have a Promotion Code?</p>
+                </div>
+                <div class="row">
+                    <div class="input-group col">
+                        <input type="text" class="col-lg-7 form-control" placeholder="Enter it here..." aria-label="Input group promotion" aria-describedby="btnGroupAddon" name="promoCode" id="promoCode" v-model="promoCode">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-info" @click="applyPromotionCode">Apply</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <span v-if="promoError" class="col text-danger">{{promoError}}</span>
+                    <span v-else class="col text-green">{{promoSuccess}}</span>
+                </div>
+                <div class="row mt-5">
+                    <contact-info/>
+                </div>
             </div>
 
             <!-- The whole checkout stage column -->
@@ -188,9 +216,6 @@
                         <span class="span-description"><i class="fa fa-phone phone-icon"></i>{{paymentMethod.contactNumber}}</span>
                     </template>
                 </div>
-                <span v-if="isSameAddress == 0 && selectPaymentMethodStatus == 'complete'">
-                    My billing address is the same as my shipping address
-                </span>
                 <div id="paymentMethodCollapse" class="collapse">
                     <div v-for="(item,index) in listPaymentMethods">
                         <div :class="{ 'div-checkmark': paymentOption == item.paymentMethodId }">
@@ -202,60 +227,13 @@
                                 <span class="span-description">{{item.paymentMethod.titleOnAccount}}</span>
                                 <span class="span-description">Expires on {{item.creditCard.expireDate}}</span>
                             </label>
-                            <span data-toggle="modal" data-target="#creditCardModal" 
-                                @click="selectPaymentMethod(item),isUpdate = true" 
-                                class="edit-icon icon-margin-top">
-                                <i class="fas fa-edit"></i>
-                            </span>
-                            <span @click="deletePaymentMethod(item.paymentMethodId)" class="delete-icon icon-margin-top">
-                                <i class="fas fa-trash-alt"></i>
-                            </span>
                         </div>
-                    </div>
-                    <label class="container-input1" v-if="isSameAddress == 0">
-                        <input @click="isSameAddress = '1'" type="checkbox" checked/>
-                        <span class="checkmark-input"></span>
-                    </label>
-                    <span class="address-text" v-if="isSameAddress == 0">
-                        My billing address is the same as my shipping address
-                    </span>
-                    <div class="div-billing-address" v-if="isSameAddress == 1">
-                        <span class="address-text">Choose billing address: </span>
-                        <div v-for="(option, index) in listShippingAddress" class="mt-3">
-                            <div :class="{ 'div-checkmark': billingAddressOption == option.postalContactMechId + ':' +
-                                option.telecomContactMechId, 'span-color': billingAddressOption != option.postalContactMechId + ':' +
-                                option.telecomContactMechId }">
-                                <label :for="index + 'a1'" class="container-input">
-                                    <input :id="index + 'a1'" type="radio" :value="option.postalContactMechId + ':' +
-                                        option.telecomContactMechId" v-model="billingAddressOption" 
-                                        @click="selectBillingAddress(option)"/>
-                                    <span class="checkmark"></span>
-                                    <span class="span-description">{{option.postalAddress.toName}}</span>
-                                    <span class="span-description">
-                                       {{option.postalAddress.address1}} {{option.postalAddress.address2}}
-                                    </span>
-                                    <span class="span-description">{{option.postalAddress.city}}</span>
-                                    <span class="span-description">
-                                        <i class="fa fa-phone phone-icon"></i>
-                                        {{option.telecomNumber.contactNumber}}
-                                    </span>
-                                </label>
-                            </div>
-                        </div>
-                        <br>   
-                        <button  @click="addCustomerPaymentMethod(),isSameAddress = '2'" class="btn btn-continue float-right">
-                           Use Address
-                        </button>
-                        <a data-toggle="modal" data-target="#addressFormModal" @click="cleanShippingAddress()" 
-                            class="text-add float-right">
-                            Add a New Address
-                        </a>
                     </div>
                     <br>
-                    <a v-if="isSameAddress == 0 || isSameAddress ==2" data-toggle="modal" data-target="#creditCardModal" @click="cleanPaymentMethod()" class="text-add">
+                    <a data-toggle="modal" data-target="#creditCardModal" class="text-add">
                         Add a Credit Card
                     </a>
-                    <button v-if="isSameAddress == 0 || isSameAddress ==2" data-toggle="collapse" 
+                    <button data-toggle="collapse" 
                         data-target="#paymentMethodCollapse"  class="btn btn-continue float-right" 
                         @click="addCartBillingShipping(), setCheckoutStepActive('placeOrder'), setCheckoutStepComplete('selectPaymentMethod'),setOptionNavbar(4)" 
                         :disabled="paymentOption == null || paymentOption == '' || listPaymentMethods == null ||
@@ -269,12 +247,12 @@
                     <span v-if="placeOrderStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
                     <span class="text-address">Complete Purchase</span>
                 </p>
-                <hr class="hr">
+                <hr class="hr" :class="{ 'hr-active': placeOrderStatus == 'active', 'hr-complete': placeOrderStatus == 'complete' }">
                 <div id="placeOrderCollapse" class="collapse">
                     <div class="div-place-order">
                         <p class="text-center">YOUR TOTAL IS: 
-                            <span class="place-order-total">
-                                ${{productsInCart.paymentsTotal}}
+                            <span class="place-order-total" v-if="productsInCart.orderHeader">
+                                ${{productsInCart.orderHeader.grandTotal.toFixed(2)}}
                             </span>
                         </p>
                         <p class="text-center place-order-text">Place order below to complete your purchase</p>
@@ -285,94 +263,7 @@
 
         </div>
         <div>
-            <div class="modal fade" id="creditCardModal">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="Update Credit Card">
-                                <span v-if="isUpdate">Update Credit Card</span>
-                                <span v-else>Add Credit Card</span>
-                            </h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div v-if="responseMessage != null && responseMessage != ''" 
-                                class="alert alert-primary" role="alert">
-                                {{responseMessage}}
-                            </div>
-                            <div class="form-group row">
-                                <label for="card" class="col-sm-3 col-form-label modal-text">
-                                    Card Number 
-                                    <span class="modal-text-required">*</span>
-                                </label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="card"
-                                        type="text"
-                                        v-model="paymentMethod.cardNumber"
-                                        placeholder="13 to 16 digits Spaces are optional" required :disabled="isUpdate"/>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="nameCard" class="col-sm-3 col-form-label">Name on Card *</label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="nameCard"
-                                        type="text"
-                                        v-model="paymentMethod.titleOnAccount"
-                                        placeholder="The name printed on the front of the card" required/>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Expiry Date *</label>
-                                <div class="form-group col-sm-4">
-                                    <select v-model="paymentMethod.expireMonth" class="form-control">
-                                        <option value="01">01</option>
-                                        <option value="02">02</option>
-                                        <option value="03">03</option>
-                                        <option value="04">04</option>
-                                        <option value="05">05</option>
-                                        <option value="06">06</option>
-                                        <option value="07">07</option>
-                                        <option value="08">08</option>
-                                        <option value="09">09</option>
-                                        <option value="10">10</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-sm-5">
-                                    <select v-model="paymentMethod.expireYear" class="form-control">
-                                        <option value="" selected disabled>Year</option>
-                                        <option value="2018">2018</option>
-                                        <option value="2019">2019</option>
-                                        <option value="2020">2020</option>
-                                        <option value="2021">2021</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="security" class="col-sm-3 col-form-label">Card Security Code*</label>
-                                <div class="col-sm-9">
-                                    <input class="form-control" id="security"
-                                        type="text"
-                                        v-model="paymentMethod.cardSecurityCode"
-                                        placeholder="3 or 4 Digits" required/>
-                                </div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <button @click="addCustomerPaymentMethod" class="btn btn-continue col col-sm-6 offset-sm-1">
-                                    <span v-if="isUpdate">Update Credit Card</span>
-                                    <span v-else>Add Credit Card</span>
-                                </button>
-                                <a @click="hideModal('creditCardModal')" class="btn btn-link text-add col col-sm-9 offset-sm-1">
-                                    Or Cancel
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
             <div class="modal fade" id="modal-error">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -391,125 +282,16 @@
 
             <div class="modal fade" id="addressFormModal">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <!-- Recipient Field -->
-                            <div class="form-group">
-                                <label for="name" class="form-heading form-text-align">To</label>
-                                <input class="input-text input-border form-control" id="name"
-                                        type="text"
-                                        v-model="shippingAddress.toName"
-                                        @focus="resetToNameErrorMessage(shippingAddress.toName)"
-                                        required/>
-                                <div v-if="toNameErrorMessage != null && toNameErrorMessage != ''">
-                                    <small class="input-text form-text response-text">{{toNameErrorMessage}}</small>
-                                </div>
-                            </div>
-                            <!-- Attention Field-->
-                            <div class="form-group">
-                                <label class="form-heading form-text-align">Attention of
-                                    <small class="text-muted">(optional)</small>
-                                </label>
-                                    <input class="input-text input-border form-control"  
-                                            type="text" 
-                                            v-model="shippingAddress.attnName"/>
-                            </div>
-                            <!-- Country Field-->
-                            <div class="form-group">
-                                <label for="country" class="form-heading form-text-align">Country</label>
-                                    <select v-model="shippingAddress.countryGeoId" class="input-text input-border form-control"
-                                        @change="getRegions(shippingAddress.countryGeoId)" @focus="resetCountryErrorMessage(shippingAddress.countryGeoId)">
-                                        <option value="USA">United States</option>
-                                    </select>
-                                    <div v-if="countryErrorMessage != null && countryErrorMessage != ''">
-                                        <small class="input-text form-text response-text">{{countryErrorMessage}}</small>
-                                    </div>
-                            </div>
-                            <!-- Address -->
-                            <div class="form-group">
-                                <label for="adress1" class="form-heading form-text-align">Address</label>
-                                <input class="input-text input-border form-control" input-border id="adress1"
-                                        type="text"
-                                        placeholder="Line 1"
-                                        v-model="shippingAddress.address1"
-                                        @focus="resetAddressErrorMessage(shippingAddress.address1)"
-                                        required/>
-                                <div v-if="addressErrorMessage != null && addressErrorMessage != ''">
-                                    <small class="input-text form-text response-text">{{addressErrorMessage}}</small>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input class="input-text input-border form-control" id="adress2"
-                                    type="text"
-                                    placeholder="Line 2 (optional)"
-                                    v-model="shippingAddress.address2"/>
-                            </div>
-                            <!-- City -->
-                            <div class="form-group">
-                                <label for="city" class="form-heading form-text-align">City</label>
-                                <input class="input-text input-border form-control" id="city"
-                                        type="text"
-                                        v-model="shippingAddress.city"
-                                        @focus="resetCityErrorMessage(shippingAddress.city)"
-                                        required/>
-                                <div v-if="cityErrorMessage != null && cityErrorMessage != ''">
-                                    <small class="input-text form-text response-text">{{cityErrorMessage}}</small>
-                                </div>
-                            </div>
-                            <!-- State -->
-                            <div class="form-group">
-                                <label for="state" class="form-heading form-text-align">State</label>
-                                <select v-model="shippingAddress.stateProvinceGeoId" class="input-text input-border form-control"
-                                        @focus="resetStateErrorMessage(shippingAddress.stateProvinceGeoId)">
-                                        <option v-for="region in regionsList" :value="region.geoId">{{region.geoName}}</option>
-                                </select>
-                                <div v-if="stateErrorMessage != null && stateErrorMessage != ''">
-                                    <small class="input-text form-text response-text">{{stateErrorMessage}}</small>
-                                </div>
-                            </div>
-                            <!-- Postal code -->
-                            <div class="form-group">
-                                <label for="postalcode" class="form-heading form-text-align">Postcode</label>
-                                <input class="input-text input-border form-control" id="postalcode"
-                                    type="text"
-                                    v-model="shippingAddress.postalCode"
-                                    @focus="resetPostalCodeErrorMessage(shippingAddress.postalCode)"
-                                    required/>
-                                <div v-if="postalCodeErrorMessage != null && postalCodeErrorMessage != ''">
-                                    <small class="input-text form-text response-text">{{postalCodeErrorMessage}}</small>
-                                </div>
-                            </div>
-                            <!-- Phone number -->
-                            <div class="form-group">
-                                <label for="contactnumber" class="form-heading form-text-align">Phone Number</label>
-                                <input class="input-text input-border form-control" id="contactnumber"
-                                    type="text"
-                                    v-model="shippingAddress.contactNumber"
-                                    @focus="resetContactNumberErrorMessage(shippingAddress.contactNumber)"
-                                    required/>
-                                <div v-if="contactNumberErrorMessage != null && contactNumberErrorMessage != ''">
-                                    <small class="input-text form-text response-text">{{contactNumberErrorMessage}}</small>
-                                </div>
-                            </div>
+                    <modal-address :shippingAddress="shippingAddress" :isUpdate="isUpdate" :cancelCallback="onAddressCancel" :completeCallback="onAddressUpserted" />
+                 </div>
+            </div>
 
-                            <div class="row justify-content-center">
-                                <button @click="addCustomerShippingAddress" class="btn btn-continue col col-sm-6">
-                                    <span v-if="isUpdate">Update Address</span>
-                                    <span v-else>Add Address</span>
-                                </button>
-                                <a @click="hideModal('addressFormModal')" class="btn btn-link text-add col col-sm-9">
-                                    Cancel
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+            <div class="modal fade" id="creditCardModal"><!-- Credit Card Modal -->
+                <div class="modal-dialog" role="document">
+                    <modal-credit-card :paymentMethod="paymentMethod" :isUpdate="isUpdate" :addressList="listShippingAddress" :cancelCallback="onCreditCardCancel" :completeCallback="onCreditCardSet" />
                 </div>
             </div>
         </div>
-        <p class="link-text mb-5">
-            Forgot something? 
-            <a href="/store" class="text-add">Head back to the shop.</a>
-        </p>
     </div>
     <footer-page :infoLink="false" />
 </div>
