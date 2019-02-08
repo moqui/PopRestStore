@@ -295,6 +295,7 @@ storeComps.SuccessCheckOut = {
             return moment(date).format('Do MMM, YY');
         }
     },
+    components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
         this.getCustomerInfo();
         this.getCustomerOrderById();
