@@ -65,6 +65,7 @@ var storeInfo = ${storeInfoJson};
     <subscreens default-item="home" always-use-full-path="true"/>
 
     <pre-actions>
+        <set field="home" value="/store"/>
         <!-- lookup configured browse root category from storeInfo -->
         <set field="browseRootCategory" from="storeInfo.categoryByType.PsctBrowseRoot"/>
         <set field="browseRootCategoryId" from="browseRootCategory?.productCategoryId"/>
