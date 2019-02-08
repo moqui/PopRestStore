@@ -53,16 +53,12 @@
                         ${{productsInCart.orderHeader.grandTotal.toFixed(2)}}
                     </span>
                 </div>
-                <!-- Prop 65 Warning -->
-                <div v-if="shippingAddressSelect.stateProvinceGeoId == 'USA_CA'" class="alert alert-warning" role="alert">
-                    <p><strong>The following Prop 65 warning is required for sales in California:</strong></p>
-                    <br>
-                    <p><img width="20px" src="/store/assets/warning.png" alt="Warning Image">
-                        <strong>WARNING:</strong> Consuming this product can expose you to lead which is known to the State of California to cause cancer and reproductive harm. 
-                        For more information go to <a href="www.P65Warnings.ca.gov/food">www.P65Warnings.ca.gov/food</a>.</p>
-                    <br>
-                    <p>For more info about RidgeCrest Herbals and California Prop 65, see our page <a href="/store/content/California+Prop+65?m=2">here</a>.</p>
+                
+                <!-- Optional Prop 65 Warning -->
+                <div v-if="showProp65 == 'true' && shippingAddressSelect.stateProvinceGeoId == 'USA_CA'" class="alert alert-warning" role="alert">
+                    <prop65-warning/>
                 </div>
+
                 <div class="row">
                     <p class="col">Do you have a Promotion Code?</p>
                 </div>
