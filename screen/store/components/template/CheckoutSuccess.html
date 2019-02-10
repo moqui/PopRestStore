@@ -11,7 +11,8 @@
                 <hr class="hr-title">
                 <div v-for="(item, index) in orderList.orderItemList">
                     <span class="row" v-if="item.itemTypeEnumId != 'ItemShipping'">
-                        <img :src="'/popstatic/images/products/'+item.productId"  v-if="item.itemTypeEnumId=='ItemProduct'" class="col col-lg-1 img-responsive" width="25%" height="25%" onerror="this.src='/store/assets/default.png'"/>
+                        <product-image :productId="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'"
+                           class="mb-1"/>
                         <span v-else class="col col-lg-1"></span>
                         <router-link v-if="item.itemTypeEnumId == 'ItemProduct'" class="col col-lg-7 order-link-text" 
                             :to="'/product/'+item.productId" tag="span">
@@ -99,7 +100,7 @@
                     </span>
                 </div>
                 <div class="row justify-content-center mt-5">
-                    <a class="btn btn-block btn-info btn-lg btn-keep-shoping" href="/rcsite">Keep Shopping</a>
+                    <a class="btn btn-block btn-info btn-lg btn-keep-shoping" href="${home}">Keep Shopping</a>
                 </div>
             </div>
         </div>

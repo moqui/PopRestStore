@@ -10,7 +10,7 @@ Vue.component("checkout-navbar", storeComps.CheckoutNavbarTemplate);
 storeComps.CheckOutPage = {
     name: "checkout-page",
     data: function() { return {
-            customerInfo: {}, productsInCart: [], shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {},
+            customerInfo: {}, productsInCart: [], shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
             billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "",
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0",
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
@@ -261,6 +261,7 @@ storeComps.CheckOutPage = {
         if (this.$root.apiKey == null) { 
             this.$router.push({ name: 'login'}); 
         } else {
+            this.showProp65 = storeConfig.show_prop_65_warning;
             this.getCustomerInfo();
             this.getCartShippingOptions();
             this.getCartInfo();
@@ -294,6 +295,7 @@ storeComps.SuccessCheckOut = {
             return moment(date).format('Do MMM, YY');
         }
     },
+    components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
         this.getCustomerInfo();
         this.getCustomerOrderById();
@@ -303,3 +305,6 @@ storeComps.SuccessCheckOutTemplate = getPlaceholderRoute("template_client_checko
 
 storeComps.CheckoutContactInfoTemplate = getPlaceholderRoute("template_client_contactInfo", "contactInfo");
 Vue.component("contact-info", storeComps.CheckoutContactInfoTemplate);
+
+storeComps.CheckoutProp65Template = getPlaceholderRoute("template_client_prop65", "prop65Warning");
+Vue.component("prop65-warning", storeComps.CheckoutProp65Template);
