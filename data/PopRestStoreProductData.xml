@@ -13,6 +13,13 @@ along with this software (see the LICENSE.md file). If not, see
 <http://creativecommons.org/publicdomain/zero/1.0/>.
 -->
 <entity-facade-xml type="demo">
+    <!-- use a record like this to set a regex for hostname(s) that should map to a given store:
+    <mantle.product.store.ProductStoreSetting productStoreId="POPC_DEFAULT" settingTypeEnumId="PsstHostname" fromDate="1406670784000" settingValue=".*"/> -->
+
+    <!-- TODO - move this somewhere else -->
+    <mantle.product.store.ProductStoreShipOption carrierPartyId="_NA_" lastUpdatedStamp="1545005379532" productStoreId="POPC_DEFAULT" shipmentMethodEnumId="ShMthGround" sequenceNum="2"/>
+    <mantle.product.store.ProductStoreShipOption carrierPartyId="_NA_" lastUpdatedStamp="1545005214226" productStoreId="POPC_DEFAULT" shipmentMethodEnumId="ShMthPickUp" sequenceNum="1"/>
+
     <!-- NOTE: depends on and extends/overrides data in ZcaProductDemoData.xml in mantle-udm -->
 
     <!-- ==================== Product Data ==================== -->

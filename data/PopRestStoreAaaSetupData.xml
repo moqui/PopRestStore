@@ -20,11 +20,6 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.security.ArtifactAuthz artifactAuthzId="POPRS_API_ALL" userGroupId="ALL_USERS" artifactGroupId="POPRS_API"
             authzTypeEnumId="AUTHZT_ALWAYS" authzActionEnumId="AUTHZA_ALL"/>
 
-    <!-- TODO - move this somewehre else -->
-    <mantle.product.store.ProductStoreShipOption carrierPartyId="_NA_" lastUpdatedStamp="1545005379532" productStoreId="POPC_DEFAULT" shipmentMethodEnumId="ShMthGround" sequenceNum="2"/>
-    <mantle.product.store.ProductStoreShipOption carrierPartyId="_NA_" lastUpdatedStamp="1545005214226" productStoreId="POPC_DEFAULT" shipmentMethodEnumId="ShMthPickUp" sequenceNum="1"/>
-
-
     <!-- client template setting types -->
     <moqui.basic.Enumeration enumCode="template_client_account" description="Template Client Account Page" enumId="PsstTemplateClientAccount" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_client_addAddress" description="Template Client Add Address" enumId="PsstTemplateClientAddAddress" enumTypeId="ProductStoreSettingType"/>
@@ -53,7 +48,7 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.basic.Enumeration enumCode="template_server_search" description="Template Server Search" enumId="PsstTemplateServerSearch" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_category" description="Template Server Category" enumId="PsstTemplateServerCategory" enumTypeId="ProductStoreSettingType"/>
 
-    <!-- store setting stype used for dynamically setting the productStoreId depending on the hostname -->
+    <!-- store setting used for dynamically setting the productStoreId depending on the hostname -->
     <moqui.basic.Enumeration enumCode="product_store_id_from_hostname" description="Product Store ID From Hostname" enumId="PsstHostname" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="show_prop_65_warning" description="Show the Prop 65 warning" enumId="PsstProp65Warning" enumTypeId="ProductStoreSettingType"/>
 </entity-facade-xml>
