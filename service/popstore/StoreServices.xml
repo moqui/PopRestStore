@@ -16,18 +16,26 @@ along with this software (see the LICENSE.md file). If not, see
 
     <service verb="get" noun="ProductStoreIdFromHostName">
         <in-parameters>
-            <parameter name="requestHostName" type="String" />
+            <parameter name="requestHostName"/>
         </in-parameters>
         <out-parameters>
             <parameter name="productStoreId"/>
         </out-parameters>
         <actions>
-            <entity-find entity-name="mantle.product.store.ProductStoreSetting" list="productStoreIdList">
-                <econdition field-name="settingTypeEnumId" value="PsstHostname"/>    
-                <econdition field-name="settingValue" value="${requestHostName}"/>
-                <date-filter/>
+            <set field="productStoreId" from="null"/>
+            <if condition="!requestHostName"><return/></if>
+
+            <entity-find entity-name="mantle.product.store.ProductStoreSetting" list="hostSettingList">
+                <econdition field-name="settingTypeEnumId" value="PsstHostname"/>
+                <date-filter/><order-by field-name="-fromDate"/>
             </entity-find>
-            <set field="productStoreId" from="productStoreIdList ? productStoreIdList[0].productStoreId : null"/>
+            <iterate list="hostSettingList" entry="hostSetting">
+                <set field="hostPattern" from="hostSetting.settingValue"/>
+                <if condition="hostPattern != null &amp;&amp; ((String) requestHostName).matches((String) hostPattern)">
+                    <set field="productStoreId" from="hostSetting.productStoreId"/></if>
+            </iterate>
+
+            <if condition="!productStoreId"><log level="warn" message="No store found for hostname ${requestHostName}"/></if>
         </actions>
     </service>
 
