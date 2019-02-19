@@ -134,6 +134,7 @@ storeComps.ResetPasswordPage = {
             var user = { username: this.passwordInfo.username, password: this.passwordInfo.newPassword };
             LoginService.login(user, this.axiosConfig).then(function (data) {
                 this.$root.apiKey = data.apiKey;
+                this.$root.moquiSessionToken = data.moquiSessionToken;
                 this.$router.push({ name: 'account'});
             }.bind(this));
         }
@@ -378,6 +379,7 @@ storeComps.CreateAccountPage = {
             var user = { username: userName, password: password };
             LoginService.login(user, this.axiosConfig).then(function (data) {
                 this.$root.apiKey = data.apiKey;
+                this.$root.moquiSessionToken = data.moquiSessionToken;
                 this.$router.push({ name: 'account'});
             }.bind(this)).catch(function (error) {
                 this.errorMessage = error.response.data.errors;
