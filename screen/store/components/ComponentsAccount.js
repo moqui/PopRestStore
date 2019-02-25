@@ -4,7 +4,7 @@ const STORE_COUNTRY = "USA";
 storeComps.LoginPage = {
     name: "login",
     data: function() { return {
-        user: {username: "", password: ""}, loginErrormessage: "", responseMessage : "", 
+        homePath: "", user: {username: "", password: ""}, loginErrormessage: "", responseMessage : "", 
         passwordInfo: { username: "", oldPassword: "", newPassword: "", newPasswordVerify: "" },
         axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
                 "moquiSessionToken": this.$root.moquiSessionToken } }
@@ -94,7 +94,7 @@ storeComps.LoginPageTemplate = getPlaceholderRoute("template_client_login", "Log
 storeComps.ResetPasswordPage = {
     name: "reset-password",
     data: function() { return {
-        data: { username: "" },
+        homePath: "", data: { username: "" },
         passwordInfo: { username: "", oldPassword: "", newPassword: "", newPasswordVerify: "" },
         nextStep: 0, responseMessage: "",
         axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
@@ -145,7 +145,7 @@ storeComps.ResetPasswordTemplate = getPlaceholderRoute("template_client_resetPas
 storeComps.AccountPage = {
     name: "account-page",
     data: function() { return {
-        customerInfo: {}, passwordInfo: {}, shippingAddressList: [],
+        homePath: "", customerInfo: {}, passwordInfo: {}, shippingAddressList: [],
         countriesList: [], regionsList: [], localeList: [], timeZoneList: [],
         shippingAddress: {}, addressOption: "", customerPaymentMethods: [],
         paymentAddressOption: {}, paymentOption: "", paymentMethod: {},
@@ -316,6 +316,7 @@ storeComps.AccountPage = {
         if (this.$root.apiKey == null) {
             this.$router.push({ name: 'login'});
         } else {
+            this.homePath = storeConfig.homePath;
             this.getCustomerInfo();
             this.getCustomerAddresses();
             this.getCustomerPaymentMethods();
@@ -332,7 +333,7 @@ storeComps.AccountPageTemplate = getPlaceholderRoute("template_client_account", 
 storeComps.CreateAccountPage = {
     name: "create-account",
     data: function() { return {
-        accountInfo: {}, confirmPassword: "", errorMessage: "",
+        homePath: "", accountInfo: {}, confirmPassword: "", errorMessage: "",
         axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
                 "moquiSessionToken":this.$root.moquiSessionToken } }
     }; },
@@ -390,7 +391,9 @@ storeComps.CreateAccountPage = {
         // If this user is logged in, send to account
         if(this.$root.apiKey != null) { 
             this.$router.push({ name: 'account' }); 
-        } 
+        } else {
+            this.homePath = storeConfig.homePath;
+        }
     },
 };
 storeComps.CreateAccountPageTemplate = getPlaceholderRoute("template_client_accountCreate", "CreateAccountPage");
@@ -398,7 +401,7 @@ storeComps.CreateAccountPageTemplate = getPlaceholderRoute("template_client_acco
 storeComps.CustomerOrderPage = {
     name: "customerorder-page",
     data: function() { return {
-        ordersList: [], orderList: {},
+        homePath: "", ordersList: [], orderList: {},
         axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
                 "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
     }; },
@@ -431,6 +434,7 @@ storeComps.CustomerOrderPage = {
             this.$router.push({ name: 'login' }); 
         } else {
             this.getCustomerOrderById(); 
+            this.homePath = storeConfig.homePath;
         }
     }
 };
@@ -439,7 +443,7 @@ storeComps.CustomerOrderPageTemplate = getPlaceholderRoute("template_client_orde
 storeComps.CustomerOrdersPage = {
     name: "customerorders-page",
     data: function() { return {
-        ordersList: [], listProduct: [],
+        homePath: "", ordersList: [], listProduct: [],
         axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
                 "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
     }; },
@@ -479,6 +483,7 @@ storeComps.CustomerOrdersPage = {
             this.$router.push({ name: 'login' }); 
         } else {
             this.getCustomerOrders(); 
+            this.homePath = storeConfig.homePath;
         }
     }
 };

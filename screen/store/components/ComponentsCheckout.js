@@ -10,7 +10,7 @@ Vue.component("checkout-navbar", storeComps.CheckoutNavbarTemplate);
 storeComps.CheckOutPage = {
     name: "checkout-page",
     data: function() { return {
-            customerInfo: {}, productsInCart: [], shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
+            homePath: "", customerInfo: {}, productsInCart: [], shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
             billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "",
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0",
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
@@ -261,6 +261,7 @@ storeComps.CheckOutPage = {
         if (this.$root.apiKey == null) { 
             this.$router.push({ name: 'login'}); 
         } else {
+            this.homePath = storeConfig.homePath;
             this.showProp65 = storeConfig.show_prop_65_warning;
             this.getCustomerInfo();
             this.getCartShippingOptions();
@@ -297,6 +298,7 @@ storeComps.SuccessCheckOut = {
     },
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
+        this.homePath = storeConfig.homePath;
         this.getCustomerInfo();
         this.getCustomerOrderById();
     }

@@ -25,6 +25,7 @@ along with this software (see the LICENSE.md file). If not, see
         var storeConfig = {
             apiKey: null, moquiSessionToken: null,
             // base path for the router, by default the app page should load from '/store'
+            homePath: "/store",
             basePath: "/store/d/",
             // REST API base location, default on the same server
             // if the Moqui server is running on a different server use something like "https://api.domain.com/rest/"
