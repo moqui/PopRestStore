@@ -499,6 +499,7 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="pageSize" type="Integer" default="20"/>
         </in-parameters>
         <out-parameters>
+            <parameter name="searchString"/>
             <parameter name="productList" type="List"><parameter name="productInfo" type="Map"/></parameter>
             <parameter name="productListCount" type="Integer"><description>The total count of hits, not just the limited number returned.</description></parameter>
             <parameter name="productListPageIndex" type="Integer"/>
@@ -532,6 +533,7 @@ along with this software (see the LICENSE.md file). If not, see
             <if condition="!productCategoryId"><return type="danger" message="No search category found"/></if>
 
             <!-- TODO/FUTURE: better handling of search input for more natural results -->
+            <set field="searchString" from="term"/>
             <if condition="term"><set field="term" from="term.split(' ').collect({ (!it || it in ['AND', 'OR', 'NOT'] || it.contains('*')) ? it : it + '*' }).join(' ')"/></if>
             <set field="queryString" from="(term ? term + ' AND ' : '') + 'categories.productCategoryId:' + productCategoryId"/>
 

@@ -26,6 +26,7 @@ along with this software (see the LICENSE.md file). If not, see
         <service-call name="popstore.ProductServices.search#Products" out-map="context" 
             in-map="[term:searchParameter, pageIndex:pageIndex ? pageIndex : '0', pageSize:'12', productStoreId:productStoreId]"/>
 
+        <set field="searchString" from="searchString ?: ''"/>
         <set field="productListCount" from="productListCount ?: 0"/>
         <set field="productListPageSize" from="productListPageSize ?: 0"/>
         <set field="productListPageRangeHigh" from="productListPageRangeHigh ?: 0"/>
