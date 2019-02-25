@@ -23,8 +23,12 @@ along with this software (see the LICENSE.md file). If not, see
         <if condition="!pageIndex"><set field="pageIndex" from="0"/></if>
     </pre-actions>
     <actions>
-        <service-call name="popstore.ProductServices.search#Products" out-map="products" 
+        <service-call name="popstore.ProductServices.search#Products" out-map="context" 
             in-map="[term:searchParameter, pageIndex:pageIndex ? pageIndex : '0', pageSize:'12', productStoreId:productStoreId]"/>
+
+        <set field="productListCount" from="productListCount ?: 0"/>
+        <set field="productListPageSize" from="productListPageSize ?: 0"/>
+        <set field="productListPageRangeHigh" from="productListPageRangeHigh ?: 0"/>
     </actions>
     <widgets>
         <render-mode><text type="html" location="${template_server_header}"/></render-mode>
