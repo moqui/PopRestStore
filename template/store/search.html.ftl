@@ -81,7 +81,7 @@
                         <li class="page-item <#if pageIndex?number == 0>disabled</#if>">
                             <a class="page-link" href="/store/search/${searchParameter}?pageIndex=${pageIndex?number - 1}">Previous</a>
                         </li>
-                        <#list 0..(productListCount/ productListPageSize)?floor as n>
+                        <#list 0..((productListCount/ productListPageSize) - 1)?floor as n>
                             <li class="page-item <#if pageIndex?number == n>active</#if>">
                                 <a class="page-link" href="/store/search/${searchParameter}?pageIndex=${n}">${n + 1}</a>
                             </li>
