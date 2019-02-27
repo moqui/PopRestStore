@@ -79,6 +79,7 @@ storeComps.CheckOutPage = {
         getCartInfo: function() {
             ProductService.getCartInfo(this.axiosConfig).then(function (data) {
                 if (data.postalAddress) {
+                    this.postalAddressStateGeoSelected = data.postalAddressStateGeo;
                     this.addressOption = data.postalAddress.contactMechId + ':' + data.postalAddress.telecomContactMechId;
                     this.shippingAddressSelect = data.postalAddress;
                     this.shippingAddressSelect.contactNumber = data.telecomNumber.contactNumber;
