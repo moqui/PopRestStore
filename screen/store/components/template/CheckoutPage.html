@@ -120,6 +120,7 @@
                                     {{option.postalAddress.address1}} {{option.postalAddress.address2}}
                                 </span>
                                 <span class="span-description">{{option.postalAddress.city}}</span>
+                                <span v-if="option.postalAddressStateGeo" class="span-description">{{option.postalAddressStateGeo.geoName}}</span>
                                 <span class="span-description">
                                     <i class="fa fa-phone phone-icon"></i>
                                     {{option.telecomNumber.contactNumber}}
