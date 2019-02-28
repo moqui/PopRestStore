@@ -20,7 +20,7 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.security.ArtifactAuthz artifactAuthzId="POPRS_API_ALL" userGroupId="ALL_USERS" artifactGroupId="POPRS_API"
             authzTypeEnumId="AUTHZT_ALWAYS" authzActionEnumId="AUTHZA_ALL"/>
 
-    <moqui.basic.Enumeration enumCode="homePath" description="Base path for the compoent" enumId="PsstHomePath" enumTypeId="ProductStoreSettingType"/>
+    <moqui.basic.Enumeration enumCode="homePath" description="Base path for the component" enumId="PsstHomePath" enumTypeId="ProductStoreSettingType"/>
 
     <!-- client template setting types -->
     <moqui.basic.Enumeration enumCode="template_client_account" description="Template Client Account Page" enumId="PsstTemplateClientAccount" enumTypeId="ProductStoreSettingType"/>
