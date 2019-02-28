@@ -253,6 +253,7 @@ storeComps.CheckOutPage = {
         changeShippingAddress: function(data) {
             this.shippingAddressSelect = data.postalAddress;
             this.shippingAddressSelect.contactNumber = data.telecomNumber.contactNumber;
+            this.postalAddressStateGeoSelected = {geoName: data.postalAddressStateGeo.geoName};
         },
         cleanShippingAddress: function() { this.shippingAddress = {}; this.isUpdate = false; },
         cleanPaymentMethod: function() { this.paymentMethod = {}; this.isUpdate = false; }
