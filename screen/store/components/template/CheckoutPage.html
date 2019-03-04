@@ -19,7 +19,7 @@
                     </div>
                     <div class="col col-6 col-sm-5">
                         <p class="item-text-desc">
-                            <a class="item-text-desc" :href="'/store/product/' + item.productId">{{item.itemDescription}}</a>
+                            <a class="item-text-desc" :href="'product/' + item.productId">{{item.itemDescription}}</a>
                         </p>
                         <p v-if="item.unitListPrice" class="last-price">
                             <del>${{item.unitListPrice}}</del>
