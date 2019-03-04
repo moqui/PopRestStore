@@ -95,7 +95,7 @@
                 <p class="title-check-text" :class="{ 'step-active': selectShippingAddressStatus == 'active', 'step-complete': selectShippingAddressStatus == 'complete'}">                
                     <span v-if="selectShippingAddressStatus == 'active'" class="circle">1</span>
                     <span v-if="selectShippingAddressStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
-                    <span class="text-address">Shipping Address</span>
+                    <span class="text-address">SHIPPING ADDRESS</span>
                     <span data-toggle="collapse" data-target="#shippingAddressCollapse" v-if="selectShippingAddressStatus == 'complete'" 
                         class="text-address change-info float-right" @click="setOptionNavbar(1)">
                         Change
@@ -166,7 +166,7 @@
                 <p class="title-check-text"  :class="{ 'step-active': selectShippingMethodStatus == 'active', 'step-complete': selectShippingMethodStatus == 'complete' }">
                     <span v-if="selectShippingMethodStatus != 'complete'" class="circle">2</span>
                     <span v-if="selectShippingMethodStatus == 'complete'" class="circle"> <i class="fa fa-check"></i></span>
-                    <span class="text-address">Shipping Method</span>
+                    <span class="text-address">SHIPPING METHOD</span>
                     <span data-toggle="collapse" data-target="#shippingMethodCollapse" v-if="selectShippingMethodStatus == 'complete'" 
                         class="text-address change-info float-right">Change</span>
                 </p>
@@ -206,7 +206,7 @@
                 <p class="title-check-text" :class="{ 'step-active': selectPaymentMethodStatus == 'active', 'step-complete': selectPaymentMethodStatus == 'complete' }">
                     <span v-if="selectPaymentMethodStatus != 'complete'" class="circle">3</span>
                     <span v-if="selectPaymentMethodStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
-                    <span class="text-address">Payment Methods</span>
+                    <span class="text-address">PAYMENT METHODS</span>
                     <span data-toggle="collapse" data-target="#paymentMethodCollapse" v-if="selectPaymentMethodStatus == 'complete'" class="text-address change-info float-right">Change</span>
                 </p>
                 <hr class="hr" :class="{ 'hr-active': selectPaymentMethodStatus == 'active', 'hr-complete':selectPaymentMethodStatus == 'complete' }">
@@ -253,7 +253,7 @@
                 <p class="title-check-text" :class="{ 'step-active': placeOrderStatus == 'active', 'step-complete': placeOrderStatus == 'complete' }">
                     <span v-if="placeOrderStatus != 'complete'" class="circle">4</span>
                     <span v-if="placeOrderStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
-                    <span class="text-address">Complete Purchase</span>
+                    <span class="text-address">COMPLETE PURCHASE</span>
                 </p>
                 <hr class="hr" :class="{ 'hr-active': placeOrderStatus == 'active', 'hr-complete': placeOrderStatus == 'complete' }">
                 <div id="placeOrderCollapse" class="collapse">

@@ -2,9 +2,9 @@
             
                 <div class="modal-content">
                     <div class="modal-header"><!-- Title -->
-                        <h5 class="modal-title text-gdark" id="exampleModalLongTitle">
-                            <span v-if="isUpdate"><span class="text-glight">UPDATE</span> ADDRESS</span>
-                            <span v-else><span class="text-glight">ADD</span> A NEW ADDRESS</span>
+                        <h5 class="modal-title" id="exampleModalLongTitle">
+                            <span v-if="isUpdate"><span class="text-green">UPDATE</span> ADDRESS</span>
+                            <span v-else><span class="text-green">ADD</span> A NEW ADDRESS</span>
                         </h5>
                         <button type="button" class="close text-cyan" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -29,7 +29,7 @@
                         <!-- Attention Field-->
                         <div class="form-group row justify-content-between">
                             <label for="attention" class="col-form-label modal-text ml-3">Attention of
-                                <small class="text-muted">(Optional)</small>
+                                <small class="text-muted text-cyan">(Optional)</small>
                             </label>
                             <div class="col-sm-8 col-xs-12">
                                 <input  id="attention"
