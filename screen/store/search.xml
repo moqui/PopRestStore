@@ -16,15 +16,35 @@ along with this software (see the LICENSE.md file). If not, see
     <parameter name="searchParameter"/>
     <parameter name="pageIndex"/>
 
+    <transition name="addToCart">
+        <actions>
+            <service-call name="popstore.CartServices.add#Product" out-map="addOut"
+                          in-map="[productId:productId, quantity:quantity, currencyUomId:currencyUomId, productStoreId: productStoreId]"/>
+            <set field="addedCorrect" from="false"/>
+            <if condition="addOut.orderHeader != null">
+                <set field="addedCorrect" from="true"/>
+            </if>
+        </actions>
+        <default-response url="."><parameter name="addedCorrect"/></default-response>
+        <error-response url="."/>
+    </transition>
+
     <pre-actions>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
         <if condition="extraPathNameList &amp;&amp; !searchParameter"><set field="searchParameter" from="extraPathNameList[0]"/></if>
         <if condition="extraPathNameList &amp;&amp; !pageIndex"><set field="pageIndex" from="extraPathNameList[1]"/></if>
         <if condition="!pageIndex"><set field="pageIndex" from="0"/></if>
+        <if condition="!categoryId"><set field="categoryId" value="RchAllProducts"/></if>
     </pre-actions>
     <actions>
-        <service-call name="popstore.ProductServices.search#Products" out-map="products" 
+        <service-call name="popstore.ProductServices.search#Products" out-map="context" 
             in-map="[term:searchParameter, pageIndex:pageIndex ? pageIndex : '0', pageSize:'12', productStoreId:productStoreId]"/>
+        <service-call name="popstore.CartServices.get#CartInfo" in-map="context" out-map="productsInCart" />
+
+        <set field="searchString" from="searchString ?: ''"/>
+        <set field="productListCount" from="productListCount ?: 0"/>
+        <set field="productListPageSize" from="productListPageSize ?: 0"/>
+        <set field="productListPageRangeHigh" from="productListPageRangeHigh ?: 0"/>
     </actions>
     <widgets>
         <render-mode><text type="html" location="${template_server_header}"/></render-mode>

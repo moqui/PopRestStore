@@ -2,7 +2,7 @@
 storeComps.Navbar = {
   name: "navbar",
   data: function() { return {
-      customerInfo: {}, categories: [], searchText: "", productsQuantity: 0, storeInfo: [],
+      homePath: "", customerInfo: {}, categories: [], searchText: "", productsQuantity: 0, storeInfo: [],
       axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
               "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
   }; },
@@ -42,6 +42,7 @@ storeComps.Navbar = {
           } 
       }
       this.getCartInfo();
+      this.homePath = storeConfig.homePath;
   }
 };
 storeComps.NavbarTemplate = getPlaceholderRoute("template_client_header", "Navbar", storeComps.Navbar.props);

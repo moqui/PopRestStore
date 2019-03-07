@@ -3,7 +3,7 @@
     <div class="container-fluid px-lg-6 px-4 py-4 body-padding min-height-for-footer">
         <div class="row no-gutters align-left">
             <div class="col mb-3">
-                <a class="customer-link" href="${home}">Home </a><i class="fas fa-angle-right mx-2 fa-line-height"></i>
+                <a class="customer-link" :href="homePath">Home </a><i class="fas fa-angle-right mx-2 fa-line-height"></i>
                 <router-link class="customer-link" :to="'/orders'" tag="a">My Orders <i class="fas fa-angle-right mx-2 fa-line-height"></i></router-link>
                 Order Detail
             </div>
@@ -51,9 +51,9 @@
                         </template>
                     </div>
                     <div class="col-3 col-sm-2">
-                        <h2 class="lead text-cyan text-center">Price</h2>
+                        <h2 class="lead text-cyan text-right pr-4">Price</h2>
                         <template v-for="(item, index) in orderList.orderItemList">
-                            <span class="row no-gutters justify-content-center font-size-09">${{item.unitAmount.toFixed(2)}}</span>
+                            <div class="row no-gutters text-right pr-4 font-size-09"><span class="col-12">${{item.unitAmount.toFixed(2)}}</span></div>
                         </template>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                         <span class="row no-gutters justify-content-center font-size-09">SubTotal</span>
                     </div>
                     <div class="col-3 col-sm-2">
-                        <span class="row no-gutters justify-content-center font-size-09">${{orderList.orderPart.partTotal.toFixed(2)}}</span>
+                        <div class="row no-gutters text-right pr-4 font-size-09"><span class="col-12">${{orderList.orderPart.partTotal.toFixed(2)}}</span></div>
                     </div>
                 </div>
                 <div class="row justify-content-end mb-3">
@@ -71,7 +71,7 @@
                         <span class="row no-gutters justify-content-center font-size-09">Delivery</span>
                     </div>
                     <div class="col-3 col-sm-2">
-                        <span class="row no-gutters justify-content-center font-size-09">NA</span>
+                        <div class="row no-gutters text-right pr-4 font-size-09"><span class="col-12">$0.00</span></div>
                     </div>
                 </div>
                 <div class="row justify-content-end mb-3">
@@ -79,7 +79,7 @@
                         <span class="row no-gutters justify-content-center font-size-09">Total</span>
                     </div>
                     <div class="col-3 col-sm-2">
-                        <span class="row no-gutters justify-content-center font-size-09">${{orderList.orderHeader.grandTotal.toFixed(2)}}</span>
+                        <div class="row no-gutters text-right pr-4 font-size-09"><span class="col-12">${{orderList.orderHeader.grandTotal.toFixed(2)}}</span></div>
                     </div>
                 </div>
                 <div class="breakline no-gutters mb-3"></div>

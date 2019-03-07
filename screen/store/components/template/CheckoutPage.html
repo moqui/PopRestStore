@@ -3,54 +3,64 @@
     <div class="container">
         <div class="loader" v-if="isSpinner"></div>
         <div class="row">
+            <!-- Panel item list-->
             <div class="col col-lg-6 col-sm-12 col-12">
-                <p class="title-cart-item row">
-                    <span class="col col-lg-6">Item</span>
-                    <span class="col col-lg-3 offset-lg-1">Quantity</span> 
-                    <span class="col col-lg-1">Price</span>
+                <p class="row title-cart-item">
+                    <span class="col col-6 col-sm-2">Item</span>
+                    <span class="col d-none d-sm-block col-sm-5"></span>
+                    <span class="col col-3 col-sm-2">Quantity</span>
+                    <span class="col col-3 col-sm-3 text-center">Price</span>
                 </p>
                 <hr class="hr">
-                <div class="row" v-for="item in productsInCart.orderItemList" :key="item.productId" >
-                    <div class="col col-lg-2">
+                <div class="row" v-for="item in productsInCart.orderItemList" :key="item.productId" v-if="item.itemTypeEnumId != 'ItemShipping'">
+                    <div class="col col-sm-2 d-none d-sm-block">
                         <product-image :productId="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'"
                            class="mb-1"/>
                     </div>
-                    <div class="col col-lg-5">
+                    <div class="col col-6 col-sm-5">
                         <p class="item-text-desc">
-                            <a class="item-text-desc" :href="'/store/product/' + item.productId">{{item.itemDescription}}</a>
+                            <a class="item-text-desc" :href="'product/' + item.productId">{{item.itemDescription}}</a>
                         </p>
                         <p v-if="item.unitListPrice" class="last-price">
                             <del>${{item.unitListPrice}}</del>
                             <span class="place-order-total"> Save ${{(item.unitListPrice - item.unitAmount).toFixed(2)}}</span>
                         </p>
                     </div>
-                    <div class="col col-lg-2">
+                    <div class="col col-3 col-sm-2">
                         <input class="input-quantity form-control" id="quantity" @change="updateProductQuantity(item)" 
                             type="text" v-model="item.quantity" :disabled="item.itemTypeEnumId != 'ItemProduct'" />
                     </div>
-                    <div class="col col-lg-1 offset-lg-1">
-                        <p class="place-order-total">${{item.unitAmount.toFixed(2)}}</p>
-                        <span class="item-actions" @click="deleteOrderProduct(item)" 
-                            v-if="item.itemTypeEnumId=='ItemProduct'">
-                            Delete
-                        </span>
+                    <div class="col col-3 col-sm-3 text-right">
+                        <div class="place-order-total pr-4">${{item.unitAmount.toFixed(2)}}</div>
+                        <div class="item-actions pr-4" @click="deleteOrderProduct(item)" v-if="item.itemTypeEnumId=='ItemProduct'">
+                            <span>Delete</span>
+                        </div>
                     </div>
                 </div>
+
                 <hr>
                 <div class="row div-total">
-                    <span class="col col-lg-6">Subtotal</span>
-                    <span class="col col-lg-1 offset-lg-4" v-if="productsInCart.orderPart">${{productsInCart.orderPart.partTotal.toFixed(2)}}</span>
-                    <hr style="width: 96%;">
-                    <span class="col col-lg-6 mt-4">Shipping</span>
-                    <span class="place-order-total col col-lg-1 offset-lg-4 mt-4">
-                        <span v-if="shippingMethod.shippingTotal != undefined">
+                    <span class="col col-9 col-lg-9">Subtotal</span>
+                    <span class="col col-3 col-lg-3 text-right" v-if="productsInCart.orderPart">
+                        <span class="pr-4">${{productsInCart.orderPart.partTotal.toFixed(2)}}</span>
+                    </span>
+                </div>
+                <hr>
+
+                <div class="row div-total">
+                    <span class="col col-9 col-lg-9 mt-4">Shipping</span>
+                    <span class="col col-3 col-lg-3 mt-4 text-right place-order-total">
+                        <span v-if="shippingMethod.shippingTotal != undefined" class="pr-4">
                             ${{shippingMethod.shippingTotal.toFixed(2)}}
+                        </span>
+                        <span v-else class="pr-4">
+                            $0.00
                         </span>
                     </span>
                     <hr style="width: 96%;">
-                    <span class="col col-lg-6 mt-3 mb-5">Total</span>
-                    <span class="place-order-total col col-lg-1 offset-lg-4 mt-3" v-if="productsInCart.orderHeader">
-                        ${{productsInCart.orderHeader.grandTotal.toFixed(2)}}
+                    <span class="col col-9 col-lg-9 mt-3 mb-5">Total</span>
+                    <span class="col col-3 col-lg-3 mt-3 text-right place-order-total" v-if="productsInCart.orderHeader">
+                        <span class="pr-4">${{productsInCart.orderHeader.grandTotal.toFixed(2)}}</span>
                     </span>
                 </div>
                 
@@ -64,7 +74,7 @@
                 </div>
                 <div class="row">
                     <div class="input-group col">
-                        <input type="text" class="col-lg-7 form-control" placeholder="Enter it here..." aria-label="Input group promotion" aria-describedby="btnGroupAddon" name="promoCode" id="promoCode" v-model="promoCode">
+                        <input type="text" class="col-lg-9 form-control" placeholder="Enter it here..." aria-label="Input group promotion" aria-describedby="btnGroupAddon" name="promoCode" id="promoCode" v-model="promoCode">
                         <div class="input-group-append">
                             <button class="btn btn-outline-info" @click="applyPromotionCode">Apply</button>
                         </div>
@@ -85,7 +95,7 @@
                 <p class="title-check-text" :class="{ 'step-active': selectShippingAddressStatus == 'active', 'step-complete': selectShippingAddressStatus == 'complete'}">                
                     <span v-if="selectShippingAddressStatus == 'active'" class="circle">1</span>
                     <span v-if="selectShippingAddressStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
-                    <span class="text-address">Shipping Address</span>
+                    <span class="text-address">SHIPPING ADDRESS</span>
                     <span data-toggle="collapse" data-target="#shippingAddressCollapse" v-if="selectShippingAddressStatus == 'complete'" 
                         class="text-address change-info float-right" @click="setOptionNavbar(1)">
                         Change
@@ -100,6 +110,7 @@
                         {{shippingAddressSelect.address1}} {{shippingAddressSelect.address2}}
                     </span>
                     <span class="span-description">{{shippingAddressSelect.city}}</span>
+                    <span v-if="postalAddressStateGeoSelected" class="span-description">{{postalAddressStateGeoSelected.geoName}}</span>
                     <span class="span-description">
                         <i class="fa fa-phone phone-icon"></i>
                         {{shippingAddressSelect.contactNumber}}
@@ -120,6 +131,7 @@
                                     {{option.postalAddress.address1}} {{option.postalAddress.address2}}
                                 </span>
                                 <span class="span-description">{{option.postalAddress.city}}</span>
+                                <span v-if="option.postalAddressStateGeo" class="span-description">{{option.postalAddressStateGeo.geoName}}</span>
                                 <span class="span-description">
                                     <i class="fa fa-phone phone-icon"></i>
                                     {{option.telecomNumber.contactNumber}}
@@ -154,7 +166,7 @@
                 <p class="title-check-text"  :class="{ 'step-active': selectShippingMethodStatus == 'active', 'step-complete': selectShippingMethodStatus == 'complete' }">
                     <span v-if="selectShippingMethodStatus != 'complete'" class="circle">2</span>
                     <span v-if="selectShippingMethodStatus == 'complete'" class="circle"> <i class="fa fa-check"></i></span>
-                    <span class="text-address">Shipping Method</span>
+                    <span class="text-address">SHIPPING METHOD</span>
                     <span data-toggle="collapse" data-target="#shippingMethodCollapse" v-if="selectShippingMethodStatus == 'complete'" 
                         class="text-address change-info float-right">Change</span>
                 </p>
@@ -194,7 +206,7 @@
                 <p class="title-check-text" :class="{ 'step-active': selectPaymentMethodStatus == 'active', 'step-complete': selectPaymentMethodStatus == 'complete' }">
                     <span v-if="selectPaymentMethodStatus != 'complete'" class="circle">3</span>
                     <span v-if="selectPaymentMethodStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
-                    <span class="text-address">Payment Methods</span>
+                    <span class="text-address">PAYMENT METHODS</span>
                     <span data-toggle="collapse" data-target="#paymentMethodCollapse" v-if="selectPaymentMethodStatus == 'complete'" class="text-address change-info float-right">Change</span>
                 </p>
                 <hr class="hr" :class="{ 'hr-active': selectPaymentMethodStatus == 'active', 'hr-complete':selectPaymentMethodStatus == 'complete' }">
@@ -241,7 +253,7 @@
                 <p class="title-check-text" :class="{ 'step-active': placeOrderStatus == 'active', 'step-complete': placeOrderStatus == 'complete' }">
                     <span v-if="placeOrderStatus != 'complete'" class="circle">4</span>
                     <span v-if="placeOrderStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
-                    <span class="text-address">Complete Purchase</span>
+                    <span class="text-address">COMPLETE PURCHASE</span>
                 </p>
                 <hr class="hr" :class="{ 'hr-active': placeOrderStatus == 'active', 'hr-complete': placeOrderStatus == 'complete' }">
                 <div id="placeOrderCollapse" class="collapse">
