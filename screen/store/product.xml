@@ -25,13 +25,6 @@ along with this software (see the LICENSE.md file). If not, see
                 <if condition="addOut.orderHeader != null">
                     <set field="addedCorrect" from="true"/>
                 </if>
-                <if condition="categoryId != null">
-                    <set field="categoryId" from="categoryId"/>
-                    <set field="categoryName" from="categoryName"/>
-                </if>
-                <if condition="searchParameter != null">
-                    <set field="searchParameter" from="searchParameter"/>
-                </if>
         </actions>
         <conditional-response url="."><condition><expression>categoryId != null</expression></condition><parameter name="categoryId"/><parameter name="categoryName"/><parameter name="addedCorrect"/></conditional-response>
         <conditional-response url="."><condition><expression>searchParameter != null</expression></condition><parameter name="searchParameter"/><parameter name="addedCorrect"/></conditional-response>
