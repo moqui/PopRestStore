@@ -13,7 +13,7 @@ along with this software (see the LICENSE.md file). If not, see
 <http://creativecommons.org/publicdomain/zero/1.0/>.
 -->
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"   require-authentication="anonymous-view" allow-extra-path="true">
-    <parameter name="searchParameter"/>
+    <parameter name="searchString"/>
     <parameter name="pageIndex"/>
 
     <transition name="addToCart">
@@ -31,17 +31,17 @@ along with this software (see the LICENSE.md file). If not, see
 
     <pre-actions>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
-        <if condition="extraPathNameList &amp;&amp; !searchParameter"><set field="searchParameter" from="extraPathNameList[0]"/></if>
+        <if condition="extraPathNameList &amp;&amp; !searchString"><set field="searchString" from="extraPathNameList[0]"/></if>
         <if condition="extraPathNameList &amp;&amp; !pageIndex"><set field="pageIndex" from="extraPathNameList[1]"/></if>
         <if condition="!pageIndex"><set field="pageIndex" from="0"/></if>
         <if condition="!categoryId"><set field="categoryId" value="RchAllProducts"/></if>
     </pre-actions>
     <actions>
-        <service-call name="popstore.ProductServices.search#Products" out-map="context" 
-            in-map="[term:searchParameter, pageIndex:pageIndex ? pageIndex : '0', pageSize:'12', productStoreId:productStoreId]"/>
+        <service-call name="popstore.SearchServices.search#All" out-map="context"
+            in-map="[searchString:searchString, productStoreId:productStoreId, pageIndex:pageIndex ? pageIndex : '0', pageSize:'12']"/>
+
         <service-call name="popstore.CartServices.get#CartInfo" in-map="context" out-map="productsInCart" />
 
-        <set field="searchString" from="searchString ?: ''"/>
         <set field="productListCount" from="productListCount ?: 0"/>
         <set field="productListPageSize" from="productListPageSize ?: 0"/>
         <set field="productListPageRangeHigh" from="productListPageRangeHigh ?: 0"/>

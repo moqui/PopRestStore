@@ -22,6 +22,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <resource name="store" require-authentication="anonymous-view">
         <id name="productStoreId"><method type="get"><service name="popstore.StoreServices.get#StoreInfo"/></method></id>
+        <resource name="search"><method type="get"><service name="popstore.SearchServices.search#All"/></method></resource>
     </resource>
 
     <!-- Login and Register -->
@@ -58,7 +59,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <resource name="products" require-authentication="anonymous-view">
         <id name="productId"><method type="get"><service name="popstore.ProductServices.get#ProductInfo"/></method></id>
-        <resource name="search"><method type="get"><service name="popstore.ProductServices.search#Products"/></method></resource>
+
         <resource name="reviews">
             <method type="get"><service name="popstore.ProductServices.get#ProductReviews"/></method>
             <method type="post"><service name="popstore.ProductServices.create#ProductReview"/></method>

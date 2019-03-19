@@ -1,3 +1,9 @@
+<#assign
+productList = productSearchResults.productList
+productListCount = productSearchResults.productListCount
+productListPageSize = productSearchResults.productListPageSize
+productListPageRangeHigh = productSearchResults.productListPageRangeHigh>
+
 <div>
 	<div class="container">
         <div class="container mt-2">
@@ -79,15 +85,15 @@
                 <nav aria-label="Page navigation" class="<#if productListCount == 0 || productListCount <= 5 >d-none</#if>">
                     <ul class="pagination justify-content-center">
                         <li class="page-item <#if pageIndex?number == 0>disabled</#if>">
-                            <a class="page-link" href="/store/search/${searchParameter}?pageIndex=${pageIndex?number - 1}">Previous</a>
+                            <a class="page-link" href="/store/search/${searchString}?pageIndex=${pageIndex?number - 1}">Previous</a>
                         </li>
                         <#list 0..((productListCount/ productListPageSize) - 1)?floor as n>
                             <li class="page-item <#if pageIndex?number == n>active</#if>">
-                                <a class="page-link" href="/store/search/${searchParameter}?pageIndex=${n}">${n + 1}</a>
+                                <a class="page-link" href="/store/search/${searchString}?pageIndex=${n}">${n + 1}</a>
                             </li>
                         </#list>
                         <li class="page-item <#if productListCount == productListPageRangeHigh>disabled</#if>">
-                            <a class="page-link" href="/store/search/${searchParameter}?pageIndex=${pageIndex?number + 1}">Next</a>
+                            <a class="page-link" href="/store/search/${searchString}?pageIndex=${pageIndex?number + 1}">Next</a>
                         </li>
                     </ul>
                 </nav>
