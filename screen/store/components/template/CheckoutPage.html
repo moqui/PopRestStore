@@ -21,7 +21,7 @@
                         <p class="item-text-desc">
                             <a class="item-text-desc" :href="'product/' + item.productId">{{item.itemDescription}}</a>
                         </p>
-                        <p v-if="item.unitListPrice" class="last-price">
+                        <p v-if="item.unitListPrice && ((item.unitListPrice - item.unitAmount) != 0)" class="last-price">
                             <del>${{item.unitListPrice}}</del>
                             <span class="place-order-total"> Save ${{(item.unitListPrice - item.unitAmount).toFixed(2)}}</span>
                         </p>
@@ -156,7 +156,7 @@
                         || listShippingAddress == null || listShippingAddress.length == 0 ">
                         Continue
                     </button>
-                    <a data-toggle="modal" data-target="#addressFormModal" @click="cleanShippingAddress()" class="text-add">
+                    <a data-toggle="modal" data-target="#addressFormModal" class="text-add">
                         Add a New Address
                     </a>
                 </div>
@@ -267,11 +267,14 @@
                     </div>
                     <button class="btn btn-place-order col col-lg-12" @click="placeCartOrder(), setCheckoutStepComplete('placeOrder'), setOptionNavbar(5)">Place Order</button>
                 </div>
+                <div>
+                    <br/>
+                    <br/>
+                    <a href="/rc/category/RchAllProducts?pageSize=100" class="btn btn-continue">Keep Shopping</a>
+                </div>
             </div>
-
         </div>
-        <div>
-            
+        <div>            
             <div class="modal fade" id="modal-error">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">

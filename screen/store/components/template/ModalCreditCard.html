@@ -138,7 +138,7 @@
                                 </div>
                             </template>
                             <div class="row justify-content-center button-spacing">
-                                <button type="submit" class="btn btn-info col-sm-6">
+                                <button type="submit" class="btn btn-info col-sm-6" :disabled='isDisabled'>
                                     <span v-if="isUpdate">Update Card</span>
                                     <span v-else>Add Card</span>
                                 </button>

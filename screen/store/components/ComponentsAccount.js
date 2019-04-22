@@ -169,6 +169,7 @@ storeComps.AccountPage = {
             this.shippingAddress = {};
             this.paymentAddressOption = {};
             this.isUpdate = false;
+            this.shippingAddress.countryGeoId = 'USA';
         },
         updateCustomerInfo: function() {
             if (this.customerInfo.username == null || this.customerInfo.username.trim() === "") {

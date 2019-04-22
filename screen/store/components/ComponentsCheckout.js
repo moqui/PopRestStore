@@ -97,6 +97,7 @@ storeComps.CheckOutPage = {
                     }
                 }
                 this.productsInCart = data;
+                this.afterDelete();
             }.bind(this));
         },
         addCartBillingShipping: function(){
@@ -200,6 +201,17 @@ storeComps.CheckOutPage = {
             var data = { "orderId": item.orderId, "orderItemSeqId": item.orderItemSeqId, "quantity": item.quantity };
             ProductService.updateProductQuantity(data, this.axiosConfig)
                 .then(function (data) { this.getCartInfo(); }.bind(this));
+        },
+        afterDelete: function(){       
+            let qtyProducts = 0 ;
+            this.productsInCart.orderItemList.forEach(function(item){
+                if(item.itemTypeEnumId == 'ItemProduct'){
+                    qtyProducts = qtyProducts + 1;
+                }
+            });
+            if(qtyProducts == 0){
+                window.location.href = "/rc/category/RchAllProducts?pageSize=100";
+            }   
         },
         deleteOrderProduct: function(item) {
             ProductService.deleteOrderProduct(item.orderId, item.orderItemSeqId, this.axiosConfig)
