@@ -26,6 +26,7 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="price" type="BigDecimal"/>
             <parameter name="listPrice" type="BigDecimal"/>
             <parameter name="priceUomId"/>
+            <parameter name="productId"/>
 
             <parameter name="productClassDescription"/>
             <parameter name="descriptionLong"/>
