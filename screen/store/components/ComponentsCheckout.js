@@ -274,7 +274,8 @@ storeComps.CheckOutPage = {
             this.postalAddressStateGeoSelected = {geoName: data.postalAddressStateGeo.geoName};
         },
         cleanShippingAddress: function() { this.shippingAddress = {}; this.isUpdate = false; },
-        cleanPaymentMethod: function() { this.paymentMethod = {}; this.isUpdate = false; }
+        cleanPaymentMethod: function() { this.paymentMethod = {}; this.isUpdate = false; },
+        resetData: function(){ $("#modal-card-content").trigger('reset'); }
     },
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {

@@ -9,7 +9,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form class="modal-body" @submit.prevent="addCustomerPaymentMethod" method="post">
+                        <form id="modal-card-content" class="modal-body" @submit.prevent="addCustomerPaymentMethod" method="post">
                             <div v-if="responseMessage != null && responseMessage != ''" 
                                 class="alert alert-primary" role="alert">
                                 {{responseMessage}}

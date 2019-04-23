@@ -293,6 +293,7 @@ storeComps.ModalCreditCard = {
             });
         },
         reset: function(){
+          $("#modal-card-content").trigger('reset');
           this.disabled = false;
           this.responseMessage = null;
           this.paymentAddressOption = "";
