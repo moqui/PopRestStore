@@ -43,6 +43,12 @@ storeComps.CheckOutPage = {
                 this.listShippingAddress = data.postalAddressList;
             }.bind(this));
         },
+        resetData: function() {
+            this.paymentMethod = {};
+            this.shippingAddress = {};
+            this.isUpdate = false;
+            this.shippingAddress.countryGeoId = 'USA';
+        },
 
         onAddressCancel: function() {
             this.hideModal("addressFormModal");
@@ -268,7 +274,8 @@ storeComps.CheckOutPage = {
             this.postalAddressStateGeoSelected = {geoName: data.postalAddressStateGeo.geoName};
         },
         cleanShippingAddress: function() { this.shippingAddress = {}; this.isUpdate = false; },
-        cleanPaymentMethod: function() { this.paymentMethod = {}; this.isUpdate = false; }
+        cleanPaymentMethod: function() { this.paymentMethod = {}; this.isUpdate = false; },
+        resetData: function(){ $("#modal-card-content").trigger('reset'); }
     },
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {

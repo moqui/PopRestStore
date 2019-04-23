@@ -181,6 +181,7 @@ storeComps.ModalAddress = {
       this.shippingAddress.countryGeoId = 'USA';
       this.getRegions(this.shippingAddress.countryGeoId);
       $('#addressModal').on('show.bs.modal', (e) => { this.reset() });
+      $('#addressFormModal').on('show.bs.modal', (e) => { this.reset() });
     }
 };
 storeComps.ModalAddressTemplate = getPlaceholderRoute("template_client_modalAddress", "ModalAddress", storeComps.ModalAddress.props);
@@ -292,6 +293,7 @@ storeComps.ModalCreditCard = {
             });
         },
         reset: function(){
+          $("#modal-card-content").trigger('reset');
           this.disabled = false;
           this.responseMessage = null;
           this.paymentAddressOption = "";
