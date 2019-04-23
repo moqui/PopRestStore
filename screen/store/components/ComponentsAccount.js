@@ -1,5 +1,5 @@
 /* This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. */
-const STORE_COUNTRY = "USA";
+var STORE_COUNTRY = "USA";
 
 storeComps.LoginPage = {
     name: "login",
@@ -341,7 +341,11 @@ storeComps.CreateAccountPage = {
         createAccount: function(event){
             event.preventDefault();
             var emailValidation = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-            var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%.*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,35}$/;
+            var hasNumber = '(?=.*[0-9])';
+            var hasLowercaseChar = '(?=.*[a-z])';
+            var hasUppercaseChar = '(?=.*[A-Z])';
+            var hasSpecialChar = '(?=.*[\\W_])';
+            var expreg = new RegExp('^' + hasNumber + hasLowercaseChar + hasUppercaseChar + hasSpecialChar + '.{8,35}$');
 
             if (this.accountInfo.firstName == null ||  this.accountInfo.firstName.trim() === ""
                   || this.accountInfo.lastName == null || this.accountInfo.lastName.trim() === ""
@@ -354,7 +358,7 @@ storeComps.CreateAccountPage = {
             if (!expreg.test(this.accountInfo.newPassword)) {
                 this.errorMessage = "The password must have at least 8 characters, a special character, a lowercase letter, a capital letter and at least one number.";
                 return;
-            }
+            }console.log('pass passed');
             if (!emailValidation.test(this.accountInfo.emailAddress)) {
                 this.errorMessage = "Insert a valid email.";
                 return;
@@ -370,7 +374,7 @@ storeComps.CreateAccountPage = {
 
             this.accountInfo.newPasswordVerify = this.confirmPassword;
 
-            LoginService.createAccount(this.accountInfo, this.axiosConfig).then(function (data) {
+            LoginService.createAccount(this.accountInfo, this.axiosConfig).then(function (data) {console.log('service called', data);
                 this.login(this.accountInfo.emailAddress, this.accountInfo.newPassword);
             }.bind(this)).catch(function (error) {
                 this.errorMessage = "An error occurred: " + error.response.data.errors;
@@ -378,7 +382,7 @@ storeComps.CreateAccountPage = {
         },
         login: function(userName, password) {
             var user = { username: userName, password: password };
-            LoginService.login(user, this.axiosConfig).then(function (data) {
+            LoginService.login(user, this.axiosConfig).then(function (data) {console.log('logged in', data);
                 this.$root.apiKey = data.apiKey;
                 this.$root.moquiSessionToken = data.moquiSessionToken;
                 this.$router.push({ name: 'account'});
