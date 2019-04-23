@@ -43,6 +43,12 @@ storeComps.CheckOutPage = {
                 this.listShippingAddress = data.postalAddressList;
             }.bind(this));
         },
+        resetData: function() {
+            this.paymentMethod = {};
+            this.shippingAddress = {};
+            this.isUpdate = false;
+            this.shippingAddress.countryGeoId = 'USA';
+        },
 
         onAddressCancel: function() {
             this.hideModal("addressFormModal");
