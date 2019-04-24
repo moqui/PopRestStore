@@ -77,9 +77,15 @@ storeComps.ModalAddress = {
       postalCodeErrorMessage: "",
       stateErrorMessage: "",
       contactNumberErrorMessage: "",
-      regionsList: []
+      regionsList: [],
+      disabled: false
     }; },
     props: ["shippingAddress", "isUpdate", "cancelCallback", "completeCallback"],
+    computed: {
+      isDisabled: function(){
+        return this.disabled;
+      }
+    },
     methods: {
         getRegions: function(geoId) { 
             GeoService.getRegions(geoId).then(function (data){ this.regionsList = data.resultList; }.bind(this));
@@ -153,11 +159,29 @@ storeComps.ModalAddress = {
                 return;
             }
 
+            this.disabled = true;
             CustomerService.addShippingAddress(this.shippingAddress, this.axiosConfig).then(function (data) {
                 this.responseMessage = "";
                 this.completeCallback(data);
             }.bind(this));
+        },
+        reset: function(){
+            this.disabled = false;
+            this.resetToNameErrorMessage();
+            this.resetCountryErrorMessage();
+            this.resetAddressErrorMessage();
+            this.resetCityErrorMessage();
+            this.resetStateErrorMessage();
+            this.resetPostalCodeErrorMessage();
+            this.resetContactNumberErrorMessage();
         }
+    },
+    mounted: function() {
+      this.disabled = false;
+      this.shippingAddress.countryGeoId = 'USA';
+      this.getRegions(this.shippingAddress.countryGeoId);
+      $('#addressModal').on('show.bs.modal', (e) => { this.reset() });
+      $('#addressFormModal').on('show.bs.modal', (e) => { this.reset() });
     }
 };
 storeComps.ModalAddressTemplate = getPlaceholderRoute("template_client_modalAddress", "ModalAddress", storeComps.ModalAddress.props);
@@ -178,9 +202,15 @@ storeComps.ModalCreditCard = {
       postalCodeErrorMessage: "",
       stateErrorMessage: "",
       contactNumberErrorMessage: "",
-      regionsList: []
+      regionsList: [],
+      disabled: true
     }; },
     props: ["paymentMethod", "isUpdate", "addressList", "cancelCallback", "completeCallback"],
+    computed: {
+      isDisabled: function(){
+        return this.disabled;
+      }
+    },
     methods: {
         getRegions: function(geoId) { 
             GeoService.getRegions(geoId).then(function (data){ this.regionsList = data.resultList; }.bind(this));
@@ -253,6 +283,7 @@ storeComps.ModalCreditCard = {
             }
             if (this.isUpdate) { this.paymentMethod.cardNumber = ""; }
 
+            this.disabled = true;
             CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
                 this.responseMessage = "";
                 this.completeCallback(data);
@@ -260,7 +291,17 @@ storeComps.ModalCreditCard = {
               // handle error
               this.responseMessage = error.response.data.errors;
             });
+        },
+        reset: function(){
+          $("#modal-card-content").trigger('reset');
+          this.disabled = false;
+          this.responseMessage = null;
+          this.paymentAddressOption = "";
         }
+    },
+    mounted: function() {
+      this.disabled = false;
+      $('#creditCardModal').on('show.bs.modal', (e) => { this.reset() });
     }
 };
 storeComps.ModalCreditCardTemplate = getPlaceholderRoute("template_client_modalCreditCard", "ModalCreditCard", storeComps.ModalCreditCard.props);

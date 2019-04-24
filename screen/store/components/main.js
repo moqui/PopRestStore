@@ -27,9 +27,23 @@ var appObjects = {
     }
 };
 
+const fixIdScrolling = {
+    watch: {
+        $route(to, from) {
+            const currentRoute = this.$router.currentRoute;
+            const idToScrollTo = currentRoute.hash;
+            this.$nextTick(() => {
+                if (idToScrollTo && document.querySelector(idToScrollTo)) {
+                    document.querySelector(idToScrollTo).scrollIntoView();
+                }
+            });
+        },
+    },
+};
 // TODO: leave this, reminder to use vue.min.js for production: Vue.config.productionTip = false;
 
 var storeApp = new Vue({
+    mixins: [fixIdScrolling],
     el: "#app",
     router: appObjects.router,
     // state: { categories: [], user: null },

@@ -43,6 +43,12 @@ storeComps.CheckOutPage = {
                 this.listShippingAddress = data.postalAddressList;
             }.bind(this));
         },
+        resetData: function() {
+            this.paymentMethod = {};
+            this.shippingAddress = {};
+            this.isUpdate = false;
+            this.shippingAddress.countryGeoId = 'USA';
+        },
 
         onAddressCancel: function() {
             this.hideModal("addressFormModal");
@@ -97,6 +103,7 @@ storeComps.CheckOutPage = {
                     }
                 }
                 this.productsInCart = data;
+                this.afterDelete();
             }.bind(this));
         },
         addCartBillingShipping: function(){
@@ -201,6 +208,17 @@ storeComps.CheckOutPage = {
             ProductService.updateProductQuantity(data, this.axiosConfig)
                 .then(function (data) { this.getCartInfo(); }.bind(this));
         },
+        afterDelete: function(){       
+            let qtyProducts = 0 ;
+            this.productsInCart.orderItemList.forEach(function(item){
+                if(item.itemTypeEnumId == 'ItemProduct'){
+                    qtyProducts = qtyProducts + 1;
+                }
+            });
+            if(qtyProducts == 0){
+                window.location.href = "/rc/category/RchAllProducts?pageSize=100";
+            }   
+        },
         deleteOrderProduct: function(item) {
             ProductService.deleteOrderProduct(item.orderId, item.orderItemSeqId, this.axiosConfig)
                 .then(function (data) { this.getCartInfo(); }.bind(this));
@@ -256,7 +274,8 @@ storeComps.CheckOutPage = {
             this.postalAddressStateGeoSelected = {geoName: data.postalAddressStateGeo.geoName};
         },
         cleanShippingAddress: function() { this.shippingAddress = {}; this.isUpdate = false; },
-        cleanPaymentMethod: function() { this.paymentMethod = {}; this.isUpdate = false; }
+        cleanPaymentMethod: function() { this.paymentMethod = {}; this.isUpdate = false; },
+        resetData: function(){ $("#modal-card-content").trigger('reset'); }
     },
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {

@@ -9,7 +9,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form class="modal-body" @submit.prevent="addCustomerPaymentMethod" method="post">
+                        <form id="modal-card-content" class="modal-body" @submit.prevent="addCustomerPaymentMethod" method="post">
                             <div v-if="responseMessage != null && responseMessage != ''" 
                                 class="alert alert-primary" role="alert">
                                 {{responseMessage}}
@@ -138,7 +138,7 @@
                                 </div>
                             </template>
                             <div class="row justify-content-center button-spacing">
-                                <button type="submit" class="btn btn-info col-sm-6">
+                                <button type="submit" class="btn btn-info col-sm-6" :disabled='isDisabled'>
                                     <span v-if="isUpdate">Update Card</span>
                                     <span v-else>Add Card</span>
                                 </button>

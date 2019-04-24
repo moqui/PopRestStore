@@ -13,7 +13,7 @@
                     <div class="modal-body">
                         <!-- Recipient Field -->
                         <div class="form-group row justify-content-between">
-                            <label for="name" class="col-form-label modal-text ml-3">To</label>
+                            <label for="name" class="col-form-label modal-text ml-3">To<span>&nbsp;*</span></label>
                             <div class="col-sm-8 col-xs-12">
                                 <input  id="name"
                                         class="form-control"
@@ -56,7 +56,7 @@
                         </div>
                         <!-- Address -->
                         <div class="form-group row justify-content-between">
-                            <label for="address1" class="col-form-label modal-text ml-3">Address</label>
+                            <label for="address1" class="col-form-label modal-text ml-3">Address<span>&nbsp;*</span></label>
                             <div class="col-sm-8 col-xs-12">
                                 <input  id="address1"
                                         class="form-control" input-border
@@ -82,7 +82,7 @@
                         </div>
                         <!-- City -->
                         <div class="form-group row justify-content-between">
-                            <label for="city" class="col-form-label modal-text ml-3">City</label>
+                            <label for="city" class="col-form-label modal-text ml-3">City<span>&nbsp;*</span></label>
                             <div class="col-sm-8 col-xs-12">
                                 <input  id="city"
                                         class="form-control"
@@ -97,12 +97,13 @@
                         </div>
                         <!-- State -->
                         <div class="form-group row justify-content-between">
-                            <label for="state" class="col-form-label modal-text ml-3">State</label>
+                            <label for="state" class="col-form-label modal-text ml-3">State<span>&nbsp;*</span></label>
                             <div class="col-sm-8 col-xs-12">
                                 <select id="state"
                                         v-model="shippingAddress.stateProvinceGeoId"
                                         class="form-control"
-                                        @focus="resetStateErrorMessage(shippingAddress.stateProvinceGeoId)">
+                                        @focus="resetStateErrorMessage(shippingAddress.stateProvinceGeoId)"
+                                        required>
                                     <option v-for="region in regionsList" :value="region.geoId">{{region.geoName}}</option>
                                 </select>
                                 <div v-if="stateErrorMessage != null && stateErrorMessage != ''">
@@ -112,7 +113,7 @@
                         </div>
                         <!-- Postal code -->
                         <div class="form-group row justify-content-between">
-                            <label for="postalcode" class="col-form-label modal-text ml-3">Postcode</label>
+                            <label for="postalcode" class="col-form-label modal-text ml-3">Postcode<span>&nbsp;*</span></label>
                             <div class="col-sm-8 col-xs-12">
                                 <input id="postalcode"
                                        class="form-control"
@@ -127,7 +128,7 @@
                         </div>
                         <!-- Phone number -->
                         <div class="form-group row justify-content-between">
-                            <label for="contactnumber" class="col-form-label modal-text ml-3">Phone Number</label>
+                            <label for="contactnumber" class="col-form-label modal-text ml-3">Phone Number<span>&nbsp;*</span></label>
                             <div class="col-sm-8 col-xs-12">
                                 <input id="contactnumber"
                                        class="form-control"
@@ -142,7 +143,7 @@
                         </div>
                         <!-- Action buttons-->
                         <div class="row justify-content-center">
-                            <button @click="addCustomerShippingAddress" class="btn btn-info flex-fill col col-sm-6">
+                            <button @click="addCustomerShippingAddress" class="btn btn-info flex-fill col col-sm-6" :disabled='isDisabled'>
                                 <span v-if="isUpdate">Update Address</span>
                                 <span v-else>Add Address</span>
                             </button>
