@@ -12,7 +12,7 @@
                     <span class="col col-3 col-sm-3 text-center">Price</span>
                 </p>
                 <hr class="hr">
-                <div class="row" v-for="item in productsInCart.orderItemList" :key="item.productId" v-if="item.itemTypeEnumId != 'ItemShipping'">
+                <div class="row" v-for="item in productsInCart.orderItemList" :key="item.itemTypeEnumId + '' + item.productId" v-if="item.itemTypeEnumId != 'ItemShipping'">
                     <div class="col col-sm-2 d-none d-sm-block">
                         <product-image :productId="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'"
                            class="mb-1"/>
@@ -235,6 +235,10 @@
                                 <span class="span-description">{{item.paymentMethod.titleOnAccount}}</span>
                                 <span class="span-description">Expires on {{item.creditCard.expireDate}}</span>
                             </label>
+                            <span @click="deletePaymentMethod(item.paymentMethodId)"
+                                class="delete-icon">  
+                                <i class="fas fa-trash-alt"></i>
+                            </span>
                         </div>
                     </div>
                     <br>
