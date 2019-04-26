@@ -408,7 +408,7 @@ along with this software (see the LICENSE.md file). If not, see
                             listFeatures.put(content, 
                             [[productFeatureId:productFeature.productFeatureId, 
                             productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, 
-                            description:productFeature.description, abbrev:productFeature.abbrev]])
+                            description:productFeature.description, abbrev:productFeature.abbrev, price:selectedPrices]])
                         } else {
                             boolean isItemInList = false
                             for(int i=0; i < featureSet.size(); i++) {
@@ -420,7 +420,7 @@ along with this software (see the LICENSE.md file). If not, see
                             if(!isItemInList) {
                                 featureSet.add([productFeatureId:productFeature.productFeatureId, 
                                 productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, 
-                                description:productFeature.description, abbrev:productFeature.abbrev])
+                                description:productFeature.description, abbrev:productFeature.abbrev, price:selectedPrices])
                             }
                         }
 

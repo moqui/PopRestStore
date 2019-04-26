@@ -359,7 +359,7 @@ storeComps.CreateAccountPage = {
             if (!expreg.test(this.accountInfo.newPassword)) {
                 this.errorMessage = "The password must have at least 8 characters, a special character, a lowercase letter, a capital letter and at least one number.";
                 return;
-            }console.log('pass passed');
+            }
             if (!emailValidation.test(this.accountInfo.emailAddress)) {
                 this.errorMessage = "Insert a valid email.";
                 return;
@@ -375,7 +375,7 @@ storeComps.CreateAccountPage = {
 
             this.accountInfo.newPasswordVerify = this.confirmPassword;
 
-            LoginService.createAccount(this.accountInfo, this.axiosConfig).then(function (data) {console.log('service called', data);
+            LoginService.createAccount(this.accountInfo, this.axiosConfig).then(function (data) {
                 this.login(this.accountInfo.emailAddress, this.accountInfo.newPassword);
             }.bind(this)).catch(function (error) {
                 this.errorMessage = "An error occurred: " + error.response.data.errors;
@@ -383,7 +383,7 @@ storeComps.CreateAccountPage = {
         },
         login: function(userName, password) {
             var user = { username: userName, password: password };
-            LoginService.login(user, this.axiosConfig).then(function (data) {console.log('logged in', data);
+            LoginService.login(user, this.axiosConfig).then(function (data) {
                 this.$root.apiKey = data.apiKey;
                 this.$root.moquiSessionToken = data.moquiSessionToken;
                 this.$router.push({ name: 'account'});
