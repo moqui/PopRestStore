@@ -343,10 +343,10 @@ storeComps.CreateAccountPage = {
             event.preventDefault();
             var emailValidation = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
             var hasNumber = '(?=.*[0-9])';
-            var hasLowercaseChar = '(?=.*[a-z])';
-            var hasUppercaseChar = '(?=.*[A-Z])';
+            // var hasLowercaseChar = '(?=.*[a-z])';
+            // var hasUppercaseChar = '(?=.*[A-Z])';
             var hasSpecialChar = '(?=.*[\\W_])';
-            var expreg = new RegExp('^' + hasNumber + hasLowercaseChar + hasUppercaseChar + hasSpecialChar + '.{8,35}$');
+            var expreg = new RegExp('^' + hasNumber /* + hasLowercaseChar + hasUppercaseChar */ + hasSpecialChar + '.{8,35}$');
 
             if (this.accountInfo.firstName == null ||  this.accountInfo.firstName.trim() === ""
                   || this.accountInfo.lastName == null || this.accountInfo.lastName.trim() === ""
