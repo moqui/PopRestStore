@@ -30,7 +30,13 @@ storeComps.LoginPage = {
                         this.$router.push({ name: preLoginRoute.name});
                     }
                 }
-            }.bind(this)).catch(function (error) { this.loginErrormessage = error.response.data.errors; }.bind(this));
+            }.bind(this))
+            .catch(function (error) { 
+                if(!!error.response && !!error.response.headers){
+                    this.axiosConfig.headers.moquiSessionToken = error.response.headers.moquisessiontoken;
+                }                
+                this.loginErrormessage = error.response.data.errors; 
+            }.bind(this));
         },
         checkLoginState: function() {
             var em = this;
@@ -378,6 +384,9 @@ storeComps.CreateAccountPage = {
             LoginService.createAccount(this.accountInfo, this.axiosConfig).then(function (data) {
                 this.login(this.accountInfo.emailAddress, this.accountInfo.newPassword);
             }.bind(this)).catch(function (error) {
+                if(!!error.response && !!error.response.headers){
+                    this.axiosConfig.headers.moquiSessionToken = error.response.headers.moquisessiontoken;
+                }
                 this.errorMessage = "An error occurred: " + error.response.data.errors;
             }.bind(this));
         },
@@ -388,6 +397,9 @@ storeComps.CreateAccountPage = {
                 this.$root.moquiSessionToken = data.moquiSessionToken;
                 this.$router.push({ name: 'account'});
             }.bind(this)).catch(function (error) {
+                if(!!error.response && !!error.response.headers){
+                    this.axiosConfig.headers.moquiSessionToken = error.response.headers.moquisessiontoken;
+                }
                 this.errorMessage = error.response.data.errors;
             }.bind(this));
         }
