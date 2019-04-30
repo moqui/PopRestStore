@@ -357,7 +357,7 @@ storeComps.CreateAccountPage = {
                 return;
             }
             if (!expreg.test(this.accountInfo.newPassword)) {
-                this.errorMessage = "The password must have at least 8 characters, a special character, a lowercase letter, a capital letter and at least one number.";
+                this.errorMessage = "The password must have at least 8 characters, including a special character and a number.";
                 return;
             }
             if (!emailValidation.test(this.accountInfo.emailAddress)) {
