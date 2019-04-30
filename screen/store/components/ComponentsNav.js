@@ -288,9 +288,15 @@ storeComps.ModalCreditCard = {
                 this.responseMessage = "";
                 this.completeCallback(data);
             }.bind(this)).catch(function (error) {
-              // handle error
-              this.responseMessage = error.response.data.errors;
-            });
+                var errorString = error.response.data.errors;
+                var sensitiveDataIndex = errorString.indexOf("(for field");
+
+                if (sensitiveDataIndex > -1) {
+                    this.responseMessage = errorString.slice(0, sensitiveDataIndex);
+                }
+
+                this.disabled = false;
+            }.bind(this));
         },
         reset: function(){
           $("#modal-card-content").trigger('reset');
