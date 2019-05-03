@@ -54,7 +54,7 @@
                             ${{shippingMethod.shippingTotal.toFixed(2)}}
                         </span>
                         <span v-else class="pr-4">
-                            $0.00
+                            ${{shippingItemPrice.toFixed(2)}}
                         </span>
                     </span>
                     <hr style="width: 96%;">
@@ -272,7 +272,7 @@
                     <button class="btn btn-place-order col col-lg-12" @click="placeCartOrder(), setCheckoutStepComplete('placeOrder'), setOptionNavbar(5)">Place Order</button>
                 </div>
                 <div class="text-center">
-                    <a href="/rc/category/RchAllProducts?pageSize=100" class="btn text-add">Keep Shopping</a>
+                    <a href="/rc/category/RchAllProducts" class="btn text-add">Keep Shopping</a>
                 </div>
             </div>
         </div>
