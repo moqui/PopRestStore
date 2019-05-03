@@ -44,7 +44,7 @@ storeComps.LoginPage = {
                 if(response && response.status == 'connected') {
                     $.ajax({
                         type: "GET",
-                        url: 'https://graph.facebook.com/v3.2/me?fields=id,first_name,last_name,email',
+                        url: 'https://graph.facebook.com/v3.3/me?fields=id,first_name,last_name,email',
                         data: { 'access_token':response.authResponse.accessToken },
                         success: (result) => {
                             var userData = {
