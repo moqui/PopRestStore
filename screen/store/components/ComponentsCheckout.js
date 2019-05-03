@@ -228,7 +228,7 @@ storeComps.CheckOutPage = {
                 }
             });
             if(qtyProducts == 0){
-                window.location.href = "/rc/category/RchAllProducts?pageSize=100";
+                window.location.href = "/rc/category/RchAllProducts";
             }   
         },
         deleteOrderProduct: function(item) {
