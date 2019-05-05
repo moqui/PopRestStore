@@ -567,7 +567,7 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="locale"/>
             <parameter name="orderBy" default-value="sequenceNum"/>
             <parameter name="pageIndex" default="0"/>
-            <parameter name="pageSize" default="6"/>
+            <parameter name="pageSize" default="100"/>
         </in-parameters>
         <out-parameters>
             <parameter name="productList" type="List"><parameter name="productInfo" type="Map">

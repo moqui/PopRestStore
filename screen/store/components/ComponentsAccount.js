@@ -30,7 +30,13 @@ storeComps.LoginPage = {
                         this.$router.push({ name: preLoginRoute.name});
                     }
                 }
-            }.bind(this)).catch(function (error) { this.loginErrormessage = error.response.data.errors; }.bind(this));
+            }.bind(this))
+            .catch(function (error) { 
+                if(!!error.response && !!error.response.headers){
+                    this.axiosConfig.headers.moquiSessionToken = error.response.headers.moquisessiontoken;
+                }                
+                this.loginErrormessage = error.response.data.errors; 
+            }.bind(this));
         },
         checkLoginState: function() {
             var em = this;
@@ -38,7 +44,7 @@ storeComps.LoginPage = {
                 if(response && response.status == 'connected') {
                     $.ajax({
                         type: "GET",
-                        url: 'https://graph.facebook.com/v3.2/me?fields=id,first_name,last_name,email',
+                        url: 'https://graph.facebook.com/v3.3/me?fields=id,first_name,last_name,email',
                         data: { 'access_token':response.authResponse.accessToken },
                         success: (result) => {
                             var userData = {
@@ -60,15 +66,20 @@ storeComps.LoginPage = {
         },
         changePassword: function(event) {
             event.preventDefault();
-            var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,35}$/;
-            if(this.passwordInfo.username == null || this.passwordInfo.username.trim() == "") {
+
+            var hasNumber = '(?=.*[0-9])';
+            // var hasLowercaseChar = '(?=.*[a-z])';
+            // var hasUppercaseChar = '(?=.*[A-Z])';
+            var hasSpecialChar = '(?=.*[\\W_])';
+            var expreg = new RegExp('^' + hasNumber /* + hasLowercaseChar + hasUppercaseChar */ + hasSpecialChar + '.{8,35}$');
+
+            if (this.passwordInfo.username == null || this.passwordInfo.username.trim() == "") {
                 this.responseMessage = "You must enter a valid username";
                 return;
             }
 
             if (!expreg.test(this.passwordInfo.newPassword)) {
-                this.responseMessage = "The password must have at least 8 characters, a special character," +
-                    " a lowercase letter, a capital letter and at least one number.";
+                this.responseMessage = "The password must have at least 8 characters, including a special character and a number.";
                 return;
             }
 
@@ -110,10 +121,15 @@ storeComps.ResetPasswordPage = {
         },
         changePassword: function(event) {
             event.preventDefault();
-            var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,35}$/;
+            
+            var hasNumber = '(?=.*[0-9])';
+            // var hasLowercaseChar = '(?=.*[a-z])';
+            // var hasUppercaseChar = '(?=.*[A-Z])';
+            var hasSpecialChar = '(?=.*[\\W_])';
+            var expreg = new RegExp('^' + hasNumber /* + hasLowercaseChar + hasUppercaseChar */ + hasSpecialChar + '.{8,35}$');
+
             if (!expreg.test(this.passwordInfo.newPassword)) {
-                this.responseMessage = "The password must have at least 8 characters, a special character," +
-                    " a lowercase letter, a capital letter and at least one number.";
+                this.responseMessage = "The password must have at least 8 characters, including a special character and a number.";
                 return;
             }
 
@@ -205,10 +221,15 @@ storeComps.AccountPage = {
         },
         updateCustomerPassword: function(event) {
             event.preventDefault();
-            var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%.*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,35}$/;
+
+            var hasNumber = '(?=.*[0-9])';
+            // var hasLowercaseChar = '(?=.*[a-z])';
+            // var hasUppercaseChar = '(?=.*[A-Z])';
+            var hasSpecialChar = '(?=.*[\\W_])';
+            var expreg = new RegExp('^' + hasNumber /* + hasLowercaseChar + hasUppercaseChar */ + hasSpecialChar + '.{8,35}$');
+
             if (!expreg.test(this.passwordInfo.newPassword)) {
-                this.responseMessage = "The password must have at least 8 characters, a special character," +
-                    " a lowercase letter, a capital letter and at least one number.";
+                this.responseMessage = "The password must have at least 8 characters, including a special character and a number.";
                 return;
             }
 
@@ -343,10 +364,10 @@ storeComps.CreateAccountPage = {
             event.preventDefault();
             var emailValidation = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
             var hasNumber = '(?=.*[0-9])';
-            var hasLowercaseChar = '(?=.*[a-z])';
-            var hasUppercaseChar = '(?=.*[A-Z])';
+            // var hasLowercaseChar = '(?=.*[a-z])';
+            // var hasUppercaseChar = '(?=.*[A-Z])';
             var hasSpecialChar = '(?=.*[\\W_])';
-            var expreg = new RegExp('^' + hasNumber + hasLowercaseChar + hasUppercaseChar + hasSpecialChar + '.{8,35}$');
+            var expreg = new RegExp('^' + hasNumber /* + hasLowercaseChar + hasUppercaseChar */ + hasSpecialChar + '.{8,35}$');
 
             if (this.accountInfo.firstName == null ||  this.accountInfo.firstName.trim() === ""
                   || this.accountInfo.lastName == null || this.accountInfo.lastName.trim() === ""
@@ -357,7 +378,7 @@ storeComps.CreateAccountPage = {
                 return;
             }
             if (!expreg.test(this.accountInfo.newPassword)) {
-                this.errorMessage = "The password must have at least 8 characters, a special character, a lowercase letter, a capital letter and at least one number.";
+                this.errorMessage = "The password must have at least 8 characters, including a special character and a number.";
                 return;
             }
             if (!emailValidation.test(this.accountInfo.emailAddress)) {
@@ -378,6 +399,9 @@ storeComps.CreateAccountPage = {
             LoginService.createAccount(this.accountInfo, this.axiosConfig).then(function (data) {
                 this.login(this.accountInfo.emailAddress, this.accountInfo.newPassword);
             }.bind(this)).catch(function (error) {
+                if(!!error.response && !!error.response.headers){
+                    this.axiosConfig.headers.moquiSessionToken = error.response.headers.moquisessiontoken;
+                }
                 this.errorMessage = "An error occurred: " + error.response.data.errors;
             }.bind(this));
         },
@@ -388,6 +412,9 @@ storeComps.CreateAccountPage = {
                 this.$root.moquiSessionToken = data.moquiSessionToken;
                 this.$router.push({ name: 'account'});
             }.bind(this)).catch(function (error) {
+                if(!!error.response && !!error.response.headers){
+                    this.axiosConfig.headers.moquiSessionToken = error.response.headers.moquisessiontoken;
+                }
                 this.errorMessage = error.response.data.errors;
             }.bind(this));
         }

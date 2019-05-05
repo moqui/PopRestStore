@@ -12,20 +12,13 @@ storeComps.CheckOutPage = {
     data: function() { return {
             homePath: "", customerInfo: {}, productsInCart: [], shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
             billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "",
-            countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0",
+            countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0", shippingItemPrice: 0,
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
             cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: {}, urlList: {}, 
             freeShipping:false, promoSuccess: "", stateGuestCustomer:2, selectShippingAddressStatus: 'active', selectShippingMethodStatus:0, selectPaymentMethodStatus:0, placeOrderStatus:0,
             listShippingOptions: [], optionNavbar:1, axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
             "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
         }; 
-    },
-    computed: {
-        shippingItemPrice: function() {
-            var item = this.productsInCart.orderItemList?this.productsInCart.orderItemList.find(function(item) {
-                return item.itemTypeEnumId == 'ItemShipping'; }):0;
-            return item ? item.unitAmount : 0;
-        }
     },
     methods: {
         notAddressSeleted: function() {
@@ -72,7 +65,25 @@ storeComps.CheckOutPage = {
 
         getCartShippingOptions: function() {
             ProductService.getCartShippingOptions(this.axiosConfig)
-                .then(function (data) { this.listShippingOptions = data.shippingOptions;}.bind(this));
+                .then(function (data) { 
+                    this.listShippingOptions = data.shippingOptions;
+
+                    for(var i in this.listShippingOptions){
+                        if(!!this.listShippingOptions[i].shippingTotal){
+                            this.listShippingOptions[i].shippingTotal = parseFloat(this.listShippingOptions[i].shippingTotal).toFixed(2);
+                        }
+                    }
+
+                    // Look for shipping option
+                    var option = this.listShippingOptions?
+                               this.listShippingOptions.find(function(item) {return item.shipmentMethodDescription == "Ground Parcel"}):0;
+
+                    // Update the shipping option value
+                    if(!!option){
+                        option.shippingTotal = parseFloat(this.shippingItemPrice).toFixed(2);
+                        this.shippingOption = option.carrierPartyId + ':' + option.shipmentMethodEnumId;
+                    }
+                }.bind(this));
         },
         getRegions: function(geoId) { GeoService.getRegions(geoId).then(function (data){ this.regionsList = data.resultList; }.bind(this)); },
         getCartInfo: function() {
@@ -96,8 +107,16 @@ storeComps.CheckOutPage = {
                     }
                 }
                 this.productsInCart = data;
+                this.setShippingItemPrice();
                 this.afterDelete();
             }.bind(this));
+        },
+        setShippingItemPrice: function(){
+            // Retrieve the ItemShipping from orderItemList
+            var item = this.productsInCart.orderItemList?
+                       this.productsInCart.orderItemList.find(function(item) {return item.itemTypeEnumId == 'ItemShipping'; }):0;
+            // Parse the default value retrieved from orderItemList setting two decimal
+            this.shippingItemPrice = parseFloat(item? item.unitAmount : 0);            
         },
         addCartBillingShipping: function(){
             var info = {
@@ -209,7 +228,7 @@ storeComps.CheckOutPage = {
                 }
             });
             if(qtyProducts == 0){
-                window.location.href = "/rc/category/RchAllProducts?pageSize=100";
+                window.location.href = "/rc/category/RchAllProducts";
             }   
         },
         deleteOrderProduct: function(item) {
