@@ -10,11 +10,11 @@ Vue.component("checkout-navbar", storeComps.CheckoutNavbarTemplate);
 storeComps.CheckOutPage = {
     name: "checkout-page",
     data: function() { return {
-            homePath: "", customerInfo: {}, productsInCart: [], shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
+            cvv: "", showCvvError: false, homePath: "", customerInfo: {}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
             billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "",
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0", shippingItemPrice: 0,
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
-            cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: {}, urlList: {}, 
+            cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: 0, urlList: {}, 
             freeShipping:false, promoSuccess: "", stateGuestCustomer:2, selectShippingAddressStatus: 'active', selectShippingMethodStatus:0, selectPaymentMethodStatus:0, placeOrderStatus:0,
             listShippingOptions: [], optionNavbar:1, axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
             "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
@@ -34,6 +34,7 @@ storeComps.CheckOutPage = {
         getCustomerShippingAddresses: function() {
             CustomerService.getShippingAddresses(this.axiosConfig).then(function (data) {
                 this.listShippingAddress = data.postalAddressList;
+                this.getCartInfo();
             }.bind(this));
         },
         onAddressCancel: function() {
@@ -43,7 +44,6 @@ storeComps.CheckOutPage = {
         onAddressUpserted: function(data) {
             this.shippingAddress = {};
             this.addressOption = data.postalContactMechId + ':' + data.telecomContactMechId;
-            console.log(this.addressOption);
             this.getCustomerShippingAddresses();
             this.hideModal("addressFormModal");
         },
@@ -93,7 +93,11 @@ storeComps.CheckOutPage = {
                     this.addressOption = data.postalAddress.contactMechId + ':' + data.postalAddress.telecomContactMechId;
                     this.shippingAddressSelect = data.postalAddress;
                     this.shippingAddressSelect.contactNumber = data.telecomNumber.contactNumber;
+                } else if (this.listShippingAddress.length) {
+                    // Preselect first address
+                    this.addressOption = this.listShippingAddress[0].postalContactMechId + ':' + this.listShippingAddress[0].telecomContactMechId;
                 }
+
                 if (data.paymentInfoList && data.paymentInfoList.length) {
                     this.paymentOption = data.paymentInfoList[0].payment.paymentMethodId;
                     this.billingAddressOption = data.paymentInfoList[0].paymentMethod.postalContactMechId + ':' +data.paymentInfoList[0].paymentMethod.telecomContactMechId;
@@ -105,7 +109,11 @@ storeComps.CheckOutPage = {
                             break;
                         }
                     }
+                } else if (this.listPaymentMethods.length) {
+                    // Preselect first payment option
+                    this.paymentOption = this.listPaymentMethods[0].paymentMethodId;
                 }
+
                 this.productsInCart = data;
                 this.setShippingItemPrice();
                 this.afterDelete();
@@ -118,7 +126,21 @@ storeComps.CheckOutPage = {
             // Parse the default value retrieved from orderItemList setting two decimal
             this.shippingItemPrice = parseFloat(item? item.unitAmount : 0);            
         },
-        addCartBillingShipping: function(){
+        validateCvv: function () {
+            var isCvvValid = new RegExp("^\\d{3,4}$").test(this.cvv);
+
+            if (!isCvvValid) {
+                this.showCvvError = true;
+
+                return;
+            }
+
+            this.showCvvError = false;
+            this.addCartBillingShipping();
+            this.setCheckoutStepComplete('selectPaymentMethod');
+            this.setOptionNavbar(4);
+        },
+        addCartBillingShipping: function() {
             var info = {
                 "shippingPostalContactMechId":this.addressOption.split(':')[0], 
                 "shippingTelecomContactMechId":this.addressOption.split(':')[1],
@@ -127,29 +149,9 @@ storeComps.CheckOutPage = {
                 "shipmentMethodEnumId":this.shippingOption.split(':')[1]
             };
             ProductService.addCartBillingShipping(info,this.axiosConfig).then(function (data) {
-                this.paymentId = data;
+                this.paymentId = data.paymentId;
                 this.getCartInfo();
-            }.bind(this));
-        },
-        setCheckoutStepActive: function(step) { 
-            switch (step){
-                case "selectShippingAddress":
-                    this.selectShippingAddressStatus = "active";
-                    $('#shippingAddressCollapse').collapse("show");
-                    break;
-                case "selectShippingMethod":
-                    this.selectShippingMethodStatus = "active";
-                    $('#shippingMethodCollapse').collapse("show");
-                    break;
-                case "selectPaymentMethod":
-                    this.selectPaymentMethodStatus = "active";
-                    $('#paymentMethodCollapse').collapse("show");
-                    break;
-                case "placeOrder":
-                    this.placeOrderStatus = "active";
-                    $('#placeOrderCollapse').collapse("show");
-                    break;  
-            }
+            }.bind(this)); 
         },
         setCheckoutStepComplete: function(step) { 
             switch (step){
@@ -167,15 +169,20 @@ storeComps.CheckOutPage = {
                     break;  
             }
         },    
-        setOptionNavbar: function(option) { 
-            this.optionNavbar = option; 
+        setOptionNavbar: function(option) {
+            this.optionNavbar = option;
         },
         getCustomerPaymentMethods: function() {
             CustomerService.getPaymentMethods(this.axiosConfig)
-                .then(function (data) { this.listPaymentMethods = data.methodInfoList; }.bind(this));
+                .then(function (data) {
+                    this.listPaymentMethods = data.methodInfoList;
+                    this.getCartInfo();
+            }.bind(this));
         },
         placeCartOrder: function() {
-            var data = { "cardSecurityCodeByPaymentId": this.paymentId };
+            var data = { cardSecurityCodeByPaymentId: {} };
+            data.cardSecurityCodeByPaymentId[this.paymentId] = this.cvv;
+
             this.isSpinner = true;
             ProductService.placeCartOrder(data,this.axiosConfig).then(function (data) {
                 if(data.orderHeader != null) {
@@ -293,7 +300,10 @@ storeComps.CheckOutPage = {
             this.shippingAddress = {};
             this.isUpdate = false;
             this.shippingAddress.countryGeoId = 'USA';
-        }
+        },
+        clearCvv: function () {
+            this.cvv = "";
+        },
     },
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
@@ -304,7 +314,6 @@ storeComps.CheckOutPage = {
             this.showProp65 = storeConfig.show_prop_65_warning;
             this.getCustomerInfo();
             this.getCartShippingOptions();
-            this.getCartInfo();
             this.getCustomerShippingAddresses();
             this.getCustomerPaymentMethods();
             this.getRegions('USA');

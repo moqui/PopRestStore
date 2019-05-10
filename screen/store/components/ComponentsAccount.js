@@ -40,6 +40,22 @@ storeComps.LoginPage = {
         },
         checkLoginState: function() {
             var em = this;
+
+            /* Used to test locally
+            var userData = {
+                firstName: 'Sergio',
+                lastName: 'Loaiza',
+                email: 'sergio011@hotmail.com'
+            };
+            LoginService.loginFB(userData, em.axiosConfig).then(function (data) {console.log(data);
+                em.$root.apiKey = data.apiKey;
+                this.$router.push({ name: "account"});
+            }.bind(this)).catch(function (error) {
+                console.log('FB Login Error', error);
+            });
+
+            return; */
+
             FB.login(function(response) {
                 if(response && response.status == 'connected') {
                     $.ajax({
@@ -54,7 +70,7 @@ storeComps.LoginPage = {
                             };
                             LoginService.loginFB(userData, em.axiosConfig).then(function (data) {
                                 em.$root.apiKey = data.apiKey;
-                                this.$router.push({ name: "account"});
+                                this.$router.push({ name: "account" });
                             });
                         },
                         error: (error) => { console.error(error) } 
@@ -329,7 +345,7 @@ storeComps.AccountPage = {
             this.hideModal("creditCardModal");
         },
 
-        onCreditCardSet: function(address) {
+        onCreditCardSet: function(address) {console.log(address);
             this.getCustomerPaymentMethods();
             this.hideModal("creditCardModal");
         }
