@@ -51,10 +51,10 @@
                     <span class="col col-9 col-lg-9 mt-4">Shipping</span>
                     <span class="col col-3 col-lg-3 mt-4 text-right place-order-total">
                         <span v-if="shippingMethod.shippingTotal != undefined" class="pr-4">
-                            ${{shippingMethod.shippingTotal.toFixed(2)}}
+                            ${{Number(shippingMethod.shippingTotal).toFixed(2)}}
                         </span>
                         <span v-else class="pr-4">
-                            ${{shippingItemPrice.toFixed(2)}}
+                            {{ shippingItemPrice !== 0 ? "$" + shippingItemPrice.toFixed(2) : "FREE" }}
                         </span>
                     </span>
                     <hr style="width: 96%;">
@@ -175,14 +175,14 @@
                 <div v-if="selectShippingMethodStatus == 'complete' && optionNavbar !== 2" class="div-total">
                     <span class="span-description">
                     {{shippingMethod.shipmentMethodDescription}}
-                    <span class="float-right" v-if="shippingMethod.shippingTotal">${{shippingMethod.shippingTotal.toFixed(2)}}</span>
+                    <span class="float-right" v-if="shippingMethod.shippingTotal">${{Number(shippingMethod.shippingTotal).toFixed(2)}}</span>
                     </span>    
                 </div>
 
                 <!-- Shipping method collapses -->
                 <div v-if="optionNavbar === 2" id="shippingMethodCollapse">
                     <div v-for="(option, index) in listShippingOptions">
-                        <div :class="{ 'div-checkmark': shippingOption == option.carrierPartyId + ':' + option.shipmentMethodEnumId }">
+                        <div v-if="option.shippingTotal" :class="{ 'div-checkmark': shippingOption == option.carrierPartyId + ':' + option.shipmentMethodEnumId }">
                             <label :for="index + 'r2'" class="container-input">
                             <input :id="index + 'r2'" type="radio" :value="option.carrierPartyId + ':' + option.shipmentMethodEnumId" v-model="shippingOption" @click="shippingMethod = option" />
                             <span class="checkmark"></span>

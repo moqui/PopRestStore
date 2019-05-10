@@ -213,8 +213,8 @@ General Order Placement and eCommerce Usage
 
             <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
             <set field="orderId" from="cartOrderId"/>
-
-            <service-call name="mantle.order.OrderServices.add#OrderProductQuantity" in-map="context" out-map="addOut"/>
+            <set field="defaultOrderParameters" from="[salesChannelEnumId:'ScWeb']" />
+            <service-call name="mantle.order.OrderServices.add#OrderProductQuantity" in-map="context + defaultOrderParameters" out-map="addOut"/>
             <set field="sessionAttributes.cartOrderId" from="addOut.orderId"/>
 
             <service-call name="popstore.CartServices.get#CartInfo" out-map="context"/>
