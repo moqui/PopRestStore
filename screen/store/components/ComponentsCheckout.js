@@ -10,7 +10,7 @@ Vue.component("checkout-navbar", storeComps.CheckoutNavbarTemplate);
 storeComps.CheckOutPage = {
     name: "checkout-page",
     data: function() { return {
-            cvv: "", showCvvError: false, homePath: "", customerInfo: {}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
+            cvv: "", showCvvError: false, homePath: "", storePath: "", customerInfo: {}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
             billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "",
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0", shippingItemPrice: 0,
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
@@ -235,7 +235,7 @@ storeComps.CheckOutPage = {
                 }
             });
             if(qtyProducts == 0){
-                window.location.href = "/rc/category/RchAllProducts";
+                window.location.href = this.storePath;
             }   
         },
         deleteOrderProduct: function(item) {
@@ -311,6 +311,7 @@ storeComps.CheckOutPage = {
             this.$router.push({ name: 'login'}); 
         } else {
             this.homePath = storeConfig.homePath;
+            this.storePath = storeConfig.storePath;
             this.showProp65 = storeConfig.show_prop_65_warning;
             this.getCustomerInfo();
             this.getCartShippingOptions();
