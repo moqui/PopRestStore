@@ -188,7 +188,7 @@
                             <span class="checkmark"></span>
                             {{option.carrierPartyId == '_NA_' ? '' : (option.carrierName + ' - ')}}
                             {{option.shipmentMethodDescription}}
-                            <span class="float-right">${{option.shippingTotal}}</span>
+                            <span class="float-right">{{ Number(option.shippingTotal) !== 0 ? "$" + option.shippingTotal : "FREE" }}</span>
                             </label>
                         </div>
                     </div>

@@ -33,7 +33,7 @@ storeComps.CheckOutPage = {
             .then(function (data) { this.customerInfo = data; }.bind(this)); },
         getCustomerShippingAddresses: function() {
             CustomerService.getShippingAddresses(this.axiosConfig).then(function (data) {
-                this.listShippingAddress = data.postalAddressList;
+                this.listShippingAddress = data.postalAddressList || [];
                 this.getCartInfo();
             }.bind(this));
         },
