@@ -21,6 +21,7 @@ along with this software (see the LICENSE.md file). If not, see
             authzTypeEnumId="AUTHZT_ALWAYS" authzActionEnumId="AUTHZA_ALL"/>
 
     <moqui.basic.Enumeration enumCode="homePath" description="Base path for store application" enumId="PsstHomePath" enumTypeId="ProductStoreSettingType"/>
+    <moqui.basic.Enumeration enumCode="store_path" description="Base path for store's product list" enumId="PsstStorePath" enumTypeId="ProductStoreSettingType"/>
 
     <!-- client template setting types -->
     <moqui.basic.Enumeration enumCode="template_client_account" description="Template Client Account Page" enumId="PsstTemplateClientAccount" enumTypeId="ProductStoreSettingType"/>

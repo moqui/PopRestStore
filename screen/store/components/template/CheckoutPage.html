@@ -51,10 +51,10 @@
                     <span class="col col-9 col-lg-9 mt-4">Shipping</span>
                     <span class="col col-3 col-lg-3 mt-4 text-right place-order-total">
                         <span v-if="shippingMethod.shippingTotal != undefined" class="pr-4">
-                            ${{shippingMethod.shippingTotal.toFixed(2)}}
+                            ${{Number(shippingMethod.shippingTotal).toFixed(2)}}
                         </span>
                         <span v-else class="pr-4">
-                            ${{shippingItemPrice.toFixed(2)}}
+                            {{ shippingItemPrice !== 0 ? "$" + shippingItemPrice.toFixed(2) : "FREE" }}
                         </span>
                     </span>
                     <hr style="width: 96%;">
@@ -96,7 +96,7 @@
                     <span v-if="selectShippingAddressStatus == 'active'" class="circle">1</span>
                     <span v-if="selectShippingAddressStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
                     <span class="text-address">SHIPPING ADDRESS</span>
-                    <span data-toggle="collapse" data-target="#shippingAddressCollapse" v-if="selectShippingAddressStatus == 'complete'" 
+                    <span v-if="selectShippingAddressStatus == 'complete'" 
                         class="text-address change-info float-right" @click="setOptionNavbar(1)">
                         Change
                     </span>
@@ -104,7 +104,7 @@
                 <!-- Horizontal dividing line -->
                 <hr class="hr" :class="{ 'hr-active': selectShippingAddressStatus == 'active', 'hr-complete':selectShippingAddressStatus == 'complete' }"> 
                 <!-- The selected shipping address -->
-                <div v-if="selectShippingAddressStatus == 'complete'" class="div-total">
+                <div v-if="selectShippingAddressStatus == 'complete' && optionNavbar !== 1" class="div-total">
                     <span class="span-description">{{shippingAddressSelect.toName}}</span>
                     <span class="span-description">
                         {{shippingAddressSelect.address1}} {{shippingAddressSelect.address2}}
@@ -117,7 +117,7 @@
                     </span>
                 </div>
                 <!-- The address collapses -->
-                <div id="shippingAddressCollapse" class="collapse show">
+                <div v-if="optionNavbar === 1" id="shippingAddressCollapse">
                     <div v-for="(option, index) in listShippingAddress">
                         <div :class="{ 'div-checkmark': addressOption == option.postalContactMechId + ':' +
                             option.telecomContactMechId }">
@@ -150,8 +150,8 @@
                     </div>
                     <br>
                     <!-- Buttons    -->
-                    <button data-toggle="collapse" data-target="#shippingAddressCollapse" 
-                        @click="addCartBillingShipping(), setCheckoutStepActive('selectShippingMethod'), setCheckoutStepComplete('selectShippingAddress'), setOptionNavbar(2)" class="btn btn-continue float-right" 
+                    <button
+                        @click="addCartBillingShipping(), setCheckoutStepComplete('selectShippingAddress'), setOptionNavbar(2)" class="btn btn-continue float-right" 
                         :disabled="addressOption == null || addressOption == '' 
                         || listShippingAddress == null || listShippingAddress.length == 0 ">
                         Continue
@@ -160,29 +160,29 @@
                         Add a New Address
                     </a>
                 </div>
-                <br>
+                <br />
                 
                 <!-- Shipping method section title-->
                 <p class="title-check-text"  :class="{ 'step-active': selectShippingMethodStatus == 'active', 'step-complete': selectShippingMethodStatus == 'complete' }">
                     <span v-if="selectShippingMethodStatus != 'complete'" class="circle">2</span>
                     <span v-if="selectShippingMethodStatus == 'complete'" class="circle"> <i class="fa fa-check"></i></span>
                     <span class="text-address">SHIPPING METHOD</span>
-                    <span data-toggle="collapse" data-target="#shippingMethodCollapse" v-if="selectShippingMethodStatus == 'complete'" 
-                        class="text-address change-info float-right">Change</span>
+                    <span v-if="selectShippingMethodStatus == 'complete'" 
+                        class="text-address change-info float-right" @click="setOptionNavbar(2)">Change</span>
                 </p>
                 <!-- The selected shipping method -->
                 <hr class="hr" :class="{ 'hr-active': selectShippingMethodStatus == 'active', 'hr-complete':selectShippingMethodStatus == 'complete' }">
-                <div v-if="selectShippingMethodStatus == 'complete'" class="div-total">
+                <div v-if="selectShippingMethodStatus == 'complete' && optionNavbar !== 2" class="div-total">
                     <span class="span-description">
                     {{shippingMethod.shipmentMethodDescription}}
-                    <span class="float-right" v-if="shippingMethod.shippingTotal">${{shippingMethod.shippingTotal.toFixed(2)}}</span>
+                    <span class="float-right" v-if="shippingMethod.shippingTotal">${{Number(shippingMethod.shippingTotal).toFixed(2)}}</span>
                     </span>    
                 </div>
 
                 <!-- Shipping method collapses -->
-                <div id="shippingMethodCollapse" class="collapse">
+                <div v-if="optionNavbar === 2" id="shippingMethodCollapse">
                     <div v-for="(option, index) in listShippingOptions">
-                        <div :class="{ 'div-checkmark': shippingOption == option.carrierPartyId + ':' + option.shipmentMethodEnumId }">
+                        <div v-if="option.shippingTotal" :class="{ 'div-checkmark': shippingOption == option.carrierPartyId + ':' + option.shipmentMethodEnumId }">
                             <label :for="index + 'r2'" class="container-input">
                             <input :id="index + 'r2'" type="radio" :value="option.carrierPartyId + ':' + option.shipmentMethodEnumId" v-model="shippingOption" @click="shippingMethod = option" />
                             <span class="checkmark"></span>
@@ -193,10 +193,10 @@
                         </div>
                     </div>
                     <br>
-                    <button data-toggle="collapse" data-target="#shippingMethodCollapse"  
-                        @click="addCartBillingShipping(), setCheckoutStepActive('selectPaymentMethod'), setCheckoutStepComplete('selectShippingMethod'), setOptionNavbar(3)" class="btn btn-continue float-right" 
-                        :disabled="shippingOption == null || shippingOption == '' || 
-                        listShippingOptions == null || listShippingOptions.length == 0">
+                    <button  
+                        @click="addCartBillingShipping(), setCheckoutStepComplete('selectShippingMethod'), setOptionNavbar(3)" class="btn btn-continue float-right" 
+                        :disabled="shippingOption == null || shippingOption == '' ||  listShippingOptions == null || listShippingOptions.length == 0"
+                        style="margin-top: -15px;"><!-- Style needed to keep button away from next section -->
                         Continue
                     </button>
                 </div>
@@ -207,10 +207,10 @@
                     <span v-if="selectPaymentMethodStatus != 'complete'" class="circle">3</span>
                     <span v-if="selectPaymentMethodStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
                     <span class="text-address">PAYMENT METHODS</span>
-                    <span data-toggle="collapse" data-target="#paymentMethodCollapse" v-if="selectPaymentMethodStatus == 'complete'" class="text-address change-info float-right">Change</span>
+                    <span v-if="selectPaymentMethodStatus == 'complete'" class="text-address change-info float-right" @click="setOptionNavbar(3)">Change</span>
                 </p>
                 <hr class="hr" :class="{ 'hr-active': selectPaymentMethodStatus == 'active', 'hr-complete':selectPaymentMethodStatus == 'complete' }">
-                <div v-if="selectPaymentMethodStatus == 'complete'" class="div-total">
+                <div v-if="selectPaymentMethodStatus == 'complete' && optionNavbar !== 3" class="div-total">
                     <span class="span-description">{{paymentMethod.description}}</span>
                     <span class="span-description">{{paymentMethod.titleOnAccount}}</span>
                     <span class="span-description">{{paymentMethod.expireMonth}}/{{paymentMethod.expireYear}}</span>
@@ -224,30 +224,34 @@
                         <span class="span-description"><i class="fa fa-phone phone-icon"></i>{{paymentMethod.contactNumber}}</span>
                     </template>
                 </div>
-                <div id="paymentMethodCollapse" class="collapse">
-                    <div v-for="(item,index) in listPaymentMethods">
-                        <div :class="{ 'div-checkmark': paymentOption == item.paymentMethodId }">
-                            <label  :for="index + 'r3'" class="container-input">
+                <div v-if="optionNavbar === 3" id="paymentMethodCollapse">
+                    <div class="col" v-for="(item,index) in listPaymentMethods">
+                        <div class="row" :class="{ 'div-checkmark': paymentOption == item.paymentMethodId }">
+                            <label  :for="index + 'r3'" class="container-input col-11">
                                 <input :id="index + 'r3'"  type="radio" :value="item.paymentMethodId" v-model="paymentOption"
-                                    @click="selectPaymentMethod(item)"/>
+                                    @click="selectPaymentMethod(item), clearCvv()"/>
                                 <span class="checkmark"></span>
                                 <span class="span-description">{{item.paymentMethod.description}}</span>
                                 <span class="span-description">{{item.paymentMethod.titleOnAccount}}</span>
                                 <span class="span-description">Expires on {{item.creditCard.expireDate}}</span>
+                                <div v-if="paymentOption == item.paymentMethodId" class="input-group selected-card-cvv">
+                                    <input id="cvv" type="text" class="form-control col-4" v-model="cvv" placeholder="CVV" />
+                                    <div v-if="showCvvError" class="text-danger">Card security code must be either 3 or 4 numeric characters</div>
+                                </div>
                             </label>
-                            <span @click="deletePaymentMethod(item.paymentMethodId)"
-                                class="delete-icon">  
+                            <div @click="deletePaymentMethod(item.paymentMethodId)"
+                                class="delete-icon margin-top--10px col-1">  
                                 <i class="fas fa-trash-alt"></i>
-                            </span>
+                            </div>
                         </div>
+                        <br />
                     </div>
-                    <br>
+                    <br />
                     <a data-toggle="modal" data-target="#creditCardModal" class="text-add" @click="resetData()">
                         Add a Credit Card
                     </a>
-                    <button data-toggle="collapse" 
-                        data-target="#paymentMethodCollapse"  class="btn btn-continue float-right" 
-                        @click="addCartBillingShipping(), setCheckoutStepActive('placeOrder'), setCheckoutStepComplete('selectPaymentMethod'),setOptionNavbar(4)" 
+                    <button class="btn btn-continue float-right" 
+                        @click="validateCvv()" 
                         :disabled="paymentOption == null || paymentOption == '' || listPaymentMethods == null ||
                         listPaymentMethods.length == 0">
                         Continue
@@ -260,7 +264,7 @@
                     <span class="text-address">COMPLETE PURCHASE</span>
                 </p>
                 <hr class="hr" :class="{ 'hr-active': placeOrderStatus == 'active', 'hr-complete': placeOrderStatus == 'complete' }">
-                <div id="placeOrderCollapse" class="collapse">
+                <div v-if="optionNavbar === 4" id="placeOrderCollapse">
                     <div class="div-place-order">
                         <p class="text-center">YOUR TOTAL IS: 
                             <span class="place-order-total" v-if="productsInCart.orderHeader">
@@ -272,7 +276,7 @@
                     <button class="btn btn-place-order col col-lg-12" @click="placeCartOrder(), setCheckoutStepComplete('placeOrder'), setOptionNavbar(5)">Place Order</button>
                 </div>
                 <div class="text-center">
-                    <a href="/rc/category/RchAllProducts" class="btn text-add">Keep Shopping</a>
+                    <a :href="storePath" class="btn text-add">Keep Shopping</a>
                 </div>
             </div>
         </div>
