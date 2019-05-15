@@ -95,41 +95,44 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="email" required="true"/>
         </in-parameters>
         <out-parameters>
-            <parameter name="apiKey"/>
-            <parameter name="moquiSessionToken"/>
-            <parameter name="customerInfo" type="Map"/>
+            <!-- <parameter name="apiKey"/> -->
+            <parameter name="moquiSessionToken" />
         </out-parameters>
         <actions>
             <script>
                 import org.moqui.impl.context.UserFacadeImpl
+                import com.restfb.*
+                import com.restfb.types.User
+                import com.restfb.exception.FacebookException
+
+                User fbUser = new User()
+                fbUser.firstName = firstName
+                fbUser.lastName = lastName
+                fbUser.email = email
 
                 ec.artifactExecution.disableAuthz()
-                if (ec.entity.find("moqui.security.UserAccount").condition("username", email).count() == 0) {
+                if (ec.entity.find("moqui.security.UserAccount").condition("username", fbUser.email).count() == 0) {
                     // no UserAccount for the email and we should create one with corresponding party
-                    Map partiesByEmail = ec.service.sync().name("popstore.CustomerServices.find#PartyByEmail")
-                            .parameters(emailAddress: email).call();
+                    Map partiesByEmail = ec.service.sync().name("ridgecrest.PartyServices.find#PartyByEmail")
+                            .parameters(emailAddress: fbUser.email).call();
                     def partyId
                     Set partyIds = partiesByEmail.partyIds;
                     if (!partyIds) {
                         Map personRes = ec.service.sync().name("mantle.party.PartyServices.create#Person")
-                                .parameters([firstName: firstName, lastName: lastName, roleTypeId: "Customer"]).call()
+                                .parameters([firstName: fbUser.firstName, lastName: fbUser.lastName, roleTypeId: "Customer"]).call()
                         partyId = personRes.partyId
                         ec.service.sync().name("mantle.party.ContactServices.create#EmailAddress")
-                                .parameters(emailAddress: email, partyId: partyId, contactMechPurposeId: "EmailPrimary").call()
+                                .parameters(emailAddress: fbUser.email, partyId: partyId, contactMechPurposeId: "EmailPrimary").call()
                     } else {
                         partyId = partyIds.first();
                     }
                     ec.service.sync().name("mantle.party.PartyServices.create#PartyUserAccount")
-                            .parameters([partyId: partyId, emailAddress: email]).call()
+                            .parameters([partyId: partyId, emailAddress: fbUser.email]).call()
                 }
                 UserFacadeImpl userFacade = ec.user as UserFacadeImpl
-                userFacade.internalLoginUser(email)
+                userFacade.internalLoginUser(fbUser.email)
             </script>
-            <!-- create the login key to return -->
-            <set field="apiKey" from="ec.user.getLoginKey()"/>
             <set field="moquiSessionToken" from="ec.web.sessionToken"/>
-
-            <service-call name="popstore.CustomerServices.get#CustomerInfo" out-map="customerInfo"/>
         </actions>
     </service>
 
