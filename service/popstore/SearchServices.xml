@@ -89,21 +89,33 @@ along with this software (see the LICENSE.md file). If not, see
                 <if condition="!productCategoryId">
                     <entity-find entity-name="mantle.product.store.ProductStoreCategory" list="searchPscList" cache="true">
                         <date-filter/><econdition field-name="productStoreId"/>
-                        <econdition field-name="storeCategoryTypeEnumId" value="PsctBrowseRoot"/>
+                        <econdition field-name="storeCategoryTypeEnumId" value="PsctViewAllow"/>
                     </entity-find>
                     <set field="productCategoryId" from="searchPscList?.first()?.PsctSearch"/>
                 </if>
             </if>
-            <if condition="!productCategoryId"><return type="danger" message="No search category found"/></if>
+            <if condition="!productCategoryId"><return type="danger" message="No search category found for store ${productStoreId}"/></if>
 
             <!-- TODO/FUTURE: better handling of search input for more natural results -->
             <if condition="searchString"><set field="esSearchString" from="searchString.split(' ').collect({ (!it || it in ['AND', 'OR', 'NOT'] || it.contains('*')) ? it : it + '*' }).join(' ')"/></if>
-            <set field="queryString" from="(esSearchString ? esSearchString + ' AND ' : '') + 'categories.productCategoryId:' + productCategoryId"/>
+            <!-- NOTE: with ElasticSearch and a date range query like this there is a time zone issue, reliable by date but not exact time -->
+            <set field="nowTimeLong" from="ec.user.nowTimestamp.time"/>
+            <script><![CDATA[
+                nestedQueryMap = [categories:"""{"bool":{"must":[ {"match":{"categories.productCategoryId":"${productCategoryId}"}},
+                        {"range":{"categories.categoryFromDate":{"lte":${nowTimeLong}}}},
+                        {"bool":{"should":[{"range":{"categories.categoryThruDate":{"gte":${nowTimeLong}}}}, {"bool":{"must_not":{"exists":{"field":"categories.categoryThruDate"}}}}]}}
+                    ]}}"""]
+            ]]></script>
+            <!-- old/alt approach, doesn't work, use nestedQueryMap instead:
+                <set field="queryString" from="(esSearchString ? esSearchString + ' AND ' : '') + 'categories.productCategoryId:' + productCategoryId + ' AND categories.categoryFromDate:[* TO ' + nowTimeLong + ']' + ' AND categories.categoryThruDate:[' + nowTimeLong + ' TO *]'"/> -->
+            <set field="queryString" from="esSearchString"/>
+            <!-- <log level="warn" message="productDataDocumentId: ${productDataDocumentId}\n queryString: ${queryString}\n nestedQueryMap: ${nestedQueryMap}"/> -->
 
             <entity-find-one entity-name="moqui.entity.document.DataDocument" value-field="productDataDocument" cache="true">
                 <field-map field-name="dataDocumentId" from="productDataDocumentId"/></entity-find-one>
             <service-call name="org.moqui.search.SearchServices.search#DataDocuments" out-map="productSearchOut"
-                          in-map="[queryString:queryString, indexName:productDataDocument.indexName, documentType:productDataDocument.dataDocumentId, pageIndex:pageIndex, pageSize:pageSize]"/>
+                    in-map="[queryString:queryString, nestedQueryMap:nestedQueryMap, indexName:productDataDocument.indexName,
+                        documentType:productDataDocument.dataDocumentId, pageIndex:pageIndex, pageSize:pageSize]"/>
             <set field="productList" from="productSearchOut.documentList"/>
             <set field="productListCount" from="productSearchOut.documentListCount"/>
             <set field="productListPageIndex" from="productSearchOut.documentListPageIndex"/>
