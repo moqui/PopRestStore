@@ -20,6 +20,11 @@ storeComps.CheckOutPage = {
             "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
         }; 
     },
+    computed: {
+        shippingPrice: function () {
+            return this.shippingMethod && this.shippingMethod.shippingTotal != undefined ? Number(this.shippingMethod.shippingTotal) : this.shippingItemPrice;
+        },
+    },
     methods: {
         notAddressSeleted: function() {
             return (this.addressOption == null || this.addressOption == '' 
