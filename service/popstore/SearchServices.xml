@@ -100,10 +100,27 @@ along with this software (see the LICENSE.md file). If not, see
             <if condition="searchString"><set field="esSearchString" from="searchString.split(' ').collect({ (!it || it in ['AND', 'OR', 'NOT'] || it.contains('*')) ? it : it + '*' }).join(' ')"/></if>
             <set field="queryString" from="(esSearchString ? esSearchString + ' AND ' : '') + 'categories.productCategoryId:' + productCategoryId"/>
 
+            <script><![CDATA[
+                String thruDateQuery = """{
+                    "bool" : {
+                        "should": [
+                            {
+                                "range": {"categories.categoryThruDate": {"gte": "${new Date().format('yyyy-MM-dd HH:mm:ss.SSS')}"}}
+                            },
+                            {
+                                "bool": {"must_not": {"exists": {"field": "categories.categoryThruDate"}}}
+                            }
+                        ]
+                    }
+                }""";
+
+
+            ]]></script>
+
             <entity-find-one entity-name="moqui.entity.document.DataDocument" value-field="productDataDocument" cache="true">
                 <field-map field-name="dataDocumentId" from="productDataDocumentId"/></entity-find-one>
             <service-call name="org.moqui.search.SearchServices.search#DataDocuments" out-map="productSearchOut"
-                          in-map="[queryString:queryString, indexName:productDataDocument.indexName, documentType:productDataDocument.dataDocumentId, pageIndex:pageIndex, pageSize:pageSize]"/>
+                          in-map="[queryString:queryString, nestedQueryMap:['categories': thruDateQuery], indexName:productDataDocument.indexName, documentType:productDataDocument.dataDocumentId, pageIndex:pageIndex, pageSize:pageSize]"/>
             <set field="productList" from="productSearchOut.documentList"/>
             <set field="productListCount" from="productSearchOut.documentListCount"/>
             <set field="productListPageIndex" from="productSearchOut.documentListPageIndex"/>
