@@ -42,7 +42,7 @@
                 <div class="row div-total">
                     <span class="col col-9 col-lg-9">Subtotal</span>
                     <span class="col col-3 col-lg-3 text-right" v-if="productsInCart.orderPart">
-                        <span class="pr-4">${{productsInCart.orderPart.partTotal.toFixed(2)}}</span>
+                        <span class="pr-4">${{(productsInCart.orderPart.partTotal - shippingPrice).toFixed(2)}}</span>
                     </span>
                 </div>
                 <hr>
@@ -50,11 +50,8 @@
                 <div class="row div-total">
                     <span class="col col-9 col-lg-9 mt-4">Shipping</span>
                     <span class="col col-3 col-lg-3 mt-4 text-right place-order-total">
-                        <span v-if="shippingMethod.shippingTotal != undefined" class="pr-4">
-                            ${{Number(shippingMethod.shippingTotal).toFixed(2)}}
-                        </span>
-                        <span v-else class="pr-4">
-                            {{ shippingItemPrice !== 0 ? "$" + shippingItemPrice.toFixed(2) : "FREE" }}
+                        <span class="pr-4">
+                            {{ shippingPrice !== 0 ? "$" + shippingPrice.toFixed(2) : "FREE" }}
                         </span>
                     </span>
                     <hr style="width: 96%;">
@@ -188,7 +185,7 @@
                             <span class="checkmark"></span>
                             {{option.carrierPartyId == '_NA_' ? '' : (option.carrierName + ' - ')}}
                             {{option.shipmentMethodDescription}}
-                            <span class="float-right">${{option.shippingTotal}}</span>
+                            <span class="float-right">{{ Number(option.shippingTotal) !== 0 ? "$" + option.shippingTotal : "FREE" }}</span>
                             </label>
                         </div>
                     </div>

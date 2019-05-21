@@ -63,6 +63,18 @@ along with this software (see the LICENSE.md file). If not, see
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
         <if condition="extraPathNameList &amp;&amp; !productId"><set field="productId" from="extraPathNameList[0]"/></if>
         <if condition="extraPathNameList &amp;&amp; !addedCorrect"><set field="addedCorrect" from="extraPathNameList[1]"/></if>
+
+        <!-- if user requests product variant then display the virtual with proper selection -->
+        <entity-find entity-name="mantle.product.ProductAssoc" list="productAssocs">
+            <econdition field-name="toProductId" from="productId"/>
+            <econdition field-name="productAssocTypeEnumId" value="PatVariant"/>
+            <date-filter/>
+        </entity-find>
+
+        <if condition="productAssocs">
+            <set field="selectedOptionId" from="productId"/>
+            <set field="productId" from="productAssocs[0].productId"/>
+        </if>
     </pre-actions>
     <actions>
         <service-call name="popstore.ProductServices.get#ProductInfo" out-map="product" in-map="[productId:productId]"/>

@@ -39,31 +39,35 @@ storeComps.LoginPage = {
             }.bind(this));
         },
         checkLoginState: function() {
-            var em = this;
-
             FB.login(function(response) {
                 if(response && response.status == 'connected') {
                     $.ajax({
                         type: "GET",
                         url: 'https://graph.facebook.com/v3.3/me?fields=id,first_name,last_name,email',
                         data: { 'access_token':response.authResponse.accessToken },
-                        success: (result) => {
+                        success: function (result) {
                             var userData = {
                                 firstName: result.first_name,
                                 lastName: result.last_name,
                                 email: result.email
                             };
-                            LoginService.loginFB(userData, em.axiosConfig).then(function (data) {
-                                em.$root.apiKey = data.apiKey;
-                                this.$router.push({ name: "account" });
-                            });
-                        },
-                        error: (error) => { console.error(error) } 
+                            LoginService.loginFB(userData, this.axiosConfig).then(function (data) {
+                                this.$root.moquiSessionToken = data.moquiSessionToken;
+
+                                if (!data.apiKey) {
+                                    window.location.reload();
+                                } else {
+                                    this.$root.apiKey = data.apiKey;
+                                    this.$router.push({ name: "account" });
+                                }
+                            }.bind(this));
+                        }.bind(this),
+                        error: function (error) { console.error(error) } 
                     });
                 } else {
                     console.error(response);
                 }
-            }, {scope: 'public_profile,email'});
+            }.bind(this), {scope: 'public_profile,email'});
         },
         changePassword: function(event) {
             event.preventDefault();

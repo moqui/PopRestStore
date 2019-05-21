@@ -20,6 +20,11 @@ storeComps.CheckOutPage = {
             "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
         }; 
     },
+    computed: {
+        shippingPrice: function () {
+            return this.shippingMethod && this.shippingMethod.shippingTotal != undefined ? Number(this.shippingMethod.shippingTotal) : this.shippingItemPrice;
+        },
+    },
     methods: {
         notAddressSeleted: function() {
             return (this.addressOption == null || this.addressOption == '' 
@@ -33,7 +38,7 @@ storeComps.CheckOutPage = {
             .then(function (data) { this.customerInfo = data; }.bind(this)); },
         getCustomerShippingAddresses: function() {
             CustomerService.getShippingAddresses(this.axiosConfig).then(function (data) {
-                this.listShippingAddress = data.postalAddressList;
+                this.listShippingAddress = data.postalAddressList || [];
                 this.getCartInfo();
             }.bind(this));
         },
