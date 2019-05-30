@@ -15,7 +15,7 @@
 
             <div class="navbar-collapse collapse">
                 <form id="form-search" class="search-input" action="#">
-                    <input type="text" placeholder="Search..." name="search" id="search" value="${searchString!''}">
+                    <input type="text" placeholder="Search..." name="search" id="search" value="${searchParameter!''}">
                     <button class="search-button" type="submit">
                         <i class="fa fa-search"></i>
                     </button>

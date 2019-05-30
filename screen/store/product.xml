@@ -16,6 +16,7 @@ along with this software (see the LICENSE.md file). If not, see
         require-authentication="anonymous-view" allow-extra-path="true">
     <parameter name="productId"/>
     <parameter name="addedCorrect"/>
+    <parameter name="categoryId"/>
 
     <transition name="addToCart">
         <actions>
@@ -61,8 +62,10 @@ along with this software (see the LICENSE.md file). If not, see
      	<set field="star" from="5"/>
         <set field="imgContent" from="[]"/>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
+        <if condition="searchParameter"><set field="searchParameter" from="URLEncoder.encode(searchParameter, 'UTF-8')"/></if>
         <if condition="extraPathNameList &amp;&amp; !productId"><set field="productId" from="extraPathNameList[0]"/></if>
         <if condition="extraPathNameList &amp;&amp; !addedCorrect"><set field="addedCorrect" from="extraPathNameList[1]"/></if>
+        <if condition="extraPathNameList &amp;&amp; !categoryId"><set field="categoryId" from="extraPathNameList[2]"/></if>
 
         <!-- if user requests product variant then display the virtual with proper selection -->
         <entity-find entity-name="mantle.product.ProductAssoc" list="productAssocs">
@@ -93,6 +96,10 @@ along with this software (see the LICENSE.md file). If not, see
                 <set field="inStock" from="true"/>
             </if>
         </else>
+        </if>
+
+        <if condition="categoryId">
+            <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="category" in-map="[productCategoryId:categoryId]"/>
         </if>
         
         <set field="specialInstrLocation" from="product.contentList.find({'PcntSpecialInstr' == it.productContentTypeEnumId})?.contentLocation"/>

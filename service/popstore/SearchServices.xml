@@ -16,7 +16,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <service verb="search" noun="All">
         <in-parameters>
-            <parameter name="searchString"/>
+            <parameter name="searchParameter"/>
             <parameter name="productStoreId" required="true"/>
             <parameter name="productCategoryId"/>
             <parameter name="locale"/>
@@ -24,7 +24,7 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="pageSize" type="Integer" default="20"/>
         </in-parameters>
         <out-parameters>
-            <parameter name="searchString"/>
+            <parameter name="searchParameter"/>
             <parameter name="productSearchResults"/>
             <parameter name="contentSearchResults"/>
             <parameter name="blogSearchResults"/>
@@ -38,22 +38,22 @@ along with this software (see the LICENSE.md file). If not, see
             </if>
             <if condition="productDataDocumentId">
                 <service-call name="popstore.SearchServices.search#Products" out-map="productSearchResults"
-                        in-map="[searchString:searchString, productDataDocumentId:productDataDocumentId, pageIndex:pageIndex, pageSize:pageSize, productStoreId: productStoreId]"/>
+                        in-map="[searchParameter:searchParameter, productDataDocumentId:productDataDocumentId, pageIndex:pageIndex, pageSize:pageSize, productStoreId: productStoreId]"/>
             </if>
             <if condition="contentDataDocumentId">
                 <service-call name="popstore.SearchServices.search#Content" out-map="contentSearchResults"
-                          in-map="[searchString:searchString, contentDataDocumentId:productStore.contentDataDocumentId, pageIndex:pageIndex, pageSize:pageSize]"/>
+                          in-map="[searchParameter:searchParameter, contentDataDocumentId:productStore.contentDataDocumentId, pageIndex:pageIndex, pageSize:pageSize]"/>
             </if>
             <if condition="blogDataDocumentId">
                 <service-call name="popstore.SearchServices.search#Blog" out-map="blogSearchResults"
-                          in-map="[searchString:searchString, blogDataDocumentId:productStore.blogDataDocumentId, pageIndex:pageIndex, pageSize:pageSize]"/>
+                          in-map="[searchParameter:searchParameter, blogDataDocumentId:productStore.blogDataDocumentId, pageIndex:pageIndex, pageSize:pageSize]"/>
             </if>
         </actions>
     </service>
 
     <service verb="search" noun="Products">
         <in-parameters>
-            <parameter name="searchString"/>
+            <parameter name="searchParameter"/>
             <parameter name="productDataDocumentId"/>
             <parameter name="productCategoryId"/>
             <parameter name="productStoreId"/>
@@ -97,7 +97,7 @@ along with this software (see the LICENSE.md file). If not, see
             <if condition="!productCategoryId"><return type="danger" message="No search category found for store ${productStoreId}"/></if>
 
             <!-- TODO/FUTURE: better handling of search input for more natural results -->
-            <set field="queryString" from="searchString ? searchString.split(' ').collect({ (!it || it in ['AND', 'OR', 'NOT'] || it.contains('*')) ? it : it + '*' }).join(' ') : ''"/>
+            <set field="queryString" from="searchParameter ? searchParameter.split(' ').collect({ (!it || it in ['AND', 'OR', 'NOT'] || it.contains('*')) ? it : it + '*' }).join(' ') : ''"/>
             <!-- NOTE: with ElasticSearch and a date range query like this there is a time zone issue, reliable by date but not exact time -->
             <set field="nowTimeLong" from="ec.user.nowTimestamp.time"/>
             <script><![CDATA[
@@ -162,7 +162,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <service verb="search" noun="Content">
         <in-parameters>
-            <parameter name="searchString"/>
+            <parameter name="searchParameter"/>
             <parameter name="contentDataDocumentId"/>
         </in-parameters>
         <out-parameters>
@@ -172,14 +172,14 @@ along with this software (see the LICENSE.md file). If not, see
             <entity-find-one entity-name="moqui.entity.document.DataDocument" value-field="contentDataDocument" cache="true">
                 <field-map field-name="dataDocumentId" from="contentDataDocumentId"/></entity-find-one>
             <service-call name="org.moqui.search.SearchServices.search#DataDocuments" out-map="contentSearchOut"
-                          in-map="[queryString:searchString, indexName:contentDataDocument.indexName, documentType:contentDataDocument.dataDocumentId]"/>
+                          in-map="[queryString:searchParameter, indexName:contentDataDocument.indexName, documentType:contentDataDocument.dataDocumentId]"/>
             <set field="contentDocumentList" from="contentSearchOut.documentList"/>
         </actions>
     </service>
 
     <service verb="search" noun="Blog">
         <in-parameters>
-            <parameter name="searchString"/>
+            <parameter name="searchParameter"/>
             <parameter name="blogDataDocumentId"/>
         </in-parameters>
         <out-parameters>
@@ -189,7 +189,7 @@ along with this software (see the LICENSE.md file). If not, see
             <entity-find-one entity-name="moqui.entity.document.DataDocument" value-field="blogDataDocument" cache="true">
                 <field-map field-name="dataDocumentId" from="blogDataDocumentId"/></entity-find-one>
             <service-call name="org.moqui.search.SearchServices.search#DataDocuments" out-map="blogSearchOut"
-                          in-map="[queryString:searchString, indexName:blogDataDocument.indexName, documentType:blogDataDocument.dataDocumentId]"/>
+                          in-map="[queryString:searchParameter, indexName:blogDataDocument.indexName, documentType:blogDataDocument.dataDocumentId]"/>
             <set field="blogDocumentList" from="blogSearchOut.documentList"/>
         </actions>
     </service>
