@@ -13,7 +13,7 @@ along with this software (see the LICENSE.md file). If not, see
 <http://creativecommons.org/publicdomain/zero/1.0/>.
 -->
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"   require-authentication="anonymous-view" allow-extra-path="true">
-    <parameter name="searchString"/>
+    <parameter name="searchParameter"/>
     <parameter name="pageIndex"/>
     <parameter name="addedCorrect"/>
 
@@ -26,20 +26,20 @@ along with this software (see the LICENSE.md file). If not, see
                 <set field="addedCorrect" from="true"/>
             </if>
         </actions>
-        <default-response url="./${searchString}"><parameter name="addedCorrect"/></default-response>
-        <error-response url="./${searchString}"/>
+        <default-response url="./${searchParameter}"><parameter name="addedCorrect"/></default-response>
+        <error-response url="./${searchParameter}"/>
     </transition>
 
     <pre-actions>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
-        <if condition="extraPathNameList &amp;&amp; !searchString"><set field="searchString" from="extraPathNameList[0]"/></if>
+        <if condition="extraPathNameList &amp;&amp; !searchParameter"><set field="searchParameter" from="extraPathNameList[0]"/></if>
         <if condition="extraPathNameList &amp;&amp; !pageIndex"><set field="pageIndex" from="extraPathNameList[1]"/></if>
         <if condition="!pageIndex"><set field="pageIndex" from="0"/></if>
         <if condition="!categoryId"><set field="categoryId" value="RchAllProducts"/></if>
     </pre-actions>
     <actions>
         <service-call name="popstore.SearchServices.search#All" out-map="context"
-            in-map="[searchString:searchString, productStoreId:productStoreId, pageIndex:pageIndex ? pageIndex : '0', pageSize:'12']"/>
+            in-map="[searchParameter:searchParameter, productStoreId:productStoreId, pageIndex:pageIndex ? pageIndex : '0', pageSize:'12']"/>
 
         <service-call name="popstore.CartServices.get#CartInfo" in-map="context" out-map="productsInCart" />
 
