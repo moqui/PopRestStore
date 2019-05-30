@@ -62,6 +62,7 @@ along with this software (see the LICENSE.md file). If not, see
      	<set field="star" from="5"/>
         <set field="imgContent" from="[]"/>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
+        <if condition="searchParameter"><set field="searchParameter" from="searchParameter.replaceAll('[^A-Za-z0-9 ]', '')"/></if>
         <if condition="extraPathNameList &amp;&amp; !productId"><set field="productId" from="extraPathNameList[0]"/></if>
         <if condition="extraPathNameList &amp;&amp; !addedCorrect"><set field="addedCorrect" from="extraPathNameList[1]"/></if>
         <if condition="extraPathNameList &amp;&amp; !categoryId"><set field="categoryId" from="extraPathNameList[2]"/></if>
