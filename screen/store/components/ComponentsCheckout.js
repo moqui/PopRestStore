@@ -10,7 +10,7 @@ Vue.component("checkout-navbar", storeComps.CheckoutNavbarTemplate);
 storeComps.CheckOutPage = {
     name: "checkout-page",
     data: function() { return {
-            cvv: "", showCvvError: false, homePath: "", storePath: "", customerInfo: {}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
+            currentStep: null, currentPath: "", cvv: "", showCvvError: false, homePath: "", storePath: "", customerInfo: {}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
             billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "", postalAddressStateGeoSelected: null,
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0", shippingItemPrice: 0,
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
@@ -40,6 +40,11 @@ storeComps.CheckOutPage = {
             CustomerService.getShippingAddresses(this.axiosConfig).then(function (data) {
                 this.listShippingAddress = data.postalAddressList || [];
                 this.getCartInfo();
+
+                // Update the path url
+                if(!this.currentStep){
+                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-address');
+                }                
             }.bind(this));
         },
         onAddressCancel: function() {
@@ -87,6 +92,7 @@ storeComps.CheckOutPage = {
                     if(!!option){
                         option.shippingTotal = parseFloat(this.shippingItemPrice).toFixed(2);
                         this.shippingOption = option.carrierPartyId + ':' + option.shipmentMethodEnumId;
+                        this.shippingMethod = option;
                     }
                 }.bind(this));
         },
@@ -162,12 +168,15 @@ storeComps.CheckOutPage = {
             switch (step){
                 case "selectShippingAddress":
                     this.selectShippingAddressStatus = "complete";
+                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-method');
                     break;
                 case "selectShippingMethod":
                     this.selectShippingMethodStatus = "complete";
+                    window.history.pushState('', 'ignored param', this.currentPath + 'payment-methods');
                     break;
                 case "selectPaymentMethod":
                     this.selectPaymentMethodStatus = "complete";
+                     window.history.pushState('', 'ignored param', this.currentPath + 'complete-purchase');
                     break;
                 case "placeOrder":
                     this.placeOrderStatus = "complete";
@@ -315,14 +324,19 @@ storeComps.CheckOutPage = {
         if (this.$root.apiKey == null) { 
             this.$router.push({ name: 'login'}); 
         } else {
+            var windowPath = window.location.pathname + window.location.hash + '/';
+            this.currentStep = this.$route.params.step;
             this.homePath = storeConfig.homePath;
             this.storePath = storeConfig.storePath;
             this.showProp65 = storeConfig.show_prop_65_warning;
+            this.currentPath =   this.currentStep ? windowPath.replace('/' + this.currentStep, '') : windowPath;
             this.getCustomerInfo();
             this.getCartShippingOptions();
             this.getCustomerShippingAddresses();
             this.getCustomerPaymentMethods();
             this.getRegions('USA');
+
+            console.log(this.currentPath);
         }
     }
 };

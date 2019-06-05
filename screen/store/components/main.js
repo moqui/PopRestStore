@@ -11,8 +11,8 @@ var appObjects = {
                     preLoginRoute = from;
                     next();
                } },
-            { path: "/checkout", name: "checkout", component: storeComps.CheckOutPageTemplate },
-            { path: "/checkout/:orderId", name: "successcheckout", component: storeComps.SuccessCheckOutTemplate },
+            { path: "/checkout/:step?", name: "checkout", component: storeComps.CheckOutPageTemplate },
+            { path: "/checkout/success/:orderId", name: "successcheckout", component: storeComps.SuccessCheckOutTemplate },
             { path: "/orders/:orderId", name: "order", component: storeComps.CustomerOrderPageTemplate },
             { path: "/orders", name: "orders", component: storeComps.CustomerOrdersPageTemplate },
             { path: "/account", name: "account", component: storeComps.AccountPageTemplate },
