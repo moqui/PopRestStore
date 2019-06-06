@@ -96,7 +96,7 @@
                     <span 
                         v-if="selectShippingAddressStatus == 'complete'" 
                         class="text-address change-info float-right" 
-                        @click="setOptionNavbar(1)">
+                        @click="setOptionNavbar(1), changeUrlCheckout(0)">
                         Change
                     </span>
                 </p>
@@ -169,7 +169,10 @@
                     <span v-if="selectShippingMethodStatus == 'complete'" class="circle"> <i class="fa fa-check"></i></span>
                     <span class="text-address">SHIPPING METHOD</span>
                     <span v-if="selectShippingMethodStatus == 'complete'" 
-                        class="text-address change-info float-right" @click="setOptionNavbar(2)">Change</span>
+                        class="text-address change-info float-right" 
+                        @click="setOptionNavbar(2), changeUrlCheckout(1)">
+                        Change
+                    </span>
                 </p>
                 <!-- The selected shipping method -->
                 <hr class="hr" :class="{ 'hr-active': selectShippingMethodStatus == 'active', 'hr-complete':selectShippingMethodStatus == 'complete' }">
@@ -208,7 +211,12 @@
                     <span v-if="selectPaymentMethodStatus != 'complete'" class="circle">3</span>
                     <span v-if="selectPaymentMethodStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
                     <span class="text-address">PAYMENT METHODS</span>
-                    <span v-if="selectPaymentMethodStatus == 'complete'" class="text-address change-info float-right" @click="setOptionNavbar(3)">Change</span>
+                    <span   
+                        v-if="selectPaymentMethodStatus == 'complete'" 
+                        class="text-address change-info float-right" 
+                        @click="setOptionNavbar(3), changeUrlCheckout(2)">
+                            Change
+                    </span>
                 </p>
                 <hr class="hr" :class="{ 'hr-active': selectPaymentMethodStatus == 'active', 'hr-complete':selectPaymentMethodStatus == 'complete' }">
                 <div v-if="selectPaymentMethodStatus == 'complete' && optionNavbar !== 3" class="div-total">

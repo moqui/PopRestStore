@@ -43,7 +43,7 @@ storeComps.CheckOutPage = {
 
                 // Update the path url
                 if(!this.currentStep){
-                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-address');
+                    this.changeUrlCheckout(0);
                 }                
             }.bind(this));
         },
@@ -168,15 +168,15 @@ storeComps.CheckOutPage = {
             switch (step){
                 case "selectShippingAddress":
                     this.selectShippingAddressStatus = "complete";
-                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-method');
+                    this.changeUrlCheckout(1);
                     break;
                 case "selectShippingMethod":
                     this.selectShippingMethodStatus = "complete";
-                    window.history.pushState('', 'ignored param', this.currentPath + 'payment-methods');
+                    this.changeUrlCheckout(2);
                     break;
                 case "selectPaymentMethod":
                     this.selectPaymentMethodStatus = "complete";
-                     window.history.pushState('', 'ignored param', this.currentPath + 'complete-purchase');
+                    this.changeUrlCheckout(3);
                     break;
                 case "placeOrder":
                     this.placeOrderStatus = "complete";
@@ -185,6 +185,22 @@ storeComps.CheckOutPage = {
         },    
         setOptionNavbar: function(option) {
             this.optionNavbar = option;
+        },
+        changeUrlCheckout: function(option){
+            switch (option){
+                case 1:
+                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-method');
+                    break;
+                case 2:
+                    window.history.pushState('', 'ignored param', this.currentPath + 'payment-methods');
+                    break;
+                case 3:
+                     window.history.pushState('', 'ignored param', this.currentPath + 'complete-purchase');
+                    break;
+                default:
+                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-address');
+                    break;  
+            }
         },
         getCustomerPaymentMethods: function() {
             CustomerService.getPaymentMethods(this.axiosConfig)
@@ -322,6 +338,7 @@ storeComps.CheckOutPage = {
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
         if (this.$root.apiKey == null) { 
+            localStorage.redirect = 'checkout';
             this.$router.push({ name: 'login'}); 
         } else {
             var windowPath = window.location.pathname + window.location.hash + '/';
