@@ -233,7 +233,7 @@
                         <span class="span-description"><i class="fa fa-phone phone-icon"></i>{{paymentMethod.contactNumber}}</span>
                     </template>
                 </div>
-                <div v-if="optionNavbar === 3" id="paymentMethodCollapse">
+                <div v-if="optionNavbar === 3" id="paymentMethodCollapse" class="checkout-payment-methods-list">
                     <div class="col" v-for="(item,index) in listPaymentMethods">
                         <div class="row" :class="{ 'div-checkmark': paymentOption == item.paymentMethodId }">
                             <label  :for="index + 'r3'" class="container-input col-11">

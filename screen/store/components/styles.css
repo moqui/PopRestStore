@@ -198,7 +198,7 @@ a:hover { text-decoration: none; }
 .checkmark:after { content: ""; position: absolute; display: none; }
 .container-input input:checked ~ .checkmark:after { display: block; }
 .container-input .checkmark:after { width: 9px; height: 9px; border-radius: 50%; background: #666666; }
-.div-checkmark { background-color: #e7e7e7; border-radius: 5px; }
+.div-checkmark { background-color: #e7e7e7; border-radius: 5px; padding-top: 10px;}
 
 .span-color span{ color: #adadad !important; }
 
@@ -322,3 +322,9 @@ a:hover { text-decoration: none; }
 /* Global */
 .pointer { cursor: pointer; }
 
+.selected-card-cvv input{
+    opacity: 1;
+}
+.checkout-payment-methods-list .delete-icon{
+    margin-top: 10px;
+}
