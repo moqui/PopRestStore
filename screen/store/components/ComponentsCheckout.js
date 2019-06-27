@@ -18,7 +18,7 @@ storeComps.CheckOutPage = {
             freeShipping:false, promoSuccess: "", stateGuestCustomer:2, selectShippingAddressStatus: 'active', selectShippingMethodStatus:0, selectPaymentMethodStatus:0, placeOrderStatus:0,
             listShippingOptions: [], optionNavbar:1, axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
             "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
-        }; 
+        };
     },
     computed: {
         shippingPrice: function () {
@@ -27,11 +27,11 @@ storeComps.CheckOutPage = {
     },
     methods: {
         notAddressSeleted: function() {
-            return (this.addressOption == null || this.addressOption == '' 
+            return (this.addressOption == null || this.addressOption == ''
                 || this.listShippingAddress == null || this.listShippingAddress.length == 0);
         },
         notPaymentSeleted: function() {
-            return (this.paymentOption == null || this.paymentOption == '' 
+            return (this.paymentOption == null || this.paymentOption == ''
                 || this.listPaymentMethods == null || this.listPaymentMethods.length == 0);
         },
         getCustomerInfo: function() { CustomerService.getCustomerInfo(this.axiosConfig)
@@ -43,8 +43,8 @@ storeComps.CheckOutPage = {
 
                 // Update the path url
                 if(!this.currentStep){
-                    this.changeUrlCheckout(0);
-                }                
+                    this.setCheckoutStep(1);
+                }
             }.bind(this));
         },
         onAddressCancel: function() {
@@ -63,7 +63,7 @@ storeComps.CheckOutPage = {
         },
 
         /**
-         * Data is like so: 
+         * Data is like so:
          * "postalContactMechId" : "CustJqpAddr",
          * "paymentMethodId" : "100004",
          * "telecomContactMechId" : "CustJqpTeln"
@@ -75,7 +75,7 @@ storeComps.CheckOutPage = {
 
         getCartShippingOptions: function() {
             ProductService.getCartShippingOptions(this.axiosConfig)
-                .then(function (data) { 
+                .then(function (data) {
                     this.listShippingOptions = data.shippingOptions;
 
                     for(var i in this.listShippingOptions){
@@ -135,7 +135,7 @@ storeComps.CheckOutPage = {
             var item = this.productsInCart.orderItemList?
                        this.productsInCart.orderItemList.find(function(item) {return item.itemTypeEnumId == 'ItemShipping'; }):0;
             // Parse the default value retrieved from orderItemList setting two decimal
-            this.shippingItemPrice = parseFloat(item? item.unitAmount : 0);            
+            this.shippingItemPrice = parseFloat(item? item.unitAmount : 0);
         },
         validateCvv: function () {
             var isCvvValid = new RegExp("^\\d{3,4}$").test(this.cvv);
@@ -153,53 +153,59 @@ storeComps.CheckOutPage = {
         },
         addCartBillingShipping: function() {
             var info = {
-                "shippingPostalContactMechId":this.addressOption.split(':')[0], 
+                "shippingPostalContactMechId":this.addressOption.split(':')[0],
                 "shippingTelecomContactMechId":this.addressOption.split(':')[1],
-                "paymentMethodId":this.paymentOption, 
-                "carrierPartyId":this.shippingOption.split(':')[0], 
+                "paymentMethodId":this.paymentOption,
+                "carrierPartyId":this.shippingOption.split(':')[0],
                 "shipmentMethodEnumId":this.shippingOption.split(':')[1]
             };
             ProductService.addCartBillingShipping(info,this.axiosConfig).then(function (data) {
                 this.paymentId = data.paymentId;
                 this.getCartInfo();
-            }.bind(this)); 
+            }.bind(this));
         },
-        setCheckoutStepComplete: function(step) { 
+        setCheckoutStepComplete: function(step) {
             switch (step){
                 case "selectShippingAddress":
                     this.selectShippingAddressStatus = "complete";
-                    this.changeUrlCheckout(1);
+                    this.setCheckoutStep(2);
                     break;
                 case "selectShippingMethod":
                     this.selectShippingMethodStatus = "complete";
-                    this.changeUrlCheckout(2);
+                    this.setCheckoutStep(3);
                     break;
                 case "selectPaymentMethod":
                     this.selectPaymentMethodStatus = "complete";
-                    this.changeUrlCheckout(3);
+                    this.setCheckoutStep(4);
                     break;
                 case "placeOrder":
                     this.placeOrderStatus = "complete";
-                    break;  
+                    break;
             }
-        },    
+        },
         setOptionNavbar: function(option) {
             this.optionNavbar = option;
         },
-        changeUrlCheckout: function(option){
+        setCheckoutStep: function(option){
+            this.optionNavbar = option;
+
+            ga('send', 'event');
+
             switch (option){
                 case 1:
-                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-method');
+                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-address');
                     break;
                 case 2:
-                    window.history.pushState('', 'ignored param', this.currentPath + 'payment-methods');
+                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-method');
                     break;
                 case 3:
+                    window.history.pushState('', 'ignored param', this.currentPath + 'payment-methods');
+                    break;
+                case 4:
                      window.history.pushState('', 'ignored param', this.currentPath + 'complete-purchase');
                     break;
                 default:
-                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-address');
-                    break;  
+                    break;
             }
         },
         getCustomerPaymentMethods: function() {
@@ -257,7 +263,7 @@ storeComps.CheckOutPage = {
             ProductService.updateProductQuantity(data, this.axiosConfig)
                 .then(function (data) { this.getCartInfo(); }.bind(this));
         },
-        afterDelete: function(){       
+        afterDelete: function(){
             let qtyProducts = 0 ;
             this.productsInCart.orderItemList.forEach(function(item){
                 if(item.itemTypeEnumId == 'ItemProduct'){
@@ -266,7 +272,7 @@ storeComps.CheckOutPage = {
             });
             if(qtyProducts == 0){
                 window.location.href = this.storePath;
-            }   
+            }
         },
         deleteOrderProduct: function(item) {
             ProductService.deleteOrderProduct(item.orderId, item.orderItemSeqId, this.axiosConfig)
@@ -324,8 +330,8 @@ storeComps.CheckOutPage = {
         },
         cleanShippingAddress: function() { this.shippingAddress = {}; this.isUpdate = false; },
         cleanPaymentMethod: function() { this.paymentMethod = {}; this.isUpdate = false; },
-        resetData: function(){ 
-            $("#modal-card-content").trigger('reset'); 
+        resetData: function(){
+            $("#modal-card-content").trigger('reset');
             this.paymentMethod = {};
             this.shippingAddress = {};
             this.isUpdate = false;
@@ -337,9 +343,9 @@ storeComps.CheckOutPage = {
     },
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
-        if (this.$root.apiKey == null) { 
+        if (this.$root.apiKey == null) {
             localStorage.redirect = 'checkout';
-            this.$router.push({ name: 'login'}); 
+            this.$router.push({ name: 'login'});
         } else {
             var windowPath = window.location.pathname + window.location.hash + '/';
             this.currentStep = this.$route.params.step;
