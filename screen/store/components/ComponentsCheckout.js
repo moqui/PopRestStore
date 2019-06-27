@@ -187,25 +187,30 @@ storeComps.CheckOutPage = {
             this.optionNavbar = option;
         },
         setCheckoutStep: function(option){
+            var canRegisterEvent = false;
             this.optionNavbar = option;
-
-            ga('send', 'event');
 
             switch (option){
                 case 1:
-                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-address');
+                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-address'); canRegisterEvent = true;
                     break;
                 case 2:
-                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-method');
+                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-method'); canRegisterEvent = true;
                     break;
                 case 3:
-                    window.history.pushState('', 'ignored param', this.currentPath + 'payment-methods');
+                    window.history.pushState('', 'ignored param', this.currentPath + 'payment-methods'); canRegisterEvent = true;
                     break;
                 case 4:
-                     window.history.pushState('', 'ignored param', this.currentPath + 'complete-purchase');
+                     window.history.pushState('', 'ignored param', this.currentPath + 'complete-purchase'); canRegisterEvent = true;
                     break;
                 default:
+                    canRegisterEvent = false;
                     break;
+            }
+
+            //this is necesary to register the event pageview on google analytics throught gtag
+            if(canRegisterEvent){
+                window.dispatchEvent(new HashChangeEvent("hashchange"))
             }
         },
         getCustomerPaymentMethods: function() {
