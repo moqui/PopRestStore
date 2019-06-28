@@ -386,7 +386,11 @@ storeComps.SuccessCheckOut = {
         },
         getCustomerOrderById: function() {
             CustomerService.getCustomerOrderById(this.$route.params.orderId,this.axiosConfig)
-                .then(function (data) { this.orderList = data; }.bind(this));
+                .then(function (data) {
+                    this.orderList = data;
+                    console.log(data);
+                    window.dispatchEvent(new CustomEvent("ordercomplete", { 'detail': data }))
+                }.bind(this));
         },
         formatDate: function(date) {
             return moment(date).format('Do MMM, YY');
