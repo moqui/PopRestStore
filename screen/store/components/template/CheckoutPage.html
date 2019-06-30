@@ -1,7 +1,7 @@
 <div>
-    <checkout-navbar :option="optionNavbar"/>
+    <checkout-navbar />
     <div class="container">
-        <div class="loader" v-if="isSpinner"></div>
+        <div class="loader" v-if="isCurrentStep(STEP_PENDING)"></div>
         <div class="row">
             <!-- Panel item list-->
             <div class="col col-lg-6 col-sm-12 col-12">
@@ -89,21 +89,21 @@
             <!-- The whole checkout stage column -->
             <div class="col col-lg-5 offset-lg-1 col-sm-12 col-12">
                 <!-- Shipping Address section title and change button -->
-                <p class="title-check-text" :class="{ 'step-active': selectShippingAddressStatus == 'active', 'step-complete': selectShippingAddressStatus == 'complete'}">
-                    <span v-if="selectShippingAddressStatus == 'active'" class="circle">1</span>
-                    <span v-if="selectShippingAddressStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
+                <p class="title-check-text" :class="{'step-active':isCurrentStep(STEP_ADDRESS), 'step-complete':isCompleteStep(STEP_ADDRESS)}">
+                    <span v-if="isIncompleteStep(STEP_ADDRESS)" class="circle">1</span>
+                    <span v-if="isCompleteStep(STEP_ADDRESS)" class="circle"><i class="fa fa-check"></i></span>
                     <span class="text-address">SHIPPING ADDRESS</span>
                     <span
-                        v-if="selectShippingAddressStatus == 'complete'"
+                        v-if="isCompleteStep(STEP_ADDRESS)"
                         class="text-address change-info float-right"
-                        @click="setCheckoutStep(1)">
+                        @click="setCurrentStep(STEP_ADDRESS)">
                         Change
                     </span>
                 </p>
                 <!-- Horizontal dividing line -->
-                <hr class="hr" :class="{ 'hr-active': selectShippingAddressStatus == 'active', 'hr-complete':selectShippingAddressStatus == 'complete' }">
+                <hr class="hr" :class="{ 'hr-active': isCurrentStep(STEP_ADDRESS), 'hr-complete':isCompleteStep(STEP_ADDRESS)}">
                 <!-- The selected shipping address -->
-                <div v-if="selectShippingAddressStatus == 'complete' && optionNavbar !== 1" class="div-total">
+                <div v-if="isCompleteStep(STEP_ADDRESS)" class="div-total">
                     <span class="span-description">{{shippingAddressSelect.toName}}</span>
                     <span class="span-description">
                         {{shippingAddressSelect.address1}} {{shippingAddressSelect.address2}}
@@ -116,7 +116,7 @@
                     </span>
                 </div>
                 <!-- The address collapses -->
-                <div v-if="optionNavbar === 1" id="shippingAddressCollapse">
+                <div v-if="isCurrentStep(STEP_ADDRESS)" id="shippingAddressCollapse">
                     <div v-for="(option, index) in listShippingAddress">
                         <div :class="{ 'div-checkmark': addressOption == option.postalContactMechId + ':' +
                             option.telecomContactMechId }">
@@ -152,7 +152,7 @@
                     <br>
                     <!-- Buttons    -->
                     <button
-                        @click="addCartBillingShipping(), setCheckoutStepComplete('selectShippingAddress'), setOptionNavbar(2)" class="btn btn-continue float-right"
+                        @click="addressContinue()" class="btn btn-continue float-right"
                         :disabled="addressOption == null || addressOption == ''
                         || listShippingAddress == null || listShippingAddress.length == 0 ">
                         Continue
@@ -164,19 +164,19 @@
                 <br />
 
                 <!-- Shipping method section title-->
-                <p class="title-check-text"  :class="{ 'step-active': selectShippingMethodStatus == 'active', 'step-complete': selectShippingMethodStatus == 'complete' }">
-                    <span v-if="selectShippingMethodStatus != 'complete'" class="circle">2</span>
-                    <span v-if="selectShippingMethodStatus == 'complete'" class="circle"> <i class="fa fa-check"></i></span>
+                <p class="title-check-text"  :class="{'step-active':isCurrentStep(STEP_SHIPPING), 'step-complete':isCompleteStep(STEP_SHIPPING)}">
+                    <span v-if="isIncompleteStep(STEP_SHIPPING)" class="circle">2</span>
+                    <span v-if="isCompleteStep(STEP_SHIPPING)" class="circle"> <i class="fa fa-check"></i></span>
                     <span class="text-address">SHIPPING METHOD</span>
-                    <span v-if="selectShippingMethodStatus == 'complete'"
+                    <span v-if="isCompleteStep(STEP_SHIPPING)"
                         class="text-address change-info float-right"
-                        @click="setCheckoutStep(2)">
+                        @click="setCurrentStep(STEP_SHIPPING)">
                         Change
                     </span>
                 </p>
                 <!-- The selected shipping method -->
-                <hr class="hr" :class="{ 'hr-active': selectShippingMethodStatus == 'active', 'hr-complete':selectShippingMethodStatus == 'complete' }">
-                <div v-if="selectShippingMethodStatus == 'complete' && optionNavbar !== 2" class="div-total">
+                <hr class="hr" :class="{ 'hr-active':isCurrentStep(STEP_SHIPPING), 'hr-complete':isCompleteStep(STEP_SHIPPING) }">
+                <div v-if="isCompleteStep(STEP_SHIPPING)" class="div-total">
                     <span class="span-description">
                     {{shippingMethod.shipmentMethodDescription}}
                     <span class="float-right" v-if="shippingMethod.shippingTotal">${{Number(shippingMethod.shippingTotal).toFixed(2)}}</span>
@@ -184,7 +184,7 @@
                 </div>
 
                 <!-- Shipping method collapses -->
-                <div v-if="optionNavbar === 2" id="shippingMethodCollapse">
+                <div v-if="isCurrentStep(STEP_SHIPPING)" id="shippingMethodCollapse">
                     <div v-for="(option, index) in listShippingOptions">
                         <div v-if="option.shippingTotal" :class="{ 'div-checkmark': shippingOption == option.carrierPartyId + ':' + option.shipmentMethodEnumId }">
                             <label :for="index + 'r2'" class="container-input">
@@ -198,7 +198,7 @@
                     </div>
                     <br>
                     <button
-                        @click="addCartBillingShipping(), setCheckoutStepComplete('selectShippingMethod'), setOptionNavbar(3)" class="btn btn-continue float-right"
+                        @click="shippingContinue()" class="btn btn-continue float-right"
                         :disabled="shippingOption == null || shippingOption == '' ||  listShippingOptions == null || listShippingOptions.length == 0"
                         style="margin-top: -15px;"><!-- Style needed to keep button away from next section -->
                         Continue
@@ -207,24 +207,24 @@
                 <br>
 
                 <!-- Payment method section -->
-                <p class="title-check-text" :class="{ 'step-active': selectPaymentMethodStatus == 'active', 'step-complete': selectPaymentMethodStatus == 'complete' }">
-                    <span v-if="selectPaymentMethodStatus != 'complete'" class="circle">3</span>
-                    <span v-if="selectPaymentMethodStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
+                <p class="title-check-text" :class="{'step-active':isCurrentStep(STEP_BILLING), 'step-complete':isCompleteStep(STEP_BILLING)}">
+                    <span v-if="isIncompleteStep(STEP_BILLING)" class="circle">3</span>
+                    <span v-if="isCompleteStep(STEP_BILLING)" class="circle"><i class="fa fa-check"></i></span>
                     <span class="text-address">PAYMENT METHODS</span>
                     <span
-                        v-if="selectPaymentMethodStatus == 'complete'"
+                        v-if="isCompleteStep(STEP_BILLING)"
                         class="text-address change-info float-right"
-                        @click="setCheckoutStep(3)">
+                        @click="setCurrentStep(STEP_BILLING)">
                             Change
                     </span>
                 </p>
-                <hr class="hr" :class="{ 'hr-active': selectPaymentMethodStatus == 'active', 'hr-complete':selectPaymentMethodStatus == 'complete' }">
-                <div v-if="selectPaymentMethodStatus == 'complete' && optionNavbar !== 3" class="div-total">
+                <hr class="hr" :class="{'hr-active': isCurrentStep(STEP_BILLING), 'hr-complete':isCompleteStep(STEP_BILLING)}">
+                <div v-if="isCompleteStep(STEP_BILLING)" class="div-total">
                     <span class="span-description">{{paymentMethod.description}}</span>
                     <span class="span-description">{{paymentMethod.titleOnAccount}}</span>
                     <span class="span-description">{{paymentMethod.expireMonth}}/{{paymentMethod.expireYear}}</span>
                     <br>
-                    <template v-if="isSameAddress == 'complete' && selectPaymentMethodStatus == 'complete'">
+                    <template v-if="isCompleteStep(STEP_BILLING)">
                         <span>Billing address:</span>
                         <br>
                         <span class="span-description">{{paymentMethod.toName}}</span>
@@ -233,7 +233,7 @@
                         <span class="span-description"><i class="fa fa-phone phone-icon"></i>{{paymentMethod.contactNumber}}</span>
                     </template>
                 </div>
-                <div v-if="optionNavbar === 3" id="paymentMethodCollapse" class="checkout-payment-methods-list">
+                <div v-if="isCurrentStep(STEP_BILLING)" id="paymentMethodCollapse" class="checkout-payment-methods-list">
                     <div class="col" v-for="(item,index) in listPaymentMethods">
                         <div class="row" :class="{ 'div-checkmark': paymentOption == item.paymentMethodId }">
                             <label  :for="index + 'r3'" class="container-input col-11">
@@ -267,13 +267,13 @@
                     </button>
                 </div>
                 <br>
-                <p class="title-check-text" :class="{ 'step-active': placeOrderStatus == 'active', 'step-complete': placeOrderStatus == 'complete' }">
-                    <span v-if="placeOrderStatus != 'complete'" class="circle">4</span>
-                    <span v-if="placeOrderStatus == 'complete'" class="circle"><i class="fa fa-check"></i></span>
+                <p class="title-check-text" :class="{'step-active':isCurrentStep(STEP_REVIEW), 'step-complete':isCompleteStep(STEP_REVIEW)}">
+                    <span v-if="isIncompleteStep(STEP_REVIEW)" class="circle">4</span>
+                    <span v-if="isCompleteStep(STEP_REVIEW)" class="circle"><i class="fa fa-check"></i></span>
                     <span class="text-address">COMPLETE PURCHASE</span>
                 </p>
-                <hr class="hr" :class="{ 'hr-active': placeOrderStatus == 'active', 'hr-complete': placeOrderStatus == 'complete' }">
-                <div v-if="optionNavbar === 4" id="placeOrderCollapse">
+                <hr class="hr" :class="{ 'hr-active':isCurrentStep(STEP_REVIEW), 'hr-complete':isCompleteStep(STEP_REVIEW) }">
+                <div v-if="isCurrentStep(STEP_REVIEW)" id="placeOrderCollapse">
                     <div class="div-place-order">
                         <p class="text-center">YOUR TOTAL IS:
                             <span class="place-order-total" v-if="productsInCart.orderHeader">
@@ -282,9 +282,9 @@
                         </p>
                         <p class="text-center place-order-text">Place order below to complete your purchase</p>
                     </div>
-                    <button class="btn btn-place-order col col-lg-12" @click="placeCartOrder(), setCheckoutStepComplete('placeOrder'), setOptionNavbar(5)">Place Order</button>
+                    <button class="btn btn-place-order col col-lg-12" @click="placeCartOrder()">Place Order</button>
                 </div>
-                <div class="text-center">
+                <div class="text-center" v-if="!isCurrentStep(STEP_PENDING)"> 
                     <a :href="storePath" class="btn text-add">Keep Shopping</a>
                 </div>
             </div>

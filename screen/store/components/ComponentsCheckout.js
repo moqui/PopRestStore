@@ -1,22 +1,66 @@
 /* This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. */
+const STEP_ADDRESS = "shipping-address";
+const STEP_SHIPPING = "shipping-method";
+const STEP_BILLING = "payment-methods";
+const STEP_REVIEW = "review-purchase";
+const STEP_PENDING = "pending";
+const STEP_SUCCESS = "success";
+const STEPS = [STEP_ADDRESS, STEP_SHIPPING, STEP_BILLING, STEP_REVIEW, STEP_PENDING, STEP_SUCCESS];
+
+
 storeComps.CheckoutNavbar = {
-  name: "orderNavbar",
-  data() { return {}; },
-  props: ["option"]
+  name: "checkout-navbar",
+  data() { return {STEP_ADDRESS, STEP_SHIPPING, STEP_BILLING, STEP_REVIEW, STEP_PENDING, STEP_SUCCESS, STEPS: STEPS} },
+  props: ["option"],
+  methods: {
+        getCurrentStep: function() {
+            var step =  window.location.hash ? window.location.hash.split("/")[2] : this.STEP_ADDRESS;
+            return  (this.STEPS.indexOf(step) > -1) ? step : this.STEP_ADDRESS;
+        },
+        setCurrentStep: function(step) {
+            if (this.STEPS.indexOf(step) == -1)
+                return;
+            window.history.pushState('', 'ignored param', window.location.pathname + "#/checkout/"+step);
+            window.dispatchEvent(new HashChangeEvent("hashchange"))
+            this.$forceUpdate();
+        },
+        isCurrentStep: function(step) {
+            return this.getCurrentStep() == step;
+        },
+        isCompleteStep: function(step) {
+            return this.STEPS.indexOf(step) < this.STEPS.indexOf(this.getCurrentStep())
+        },
+        isIncompleteStep: function(step) {
+            return this.STEPS.indexOf(step) >= this.STEPS.indexOf(this.getCurrentStep())
+        }
+    },
+    mounted: function() {
+        // Redirects to the address step if none found.
+        var currentStep = this.getCurrentStep();
+        if (!window.location.hash.includes(currentStep)) {
+            this.setCurrentStep(this.STEP_ADDRESS);
+        }
+
+        // Triggers a refresh if the hash changes
+        var reference = this;
+        window.addEventListener('hashchange', function() {
+            reference.$forceUpdate()
+        }, false);
+    }
 };
-storeComps.CheckoutNavbarTemplate = getPlaceholderRoute("template_client_checkoutHeader", "CheckoutNavbar", storeComps.CheckoutNavbar.props);
-Vue.component("checkout-navbar", storeComps.CheckoutNavbarTemplate);
+
 
 storeComps.CheckOutPage = {
     name: "checkout-page",
+    extends: storeComps.CheckoutNavbar,
     data: function() { return {
-            currentStep: null, currentPath: "", cvv: "", showCvvError: false, homePath: "", storePath: "", customerInfo: {}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
+            cvv: "", showCvvError: false, homePath: "", storePath: "", customerInfo: {}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
             billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "", postalAddressStateGeoSelected: null,
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0", shippingItemPrice: 0,
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
-            cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: 0, urlList: {}, 
-            freeShipping:false, promoSuccess: "", stateGuestCustomer:2, selectShippingAddressStatus: 'active', selectShippingMethodStatus:0, selectPaymentMethodStatus:0, placeOrderStatus:0,
-            listShippingOptions: [], optionNavbar:1, axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
+            cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: 0, 
+            freeShipping:false, promoSuccess: "",  
+            listShippingOptions: [],  axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
             "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
         };
     },
@@ -40,11 +84,6 @@ storeComps.CheckOutPage = {
             CustomerService.getShippingAddresses(this.axiosConfig).then(function (data) {
                 this.listShippingAddress = data.postalAddressList || [];
                 this.getCartInfo();
-
-                // Update the path url
-                if(!this.currentStep){
-                    this.setCheckoutStep(1);
-                }
             }.bind(this));
         },
         onAddressCancel: function() {
@@ -137,6 +176,14 @@ storeComps.CheckOutPage = {
             // Parse the default value retrieved from orderItemList setting two decimal
             this.shippingItemPrice = parseFloat(item? item.unitAmount : 0);
         },
+        addressContinue: function() {
+            this.addCartBillingShipping();
+            this.setCurrentStep(STEP_SHIPPING)
+        },
+        shippingContinue: function() {
+            this.addCartBillingShipping();
+            this.setCurrentStep(STEP_BILLING)
+        },
         validateCvv: function () {
             var isCvvValid = new RegExp("^\\d{3,4}$").test(this.cvv);
 
@@ -148,8 +195,7 @@ storeComps.CheckOutPage = {
 
             this.showCvvError = false;
             this.addCartBillingShipping();
-            this.setCheckoutStepComplete('selectPaymentMethod');
-            this.setOptionNavbar(4);
+            this.setCurrentStep(STEP_REVIEW)
         },
         addCartBillingShipping: function() {
             var info = {
@@ -164,55 +210,6 @@ storeComps.CheckOutPage = {
                 this.getCartInfo();
             }.bind(this));
         },
-        setCheckoutStepComplete: function(step) {
-            switch (step){
-                case "selectShippingAddress":
-                    this.selectShippingAddressStatus = "complete";
-                    this.setCheckoutStep(2);
-                    break;
-                case "selectShippingMethod":
-                    this.selectShippingMethodStatus = "complete";
-                    this.setCheckoutStep(3);
-                    break;
-                case "selectPaymentMethod":
-                    this.selectPaymentMethodStatus = "complete";
-                    this.setCheckoutStep(4);
-                    break;
-                case "placeOrder":
-                    this.placeOrderStatus = "complete";
-                    break;
-            }
-        },
-        setOptionNavbar: function(option) {
-            this.optionNavbar = option;
-        },
-        setCheckoutStep: function(option){
-            var canRegisterEvent = false;
-            this.optionNavbar = option;
-
-            switch (option){
-                case 1:
-                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-address'); canRegisterEvent = true;
-                    break;
-                case 2:
-                    window.history.pushState('', 'ignored param', this.currentPath + 'shipping-method'); canRegisterEvent = true;
-                    break;
-                case 3:
-                    window.history.pushState('', 'ignored param', this.currentPath + 'payment-methods'); canRegisterEvent = true;
-                    break;
-                case 4:
-                     window.history.pushState('', 'ignored param', this.currentPath + 'complete-purchase'); canRegisterEvent = true;
-                    break;
-                default:
-                    canRegisterEvent = false;
-                    break;
-            }
-
-            //this is necesary to register the event pageview on google analytics throught gtag
-            if(canRegisterEvent){
-                window.dispatchEvent(new HashChangeEvent("hashchange"))
-            }
-        },
         getCustomerPaymentMethods: function() {
             CustomerService.getPaymentMethods(this.axiosConfig)
                 .then(function (data) {
@@ -224,24 +221,28 @@ storeComps.CheckOutPage = {
             var data = { cardSecurityCodeByPaymentId: {} };
             data.cardSecurityCodeByPaymentId[this.paymentId] = this.cvv;
 
-            this.isSpinner = true;
+            // temporarily go to sending step
+            this.setCurrentStep(STEP_PENDING);
             ProductService.placeCartOrder(data,this.axiosConfig).then(function (data) {
                 if(data.orderHeader != null) {
                     this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
                 } else {
-                    this.isSpinner = false;
                     this.showModal("modal-error");
+                    this.setCurrentStep(STEP_BILLING);
                 }
                 if(data.messages.includes("error") && data.messages.includes("122")) {
                     this.responseMessage = "Please provide a valid Billing ZIP";
+                    this.setCurrentStep(STEP_BILLING);
                 } else {
                     this.responseMessage = data.messages;
                 }
             }.bind(this)).catch(function (error) {
-                this.isSpinner = true;
                 this.responseMessage = error;
                 this.showModal("modal-error");
+                this.setCurrentStep(STEP_BILLING);
             }.bind(this));
+            
+            
         },
         applyPromotionCode: function() {
             var dataCode = {promoCode: this.promoCode, orderId: this.productsInCart.orderHeader.orderId};
@@ -270,11 +271,13 @@ storeComps.CheckOutPage = {
         },
         afterDelete: function(){
             let qtyProducts = 0 ;
-            this.productsInCart.orderItemList.forEach(function(item){
-                if(item.itemTypeEnumId == 'ItemProduct'){
-                    qtyProducts = qtyProducts + 1;
-                }
-            });
+            if (this.productsInCart.orderItemList) {
+                this.productsInCart.orderItemList.forEach(function(item){
+                    if(item.itemTypeEnumId == 'ItemProduct'){
+                        qtyProducts += 1;
+                    }
+                });
+            }
             if(qtyProducts == 0){
                 window.location.href = this.storePath;
             }
@@ -352,19 +355,14 @@ storeComps.CheckOutPage = {
             localStorage.redirect = 'checkout';
             this.$router.push({ name: 'login'});
         } else {
-            var windowPath = window.location.pathname + window.location.hash + '/';
-            this.currentStep = this.$route.params.step;
             this.homePath = storeConfig.homePath;
             this.storePath = storeConfig.storePath;
             this.showProp65 = storeConfig.show_prop_65_warning;
-            this.currentPath =   this.currentStep ? windowPath.replace('/' + this.currentStep, '') : windowPath;
             this.getCustomerInfo();
             this.getCartShippingOptions();
             this.getCustomerShippingAddresses();
             this.getCustomerPaymentMethods();
-            this.getRegions('USA');
-
-            console.log(this.currentPath);
+            this.getRegions('USA');  
         }
     }
 };
@@ -410,3 +408,6 @@ Vue.component("contact-info", storeComps.CheckoutContactInfoTemplate);
 
 storeComps.CheckoutProp65Template = getPlaceholderRoute("template_client_prop65", "prop65Warning");
 Vue.component("prop65-warning", storeComps.CheckoutProp65Template);
+
+storeComps.CheckoutNavbarTemplate = getPlaceholderRoute("template_client_checkoutHeader", "CheckoutNavbar", storeComps.CheckoutNavbar.props);
+Vue.component("checkout-navbar", storeComps.CheckoutNavbarTemplate);
