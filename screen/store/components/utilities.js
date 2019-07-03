@@ -1,5 +1,10 @@
 /* This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. */
-
+if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function(searchString, position){
+      position = position || 0;
+      return this.substr(position, searchString.length) === searchString;
+  };
+}
 var storeComps = {};
 
 var moqui = {

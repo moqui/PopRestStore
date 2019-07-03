@@ -2,7 +2,7 @@ storeComps.ProductImage = {
     name: "product-image",
     data: function() { return { content: {} } },
     methods: {
-        getProductContent(){
+        getProductContent: function(){
             ProductService.getProductContent(this._props.productId, "PcntImageSmall").then(function (data) { 
                 if(typeof(data.productContent) == 'undefined') {
                     ProductService.getProductContent(this._props.productId, "PcntImageMedium").then(function (data) { 
@@ -15,7 +15,7 @@ storeComps.ProductImage = {
                 } else { this.content = data.productContent; }
             }.bind(this));
         },
-        getProductImage() {
+        getProductImage: function() {
             if(this.content == null || typeof(this.content.productContentId) == 'undefined') return null;
             return storeConfig.productImageLocation + this.content.productContentId;
         }

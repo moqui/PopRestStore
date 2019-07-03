@@ -1,107 +1,107 @@
 var GeoService = {
-    getCountries() { return axios.get("/rest/s1/pop/geos").then(function (response) { return response.data; }); },
-    getRegions(geoId) { return axios.get("/rest/s1/pop/geos/" + geoId + "/regions").then(function (response) { return response.data; }); },
-    getLocale() { return axios.get("/rest/s1/pop/locale").then(function (response) { return response.data; }); },
-    getTimeZone() { return axios.get("/rest/s1/pop/timeZone").then(function (response) { return response.data; }); }
+    getCountries: function() { return axios.get("/rest/s1/pop/geos").then(function (response) { return response.data; }); },
+    getRegions: function(geoId) { return axios.get("/rest/s1/pop/geos/" + geoId + "/regions").then(function (response) { return response.data; }); },
+    getLocale: function() { return axios.get("/rest/s1/pop/locale").then(function (response) { return response.data; }); },
+    getTimeZone: function() { return axios.get("/rest/s1/pop/timeZone").then(function (response) { return response.data; }); }
 };
 
 var LoginService = {
-    login(user, headers) { return axios.post("/rest/s1/pop/login", user, headers).then(function (response) { return response.data; }); },
-    loginFB(user, headers) { return axios.post("/rest/s1/pop/loginFB", user, headers).then(function (response) { return response.data; }); },
-    createAccount(account, headers) { return axios.post("/rest/s1/pop/register", account, headers).then(function (response) { return response.data; }); },
-    logout() { return axios.get("/rest/s1/pop/logout").then(function (response) { return response.data; }); },
-    resetPassword(username, headers) { return axios.post("/rest/s1/pop/resetPassword", username, headers).then(function (response) { return response.data; }); }
+    login: function(user, headers) { return axios.post("/rest/s1/pop/login", user, headers).then(function (response) { return response.data; }); },
+    loginFB: function(user, headers) { return axios.post("/rest/s1/pop/loginFB", user, headers).then(function (response) { return response.data; }); },
+    createAccount: function(account, headers) { return axios.post("/rest/s1/pop/register", account, headers).then(function (response) { return response.data; }); },
+    logout: function() { return axios.get("/rest/s1/pop/logout").then(function (response) { return response.data; }); },
+    resetPassword: function(username, headers) { return axios.post("/rest/s1/pop/resetPassword", username, headers).then(function (response) { return response.data; }); }
 };
 
 var CustomerService = {
-  getShippingAddresses(headers) {
+  getShippingAddresses: function(headers) {
     return axios.get("/rest/s1/pop/customer/shippingAddresses",headers).then(function (response) { return response.data; });
   },
-  addShippingAddress(address,headers) {
+  addShippingAddress: function(address,headers) {
     return axios.put("/rest/s1/pop/customer/shippingAddresses",address,headers).then(function (response) { return response.data; });
   },
-  getPaymentMethods(headers) {
+  getPaymentMethods: function(headers) {
     return axios.get("/rest/s1/pop/customer/paymentMethods",headers).then(function (response) { return response.data; });
   },
-  addPaymentMethod(paymentMethod,headers) {
+  addPaymentMethod: function(paymentMethod,headers) {
     return axios.put("/rest/s1/pop/customer/paymentMethods",paymentMethod,headers).then(function (response) { return response.data; });
   },
-  getCustomerOrders(headers) {
+  getCustomerOrders: function(headers) {
     return axios.get("/rest/s1/pop/customer/orders",headers).then(function (response) { return response.data; })
   },
-  getCustomerOrderById(orderId,headers) {
+  getCustomerOrderById: function(orderId,headers) {
     return axios.get("/rest/s1/pop/customer/orders/"+orderId,headers).then(function (response) { return response.data; });
   }, 
-  getCustomerInfo(headers) {
+  getCustomerInfo: function(headers) {
     return axios.get("/rest/s1/pop/customer/info").then(function (response) { return response.data; });
   },
-  updateCustomerInfo(customerInfo,headers) {
+  updateCustomerInfo: function(customerInfo,headers) {
     return axios.put("/rest/s1/pop/customer/updateInfo",customerInfo,headers).then(function (response) { return response.data; });
   },
-  updateCustomerPassword(customerInfo,headers) {
+  updateCustomerPassword: function(customerInfo,headers) {
     return axios.put("/rest/s1/pop/customer/updatePassword",customerInfo, headers).then(function (response) { return response.data; });
   },
-  deletePaymentMethod(paymentMethodId,headers) {
+  deletePaymentMethod: function(paymentMethodId,headers) {
     return axios.delete("/rest/s1/pop/customer/paymentMethods/"+paymentMethodId, headers).then(function (response) { return response.data; });
   },
-  deleteShippingAddress(contactMechId,contactMechPurposeId,headers) {
+  deleteShippingAddress: function(contactMechId,contactMechPurposeId,headers) {
     return axios.delete("/rest/s1/pop/customer/shippingAddresses?contactMechId=" + contactMechId +"&contactMechPurposeId=" + contactMechPurposeId, headers)
         .then(function (response) { return response.data; });
   }
 };
 
 var ProductService = {
-    getFeaturedProducts() {
+    getFeaturedProducts: function() {
         return axios.get("/rest/s1/pop/categories/PopcAllProducts/products").then(function (response) { return response.data.productList; });
     },
-    getProductBySearch(searchTerm, pageIndex, pageSize, categoryId) {
+    getProductBySearch: function(searchTerm, pageIndex, pageSize, categoryId) {
         var params = "term=" + searchTerm + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize;
         if (categoryId && categoryId.length) params += "&productCategoryId=" + categoryId;
         return axios.get("/rest/s1/pop/products/search?" + params).then(function (response) { return response.data; });
     },
-    getProductsByCategory(categoryId, pageIndex, pageSize) {
+    getProductsByCategory: function(categoryId, pageIndex, pageSize) {
         var params = "?pageIndex=" + pageIndex + "&pageSize=" + pageSize;
         return axios.get("/rest/s1/pop/categories/" + categoryId + "/products" + params).then(function (response) { return response.data; });
     },
-    getCategoryInfoById(categoryId) {
+    getCategoryInfoById: function(categoryId) {
         return axios.get("/rest/s1/pop/categories/" + categoryId + "/info").then(function (response) { return response.data; });
     },
-    getSubCategories(categoryId) {
+    getSubCategories: function(categoryId) {
         return axios.get("/rest/s1/pop/categories/" + categoryId + "/info").then(function (response) { return response.data.subCategoryList; });
     },
-    getProduct(productId) {
+    getProduct: function(productId) {
         return axios.get("/rest/s1/pop/products/" + productId).then(function (response) { return response.data; });
     },
-    getProductContent(productId, contentTypeEnumId) {
+    getProductContent: function(productId, contentTypeEnumId) {
         return axios.get("/rest/s1/pop/products/content?productId=" + productId + "&productContentTypeEnumId=" + contentTypeEnumId)
             .then(function (response) { return response.data; });
     },
-    addProductCart(product,headers) {
+    addProductCart: function(product,headers) {
         return axios.post("/rest/s1/pop/cart/add",product,headers).then(function (response) { return response.data; });
     },
-    getCartInfo(headers) {
+    getCartInfo: function(headers) {
         return axios.get("/rest/s1/pop/cart/info",headers).then(function (response) { return response.data; });
     },
-    addCartBillingShipping(data, headers) {
+    addCartBillingShipping: function(data, headers) {
         return axios.post("/rest/s1/pop/cart/billingShipping",data,headers).then(function (response) { return response.data; });
     },
-    getCartShippingOptions(headers) {
+    getCartShippingOptions: function(headers) {
         return axios.get("/rest/s1/pop/cart/shippingOptions", headers).then(function (response) { return response.data; });
     },
-    placeCartOrder(data, headers) {
+    placeCartOrder: function(data, headers) {
         return axios.post("/rest/s1/pop/cart/place",data,headers).then(function (response) { return response.data; });
     },
-    updateProductQuantity(data, headers) {
+    updateProductQuantity: function(data, headers) {
         return axios.post("/rest/s1/pop/cart/updateProductQuantity",data,headers).then(function (response) { return response.data; });
     },
-    deleteOrderProduct(orderId, orderItemSeqId,headers) {
+    deleteOrderProduct: function(orderId, orderItemSeqId,headers) {
         return axios.delete("/rest/s1/pop/cart/deleteOrderItem?orderId="+orderId+"&orderItemSeqId="+orderItemSeqId,headers)
             .then(function (response) { return response.data; });
     },
-    addPromoCode(data, headers) {
+    addPromoCode: function(data, headers) {
         return axios.post("/rest/s1/pop/cart/promoCode",data,headers).then(function (response) { return response.data; });
     },
-    deletePromoCode(data, headers) {
+    deletePromoCode: function(data, headers) {
         return axios.delete("/rest/s1/pop/cart/promoCode",data,headers).then(function (response) { return response.data; });
     }
 };

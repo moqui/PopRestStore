@@ -10,7 +10,7 @@ const STEPS = [STEP_ADDRESS, STEP_SHIPPING, STEP_BILLING, STEP_REVIEW, STEP_PEND
 
 storeComps.CheckoutNavbar = {
   name: "checkout-navbar",
-  data() { return {STEP_ADDRESS, STEP_SHIPPING, STEP_BILLING, STEP_REVIEW, STEP_PENDING, STEP_SUCCESS, STEPS: STEPS} },
+  data: function() { return {STEP_ADDRESS: STEP_ADDRESS, STEP_SHIPPING: STEP_SHIPPING, STEP_BILLING: STEP_BILLING, STEP_REVIEW: STEP_REVIEW, STEP_PENDING: STEP_PENDING, STEP_SUCCESS: STEP_SUCCESS, STEPS: STEPS} },
   props: ["option"],
   methods: {
         getCurrentStep: function() {
@@ -21,7 +21,7 @@ storeComps.CheckoutNavbar = {
             if (this.STEPS.indexOf(step) == -1)
                 return;
             window.history.pushState('', 'ignored param', window.location.pathname + "#/checkout/"+step);
-            window.dispatchEvent(new HashChangeEvent("hashchange"))
+            //window.dispatchEvent(new HashChangeEvent("hashchange"))
             this.$forceUpdate();
         },
         isCurrentStep: function(step) {
@@ -37,7 +37,7 @@ storeComps.CheckoutNavbar = {
     mounted: function() {
         // Redirects to the address step if none found.
         var currentStep = this.getCurrentStep();
-        if (!window.location.hash.includes(currentStep)) {
+        if (!window.location.hash.indexOf(currentStep) > -1) {
             this.setCurrentStep(this.STEP_ADDRESS);
         }
 

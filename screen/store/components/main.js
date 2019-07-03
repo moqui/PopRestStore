@@ -7,7 +7,7 @@ var appObjects = {
         // TODO sooner or later: base: storeConfig.basePath, mode: 'history',
         routes: [
             { path: "/login", name: "login", component: storeComps.LoginPageTemplate, 
-               beforeEnter: (to, from, next) => {
+               beforeEnter: function(to, from, next){
                     preLoginRoute = from;
                     next();
                } },
@@ -23,16 +23,16 @@ var appObjects = {
     App: {
         name: "app",
         template: '<div id="app"><router-view></router-view></div>',
-        data() { return {}; }, components: {}
+        data: function() { return {}; }, components: {}
     }
 };
 
 const fixIdScrolling = {
     watch: {
-        $route(to, from) {
+        $route: function(to, from) {
             const currentRoute = this.$router.currentRoute;
             const idToScrollTo = currentRoute.hash;
-            this.$nextTick(() => {
+            this.$nextTick(function(){
                 if (idToScrollTo && document.querySelector(idToScrollTo)) {
                     document.querySelector(idToScrollTo).scrollIntoView();
                 }
