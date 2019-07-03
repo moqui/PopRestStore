@@ -22,6 +22,8 @@ storeComps.CheckoutNavbar = {
                 return;
             window.history.pushState('', 'ignored param', window.location.pathname + "#/checkout/"+step);
             //window.dispatchEvent(new HashChangeEvent("hashchange"))
+            var event = new CustomEvent("hashchange");
+            window.dispatchEvent(event);
             this.$forceUpdate();
         },
         isCurrentStep: function(step) {
@@ -386,8 +388,9 @@ storeComps.SuccessCheckOut = {
             CustomerService.getCustomerOrderById(this.$route.params.orderId,this.axiosConfig)
                 .then(function (data) {
                     this.orderList = data;
-                    console.log(data);
-                    window.dispatchEvent(new CustomEvent("ordercomplete", { 'detail': data }))
+                    //window.dispatchEvent(new CustomEvent("ordercomplete", { 'detail': data }))
+                    var event = new CustomEvent("ordercomplete", { 'detail': data });
+                    window.dispatchEvent(event);
                 }.bind(this));
         },
         formatDate: function(date) {
