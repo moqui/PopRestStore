@@ -15,7 +15,8 @@ var LoginService = {
 
 var CustomerService = {
   getShippingAddresses: function(headers) {
-    return axios.get("/rest/s1/pop/customer/shippingAddresses",headers).then(function (response) { return response.data; });
+    const t = new Date().getTime();
+    return axios.get("/rest/s1/pop/customer/shippingAddresses?timeStamp=" + t,headers).then(function (response) { return response.data; });
   },
   addShippingAddress: function(address,headers) {
     return axios.put("/rest/s1/pop/customer/shippingAddresses",address,headers).then(function (response) { return response.data; });
@@ -80,7 +81,8 @@ var ProductService = {
         return axios.post("/rest/s1/pop/cart/add",product,headers).then(function (response) { return response.data; });
     },
     getCartInfo: function(headers) {
-        return axios.get("/rest/s1/pop/cart/info",headers).then(function (response) { return response.data; });
+        const t = new Date().getTime();
+        return axios.get("/rest/s1/pop/cart/info?timeStamp=" + t,headers).then(function (response) { return response.data; });
     },
     addCartBillingShipping: function(data, headers) {
         return axios.post("/rest/s1/pop/cart/billingShipping",data,headers).then(function (response) { return response.data; });
