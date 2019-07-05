@@ -22,7 +22,8 @@ var CustomerService = {
     return axios.put("/rest/s1/pop/customer/shippingAddresses",address,headers).then(function (response) { return response.data; });
   },
   getPaymentMethods: function(headers) {
-    return axios.get("/rest/s1/pop/customer/paymentMethods",headers).then(function (response) { return response.data; });
+    const t = new Date().getTime();
+    return axios.get("/rest/s1/pop/customer/paymentMethods?timeStamp=" + t,headers).then(function (response) { return response.data; });
   },
   addPaymentMethod: function(paymentMethod,headers) {
     return axios.put("/rest/s1/pop/customer/paymentMethods",paymentMethod,headers).then(function (response) { return response.data; });
