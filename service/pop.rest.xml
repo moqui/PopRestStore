@@ -96,11 +96,11 @@ along with this software (see the LICENSE.md file). If not, see
             <method type="get"><service name="popstore.CartServices.get#CartInfo"/></method>
         </resource>
         <resource name="add">
-            <method type="get"><service name="popstore.CartServices.add#Product"/></method>
+            <method type="post"><service name="popstore.CartServices.add#Product"/></method>
         </resource>
 
         <resource name="updateProductQuantity">
-            <method type="post"><service name="popstore.CartServices.update#OrderProductQuantity"/></method>
+            <method type="patch"><service name="popstore.CartServices.update#OrderProductQuantity"/></method>
         </resource>
 
         <resource name="deleteOrderItem">
