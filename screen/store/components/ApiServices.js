@@ -95,7 +95,7 @@ var ProductService = {
         return axios.post("/rest/s1/pop/cart/place",data,headers).then(function (response) { return response.data; });
     },
     updateProductQuantity: function(data, headers) {
-        return axios.patch("/rest/s1/pop/cart/updateProductQuantity",data,headers).then(function (response) { return response.data; });
+        return axios.post("/rest/s1/pop/cart/updateProductQuantity",data,headers).then(function (response) { return response.data; });
     },
     deleteOrderProduct: function(orderId, orderItemSeqId,headers) {
         return axios.delete("/rest/s1/pop/cart/deleteOrderItem?orderId="+orderId+"&orderItemSeqId="+orderItemSeqId,headers)
