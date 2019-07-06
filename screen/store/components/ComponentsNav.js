@@ -259,14 +259,6 @@ storeComps.ModalCreditCard = {
                 this.responseMessage = "Please privide the card expiry month and year";
                 return;
             }
-            // if (this.paymentMethod.cardSecurityCode == null || this.paymentMethod.cardSecurityCode.trim() === "") {
-            //     this.responseMessage = "Please privide the card security code";
-            //     return;
-            // }
-            // if (this.paymentMethod.cardSecurityCode.length < 3 || this.paymentMethod.cardSecurityCode.length > 4) {
-            //     this.responseMessage = "Card security code must be either 3 or 4 characters";
-            //     return;
-            // }
             if (this.paymentMethod.address1 == null || this.paymentMethod.address1.trim() === "" ||
                 this.paymentMethod.city == null || this.paymentMethod.city.trim() === "") {
                 this.responseMessage = "Please provide a billing address";

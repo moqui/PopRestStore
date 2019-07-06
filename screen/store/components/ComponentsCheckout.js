@@ -21,7 +21,6 @@ storeComps.CheckoutNavbar = {
             if (this.STEPS.indexOf(step) == -1)
                 return;
             window.history.pushState('', 'ignored param', window.location.pathname + "#/checkout/"+step);
-            //window.dispatchEvent(new HashChangeEvent("hashchange"))
             var event = new CustomEvent("hashchange");
             window.dispatchEvent(event);
             this.$forceUpdate();
@@ -243,8 +242,6 @@ storeComps.CheckOutPage = {
                 this.showModal("modal-error");
                 this.setCurrentStep(STEP_BILLING);
             }.bind(this));
-            
-            
         },
         applyPromotionCode: function() {
             var dataCode = {promoCode: this.promoCode, orderId: this.productsInCart.orderHeader.orderId};
@@ -388,7 +385,6 @@ storeComps.SuccessCheckOut = {
             CustomerService.getCustomerOrderById(this.$route.params.orderId,this.axiosConfig)
                 .then(function (data) {
                     this.orderList = data;
-                    //window.dispatchEvent(new CustomEvent("ordercomplete", { 'detail': data }))
                     var event = new CustomEvent("ordercomplete", { 'detail': data });
                     window.dispatchEvent(event);
                 }.bind(this));
