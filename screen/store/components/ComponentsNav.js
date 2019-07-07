@@ -27,7 +27,7 @@ storeComps.Navbar = {
     },
     searchProduct: function() { location.href ="/store/search/"+this.searchText; }
   },
-  created() {
+  created: function() {
     this.storeInfo = this.$root.storeInfo;
   },
   mounted: function() {
@@ -50,7 +50,7 @@ Vue.component("navbar", storeComps.NavbarTemplate);
 
 storeComps.FooterPage = {
     name: "footer-page",
-    data() { return {}; },
+    data: function() { return {}; },
     props: ["infoLink"]
 };
 storeComps.FooterPageTemplate = getPlaceholderRoute("template_client_footer", "FooterPage", storeComps.FooterPage.props);
@@ -58,7 +58,7 @@ Vue.component("footer-page", storeComps.FooterPageTemplate);
 
 storeComps.MenuLeft = {
     name: "menu-left",
-    data() { return {}; },
+    data: function() { return {}; },
     props: ["type"]
 };
 storeComps.MenuLeftTemplate = getPlaceholderRoute("template_client_menu", "MenuLeft", storeComps.MenuLeft.props);
@@ -67,7 +67,7 @@ Vue.component("menu-left", storeComps.MenuLeftTemplate);
 
 storeComps.ModalAddress = {
     name: "modal-address",
-    data() { return { 
+    data: function() { return { 
       axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
               "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken }},
       toNameErrorMessage: "", 
@@ -177,11 +177,12 @@ storeComps.ModalAddress = {
         }
     },
     mounted: function() {
+      var vm = this;
       this.disabled = false;
       this.shippingAddress.countryGeoId = 'USA';
       this.getRegions(this.shippingAddress.countryGeoId);
-      $('#addressModal').on('show.bs.modal', (e) => { this.reset() });
-      $('#addressFormModal').on('show.bs.modal', (e) => { this.reset() });
+      $('#addressModal').on('show.bs.modal', function(e) { vm.reset() });
+      $('#addressFormModal').on('show.bs.modal', function(e) { vm.reset() });
     }
 };
 storeComps.ModalAddressTemplate = getPlaceholderRoute("template_client_modalAddress", "ModalAddress", storeComps.ModalAddress.props);
@@ -191,7 +192,7 @@ Vue.component("modal-address", storeComps.ModalAddressTemplate);
 
 storeComps.ModalCreditCard = {
     name: "modal-credit-card",
-    data() { return { 
+    data: function() { return { 
       axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
               "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken }},
       responseMessage: "", 
@@ -258,14 +259,6 @@ storeComps.ModalCreditCard = {
                 this.responseMessage = "Please privide the card expiry month and year";
                 return;
             }
-            if (this.paymentMethod.cardSecurityCode == null || this.paymentMethod.cardSecurityCode.trim() === "") {
-                this.responseMessage = "Please privide the card security code";
-                return;
-            }
-            if (this.paymentMethod.cardSecurityCode.length < 3 || this.paymentMethod.cardSecurityCode.length > 4) {
-                this.responseMessage = "Card security code must be either 3 or 4 characters";
-                return;
-            }
             if (this.paymentMethod.address1 == null || this.paymentMethod.address1.trim() === "" ||
                 this.paymentMethod.city == null || this.paymentMethod.city.trim() === "") {
                 this.responseMessage = "Please provide a billing address";
@@ -306,8 +299,9 @@ storeComps.ModalCreditCard = {
         }
     },
     mounted: function() {
+      var vm = this;
       this.disabled = false;
-      $('#creditCardModal').on('show.bs.modal', (e) => { this.reset() });
+      $('#creditCardModal').on('show.bs.modal', function(e){ vm.reset() });
     }
 };
 storeComps.ModalCreditCardTemplate = getPlaceholderRoute("template_client_modalCreditCard", "ModalCreditCard", storeComps.ModalCreditCard.props);

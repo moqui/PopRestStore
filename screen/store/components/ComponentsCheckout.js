@@ -1,24 +1,69 @@
 /* This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. */
+const STEP_ADDRESS = "shipping-address";
+const STEP_SHIPPING = "shipping-method";
+const STEP_BILLING = "payment-methods";
+const STEP_REVIEW = "review-purchase";
+const STEP_PENDING = "pending";
+const STEP_SUCCESS = "success";
+const STEPS = [STEP_ADDRESS, STEP_SHIPPING, STEP_BILLING, STEP_REVIEW, STEP_PENDING, STEP_SUCCESS];
+
+
 storeComps.CheckoutNavbar = {
-  name: "orderNavbar",
-  data() { return {}; },
-  props: ["option"]
+  name: "checkout-navbar",
+  data: function() { return {STEP_ADDRESS: STEP_ADDRESS, STEP_SHIPPING: STEP_SHIPPING, STEP_BILLING: STEP_BILLING, STEP_REVIEW: STEP_REVIEW, STEP_PENDING: STEP_PENDING, STEP_SUCCESS: STEP_SUCCESS, STEPS: STEPS} },
+  props: ["option"],
+  methods: {
+        getCurrentStep: function() {
+            var step =  window.location.hash ? window.location.hash.split("/")[2] : this.STEP_ADDRESS;
+            return  (this.STEPS.indexOf(step) > -1) ? step : this.STEP_ADDRESS;
+        },
+        setCurrentStep: function(step) {
+            if (this.STEPS.indexOf(step) == -1)
+                return;
+            window.history.pushState('', 'ignored param', window.location.pathname + "#/checkout/"+step);
+            var event = new CustomEvent("hashchange");
+            window.dispatchEvent(event);
+            this.$forceUpdate();
+        },
+        isCurrentStep: function(step) {
+            return this.getCurrentStep() == step;
+        },
+        isCompleteStep: function(step) {
+            return this.STEPS.indexOf(step) < this.STEPS.indexOf(this.getCurrentStep())
+        },
+        isIncompleteStep: function(step) {
+            return this.STEPS.indexOf(step) >= this.STEPS.indexOf(this.getCurrentStep())
+        }
+    },
+    mounted: function() {
+        // Redirects to the address step if none found.
+        var currentStep = this.getCurrentStep();
+        if (!window.location.hash.indexOf(currentStep) > -1) {
+            this.setCurrentStep(this.STEP_ADDRESS);
+        }
+
+        // Triggers a refresh if the hash changes
+        var reference = this;
+        window.addEventListener('hashchange', function() {
+            reference.$forceUpdate()
+        }, false);
+    }
 };
-storeComps.CheckoutNavbarTemplate = getPlaceholderRoute("template_client_checkoutHeader", "CheckoutNavbar", storeComps.CheckoutNavbar.props);
-Vue.component("checkout-navbar", storeComps.CheckoutNavbarTemplate);
+
 
 storeComps.CheckOutPage = {
     name: "checkout-page",
+    extends: storeComps.CheckoutNavbar,
     data: function() { return {
             cvv: "", showCvvError: false, homePath: "", storePath: "", customerInfo: {}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
             billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "", postalAddressStateGeoSelected: null,
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0", shippingItemPrice: 0,
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
-            cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: 0, urlList: {}, 
-            freeShipping:false, promoSuccess: "", stateGuestCustomer:2, selectShippingAddressStatus: 'active', selectShippingMethodStatus:0, selectPaymentMethodStatus:0, placeOrderStatus:0,
-            listShippingOptions: [], optionNavbar:1, axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
+            cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: 0, 
+            freeShipping:false, promoSuccess: "",  
+            listShippingOptions: [],  axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
             "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
-        }; 
+        };
     },
     computed: {
         shippingPrice: function () {
@@ -27,11 +72,11 @@ storeComps.CheckOutPage = {
     },
     methods: {
         notAddressSeleted: function() {
-            return (this.addressOption == null || this.addressOption == '' 
+            return (this.addressOption == null || this.addressOption == ''
                 || this.listShippingAddress == null || this.listShippingAddress.length == 0);
         },
         notPaymentSeleted: function() {
-            return (this.paymentOption == null || this.paymentOption == '' 
+            return (this.paymentOption == null || this.paymentOption == ''
                 || this.listPaymentMethods == null || this.listPaymentMethods.length == 0);
         },
         getCustomerInfo: function() { CustomerService.getCustomerInfo(this.axiosConfig)
@@ -58,7 +103,7 @@ storeComps.CheckOutPage = {
         },
 
         /**
-         * Data is like so: 
+         * Data is like so:
          * "postalContactMechId" : "CustJqpAddr",
          * "paymentMethodId" : "100004",
          * "telecomContactMechId" : "CustJqpTeln"
@@ -70,7 +115,7 @@ storeComps.CheckOutPage = {
 
         getCartShippingOptions: function() {
             ProductService.getCartShippingOptions(this.axiosConfig)
-                .then(function (data) { 
+                .then(function (data) {
                     this.listShippingOptions = data.shippingOptions;
 
                     for(var i in this.listShippingOptions){
@@ -87,6 +132,7 @@ storeComps.CheckOutPage = {
                     if(!!option){
                         option.shippingTotal = parseFloat(this.shippingItemPrice).toFixed(2);
                         this.shippingOption = option.carrierPartyId + ':' + option.shipmentMethodEnumId;
+                        this.shippingMethod = option;
                     }
                 }.bind(this));
         },
@@ -129,7 +175,15 @@ storeComps.CheckOutPage = {
             var item = this.productsInCart.orderItemList?
                        this.productsInCart.orderItemList.find(function(item) {return item.itemTypeEnumId == 'ItemShipping'; }):0;
             // Parse the default value retrieved from orderItemList setting two decimal
-            this.shippingItemPrice = parseFloat(item? item.unitAmount : 0);            
+            this.shippingItemPrice = parseFloat(item? item.unitAmount : 0);
+        },
+        addressContinue: function() {
+            this.addCartBillingShipping();
+            this.setCurrentStep(STEP_SHIPPING)
+        },
+        shippingContinue: function() {
+            this.addCartBillingShipping();
+            this.setCurrentStep(STEP_BILLING)
         },
         validateCvv: function () {
             var isCvvValid = new RegExp("^\\d{3,4}$").test(this.cvv);
@@ -142,40 +196,20 @@ storeComps.CheckOutPage = {
 
             this.showCvvError = false;
             this.addCartBillingShipping();
-            this.setCheckoutStepComplete('selectPaymentMethod');
-            this.setOptionNavbar(4);
+            this.setCurrentStep(STEP_REVIEW)
         },
         addCartBillingShipping: function() {
             var info = {
-                "shippingPostalContactMechId":this.addressOption.split(':')[0], 
+                "shippingPostalContactMechId":this.addressOption.split(':')[0],
                 "shippingTelecomContactMechId":this.addressOption.split(':')[1],
-                "paymentMethodId":this.paymentOption, 
-                "carrierPartyId":this.shippingOption.split(':')[0], 
+                "paymentMethodId":this.paymentOption,
+                "carrierPartyId":this.shippingOption.split(':')[0],
                 "shipmentMethodEnumId":this.shippingOption.split(':')[1]
             };
             ProductService.addCartBillingShipping(info,this.axiosConfig).then(function (data) {
                 this.paymentId = data.paymentId;
                 this.getCartInfo();
-            }.bind(this)); 
-        },
-        setCheckoutStepComplete: function(step) { 
-            switch (step){
-                case "selectShippingAddress":
-                    this.selectShippingAddressStatus = "complete";
-                    break;
-                case "selectShippingMethod":
-                    this.selectShippingMethodStatus = "complete";
-                    break;
-                case "selectPaymentMethod":
-                    this.selectPaymentMethodStatus = "complete";
-                    break;
-                case "placeOrder":
-                    this.placeOrderStatus = "complete";
-                    break;  
-            }
-        },    
-        setOptionNavbar: function(option) {
-            this.optionNavbar = option;
+            }.bind(this));
         },
         getCustomerPaymentMethods: function() {
             CustomerService.getPaymentMethods(this.axiosConfig)
@@ -188,23 +222,25 @@ storeComps.CheckOutPage = {
             var data = { cardSecurityCodeByPaymentId: {} };
             data.cardSecurityCodeByPaymentId[this.paymentId] = this.cvv;
 
-            this.isSpinner = true;
+            // temporarily go to sending step
+            this.setCurrentStep(STEP_PENDING);
             ProductService.placeCartOrder(data,this.axiosConfig).then(function (data) {
                 if(data.orderHeader != null) {
                     this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
                 } else {
-                    this.isSpinner = false;
                     this.showModal("modal-error");
+                    this.setCurrentStep(STEP_BILLING);
                 }
                 if(data.messages.includes("error") && data.messages.includes("122")) {
                     this.responseMessage = "Please provide a valid Billing ZIP";
+                    this.setCurrentStep(STEP_BILLING);
                 } else {
                     this.responseMessage = data.messages;
                 }
             }.bind(this)).catch(function (error) {
-                this.isSpinner = true;
                 this.responseMessage = error;
                 this.showModal("modal-error");
+                this.setCurrentStep(STEP_BILLING);
             }.bind(this));
         },
         applyPromotionCode: function() {
@@ -232,16 +268,18 @@ storeComps.CheckOutPage = {
             ProductService.updateProductQuantity(data, this.axiosConfig)
                 .then(function (data) { this.getCartInfo(); }.bind(this));
         },
-        afterDelete: function(){       
+        afterDelete: function(){
             let qtyProducts = 0 ;
-            this.productsInCart.orderItemList.forEach(function(item){
-                if(item.itemTypeEnumId == 'ItemProduct'){
-                    qtyProducts = qtyProducts + 1;
-                }
-            });
+            if (this.productsInCart.orderItemList) {
+                this.productsInCart.orderItemList.forEach(function(item){
+                    if(item.itemTypeEnumId == 'ItemProduct'){
+                        qtyProducts += 1;
+                    }
+                });
+            }
             if(qtyProducts == 0){
                 window.location.href = this.storePath;
-            }   
+            }
         },
         deleteOrderProduct: function(item) {
             ProductService.deleteOrderProduct(item.orderId, item.orderItemSeqId, this.axiosConfig)
@@ -299,8 +337,8 @@ storeComps.CheckOutPage = {
         },
         cleanShippingAddress: function() { this.shippingAddress = {}; this.isUpdate = false; },
         cleanPaymentMethod: function() { this.paymentMethod = {}; this.isUpdate = false; },
-        resetData: function(){ 
-            $("#modal-card-content").trigger('reset'); 
+        resetData: function(){
+            $("#modal-card-content").trigger('reset');
             this.paymentMethod = {};
             this.shippingAddress = {};
             this.isUpdate = false;
@@ -312,8 +350,9 @@ storeComps.CheckOutPage = {
     },
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
-        if (this.$root.apiKey == null) { 
-            this.$router.push({ name: 'login'}); 
+        if (this.$root.apiKey == null) {
+            localStorage.redirect = 'checkout';
+            this.$router.push({ name: 'login'});
         } else {
             this.homePath = storeConfig.homePath;
             this.storePath = storeConfig.storePath;
@@ -322,7 +361,7 @@ storeComps.CheckOutPage = {
             this.getCartShippingOptions();
             this.getCustomerShippingAddresses();
             this.getCustomerPaymentMethods();
-            this.getRegions('USA');
+            this.getRegions('USA');  
         }
     }
 };
@@ -344,7 +383,11 @@ storeComps.SuccessCheckOut = {
         },
         getCustomerOrderById: function() {
             CustomerService.getCustomerOrderById(this.$route.params.orderId,this.axiosConfig)
-                .then(function (data) { this.orderList = data; }.bind(this));
+                .then(function (data) {
+                    this.orderList = data;
+                    var event = new CustomEvent("ordercomplete", { 'detail': data });
+                    window.dispatchEvent(event);
+                }.bind(this));
         },
         formatDate: function(date) {
             return moment(date).format('Do MMM, YY');
@@ -364,3 +407,6 @@ Vue.component("contact-info", storeComps.CheckoutContactInfoTemplate);
 
 storeComps.CheckoutProp65Template = getPlaceholderRoute("template_client_prop65", "prop65Warning");
 Vue.component("prop65-warning", storeComps.CheckoutProp65Template);
+
+storeComps.CheckoutNavbarTemplate = getPlaceholderRoute("template_client_checkoutHeader", "CheckoutNavbar", storeComps.CheckoutNavbar.props);
+Vue.component("checkout-navbar", storeComps.CheckoutNavbarTemplate);

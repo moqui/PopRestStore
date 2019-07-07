@@ -415,7 +415,13 @@ storeComps.CreateAccountPage = {
             LoginService.login(user, this.axiosConfig).then(function (data) {
                 this.$root.apiKey = data.apiKey;
                 this.$root.moquiSessionToken = data.moquiSessionToken;
-                this.$router.push({ name: 'account'});
+                if(localStorage.redirect == 'checkout'){
+                    localStorage.removeItem("redirect");
+                    this.$router.push({ name: 'checkout'});
+                }else{
+                   this.$router.push({ name: 'account'}); 
+                }
+                
             }.bind(this)).catch(function (error) {
                 if(!!error.response && !!error.response.headers){
                     this.axiosConfig.headers.moquiSessionToken = error.response.headers.moquisessiontoken;

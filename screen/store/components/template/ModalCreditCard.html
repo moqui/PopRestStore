@@ -50,15 +50,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group row justify-content-between">
-                                <label for="security" class="col-form-label ml-3">Security Code</label>
-                                <div class="col-sm-8 col-xs-12">
-                                    <input class="form-control" id="security"
-                                        type="text"
-                                        v-model="paymentMethod.cardSecurityCode"
-                                        placeholder="3 or 4 Digits" required/>
-                                </div>
-                            </div>
                             <div class="form-group row justify-content-between" v-if="!isUpdate">
                                 <label class="col-form-label ml-3">Select an Address*</label>
                                 <div class="col-sm-8 col-xs-12">
