@@ -154,6 +154,13 @@ storeComps.ModalAddress = {
             if (this.shippingAddress.contactNumber == null || this.shippingAddress.contactNumber.trim() === "") {
                 this.contactNumberErrorMessage = "Please enter a phone number";
                 error = true;
+            }else{
+                var isNum = /^\d+$/.test(this.shippingAddress.contactNumber);
+
+                if(!isNum){
+                    this.contactNumberErrorMessage = "Please enter a valid phone number(only numbers)";
+                    error = true;
+                }
             }
             if(error){
                 return;
