@@ -34,6 +34,7 @@ storeComps.LoginPage = {
             .catch(function (error) { 
                 if(!!error.response && !!error.response.headers){
                     this.axiosConfig.headers.moquiSessionToken = error.response.headers.moquisessiontoken;
+                    this.$root.moquiSessionToken = error.response.headers.moquisessiontoken;
                 }                
                 this.loginErrormessage = error.response.data.errors; 
             }.bind(this));
@@ -406,6 +407,7 @@ storeComps.CreateAccountPage = {
             }.bind(this)).catch(function (error) {
                 if(!!error.response && !!error.response.headers){
                     this.axiosConfig.headers.moquiSessionToken = error.response.headers.moquisessiontoken;
+                    this.$root.moquiSessionToken = error.response.headers.moquisessiontoken;
                 }
                 this.errorMessage = "An error occurred: " + error.response.data.errors;
             }.bind(this));
@@ -425,6 +427,7 @@ storeComps.CreateAccountPage = {
             }.bind(this)).catch(function (error) {
                 if(!!error.response && !!error.response.headers){
                     this.axiosConfig.headers.moquiSessionToken = error.response.headers.moquisessiontoken;
+                    this.$root.moquiSessionToken = error.response.headers.moquisessiontoken;
                 }
                 this.errorMessage = error.response.data.errors;
             }.bind(this));
