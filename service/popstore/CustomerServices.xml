@@ -113,7 +113,7 @@ along with this software (see the LICENSE.md file). If not, see
                 ec.artifactExecution.disableAuthz()
                 if (ec.entity.find("moqui.security.UserAccount").condition("username", fbUser.email).count() == 0) {
                     // no UserAccount for the email and we should create one with corresponding party
-                    Map partiesByEmail = ec.service.sync().name("ridgecrest.PartyServices.find#PartyByEmail")
+                    Map partiesByEmail = ec.service.sync().name("popstore.CustomerServices.find#PartyByEmail")
                             .parameters(emailAddress: fbUser.email).call();
                     def partyId
                     Set partyIds = partiesByEmail.partyIds;
