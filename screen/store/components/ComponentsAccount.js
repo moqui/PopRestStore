@@ -171,7 +171,6 @@ storeComps.ResetPasswordPage = {
             this.nextStep = this.$route.query.step ? this.$route.query.step : 0;
             if(this.nextStep == 2){
                 this.data.username = this.$route.query.username ? this.$route.query.username : "";
-                this.passwordInfo.oldPassword = this.$route.query.ppwd ? this.$route.query.ppwd : "";
             }
 		});
     }
