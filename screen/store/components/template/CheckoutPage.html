@@ -4,7 +4,10 @@
         <div class="loader" v-if="isCurrentStep(STEP_PENDING)"></div>
         <div class="row">
             <!-- Panel item list-->
-            <div class="col col-lg-6 col-sm-12 col-12">
+            <div class="col col-lg-6 col-sm-12 col-12 loader-wrapper">
+                <div class="loader" v-if="loading">
+                        <div class="ball-spin-fade-loader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                </div>
                 <p class="row title-cart-item">
                     <span class="col col-6 col-sm-2">Item</span>
                     <span class="col d-none d-sm-block col-sm-5"></span>
@@ -87,7 +90,10 @@
             </div>
 
             <!-- The whole checkout stage column -->
-            <div class="col col-lg-5 offset-lg-1 col-sm-12 col-12">
+            <div class="col col-lg-5 offset-lg-1 col-sm-12 col-12 loader-wrapper">
+                <div class="loader" v-if="loading">
+                    <div class="ball-spin-fade-loader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                </div>
                 <!-- Shipping Address section title and change button -->
                 <p class="title-check-text" :class="{'step-active':isCurrentStep(STEP_ADDRESS), 'step-complete':isCompleteStep(STEP_ADDRESS)}">
                     <span v-if="isIncompleteStep(STEP_ADDRESS)" class="circle">1</span>

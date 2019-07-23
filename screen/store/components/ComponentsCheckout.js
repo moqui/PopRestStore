@@ -60,7 +60,7 @@ storeComps.CheckOutPage = {
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0", shippingItemPrice: 0,
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
             cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: 0, 
-            freeShipping:false, promoSuccess: "",  
+            freeShipping:false, promoSuccess: "", loading: false,
             listShippingOptions: [],  axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
             "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
         };
@@ -134,6 +134,8 @@ storeComps.CheckOutPage = {
                         this.shippingOption = option.carrierPartyId + ':' + option.shipmentMethodEnumId;
                         this.shippingMethod = option;
                     }
+
+                    this.loading = false;
                 }.bind(this));
         },
         getRegions: function(geoId) { GeoService.getRegions(geoId).then(function (data){ this.regionsList = data.resultList; }.bind(this)); },
@@ -264,9 +266,13 @@ storeComps.CheckOutPage = {
             }.bind(this));
         },
         updateProductQuantity: function(item) {
+            this.loading = true;
             var data = { "orderId": item.orderId, "orderItemSeqId": item.orderItemSeqId, "quantity": item.quantity };
             ProductService.updateProductQuantity(data, this.axiosConfig)
-                .then(function (data) { this.getCartInfo(); }.bind(this));
+                .then(function (data) { 
+                    this.getCartInfo();
+                    this.getCartShippingOptions();
+                }.bind(this));
         },
         afterDelete: function(){
             let qtyProducts = 0 ;
@@ -350,6 +356,8 @@ storeComps.CheckOutPage = {
     },
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
+        this.loading = true;
+
         if (this.$root.apiKey == null) {
             localStorage.redirect = 'checkout';
             this.$router.push({ name: 'login'});

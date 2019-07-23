@@ -34,6 +34,7 @@ storeComps.LoginPage = {
             .catch(function (error) { 
                 if(!!error.response && !!error.response.headers){
                     this.axiosConfig.headers.moquiSessionToken = error.response.headers.moquisessiontoken;
+                    this.$root.moquiSessionToken = error.response.headers.moquisessiontoken;
                 }                
                 this.loginErrormessage = error.response.data.errors; 
             }.bind(this));
@@ -157,8 +158,21 @@ storeComps.ResetPasswordPage = {
                 this.$root.apiKey = data.apiKey;
                 this.$root.moquiSessionToken = data.moquiSessionToken;
                 this.$router.push({ name: 'account'});
+            }.bind(this)).catch(function (error) {
+                if(!!error.response && !!error.response.headers){
+                    this.axiosConfig.headers.moquiSessionToken = error.response.headers.moquisessiontoken;
+                    this.$root.moquiSessionToken = error.response.headers.moquisessiontoken;
+                }
             }.bind(this));
         }
+    },
+    mounted: function(){
+        this.$nextTick(() => {
+            this.nextStep = this.$route.query.step ? this.$route.query.step : 0;
+            if(this.nextStep == 2){
+                this.data.username = this.$route.query.username ? this.$route.query.username : "";
+            }
+		});
     }
 };
 storeComps.ResetPasswordTemplate = getPlaceholderRoute("template_client_resetPassword", "ResetPasswordPage");
@@ -406,6 +420,7 @@ storeComps.CreateAccountPage = {
             }.bind(this)).catch(function (error) {
                 if(!!error.response && !!error.response.headers){
                     this.axiosConfig.headers.moquiSessionToken = error.response.headers.moquisessiontoken;
+                    this.$root.moquiSessionToken = error.response.headers.moquisessiontoken;
                 }
                 this.errorMessage = "An error occurred: " + error.response.data.errors;
             }.bind(this));
@@ -425,6 +440,7 @@ storeComps.CreateAccountPage = {
             }.bind(this)).catch(function (error) {
                 if(!!error.response && !!error.response.headers){
                     this.axiosConfig.headers.moquiSessionToken = error.response.headers.moquisessiontoken;
+                    this.$root.moquiSessionToken = error.response.headers.moquisessiontoken;
                 }
                 this.errorMessage = error.response.data.errors;
             }.bind(this));
