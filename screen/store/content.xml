@@ -17,10 +17,10 @@ along with this software (see the LICENSE.md file). If not, see
 
     <transition name="attachment" read-only="true"><actions>
         <set field="extraPathNameList" from="new ArrayList(sri.screenUrlInfo.extraPathNameList)"/>
-        <if condition="!extraPathNameList"><script>ec.web.sendError(404, null, null)</script></if>
+        <if condition="!extraPathNameList"><script>ec.web.sendError(404, "No attachment specified", null); return;</script></if>
         <set field="filename" from="extraPathNameList.remove(extraPathNameList.size()-1)"/>
         <service-call name="org.moqui.impl.WikiServices.get#WikiPageAttachment" out-map="context"
-                      in-map="[wikiSpaceId:wikiSpaceId, pagePath:extraPathNameList?.join('/'), filename:filename]"/>
+                in-map="[wikiSpaceId:wikiSpaceId, pagePath:extraPathNameList?.join('/'), filename:filename]"/>
         <script>ec.web.sendResourceResponse(attachmentReference?.location, true)</script>
     </actions><default-response type="none"/></transition>
 
@@ -78,8 +78,8 @@ along with this software (see the LICENSE.md file). If not, see
 
     <transition name="createRequest">
         <actions>
-            <service-call name="mantle.request.RequestServices.create#ContactRequest" 
-                in-map="context + [moquiSessionToken:ec.web.sessionToken]" out-map="context"/>
+            <service-call name="mantle.request.RequestServices.create#ContactRequest"
+                    in-map="context + [moquiSessionToken:ec.web.sessionToken]" out-map="context"/>
         </actions>
         <default-response url="."/>
     </transition>
@@ -87,7 +87,7 @@ along with this software (see the LICENSE.md file). If not, see
     <actions>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
         <service-call name="org.moqui.impl.WikiServices.get#PublishedWikiPageText" out-map="context"
-                      in-map="[wikiSpaceId:wikiSpaceId, pagePath:extraPathNameList?.join('/'), versionName:ver]"/>
+                in-map="[wikiSpaceId:wikiSpaceId, pagePath:extraPathNameList?.join('/'), versionName:ver]"/>
         <!-- TODO: consider removing versionName:ver above in production so only published versions can be seen -->
     </actions>
     <widgets>
