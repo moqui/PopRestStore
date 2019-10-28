@@ -104,7 +104,16 @@ storeComps.LoginPage = {
         },
         showModal: function(modalId) { $('#'+modalId).modal('show'); },
     },
-    mounted: function() { if (this.$root.apiKey != null) { this.$router.push({ name: "account"}) }},
+    mounted: function() {
+        if (this.$root.apiKey != null) {
+            if(localStorage.redirect == 'checkout'){
+                localStorage.removeItem("redirect");
+                this.$router.push({ name: 'checkout'});
+            }else{
+                this.$router.push({ name: 'account'}); 
+            }
+        }
+    },
 };
 storeComps.LoginPageTemplate = getPlaceholderRoute("template_client_login", "LoginPage");
 
