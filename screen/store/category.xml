@@ -69,6 +69,30 @@ along with this software (see the LICENSE.md file). If not, see
         <service-call name="popstore.ProductServices.get#SortedProductList" in-map="context + [productCategoryId:categoryId]" out-map="context"/>
 
         <set field="pageSize" from="pageSize ?: 100"/>
+
+        <set field="virtualProductsIds" from="[:]"/>
+        <iterate list="productList" entry="product">
+            <if condition="product.productTypeEnumId == 'PtVirtual'">
+                <then>
+                    <script>
+                        virtualProductsIds.put(product.productId, product.productId)
+                    </script>
+                </then>
+                <else>
+                    <entity-find-one entity-name="mantle.product.ProductAssocAndFrom" value-field="productAssoc">
+                        <field-map field-name="toProductId" from="product.productId"/>
+                        <field-map field-name="productTypeEnumId" value="PtVirtual"/>
+                    </entity-find-one>
+                    <script>
+                        if(productAssoc){
+                            virtualProductsIds.put(product.productId, productAssoc.productId)
+                        }else{
+                            virtualProductsIds.put(product.productId, product.productId)
+                        }
+                    </script>
+                </else>
+            </if>
+        </iterate>
         <script>paginateList("productList", null, context)</script>
     </actions>
 
