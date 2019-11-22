@@ -167,7 +167,7 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
 
-    <service verb="reset" noun="Password" require-authentication="anonymous-all">
+    <service verb="reset" noun="Password" authenticate="anonymous-all">
         <in-parameters>
             <parameter name="username"/>
         </in-parameters>
@@ -186,7 +186,7 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
     
-    <service verb="register" noun="Customer" require-authentication="anonymous-all">
+    <service verb="register" noun="Customer" authenticate="anonymous-all">
         <in-parameters>
             <parameter name="firstName" required="true"/><parameter name="middleName"/><parameter name="lastName" required="true"/>
 
@@ -255,6 +255,7 @@ along with this software (see the LICENSE.md file). If not, see
             <set field="partyId" from="ec.user.userAccount?.partyId ?: sessionAttributes.customerPartyId"/>
             <if condition="!partyId"><return message="No active customer"/></if>
 
+            <!-- TODO: handle Organization type parties, use more liberal view-entity and support 'organizationName' instead of firstName/lastName in the UI -->
             <entity-find-one entity-name="mantle.party.PersonAndUserAccount" value-field="personAndUserAccount"/>
             <script>context.putAll(personAndUserAccount)</script>
 
@@ -294,7 +295,7 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
 
-    <service verb="update" noun="CustomerPassword" require-authentication="anonymous-all">
+    <service verb="update" noun="CustomerPassword" authenticate="anonymous-all">
         <in-parameters>
             <parameter name="userId"/>
             <parameter name="username"/>
