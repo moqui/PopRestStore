@@ -27,7 +27,7 @@ along with this software (see the LICENSE.md file). If not, see
                     <set field="addedCorrect" from="true"/>
                 </if>
         </actions>
-        <conditional-response url="."><condition><expression>categoryId != null</expression></condition><parameter name="categoryId"/><parameter name="categoryName"/><parameter name="addedCorrect"/></conditional-response>
+        <conditional-response url="."><condition><expression>categoryId != null</expression></condition><parameter name="categoryId"/><parameter name="addedCorrect"/></conditional-response>
         <conditional-response url="."><condition><expression>searchParameter != null</expression></condition><parameter name="searchParameter"/><parameter name="addedCorrect"/></conditional-response>
         <default-response url="."><parameter name="addedCorrect"/></default-response>
         <error-response url="."/>
@@ -44,7 +44,7 @@ along with this software (see the LICENSE.md file). If not, see
                 <set field="searchParameter" from="searchParameter"/>
             </if>
         </actions>
-        <conditional-response url="."><condition><expression>categoryId != null</expression></condition><parameter name="categoryId"/><parameter name="categoryName"/><parameter name="addedCorrect"/></conditional-response>
+        <conditional-response url="."><condition><expression>categoryId != null</expression></condition><parameter name="categoryId"/><parameter name="addedCorrect"/></conditional-response>
         <conditional-response url="."><condition><expression>searchParameter != null</expression></condition><parameter name="searchParameter"/><parameter name="addedCorrect"/></conditional-response>
         <default-response url="."/>
     </transition>
