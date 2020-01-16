@@ -58,8 +58,7 @@ var storeInfo = ${storeInfoJson};
         <actions>
             <service-call name="popstore.CustomerServices.logout#Customer"/>
         </actions>
-        <default-response url="${redirectPath ? redirectPath : '.'}"/>
-        <error-response url="${redirectPath ? redirectPath : '.'}"/>
+        <default-response url="."/>
     </transition>
 
     <subscreens default-item="home" always-use-full-path="true"/>
