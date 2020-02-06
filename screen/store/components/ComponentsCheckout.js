@@ -168,6 +168,8 @@ storeComps.CheckOutPage = {
                 }
 
                 this.productsInCart = data;
+                // Notify vue of property change
+                this.$set(this.productsInCart, 'orderItemList', this.productsInCart.orderItemList);
                 this.setShippingItemPrice();
                 this.afterDelete();
             }.bind(this));
@@ -248,10 +250,12 @@ storeComps.CheckOutPage = {
         applyPromotionCode: function() {
             var dataCode = {promoCode: this.promoCode, orderId: this.productsInCart.orderHeader.orderId};
             ProductService.addPromoCode(dataCode,this.axiosConfig).then(function (data) {
-                if(data.messages.includes("not valid")) {
+                if(data.messages && data.messages.includes("not valid")) {
                     this.promoError = data.messages;
                 } else {
                     this.promoSuccess = data.messages;
+                    this.getCartInfo();
+                    this.promoCode = "";
                 }
             }.bind(this));
         },
