@@ -105,6 +105,7 @@ var ProductService = {
         return axios.post("/rest/s1/pop/cart/promoCode",data,headers).then(function (response) { return response.data; });
     },
     deletePromoCode: function(data, headers) {
-        return axios.delete("/rest/s1/pop/cart/promoCode",data,headers).then(function (response) { return response.data; });
+        return axios.delete("/rest/s1/pop/cart/promoCode", {data: data, headers: headers})
+            .then(function (response) { return response.data; });
     }
 };
