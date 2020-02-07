@@ -295,6 +295,10 @@ storeComps.CheckOutPage = {
             ProductService.deleteOrderProduct(item.orderId, item.orderItemSeqId, this.axiosConfig)
                 .then(function (data) { this.getCartInfo(); }.bind(this));
         },
+        deleteOrderPromo: function(item) {
+            ProductService.deletePromoCode({orderId: item.orderId, promoCodeId: item.promoCodeId}, this.axiosConfig.headers)
+                .then(function (data) { this.getCartInfo(); }.bind(this));
+        },
         selectBillingAddress: function(address) {
             this.paymentMethod.address1 = address.postalAddress.address1;
             this.paymentMethod.address2 = address.postalAddress.address2;
