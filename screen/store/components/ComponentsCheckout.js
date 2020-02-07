@@ -293,7 +293,7 @@ storeComps.CheckOutPage = {
         },
         deleteOrderProduct: function(item) {
             ProductService.deleteOrderProduct(item.orderId, item.orderItemSeqId, this.axiosConfig)
-                .then(function (data) { this.getCartInfo(); }.bind(this));
+                .then(function (data) { this.getCartInfo(); this.getCartShippingOptions(); }.bind(this));
         },
         deleteOrderPromo: function(item) {
             ProductService.deletePromoCode({orderId: item.orderId, promoCodeId: item.promoCodeId}, this.axiosConfig.headers)
