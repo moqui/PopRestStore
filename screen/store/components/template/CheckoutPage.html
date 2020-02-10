@@ -43,12 +43,20 @@
 
                 <hr>
                 <div class="row div-total">
-                    <span class="col col-9 col-lg-9">Subtotal</span>
+                    <span class="col col-9 col-lg-9">Products</span>
                     <span class="col col-3 col-lg-3 text-right" v-if="productsInCart.orderPart">
-                        <span class="pr-4">${{(productsInCart.orderPart.partTotal - shippingPrice).toFixed(2)}}</span>
+                        <span class="pr-4">${{productTotal.toFixed(2)}}</span>
                     </span>
                 </div>
                 <hr>
+
+                <hr>
+                <div class="row div-total">
+                    <span class="col col-9 col-lg-9">Promotions</span>
+                    <span class="col col-3 col-lg-3 text-right place-order-total">
+                        <span class="pr-4">${{promoDiscount.toFixed(2)}}</span>
+                    </span>
+                </div>
 
                 <div class="row div-total">
                     <span class="col col-9 col-lg-9 mt-4">Shipping</span>
@@ -59,7 +67,7 @@
                     </span>
                     <hr style="width: 96%;">
                     <span class="col col-9 col-lg-9 mt-3 mb-5">Total</span>
-                    <span class="col col-3 col-lg-3 mt-3 text-right place-order-total" v-if="productsInCart.orderHeader">
+                    <span class="col col-3 col-lg-3 mt-3 text-right" v-if="productsInCart.orderHeader">
                         <span class="pr-4">${{productsInCart.orderHeader.grandTotal.toFixed(2)}}</span>
                     </span>
                 </div>

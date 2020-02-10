@@ -69,6 +69,20 @@ storeComps.CheckOutPage = {
         shippingPrice: function () {
             return this.shippingMethod && this.shippingMethod.shippingTotal != undefined ? Number(this.shippingMethod.shippingTotal) : this.shippingItemPrice;
         },
+        promoDiscount: function () {
+            return this.productsInCart.orderItemList ?
+                this.productsInCart.orderItemList.reduce(function (acc, curr) {
+                    var value = curr.itemTypeEnumId == 'ItemDiscount' ? curr.unitAmount * curr.quantity : 0;
+                    return acc + value
+                }, 0) : 0
+        },
+        productTotal: function () {
+            return this.productsInCart.orderItemList ?
+                this.productsInCart.orderItemList.reduce(function (acc, curr) {
+                    var value = curr.itemTypeEnumId == 'ItemProduct' ? curr.unitAmount * curr.quantity : 0;
+                    return acc + value
+                }, 0) : 0
+        }
     },
     methods: {
         notAddressSeleted: function() {
