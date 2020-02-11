@@ -35,7 +35,7 @@
                     </div>
                     <div class="col col-3 col-sm-3 text-right">
                         <div class="place-order-total pr-4">${{item.unitAmount.toFixed(2)}}</div>
-                        <div class="item-actions pr-4" @click="deleteOrderProduct(item)" v-if="item.itemTypeEnumId=='ItemProduct'">
+                        <div v-if="item.itemTypeEnumId=='ItemProduct'" class="item-actions pr-4" @click="deleteOrderProduct(item)">
                             <span>Delete</span>
                         </div>
                     </div>
