@@ -60,7 +60,7 @@ storeComps.CheckOutPage = {
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0", shippingItemPrice: 0,
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
             cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: 0, 
-            freeShipping:false, promoSuccess: "", loading: false,
+            freeShipping:false, promoSuccess: "", loading: false, mouseInPopover: false,
             listShippingOptions: [],  axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
             "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
         };
@@ -70,21 +70,36 @@ storeComps.CheckOutPage = {
             return this.shippingMethod && this.shippingMethod.shippingTotal != undefined ? Number(this.shippingMethod.shippingTotal) : this.shippingItemPrice;
         },
         promoDiscount: function () {
-            return this.productsInCart.orderItemList ?
-                this.productsInCart.orderItemList.reduce(function (acc, curr) {
-                    var value = curr.itemTypeEnumId == 'ItemDiscount' ? curr.unitAmount * curr.quantity : 0;
-                    return acc + value
-                }, 0) : 0
+            return this.productsInCart.orderItemList ? this.getCartValueByItemEnum('ItemDiscount') : 0;
         },
         productTotal: function () {
+            return this.productsInCart.orderItemList ? this.getCartValueByItemEnum('ItemProduct') : 0;
+        },
+        //TODO Getting the applied promo codes should be done server-side
+        appliedPromoCodes: function () {
             return this.productsInCart.orderItemList ?
-                this.productsInCart.orderItemList.reduce(function (acc, curr) {
-                    var value = curr.itemTypeEnumId == 'ItemProduct' ? curr.unitAmount * curr.quantity : 0;
-                    return acc + value
-                }, 0) : 0
+                this.getUniqueValuesByProperty(this.productsInCart.orderItemList, 'promoCodeText',
+                    function (v) {
+                        return v.itemTypeEnumId == 'ItemDiscount'
+                    })
+                : [];
         }
     },
     methods: {
+        getUniqueValuesByProperty: function (items, property, filter){
+            var uniqueVals = {};
+            items.forEach(function (val) {
+                if(filter(val) && !(val[property] in uniqueVals))
+                    uniqueVals[val[property]] = true;
+            });
+            return Object.getOwnPropertyNames(uniqueVals);
+        },
+        getCartValueByItemEnum: function(itemEnum) {
+            return this.productsInCart.orderItemList.reduce(function (a, c) {
+                var value = c.itemTypeEnumId == itemEnum ? c.unitAmount * c.quantity : 0;
+                return a + value;
+            }, 0);
+        },
         notAddressSeleted: function() {
             return (this.addressOption == null || this.addressOption == ''
                 || this.listShippingAddress == null || this.listShippingAddress.length == 0);
@@ -287,7 +302,7 @@ storeComps.CheckOutPage = {
             this.loading = true;
             var data = { "orderId": item.orderId, "orderItemSeqId": item.orderItemSeqId, "quantity": item.quantity };
             ProductService.updateProductQuantity(data, this.axiosConfig)
-                .then(function (data) { 
+                .then(function (data) {
                     this.getCartInfo();
                     this.getCartShippingOptions();
                 }.bind(this));
@@ -308,6 +323,13 @@ storeComps.CheckOutPage = {
         deleteOrderProduct: function(item) {
             ProductService.deleteOrderProduct(item.orderId, item.orderItemSeqId, this.axiosConfig)
                 .then(function (data) { this.getCartInfo(); this.getCartShippingOptions(); }.bind(this));
+        },
+        deletePromoCode: function(promo) {
+            var promoInfo = this.productsInCart.orderPromoCodeDetailList.find(function (val) {
+                return val.promoCode == promo;
+            });
+            ProductService.deletePromoCode({orderId: promoInfo.orderId, promoCodeId: promoInfo.promoCodeId},
+                this.axiosConfig.headers).then(function (data) { this.getCartInfo(); this.getCartShippingOptions(); }.bind(this));
         },
         selectBillingAddress: function(address) {
             this.paymentMethod.address1 = address.postalAddress.address1;
@@ -362,7 +384,6 @@ storeComps.CheckOutPage = {
         cleanShippingAddress: function() { this.shippingAddress = {}; this.isUpdate = false; },
         cleanPaymentMethod: function() { this.paymentMethod = {}; this.isUpdate = false; },
         resetData: function(){
-            $("#modal-card-content").trigger('reset');
             this.paymentMethod = {};
             this.shippingAddress = {};
             this.isUpdate = false;
@@ -371,6 +392,32 @@ storeComps.CheckOutPage = {
         clearCvv: function () {
             this.cvv = "";
         },
+        showPopover: function (elementId, popoverId) {
+            var element = $("#"+elementId).first();
+            var popover = $("#"+popoverId).first();
+            var pop = new Popper(element, popover, {
+                placement: "top",
+                modifiers: {
+                    flip: { behavior: [] },
+                    offset: { enabled: true, offset: '5,2' },
+                    arrow: { element: '.arrow' }
+                }
+            });
+            popover.addClass("show");
+        },
+        hidePopover: function (popoverId, source) {
+            //If user leaves the popover parent element without entering the popover, close it.
+            if(source == 'element') {
+                //We need to allow time for the user to enter the popover
+                setTimeout(function() {
+                    if(!this.mouseInPopover)
+                    $("#"+popoverId).first().removeClass("show");
+                }.bind(this), 250);
+            } else {
+                $("#"+popoverId).first().removeClass("show");
+                this.mouseInPopover = false;
+            }
+        }
     },
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
@@ -387,7 +434,7 @@ storeComps.CheckOutPage = {
             this.getCartShippingOptions();
             this.getCustomerShippingAddresses();
             this.getCustomerPaymentMethods();
-            this.getRegions('USA');  
+            this.getRegions('USA');
         }
     }
 };
