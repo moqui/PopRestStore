@@ -422,7 +422,9 @@ storeComps.CheckOutPage = {
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
         this.loading = true;
-
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
         if (this.$root.apiKey == null) {
             localStorage.redirect = 'checkout';
             this.$router.push({ name: 'login'});

@@ -15,7 +15,7 @@
                     <span class="col col-3 col-sm-3 text-center">Price</span>
                 </p>
                 <hr class="hr">
-                <div class="row" v-for="item in productsInCart.orderItemList" :key="item.itemTypeEnumId + '' + item.productId" v-if="item.itemTypeEnumId != 'ItemShipping'">
+                <div class="row" v-for="(item, i) in productsInCart.orderItemList" :key="item.itemTypeEnumId + '' + item.productId" v-if="item.itemTypeEnumId != 'ItemShipping'">
                     <div class="col col-sm-2 d-none d-sm-block">
                         <product-image :productId="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'"
                            class="mb-1"/>
@@ -29,7 +29,8 @@
                             <span class="place-order-total"> Save ${{(item.unitListPrice - item.unitAmount).toFixed(2)}}</span>
                         </p>
                     </div>
-                    <div class="col col-3 col-sm-2">
+                    <div class="col col-3 col-sm-2"
+                         :class="{'mb-3': item.itemTypeEnumId != 'ItemProduct' && i != productsInCart.orderItemList.length-1}">
                         <input class="input-quantity form-control" id="quantity" @change="updateProductQuantity(item)"
                             type="text" v-model="item.quantity" :disabled="item.itemTypeEnumId != 'ItemProduct'" />
                     </div>
