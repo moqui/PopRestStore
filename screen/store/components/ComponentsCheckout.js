@@ -89,7 +89,7 @@ storeComps.CheckOutPage = {
         getUniqueValuesByProperty: function (items, property, filter){
             var uniqueVals = {};
             items.forEach(function (val) {
-                if(filter(val) && !(val[property] in uniqueVals))
+                if(filter(val) && !(val[property] in uniqueVals) && val[property] != undefined)
                     uniqueVals[val[property]] = true;
             });
             return Object.getOwnPropertyNames(uniqueVals);
