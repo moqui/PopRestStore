@@ -61,7 +61,7 @@
                     <div class="row" v-for="promo in appliedPromoCodes">
                         <div class="col pr-1">{{promo}}</div>
                         <div class="col pl-1">
-                            <i class="fa fa-times-circle" @click="deletePromoCode(promo)"></i>
+                            <i class="fa fa-trash-alt" @click="deletePromoCode(promo)"></i>
                         </div>
                     </div>
                     <div class="arrow"></div>
@@ -72,7 +72,7 @@
                     <span class="col col-9 col-lg-9">
                         Promotions
                         <i id="promoInfo" class="fa fa-info-circle" @mouseenter="showPopover('promoInfo','popup')"
-                        @mouseleave="hidePopover('popup','element')"></i>
+                        @mouseleave="hidePopover('popup','element')" style="cursor: pointer"></i>
                     </span>
                     <span class="col col-3 col-lg-3 text-right place-order-total">
                         <span class="pr-4">${{promoDiscount.toFixed(2)}}</span>
