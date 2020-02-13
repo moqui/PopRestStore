@@ -15,14 +15,19 @@
                     <span class="col col-3 col-sm-3 text-center">Price</span>
                 </p>
                 <hr class="hr">
-                <div class="row" v-for="item in productsInCart.orderItemList" :key="item.itemTypeEnumId + '' + item.productId" v-if="item.itemTypeEnumId != 'ItemShipping'">
+                <div class="row" v-for="(item, i) in productsInCart.orderItemList" :key="item.itemTypeEnumId + '' + item.productId" v-if="item.itemTypeEnumId != 'ItemShipping'">
                     <div class="col col-sm-2 d-none d-sm-block">
                         <product-image :productId="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'"
                            class="mb-1"/>
                     </div>
                     <div class="col col-6 col-sm-5">
                         <p class="item-text-desc">
-                            <a class="item-text-desc" :href="'product/' + item.productId">{{item.itemDescription}}</a>
+                            <a class="item-text-desc" :href="'product/' + item.productId" v-if="item.itemTypeEnumId == 'ItemProduct'">
+                                {{item.itemDescription}}
+                            </a>
+                            <a class="item-text-desc" v-else>
+                                {{item.promoCodeText ? item.promoCodeText : item.itemDescription}}
+                            </a>
                         </p>
                         <p v-if="item.unitListPrice && ((item.unitListPrice - item.unitAmount) != 0)" class="last-price">
                             <del>${{item.unitListPrice}}</del>
@@ -31,10 +36,11 @@
                     </div>
                     <div class="col col-3 col-sm-2">
                         <input class="input-quantity form-control" id="quantity" @change="updateProductQuantity(item)"
-                            type="text" v-model="item.quantity" :disabled="item.itemTypeEnumId != 'ItemProduct'" />
+                            type="text" v-model="item.quantity" v-show="item.itemTypeEnumId == 'ItemProduct'"/>
                     </div>
                     <div class="col col-3 col-sm-3 text-right">
-                        <div class="place-order-total pr-4">${{item.unitAmount.toFixed(2)}}</div>
+                        <div class="place-order-total pr-4" v-if="item.itemTypeEnumId == 'ItemProduct'">${{item.unitAmount.toFixed(2)}}</div>
+                        <div class="place-order-total pr-4" v-else>${{(item.quantity*item.unitAmount).toFixed(2)}}</div>
                         <div v-if="item.itemTypeEnumId=='ItemProduct'" class="item-actions pr-4" @click="deleteOrderProduct(item)">
                             <span>Delete</span>
                         </div>
@@ -43,12 +49,35 @@
 
                 <hr>
                 <div class="row div-total">
-                    <span class="col col-9 col-lg-9">Subtotal</span>
-                    <span class="col col-3 col-lg-3 text-right" v-if="productsInCart.orderPart">
-                        <span class="pr-4">${{(productsInCart.orderPart.partTotal - shippingPrice).toFixed(2)}}</span>
+                    <span class="col col-9 col-lg-9">Products</span>
+                    <span class="col col-3 col-lg-3 text-right place-order-total" v-if="productsInCart.orderPart">
+                        <span class="pr-4">${{productTotal.toFixed(2)}}</span>
                     </span>
                 </div>
                 <hr>
+
+                <div class="popover fade bs-popover-top p-2" id="popup"
+                     @mouseleave="hidePopover('popup', 'popover')" @mouseenter="mouseInPopover = true">
+                    <div class="row" v-for="promo in appliedPromoCodes">
+                        <div class="col pr-1">{{promo}}</div>
+                        <div class="col pl-1">
+                            <i class="fa fa-trash-alt pointer" @click="deletePromoCode(promo)"></i>
+                        </div>
+                    </div>
+                    <div class="arrow"></div>
+                </div>
+
+                <hr v-show="promoDiscount < 0">
+                <div class="row div-total" v-show="promoDiscount < 0">
+                    <span class="col col-9 col-lg-9">
+                        Promotions
+                        <i id="promoInfo" class="fa fa-info-circle pointer" @mouseenter="showPopover('promoInfo','popup')" v-show="appliedPromoCodes.length>0"
+                        @mouseleave="hidePopover('popup','element')"></i>
+                    </span>
+                    <span class="col col-3 col-lg-3 text-right place-order-total">
+                        <span class="pr-4">${{promoDiscount.toFixed(2)}}</span>
+                    </span>
+                </div>
 
                 <div class="row div-total">
                     <span class="col col-9 col-lg-9 mt-4">Shipping</span>
@@ -59,7 +88,7 @@
                     </span>
                     <hr style="width: 96%;">
                     <span class="col col-9 col-lg-9 mt-3 mb-5">Total</span>
-                    <span class="col col-3 col-lg-3 mt-3 text-right place-order-total" v-if="productsInCart.orderHeader">
+                    <span class="col col-3 col-lg-3 mt-3 text-right" v-if="productsInCart.orderHeader">
                         <span class="pr-4">${{productsInCart.orderHeader.grandTotal.toFixed(2)}}</span>
                     </span>
                 </div>
