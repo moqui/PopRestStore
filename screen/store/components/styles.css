@@ -20,6 +20,9 @@ a:hover { text-decoration: none; }
 .bg-dark { background: #333333 !important; }
 .moqui-navbar .moqui-logo { width: 101px; }
 .moqui-logo1 { margin-top: -30px; margin-left: -10px; }
+
+.moqui-dynamic { width: 80px; margin-top: -40px; margin-left: -10px; margin-right: 20px; }
+
 .navbar-dark .navbar-nav .nav-link { color: white; }
 .navbar-title { margin-top: 10px; margin-left: -20px; display: inline-block; font-size: 2em; color: #fff; font-weight: bold; }
 .navbar-pop-title { color: #999999; font-size: 1.1em; display: inline-block; }
