@@ -36,9 +36,18 @@ along with this software (see the LICENSE.md file). If not, see
                 <return/>
             </if>
 
-
             <script>ec.user.loginUser(username, password)</script>
 
+            <service-call name="popstore.CustomerServices.postLogin#Customer" in-map="context" out-map="context"/>
+        </actions>
+    </service>
+    <service verb="postLogin" noun="Customer">
+        <out-parameters>
+            <parameter name="apiKey"/>
+            <parameter name="moquiSessionToken"/>
+            <parameter name="customerInfo" type="Map"/>
+        </out-parameters>
+        <actions>
             <if condition="ec.user.userAccount != null">
                 <set field="customerPartyId" from="ec.user.userAccount.partyId"/>
                 <!-- NOTE: use the web session for attributes such as cartOrderId for security; this won't work in a stateless mode or outside a web session -->
@@ -95,8 +104,9 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="email" required="true"/>
         </in-parameters>
         <out-parameters>
-            <!-- <parameter name="apiKey"/> -->
-            <parameter name="moquiSessionToken" />
+            <parameter name="apiKey"/>
+            <parameter name="moquiSessionToken"/>
+            <parameter name="customerInfo" type="Map"/>
         </out-parameters>
         <actions>
             <script>
@@ -132,7 +142,8 @@ along with this software (see the LICENSE.md file). If not, see
                 UserFacadeImpl userFacade = ec.user as UserFacadeImpl
                 userFacade.internalLoginUser(fbUser.email)
             </script>
-            <set field="moquiSessionToken" from="ec.web.sessionToken"/>
+
+            <service-call name="popstore.CustomerServices.postLogin#Customer" in-map="context" out-map="context"/>
         </actions>
     </service>
 
