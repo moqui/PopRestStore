@@ -167,7 +167,6 @@ storeComps.CheckOutPage = {
                     this.loading = false;
                 }.bind(this));
         },
-        getRegions: function(geoId) { GeoService.getRegions(geoId).then(function (data){ this.regionsList = data.resultList; }.bind(this)); },
         getCartInfo: function() {
             ProductService.getCartInfo(this.axiosConfig).then(function (data) {
                 if (data.postalAddress) {
@@ -434,7 +433,6 @@ storeComps.CheckOutPage = {
             this.getCartShippingOptions();
             this.getCustomerShippingAddresses();
             this.getCustomerPaymentMethods();
-            this.getRegions('USA');
         }
     }
 };
