@@ -38,7 +38,7 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.basic.Enumeration enumCode="template_client_orderHistory" description="Template Client Order History" enumId="PsstTemplateClientOrderHistory" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_client_productImage" description="Template Client Product Image" enumId="PsstTemplateClientProductImage" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_client_resetPassword" description="Template Client Reset Password" enumId="PsstTemplateClientResetPassword" enumTypeId="ProductStoreSettingType"/>
-    <moqui.basic.Enumeration enumCode="template_client_checkoutItemMessages" description="Template Client Checkout Item Messages" enumId="PsstTemplateClientCheckoutItemMessages" enumTypeId="ProductStoreSettingType"/>
+    <moqui.basic.Enumeration enumCode="template_client_checkoutMessages" description="Template Client Checkout Messages" enumId="PsstTemplateClientCheckoutMessages" enumTypeId="ProductStoreSettingType"/>
 
 
      <!-- server template setting types these should be moved ot mantle-udm ...-->
@@ -55,5 +55,4 @@ along with this software (see the LICENSE.md file). If not, see
     <!-- store setting used for dynamically setting the productStoreId depending on the hostname -->
     <moqui.basic.Enumeration enumCode="product_store_id_from_hostname" description="Product Store ID From Hostname" enumId="PsstHostname" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="show_prop_65_warning" description="Show the Prop 65 warning" enumId="PsstProp65Warning" enumTypeId="ProductStoreSettingType"/>
-    <moqui.basic.Enumeration enumCode="show_checkout_item_messages" description="Show messages for items in checkout page" enumId="PsstCheckoutItemMessages" enumTypeId="ProductStoreSettingType"/>
 </entity-facade-xml>

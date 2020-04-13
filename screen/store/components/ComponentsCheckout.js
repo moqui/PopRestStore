@@ -421,7 +421,6 @@ storeComps.CheckOutPage = {
     },
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
-        console.log(storeConfig)
         this.loading = true;
         if (this.$root.apiKey == null) {
             localStorage.redirect = 'checkout';
@@ -475,8 +474,8 @@ storeComps.SuccessCheckOut = {
     }
 };
 
-storeComps.CheckoutItemMessages = {
-    name: "checkout-item-messages",
+storeComps.CheckoutMessages = {
+    name: "checkout-messages",
     props: { itemList: Array }
 };
 
@@ -488,8 +487,8 @@ Vue.component("contact-info", storeComps.CheckoutContactInfoTemplate);
 storeComps.CheckoutProp65Template = getPlaceholderRoute("template_client_prop65", "prop65Warning");
 Vue.component("prop65-warning", storeComps.CheckoutProp65Template);
 
-storeComps.CheckoutItemMessagesTemplate = getPlaceholderRoute("template_client_checkoutItemMessages", "CheckoutItemMessages", storeComps.CheckoutItemMessages.props);
-Vue.component("checkout-item-messages", storeComps.CheckoutItemMessagesTemplate);
+storeComps.CheckoutMessagesTemplate = getPlaceholderRoute("template_client_checkoutMessages", "CheckoutMessages", storeComps.CheckoutMessages.props);
+Vue.component("checkout-messages", storeComps.CheckoutMessagesTemplate);
 
 storeComps.CheckoutNavbarTemplate = getPlaceholderRoute("template_client_checkoutHeader", "CheckoutNavbar", storeComps.CheckoutNavbar.props);
 Vue.component("checkout-navbar", storeComps.CheckoutNavbarTemplate);
