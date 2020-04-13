@@ -56,7 +56,7 @@ storeComps.CheckOutPage = {
     extends: storeComps.CheckoutNavbar,
     data: function() { return {
             cvv: "", showCvvError: false, homePath: "", storePath: "", customerInfo: {}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
-            billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "", postalAddressStateGeoSelected: null,
+            showItemMessages:"false", billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "", postalAddressStateGeoSelected: null,
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0", shippingItemPrice: 0,
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
             cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: 0, 
@@ -421,6 +421,7 @@ storeComps.CheckOutPage = {
     },
     components: { "product-image": storeComps.ProductImageTemplate },
     mounted: function() {
+        console.log(storeConfig)
         this.loading = true;
         if (this.$root.apiKey == null) {
             localStorage.redirect = 'checkout';
@@ -429,6 +430,7 @@ storeComps.CheckOutPage = {
             this.homePath = storeConfig.homePath;
             this.storePath = storeConfig.storePath;
             this.showProp65 = storeConfig.show_prop_65_warning;
+            this.showItemMessages = storeConfig.show_checkout_item_messages;
             this.getCustomerInfo();
             this.getCartShippingOptions();
             this.getCustomerShippingAddresses();
@@ -472,6 +474,12 @@ storeComps.SuccessCheckOut = {
         this.getCustomerOrderById();
     }
 };
+
+storeComps.CheckoutItemMessages = {
+    name: "checkout-item-messages",
+    props: { itemList: Array }
+};
+
 storeComps.SuccessCheckOutTemplate = getPlaceholderRoute("template_client_checkoutSuccess", "SuccessCheckOut");
 
 storeComps.CheckoutContactInfoTemplate = getPlaceholderRoute("template_client_contactInfo", "contactInfo");
@@ -479,6 +487,9 @@ Vue.component("contact-info", storeComps.CheckoutContactInfoTemplate);
 
 storeComps.CheckoutProp65Template = getPlaceholderRoute("template_client_prop65", "prop65Warning");
 Vue.component("prop65-warning", storeComps.CheckoutProp65Template);
+
+storeComps.CheckoutItemMessagesTemplate = getPlaceholderRoute("template_client_checkoutItemMessages", "CheckoutItemMessages", storeComps.CheckoutItemMessages.props);
+Vue.component("checkout-item-messages", storeComps.CheckoutItemMessagesTemplate);
 
 storeComps.CheckoutNavbarTemplate = getPlaceholderRoute("template_client_checkoutHeader", "CheckoutNavbar", storeComps.CheckoutNavbar.props);
 Vue.component("checkout-navbar", storeComps.CheckoutNavbarTemplate);
