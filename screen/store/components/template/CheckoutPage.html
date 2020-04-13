@@ -48,8 +48,9 @@
                 </div>
 
                 <!-- Optional Item Messages -->
-                <checkout-messages :item-list="productsInCart.orderItemList"/>
-
+                <template v-if="showCheckoutMessages">
+                    <checkout-messages :item-list="productsInCart.orderItemList" />
+                </template>
                 <hr>
                 <div class="row div-total">
                     <span class="col col-9 col-lg-9">Products</span>

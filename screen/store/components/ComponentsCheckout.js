@@ -56,7 +56,7 @@ storeComps.CheckOutPage = {
     extends: storeComps.CheckoutNavbar,
     data: function() { return {
             cvv: "", showCvvError: false, homePath: "", storePath: "", customerInfo: {}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
-            showItemMessages:"false", billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "", postalAddressStateGeoSelected: null,
+            showCheckoutMessages:false, billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "", postalAddressStateGeoSelected: null,
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0", shippingItemPrice: 0,
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
             cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: 0, 
@@ -429,7 +429,7 @@ storeComps.CheckOutPage = {
             this.homePath = storeConfig.homePath;
             this.storePath = storeConfig.storePath;
             this.showProp65 = storeConfig.show_prop_65_warning;
-            this.showItemMessages = storeConfig.show_checkout_item_messages;
+            this.showCheckoutMessages = storeConfig.template_client_checkoutMessages ? true : false;
             this.getCustomerInfo();
             this.getCartShippingOptions();
             this.getCustomerShippingAddresses();
