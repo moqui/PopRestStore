@@ -38,6 +38,7 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.basic.Enumeration enumCode="template_client_orderHistory" description="Template Client Order History" enumId="PsstTemplateClientOrderHistory" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_client_productImage" description="Template Client Product Image" enumId="PsstTemplateClientProductImage" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_client_resetPassword" description="Template Client Reset Password" enumId="PsstTemplateClientResetPassword" enumTypeId="ProductStoreSettingType"/>
+    <moqui.basic.Enumeration enumCode="template_client_checkoutMessages" description="Template Client Checkout Messages" enumId="PsstTemplateClientCheckoutMessages" enumTypeId="ProductStoreSettingType"/>
 
 
      <!-- server template setting types these should be moved ot mantle-udm ...-->
