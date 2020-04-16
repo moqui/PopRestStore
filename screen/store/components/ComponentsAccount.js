@@ -167,7 +167,7 @@ storeComps.ResetPasswordPage = {
         }
     },
     mounted: function(){
-        this.$nextTick(() => {
+        this.$nextTick(function() {
             this.nextStep = this.$route.query.step ? this.$route.query.step : 0;
             if(this.nextStep == 2){
                 this.data.username = this.$route.query.username ? this.$route.query.username : "";
