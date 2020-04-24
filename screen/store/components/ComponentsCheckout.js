@@ -476,16 +476,13 @@ storeComps.SuccessCheckOut = {
 
 storeComps.CheckoutMessages = {
     name: "checkout-messages",
-    props: { itemList: Array }
+    props: { itemList: Array, address: Object }
 };
 
 storeComps.SuccessCheckOutTemplate = getPlaceholderRoute("template_client_checkoutSuccess", "SuccessCheckOut");
 
 storeComps.CheckoutContactInfoTemplate = getPlaceholderRoute("template_client_contactInfo", "contactInfo");
 Vue.component("contact-info", storeComps.CheckoutContactInfoTemplate);
-
-storeComps.CheckoutProp65Template = getPlaceholderRoute("template_client_prop65", "prop65Warning");
-Vue.component("prop65-warning", storeComps.CheckoutProp65Template);
 
 storeComps.CheckoutMessagesTemplate = getPlaceholderRoute("template_client_checkoutMessages", "CheckoutMessages", storeComps.CheckoutMessages.props);
 Vue.component("checkout-messages", storeComps.CheckoutMessagesTemplate);
