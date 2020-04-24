@@ -55,7 +55,7 @@ storeComps.CheckOutPage = {
     name: "checkout-page",
     extends: storeComps.CheckoutNavbar,
     data: function() { return {
-            cvv: "", showCvvError: false, homePath: "", storePath: "", customerInfo: {}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
+            cvv: "", showCvvError: false, homePath: "", storePath: "", customerInfo: {}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {},
             showCheckoutMessages:false, billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "", postalAddressStateGeoSelected: null,
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0", shippingItemPrice: 0,
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
@@ -428,7 +428,6 @@ storeComps.CheckOutPage = {
         } else {
             this.homePath = storeConfig.homePath;
             this.storePath = storeConfig.storePath;
-            this.showProp65 = storeConfig.show_prop_65_warning;
             this.showCheckoutMessages = storeConfig.template_client_checkoutMessages ? true : false;
             this.getCustomerInfo();
             this.getCartShippingOptions();
