@@ -85,6 +85,11 @@ storeComps.CheckOutPage = {
                 : [];
         }
     },
+    watch: {
+        shippingItemPrice: function(val){
+            this.shippingMethod.shippingTotal = parseFloat(val).toFixed(2);
+        }
+    },
     methods: {
         getUniqueValuesByProperty: function (items, property, filter){
             var uniqueVals = {};
