@@ -79,6 +79,7 @@ along with this software (see the LICENSE.md file). If not, see
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js" integrity="sha256-p7N78jBS61kk2Z9gzOF1nUCvhUvrLeTdCNZat+go6qE="></script>
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js" integrity="sha256-KUNqRLl+PMcaXFAnrXXATFOkGtC99NSTklZi185m37s="></script>
 
+    <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=String.prototype.includes"></script>
     <script src="/store/config.js"></script>
     <script src="/store/components/combined.min.js"></script>
             """
