@@ -49,7 +49,7 @@
 
                 <!-- Optional Item Messages -->
                 <template v-if="showCheckoutMessages">
-                    <checkout-messages :item-list="productsInCart.orderItemList" />
+                    <checkout-messages :item-list="productsInCart.orderItemList" :address="shippingAddressSelect"/>
                 </template>
                 <hr>
                 <div class="row div-total">
@@ -95,11 +95,6 @@
                     <span class="col col-3 col-lg-3 mt-3 text-right" v-if="productsInCart.orderHeader">
                         <span class="pr-4">${{productsInCart.orderHeader.grandTotal.toFixed(2)}}</span>
                     </span>
-                </div>
-
-                <!-- Optional Prop 65 Warning -->
-                <div v-if="showProp65 == 'true' && shippingAddressSelect.stateProvinceGeoId == 'USA_CA'" class="alert alert-warning" role="alert">
-                    <prop65-warning/>
                 </div>
 
                 <div class="row">
