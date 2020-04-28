@@ -78,6 +78,30 @@ along with this software (see the LICENSE.md file). If not, see
             <set field="selectedOptionId" from="productId"/>
             <set field="productId" from="productAssocs[0].productId"/>
         </if>
+
+        <!-- View Allow -->
+        <entity-find entity-name="mantle.product.store.ProductStoreCategory" list="productStoreCategories">
+            <date-filter/>
+            <econdition field-name="productStoreId"/>
+            <econdition field-name="storeCategoryTypeEnumId" value="PsctViewAllow" />
+            <order-by field-name="-fromDate"/>
+        </entity-find>
+
+        <if condition="productStoreCategories.size() == 0">
+            <return error="true" message="No productStoreCategory found with productStoreId ${productStoreId}"/>
+        </if>
+
+        <set field="productCategoryId" from="productStoreCategories.get(0).productCategoryId" />
+        <entity-find-one entity-name="mantle.product.category.ProductCategoryMember" value-field="productCategoryMember">
+            <date-filter/>
+            <field-map field-name="productCategoryId"/>
+            <field-map field-name="productId"/>
+        </entity-find-one>
+        <if condition="!productCategoryMember">
+            <then>
+                <return error="true" message="Product not found with ID ${productId}"/>
+            </then>
+        </if>
     </pre-actions>
     <actions>
         <service-call name="popstore.ProductServices.get#ProductInfo" out-map="product" in-map="[productId:productId]"/>
