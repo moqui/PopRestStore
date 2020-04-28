@@ -61,8 +61,6 @@ along with this software (see the LICENSE.md file). If not, see
             template_client_checkoutSuccess: "/store/components/template/CheckoutSuccess.html",
             template_client_productImage: "/store/components/template/ProductImage.html",
             template_client_contactInfo: "/store/components/template/contactInfo.html",
-            template_client_prop65: "/store/components/template/prop65Warning.html",
-            show_prop_65_warning: "false",
             template_client_checkoutMessages: ""
         };
     </script>
