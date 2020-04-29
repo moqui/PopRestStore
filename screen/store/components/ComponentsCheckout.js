@@ -135,7 +135,6 @@ storeComps.CheckOutPage = {
         },
 
         onAddressUpserted: function(data) {
-            console.log(data)
             this.shippingAddress = {};
             this.addressOption = data.postalContactMechId + ':' + data.telecomContactMechId;
             this.getCustomerShippingAddresses();
@@ -251,7 +250,6 @@ storeComps.CheckOutPage = {
             this.setCurrentStep(STEP_REVIEW)
         },
         addCartBillingShipping: function() {
-            console.log("addCartBillingShipping")
             var info = {
                 "shippingPostalContactMechId":this.addressOption.split(':')[0],
                 "shippingTelecomContactMechId":this.addressOption.split(':')[1],
