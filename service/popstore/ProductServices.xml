@@ -715,4 +715,42 @@ along with this software (see the LICENSE.md file). If not, see
             </if>
         </actions>
     </service>
+
+     <service verb="find" noun="ProductContentList">
+        <in-parameters>
+            <parameter name="productId" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="productContentList"/>
+        </out-parameters>
+        <actions>
+            <set field="productContentList" from="[]"/>
+            <entity-find entity-name="mantle.product.ProductContent" list="contentList">
+                <date-filter/><econdition field-name="productId"/>
+                <order-by field-name="sequenceNum,-fromDate"/>
+            </entity-find>
+
+            <if condition="locale">
+                <!-- filter after by locale to streamline cached find -->
+                <set field="langLocale" from="locale.contains('_') ? locale.substring(locale.indexOf('_')) : null"/>
+                <set field="contentList" from="contentList.findAll({ it.locale == null || it.locale == locale || it.locale == langLocale })"/>
+            </if>
+
+            <if condition="!contentList"><return/></if>
+
+            <entity-find entity-name="moqui.basic.Enumeration" list="contentTypeList">
+                <econdition field-name="enumTypeId" value="ProductContentType"/>
+            </entity-find>
+
+            <if condition="!contentTypeList"><return/></if>
+
+            <iterate list="contentTypeList" entry="contentType">
+                <set field="propertyName" from="org.moqui.util.StringUtilities.prettyToCamelCase(contentType.description, false)"/>
+                <script>
+                    productContentList.add(["${propertyName}":contentList.find({ contentType.enumId.equals(it.productContentTypeEnumId) })])
+                </script>
+            </iterate>
+            <log level="warn" message="${groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(productContentList))}"/>
+        </actions>
+    </service>
 </services>
