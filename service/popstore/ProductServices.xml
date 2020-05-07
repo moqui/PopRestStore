@@ -395,6 +395,12 @@ along with this software (see the LICENSE.md file). If not, see
                     <entity-find-one entity-name="moqui.basic.Enumeration" value-field="featureType" cache="true">
                         <field-map field-name="enumId" from="productFeature.productFeatureTypeEnumId"/>
                     </entity-find-one>
+
+                    <!-- Find variant contents -->
+                    <service-call name="popstore.ProductServices.find#ProductContentList" out-map="context" 
+                        in-map="[productId:variantProductAssoc.toProductId]"/>
+
+
                     <set field="item" from="[enumId:featureType.enumId, enumTypeId:featureType.enumTypeId, 
                         description:featureType.description, lastUpdatedStamp:featureType.lastUpdatedStamp]"/> 
                     <set field="content" from="[productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, 
@@ -430,10 +436,10 @@ along with this software (see the LICENSE.md file). If not, see
                         def optionSet = variantOptions.get(item)
                         if (!optionSet) {
                             variantOptions.put(item, [[productId: variantProductAssoc.toProductId, description:productFeature.description, quantity: productQuantity.productQuantity,
-                            prices:selectedPrices]])
+                            prices:selectedPrices, contentList:productContentList]])
                         } else {
                             optionSet.add([productId: variantProductAssoc.toProductId, description:productFeature.description, quantity: productQuantity.productQuantity,
-                            prices:selectedPrices])
+                            prices:selectedPrices, contentList:productContentList])
                         }
                         priceSet = null
                     ]]></script>
@@ -726,7 +732,9 @@ along with this software (see the LICENSE.md file). If not, see
         <actions>
             <set field="productContentList" from="[]"/>
             <entity-find entity-name="mantle.product.ProductContent" list="contentList">
-                <date-filter/><econdition field-name="productId"/>
+                <date-filter/>
+                <econdition field-name="productId"/>
+                <select-field field-name="productContentId,productId,contentLocation,productContentTypeEnumId,fromDate"/>
                 <order-by field-name="sequenceNum,-fromDate"/>
             </entity-find>
 
@@ -750,7 +758,6 @@ along with this software (see the LICENSE.md file). If not, see
                     productContentList.add(["${propertyName}":contentList.find({ contentType.enumId.equals(it.productContentTypeEnumId) })])
                 </script>
             </iterate>
-            <log level="warn" message="${groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(productContentList))}"/>
         </actions>
     </service>
 </services>
