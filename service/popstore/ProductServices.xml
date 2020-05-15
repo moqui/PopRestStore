@@ -733,8 +733,7 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="productContentList"/>
         </out-parameters>
         <actions>
-            <set field="productContentList" from="[]"/>
-            <entity-find entity-name="mantle.product.ProductContent" list="contentList">
+            <entity-find entity-name="mantle.product.ProductContent" list="productContentList">
                 <date-filter/>
                 <econdition field-name="productId"/>
                 <select-field field-name="productContentId,productId,contentLocation,productContentTypeEnumId,fromDate"/>
@@ -744,23 +743,8 @@ along with this software (see the LICENSE.md file). If not, see
             <if condition="locale">
                 <!-- filter after by locale to streamline cached find -->
                 <set field="langLocale" from="locale.contains('_') ? locale.substring(locale.indexOf('_')) : null"/>
-                <set field="contentList" from="contentList.findAll({ it.locale == null || it.locale == locale || it.locale == langLocale })"/>
+                <set field="productContentList" from="productContentList.findAll({ it.locale == null || it.locale == locale || it.locale == langLocale })"/>
             </if>
-
-            <if condition="!contentList"><return/></if>
-
-            <entity-find entity-name="moqui.basic.Enumeration" list="contentTypeList">
-                <econdition field-name="enumTypeId" value="ProductContentType"/>
-            </entity-find>
-
-            <if condition="!contentTypeList"><return/></if>
-
-            <iterate list="contentTypeList" entry="contentType">
-                <set field="propertyName" from="org.moqui.util.StringUtilities.prettyToCamelCase(contentType.description, false)"/>
-                <script>
-                    productContentList.add(["${propertyName}":contentList.find({ contentType.enumId.equals(it.productContentTypeEnumId) })])
-                </script>
-            </iterate>
         </actions>
     </service>
 </services>
