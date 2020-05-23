@@ -498,18 +498,28 @@ along with this software (see the LICENSE.md file). If not, see
 
     <service verb="get" noun="CategoryInfo">
         <in-parameters>
-            <parameter name="productCategoryId" required="true"/>
+            <parameter name="pseudoId" />
+            <parameter name="productCategoryId" />
             <parameter name="locale"/>
         </in-parameters>
         <out-parameters>
             <auto-parameters entity-name="mantle.product.category.ProductCategory" include="nonpk"/>
             <parameter name="subCategoryList" type="List"><parameter name="categoryInfo" type="Map"/></parameter>
+            <parameter name="productCategoryId" />
         </out-parameters>
         <actions>
             <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
+            <if condition="pseudoId"><then>
+                <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory" cache="true">
+                    <field-map field-name="pseudoId" from="pseudoId"/></entity-find-one>
+                <set field="productCategoryId" from="productCategory?.productCategoryId" />
+            </then><else>
+                <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory" cache="true"/>
+            </else></if>
 
-            <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory" cache="true"/>
-            <if condition="productCategory == null"><return error="true" message="Category not found with ID ${productCategoryId}"/></if>
+            
+
+            <if condition="productCategory == null"><return error="true" message="Category not found with categoryId ${productCategoryId} or pseudoId: ${pseudoId}"/></if>
             <script>context.putAll(productCategory)</script>
 
             <entity-find entity-name="mantle.product.category.ProductCategoryRollup" list="rollupList" cache="true">

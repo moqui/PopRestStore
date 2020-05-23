@@ -41,31 +41,26 @@ along with this software (see the LICENSE.md file). If not, see
     </transition>
 
     <pre-actions>
-        <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
-        <if condition="extraPathNameList &amp;&amp; !categoryId"><set field="categoryId" from="extraPathNameList[0]"/></if>
-        <if condition="extraPathNameList &amp;&amp; !pageIndex">
-            <set field="pageIndex" from="extraPathNameList[1]"/>
-            <if condition="pageIndex == null">
-                <set field="pageIndex" from="0"/>
-            </if>
-        </if>
-        <if condition="extraPathNameList &amp;&amp; !orderBy">
-            <set field="orderBy" from="extraPathNameList[2]"/>
-            <if condition="orderBy == null">
-                <set field="orderBy" from="'default'"/>
-            </if>
-        </if>
+        <set field="pathParts" from="sri.screenUrlInfo.extraPathNameList"/>
+        <set field="pseudoId" from="pathParts[0]"/>
+        <set field="pageIndex" from="(pathParts.size() &gt; 1) ? pathParts[1] : 0"/>
+        <set field="orderBy" from="(pathParts.size() &gt; 2) ? pathParts[2] : 'default'"/>
     </pre-actions>
     <actions>
-        <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="products" 
-            in-map="[productCategoryId:categoryId, orderBy: orderBy, pageIndex:pageIndex ? pageIndex : '0', pageSize:6]"/>
+        <if condition="!pseudoId">
+            <set field="pseudoId" from="storeInfo.categoryByType.PsctBrowseRoot.pseudoId"/>
+        </if>
 
-        <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="category" in-map="[productCategoryId:categoryId]"/>
+        <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="category" in-map="[pseudoId:pseudoId]"/>
+        <set field="categoryId" from="category.productCategoryId" /><!-- this is for legacy reasons -->
+
+        <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="products" 
+            in-map="[productCategoryId:category.productCategoryId, orderBy: orderBy, pageIndex:pageIndex ? pageIndex : '0', pageSize:6]"/>
         
         <service-call name="popstore.ProductServices.find#ProductAvailability" in-map="context" out-map="context" />
         <set field="inStock" from="false"/>
 
-        <service-call name="popstore.CartServices.get#CartInfo" in-map="context" out-map="productsInCart" />
+        
         <service-call name="popstore.ProductServices.get#SortedProductList" in-map="context + [productCategoryId:categoryId]" out-map="context"/>
 
         <set field="pageSize" from="pageSize ?: 100"/>
