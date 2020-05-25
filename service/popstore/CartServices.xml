@@ -46,6 +46,8 @@ General Order Placement and eCommerce Usage
                 <auto-parameters entity-name="mantle.order.OrderItem"/></parameter></parameter>
             <parameter name="orderItemWithChildrenSet" type="Set"><parameter name="orderItemSeqId"/></parameter>
 
+            <parameter name="orderItemContent" type="Map"><auto-parameters entity-name="mantle.product.ProductContent"/></parameter>
+
             <parameter name="paymentInfoList" type="List"><parameter name="partPaymentInfo" type="Map">
                 <parameter name="payment" type="Map"><auto-parameters entity-name="mantle.account.payment.Payment"/></parameter>
                 <parameter name="statusItem" type="Map"><auto-parameters entity-name="moqui.basic.StatusItem"/></parameter>
@@ -118,6 +120,7 @@ General Order Placement and eCommerce Usage
                     list="orderItemList" order-by-list="['orderItemSeqId']"/>
             <script><![CDATA[
                 orderItemWithChildrenSet = new HashSet()
+                orderItemContent = new HashMap<String, Map>()
                 List reverseList = orderItemList.cloneList().orderByFields(["-orderItemSeqId"])
                 for (orderItem in reverseList) {
                     if (orderItem.parentItemSeqId) {
@@ -125,6 +128,10 @@ General Order Placement and eCommerce Usage
                         orderItemList.move(orderItemList.indexMatching([orderItemSeqId:orderItem.orderItemSeqId]),
                                 orderItemList.indexMatching([orderItemSeqId:orderItem.parentItemSeqId])+1)
                     }
+
+                    orderItemContent.put(orderItem.productId, ec.service.sync().name('popstore.ProductServices.get#ProductContentCascading')
+                        .parameters([productId:orderItem.productId, contentTypes:['PcntImageSmall', 'PcntImageMedium', 'PcntImageLarge']])
+                        .call().productContent);
                 }
             ]]></script>
 
