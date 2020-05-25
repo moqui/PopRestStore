@@ -82,7 +82,8 @@ var storeInfo = ${storeInfoJson};
         </if>
         <!-- cartInfo for cart count in header/navbar -->
         <service-call name="popstore.CartServices.get#CartInfo" out-map="cartInfo" in-map="context"/>
-
+        <set field="productsInCart" from="cartInfo" /><!-- for legacy reasons -->
+ 
         <!-- get settings used in subscreens -->
         <set field="template_server_root" from="storeInfo.settings.template_server_root" default-value="component://PopRestStore/template/store/root.html.ftl"/>
         <set field="template_server_header" from="storeInfo.settings.template_server_header" default-value="component://PopRestStore/template/store/navbar.html.ftl"/>
