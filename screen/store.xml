@@ -90,7 +90,7 @@ var storeInfo = ${storeInfoJson};
         <set field="template_server_home" from="storeInfo.settings.template_server_home" default-value="component://PopRestStore/template/store/home.html.ftl"/>
         <set field="template_server_category" from="storeInfo.settings.template_server_category" default-value="component://PopRestStore/template/store/category.html.ftl"/>
         <set field="template_server_product" from="storeInfo.settings.template_server_product" default-value="component://PopRestStore/template/store/product.html.ftl"/>
-        <set field="template_server_content" from="storeInfo.settings.template_server_content" default-value="component://PopRestStore/template/store/help.html.ftl"/>
+        <set field="template_server_content" from="storeInfo.settings.template_server_content" default-value="component://PopRestStore/template/store/content.html.ftl"/>
         <set field="template_server_search" from="storeInfo.settings.template_server_search" default-value="component://PopRestStore/template/store/search.html.ftl"/>
     </pre-actions>
 
