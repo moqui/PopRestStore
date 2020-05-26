@@ -30,6 +30,16 @@ along with this software (see the LICENSE.md file). If not, see
         </if>
     </always-actions>
 
+    <transition name="favicon.ico" read-only="true">
+        <actions>
+            <set field="faviconLocation" from="storeInfo.settings.product_store_favicon" default-value="component://PopRestStore/screen/store/assets/favicon.ico"/>
+            <script>
+                ec.web.sendResourceResponse(faviconLocation)
+            </script>
+        </actions>
+        <default-response type="none"/>
+    </transition>
+
     <transition name="config.js" read-only="true">
         <actions>
             <script><![CDATA[
