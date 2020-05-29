@@ -1,10 +1,15 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="d-flex flex-column moqui-navbar">
-        <div class="container d-flex flex-row main-navbar">
-            <a class="navbar-brand d-none d-sm-block"  href="/store">
-                <img height="60px" class="moqui-logo moqui-logo1" src="/store/assets/moqui-logo.svg" alt="">
-                <span class="font-italic navbar-title">POP Shop</span>
-            </a>
+        <div class="container d-flex flex-row main-navbar">         
+                <#--  This renders the logo dynamically for the main store  -->
+                
+            <#assign headerLogoList = sri.getThemeValues("STRT_HEADER_LOGO")>
+            <#if headerLogoList?has_content>
+                <a href="${sri.buildUrl("/store").getUrl()}" class="navbar-brand d-none d-sm-block">
+                    <img height="60px" class="moqui-dynamic" src="${sri.buildUrl(headerLogoList?first).getUrl()}" alt="Home">
+                    <span class="font-italic navbar-title">${storeInfo.productStore.storeName}</span>
+                </a>
+            </#if>
             <a class="navbar-brand d-block d-sm-none" href="/store">
                 <span class="font-italic navbar-title">POP Shop</span>
             </a>
