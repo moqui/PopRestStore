@@ -65,7 +65,6 @@ along with this software (see the LICENSE.md file). If not, see
         <service-call name="popstore.ProductServices.find#ProductAvailability" in-map="context" out-map="context" />
         <set field="inStock" from="false"/>
 
-        <service-call name="popstore.CartServices.get#CartInfo" in-map="context" out-map="productsInCart" />
         <service-call name="popstore.ProductServices.get#SortedProductList" in-map="context + [productCategoryId:categoryId]" out-map="context"/>
 
         <set field="pageSize" from="pageSize ?: 100"/>

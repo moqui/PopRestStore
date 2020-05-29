@@ -85,8 +85,6 @@ along with this software (see the LICENSE.md file). If not, see
         <service-call name="popstore.ProductServices.get#ProductReviews" out-map="reviewsList" in-map="[productId:productId]"/>
         <service-call name="popstore.ProductServices.find#ProductAvailability" in-map="context" out-map="context" />
 
-        <service-call name="popstore.CartServices.get#CartInfo" in-map="context" out-map="productsInCart" />
-
         <set field="inStock" from="false"/>
         <if condition="product.productTypeEnumId == 'PtVirtual'">
             <service-call name="popstore.ProductServices.get#ProductVariantsDisplayInfo" 
