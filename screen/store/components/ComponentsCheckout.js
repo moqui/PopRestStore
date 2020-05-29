@@ -55,7 +55,7 @@ storeComps.CheckOutPage = {
     name: "checkout-page",
     extends: storeComps.CheckoutNavbar,
     data: function() { return {
-            cvv: "", showCvvError: false, homePath: "", storePath: "", customerInfo: {}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {},
+            cvv: "", showCvvError: false, homePath: "", storePath: "", customerInfo: {}, orderItemContent:{}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {},
             showCheckoutMessages:false, billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "", postalAddressStateGeoSelected: null,
             countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0", shippingItemPrice: 0,
             isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
@@ -104,6 +104,12 @@ storeComps.CheckOutPage = {
                 var value = c.itemTypeEnumId == itemEnum ? c.unitAmount * c.quantity : 0;
                 return a + value;
             }, 0);
+        },
+        getProductImage: function(productId) {
+            if (productId in this.orderItemContent)
+                return storeConfig.productImageLocation + this.orderItemContent[productId].productContentId;
+            else
+                return "/store/assets/default.png";
         },
         notAddressSeleted: function() {
             return (this.addressOption == null || this.addressOption == ''
@@ -190,6 +196,7 @@ storeComps.CheckOutPage = {
                         this.addressOption = data.postalAddress.contactMechId + ':' + data.postalAddress.telecomContactMechId;
                         this.shippingAddressSelect = data.postalAddress;
                         this.shippingAddressSelect.contactNumber = data.telecomNumber.contactNumber;
+                        this.orderItemContent = data.orderItemContent;
                     } else if (this.listShippingAddress.length) {
                         // Preselect first address
                         this.addressOption = this.listShippingAddress[0].postalContactMechId + ':' + this.listShippingAddress[0].telecomContactMechId;
