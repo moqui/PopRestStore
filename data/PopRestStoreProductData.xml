@@ -26,9 +26,9 @@ along with this software (see the LICENSE.md file). If not, see
 
     <!-- TODO: get original text instead of binary export, fine for demo images but for text makes it impossible to maintain -->
 
-    <mantle.product.category.ProductCategory productCategoryId="DEMO_CLOTHING" productCategoryTypeEnumId="PctCatalog" categoryName="Clothing" description=""/>
+    <mantle.product.category.ProductCategory productCategoryId="DEMO_CLOTHING" pseudoId="clothing" productCategoryTypeEnumId="PctCatalog" categoryName="Clothing" description=""/>
     <mantle.product.category.ProductCategoryRollup productCategoryId="DEMO_CLOTHING" parentProductCategoryId="PopcBrowseRoot" fromDate="1265184000000" sequenceNum="1"/>
-    <mantle.product.category.ProductCategory productCategoryId="DEMO_OFFICE" productCategoryTypeEnumId="PctCatalog" categoryName="Office" description=""/>
+    <mantle.product.category.ProductCategory productCategoryId="DEMO_OFFICE" pseudoId="office-supplies" productCategoryTypeEnumId="PctCatalog" categoryName="Office" description=""/>
     <mantle.product.category.ProductCategoryRollup productCategoryId="DEMO_OFFICE" parentProductCategoryId="PopcBrowseRoot" fromDate="1265184000000" sequenceNum="2"/>
 
     <!-- Men's T-Shirt with size only variants -->
@@ -71,7 +71,7 @@ along with this software (see the LICENSE.md file). If not, see
             assetTypeEnumId="AstTpInventory" assetClassEnumId="AsClsInventoryFin" copyCategoryMembers="false"/>
 
     <!-- Women's T-Shirt with size and color variants -->
-    <mantle.product.Product productId="DEMO_TS_W" productTypeEnumId="PtVirtual" assetTypeEnumId="" assetClassEnumId=""
+    <mantle.product.Product productId="DEMO_TS_W" pseudoId="womens-tshirt" productTypeEnumId="PtVirtual" assetTypeEnumId="" assetClassEnumId=""
             chargeShipping="Y" returnable="Y" productName="Women&apos;s T-Shirt" description="">
         <prices productPriceId="DEMO_TS_W_L" pricePurposeEnumId="PppPurchase" priceTypeEnumId="PptList" fromDate="1265184000000"
                 minQuantity="1" price="19.99" priceUomId="USD"/>

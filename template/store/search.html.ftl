@@ -47,7 +47,7 @@ productListPageRangeHigh = productSearchResults.productListPageRangeHigh>
                 <div class="row mt-5">
                     <#list productList![] as localProd>
                         <div class="col col-lg-4 col-md-6 col-6">
-                            <a href="/store/product/${localProd.productId}">
+                            <a href="/store/product/${localProd.pseudoId}">
                                 <div class="category-product">
                                     <figure class="figure">
                                         <#if localProd.mediumImageInfo?? || localProd.smallImageInfo??>

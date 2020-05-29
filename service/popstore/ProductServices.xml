@@ -41,6 +41,11 @@ along with this software (see the LICENSE.md file). If not, see
         </out-parameters>
         <actions>
             <entity-find-one entity-name="mantle.product.Product" value-field="product"/>
+            <if condition="product == null">
+                <entity-find-one entity-name="mantle.product.Product" value-field="product">
+                    <field-map field-name="pseudoId" from="productId"/></entity-find-one>
+                <set field="productId" from="product.productId" />
+            </if>
             <if condition="product == null"><return error="true" message="Product not found with ID ${productId}"/></if>
             <script>context.putAll(product)</script>
 
@@ -498,8 +503,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <service verb="get" noun="CategoryInfo">
         <in-parameters>
-            <parameter name="pseudoId" />
-            <parameter name="productCategoryId" />
+            <parameter name="categoryId" required="true"/>
             <parameter name="locale"/>
         </in-parameters>
         <out-parameters>
@@ -508,18 +512,19 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="productCategoryId" />
         </out-parameters>
         <actions>
-            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
-            <if condition="pseudoId"><then>
+            <!-- first search for the category based on productCategoryId -->
+            <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory" cache="true">
+                <field-map field-name="productCategoryId" from="categoryId"/></entity-find-one>
+
+
+            <!-- if no category was found using productCategoryId, try using pseudoId  -->
+            <if condition="!productCategory">
                 <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory" cache="true">
-                    <field-map field-name="pseudoId" from="pseudoId"/></entity-find-one>
-                <set field="productCategoryId" from="productCategory?.productCategoryId" />
-            </then><else>
-                <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory" cache="true"/>
-            </else></if>
-
+                    <field-map field-name="pseudoId" from="categoryId"/></entity-find-one>
+            </if>
             
+            <if condition="productCategory == null"><return error="true" message="Category not found with categoryId ${categoryId}"/></if>
 
-            <if condition="productCategory == null"><return error="true" message="Category not found with categoryId ${productCategoryId} or pseudoId: ${pseudoId}"/></if>
             <script>context.putAll(productCategory)</script>
 
             <entity-find entity-name="mantle.product.category.ProductCategoryRollup" list="rollupList" cache="true">

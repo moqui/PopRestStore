@@ -42,26 +42,26 @@ along with this software (see the LICENSE.md file). If not, see
 
     <pre-actions>
         <set field="pathParts" from="sri.screenUrlInfo.extraPathNameList"/>
-        <set field="pseudoId" from="pathParts[0]"/>
+        <set field="categoryId" from="pathParts[0]"/>
         <set field="pageIndex" from="(pathParts.size() &gt; 1) ? pathParts[1] : 0"/>
         <set field="orderBy" from="(pathParts.size() &gt; 2) ? pathParts[2] : 'default'"/>
     </pre-actions>
     <actions>
-        <if condition="!pseudoId">
-            <set field="pseudoId" from="storeInfo.categoryByType.PsctBrowseRoot.pseudoId"/>
-        </if>
 
-        <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="category" in-map="[pseudoId:pseudoId]"/>
-        <set field="categoryId" from="category.productCategoryId" /><!-- this is for legacy reasons -->
+        <!-- if no category is passed in the url, we default to the browse root -->
+        <if condition="!categoryId">
+            <set field="categoryId" from="storeInfo.categoryByType.PsctBrowseRoot.productCategoryId"/>
+        </if>
+        
+        <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="category" in-map="[categoryId:categoryId]"/>
 
         <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="products" 
             in-map="[productCategoryId:category.productCategoryId, orderBy: orderBy, pageIndex:pageIndex ? pageIndex : '0', pageSize:6]"/>
         
         <service-call name="popstore.ProductServices.find#ProductAvailability" in-map="context" out-map="context" />
         <set field="inStock" from="false"/>
-
         
-        <service-call name="popstore.ProductServices.get#SortedProductList" in-map="context + [productCategoryId:categoryId]" out-map="context"/>
+        <service-call name="popstore.ProductServices.get#SortedProductList" in-map="context + [productCategoryId:category.productCategoryId]" out-map="context"/>
 
         <set field="pageSize" from="pageSize ?: 100"/>
         <script>paginateList("productList", null, context)</script>

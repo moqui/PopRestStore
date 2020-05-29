@@ -73,14 +73,14 @@ var storeInfo = ${storeInfoJson};
         <!-- get browseRootCategoryInfo for subCategoryList used in header, etc -->
         <if condition="browseRootCategoryId">
             <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="browseRootCategoryInfo"
-                in-map="[productCategoryId:browseRootCategoryId]"/>
+                in-map="[categoryId:browseRootCategoryId]"/>
         </if>
         <!-- get allProductsInfo for subCategoryList used in header, etc --> 
         <set field="allProducts" from="storeInfo.categoryByType.PsctSearch"/>
         <set field="allProductsId" from="storeInfo.categoryByType.PsctSearch?.productCategoryId"/>
         <if condition="allProductsId">
             <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="allProductsInfo"
-                in-map="[productCategoryId:allProductsId]"/>
+                in-map="[categoryId:allProductsId]"/>
         </if>
         <!-- cartInfo for cart count in header/navbar -->
         <service-call name="popstore.CartServices.get#CartInfo" out-map="cartInfo" in-map="context"/>
