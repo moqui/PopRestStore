@@ -160,7 +160,7 @@ along with this software (see the LICENSE.md file). If not, see
             <set field="productAvailability" from="[:]"/>
             <iterate list="productAssetSumList" entry="assetSum">
                 <script>
-                    productAvailability.put(assetSum.productId, assetSum.availableToPromiseTotal>0)
+                    productAvailability.put(assetSum.productId, assetSum.availableToPromiseTotal)
                 </script>
             </iterate>
         </actions>
@@ -391,7 +391,7 @@ along with this software (see the LICENSE.md file). If not, see
                     <entity-find-one entity-name="mantle.product.feature.ProductFeature" value-field="productFeature" cache="true">
                         <field-map field-name="productFeatureId" from="variantProductAssoc.productFeatureId"/>
                     </entity-find-one>
-                    <service-call name="popstore.ProductServices.get#ProductQuantity" out-map="productQuantity" in-map="[productId:variantProductAssoc.toProductId]"/>
+                    <service-call name="popstore.ProductServices.get#ProductQuantity" out-map="productQuantity" in-map="[productId:variantProductAssoc.toProductId]"  out-map-add-to-existing="false" />
                     <entity-find-one entity-name="moqui.basic.Enumeration" value-field="featureType" cache="true">
                         <field-map field-name="enumId" from="productFeature.productFeatureTypeEnumId"/>
                     </entity-find-one>
@@ -416,7 +416,7 @@ along with this software (see the LICENSE.md file). If not, see
                         if (!featureSet) {
                             listFeatures.put(content, 
                             [[productFeatureId:productFeature.productFeatureId, 
-                            productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, 
+                            productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, idCode:productFeature.idCode,
                             description:productFeature.description, abbrev:productFeature.abbrev, price:selectedPrices]])
                         } else {
                             boolean isItemInList = false
@@ -428,17 +428,17 @@ along with this software (see the LICENSE.md file). If not, see
                             }
                             if(!isItemInList) {
                                 featureSet.add([productFeatureId:productFeature.productFeatureId, 
-                                productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, 
+                                productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, idCode:productFeature.idCode,
                                 description:productFeature.description, abbrev:productFeature.abbrev, price:selectedPrices])
                             }
                         }
 
                         def optionSet = variantOptions.get(item)
                         if (!optionSet) {
-                            variantOptions.put(item, [[productId: variantProductAssoc.toProductId, description:productFeature.description, quantity: productQuantity.productQuantity,
+                            variantOptions.put(item, [[productId: variantProductAssoc.toProductId, description:productFeature.description, quantity: productQuantity.productQuantity, productFeatureId:productFeature.productFeatureId, 
                             prices:selectedPrices, contentList:productContentList]])
                         } else {
-                            optionSet.add([productId: variantProductAssoc.toProductId, description:productFeature.description, quantity: productQuantity.productQuantity,
+                            optionSet.add([productId: variantProductAssoc.toProductId, description:productFeature.description, quantity: productQuantity.productQuantity, productFeatureId:productFeature.productFeatureId, 
                             prices:selectedPrices, contentList:productContentList])
                         }
                         priceSet = null
