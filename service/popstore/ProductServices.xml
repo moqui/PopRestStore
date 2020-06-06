@@ -571,6 +571,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <service verb="get" noun="CategoryProducts">
         <in-parameters>
+            <parameter name="productStoreId" required="true"/>
             <parameter name="productCategoryId" required="true"/>
             <parameter name="priceUomId"/>
             <parameter name="locale"/>
@@ -595,7 +596,6 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="productListPageRangeHigh" type="Integer"/>
         </out-parameters>
         <actions>
-            <service-call name="popstore.CartServices.get#ActiveOrderAndCustomer" out-map="context"/>
             <if condition="productStoreId">
                 <entity-find-one entity-name="mantle.product.store.ProductStore" value-field="productStore" cache="true"/>
                 <if condition="!priceUomId"><set field="priceUomId" from="productStore?.defaultCurrencyUomId"/></if>
