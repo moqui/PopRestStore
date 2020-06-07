@@ -24,6 +24,9 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.basic.Enumeration enumCode="store_path" description="Base path for store's product list" enumId="PsstStorePath" enumTypeId="ProductStoreSettingType"/>
 
     <!-- client template setting types -->
+    <moqui.basic.Enumeration enumCode="template_client_header" description="Template Client Header for Accounts" enumId="PsstTemplateClientHeader" enumTypeId="ProductStoreSettingType"/>
+    <moqui.basic.Enumeration enumCode="template_client_footer" description="Template Client Footer for Accounts" enumId="PsstTemplateClientFooter" enumTypeId="ProductStoreSettingType"/>
+
     <moqui.basic.Enumeration enumCode="template_client_account" description="Template Client Account Page" enumId="PsstTemplateClientAccount" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_client_addAddress" description="Template Client Add Address" enumId="PsstTemplateClientAddAddress" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_client_checkoutHeader" description="Template Client Checkout Header" enumId="PsstTemplateClientCheckoutHeader" enumTypeId="ProductStoreSettingType"/>
@@ -50,7 +53,7 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.basic.Enumeration enumCode="template_server_product" description="Template Server Product" enumId="PsstTemplateServerProduct" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_search" description="Template Server Search" enumId="PsstTemplateServerSearch" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_category" description="Template Server Category" enumId="PsstTemplateServerCategory" enumTypeId="ProductStoreSettingType"/>
-    <moqui.basic.Enumeration enumCode="template_server_checkout" description="Template Server Checkout" enumId="PsstTemplateServerCheckout" enumTypeId="ProductStoreSettingType"/>
+    <moqui.basic.Enumeration enumCode="template_server_spa" description="Template Server SPA" enumId="PsstTemplateServerSpa" enumTypeId="ProductStoreSettingType"/>
 
     <moqui.basic.Enumeration enumCode="category_page_size" description="Category Products Page Size" enumId="PsstCategoryPageSize" enumTypeId="ProductStoreSettingType"/>
 

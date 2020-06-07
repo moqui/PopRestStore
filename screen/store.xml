@@ -88,8 +88,8 @@ var storeInfo = ${storeInfoJson};
         <set field="template_server_product" from="storeInfo.settings.template_server_product" default-value="component://PopRestStore/template/store/product.html.ftl"/>
         <set field="template_server_content" from="storeInfo.settings.template_server_content" default-value="component://PopRestStore/template/store/content.html.ftl"/>
         <set field="template_server_search" from="storeInfo.settings.template_server_search" default-value="component://PopRestStore/template/store/search.html.ftl"/>
+        <set field="template_server_spa" from="storeInfo.settings.template_server_spa" default-value="component://PopRestStore/template/store/spa.html.ftl"/>
         <set field="template_server_error" from="storeInfo.settings.template_server_error" default-value="component://PopRestStore/template/store/error.html.ftl"/>
-        <set field="template_server_checkout" from="storeInfo.settings.template_server_checkout" default-value="component://PopRestStore/template/store/checkout.html.ftl"/>
     </pre-actions>
 
     <widgets>
