@@ -48,10 +48,9 @@
                                 <a href="/store/product/${localProd.productId}">
                                     <div class="category-product">
                                         <figure class="figure">
-                                            <#if localProd.mediumImageInfo?? || localProd.smallImageInfo??>
-                                                <#assign img = localProd.smallImageInfo! localProd.mediumImageInfo>
+                                            <#if localProd.imageInfo??>
                                                 <img class="figure-img img-fluid product-img product-small-img"
-                                                    src="/store/content/productImage/${img.productContentId}"
+                                                    src="/store/content/productImage/${localProd.imageInfo.productContentId}"
                                                     alt="Product Image">
                                             <#else>
                                                 <img class="figure-img img-fluid product-img product-small-img"
