@@ -56,7 +56,7 @@ along with this software (see the LICENSE.md file). If not, see
 
         <set field="pageSize" from="storeInfo.settings.category_page_size ?: 6" />
         <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="context" 
-            in-map="[productCategoryId:productCategoryId, orderBy: orderBy, pageIndex:pageIndex ? pageIndex : '0', pageSize:pageSize]"/>
+            in-map="[productStoreId:productStoreId, productCategoryId:productCategoryId, orderBy: orderBy, pageIndex:pageIndex ? pageIndex : '0', pageSize:pageSize]"/>
 
         <set field="productListPageCount" from="Math.ceil(productListCount/productListPageSize)"/>
     </actions>
