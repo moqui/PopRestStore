@@ -52,7 +52,7 @@ along with this software (see the LICENSE.md file). If not, see
         </entity-find>
         <if condition="promoPscList">
             <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="promoCatProdOut"
-                    in-map="[productCategoryId:promoPscList[0].productCategoryId]"/>
+                    in-map="[productStoreId:productStoreId, productCategoryId:promoPscList[0].productCategoryId]"/>
             <set field="promoProductList" from="promoCatProdOut.productList"/>
         </if>
        
@@ -63,7 +63,7 @@ along with this software (see the LICENSE.md file). If not, see
         </entity-find>
         <if condition="featPscList">
             <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="featCatProdOut"
-                    in-map="[productCategoryId:featPscList[0].productCategoryId]"/>
+                    in-map="[productStoreId:productStoreId, productCategoryId:featPscList[0].productCategoryId]"/>
             <set field="featureProductList" from="featCatProdOut.productList"/>
         </if>
 
