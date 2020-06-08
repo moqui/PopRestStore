@@ -109,6 +109,36 @@ along with this software (see the LICENSE.md file). If not, see
             <!-- <set field="imageSmallList" from="contentList.findAll({ 'PcntImageSmall' == it.productContentTypeEnumId })"/> -->
         </actions>
     </service>
+    
+    <!-- Service to get associated products for such thigns as upsells. -->
+    <service verb="get" noun="ProductAssocAndDetails">
+        <in-parameters>
+            <parameter name="productId" />
+            <parameter name="assocType" default="PatVariant" />
+            <parameter name="productStoreId"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="products" type="List" />
+        </out-parameters>
+        <actions>
+            <entity-find entity-name="ProductAssocAndTo" list="assocs">
+                <search-form-inputs default-order-by="sequenceNum"/>
+                <econdition field-name="productAssocTypeEnumId" from="assocType"/>
+                <econdition field-name="productId"/><date-filter/>
+            </entity-find>
+
+            <set field="products" from="[]"/>
+            <iterate list="assocs" entry="assoc">
+                <service-call name="mantle.product.PriceServices.get#ProductPrice" out-map="prices"
+                            in-map="context + [productId:assoc.toProductId]" />
+
+                <service-call name="popstore.ProductServices.find#ProductContentList" out-map="content" 
+                        in-map="[productId:assoc.toProductId]"/>
+
+                <script>products.add(['product':assoc, 'prices':prices, 'content':content.productContentList ])</script>
+            </iterate>
+        </actions>
+    </service>
 
     <service verb="get" noun="LocationText">
         <in-parameters>
