@@ -566,7 +566,8 @@ along with this software (see the LICENSE.md file). If not, see
 
     <service verb="get" noun="CategoryInfo">
         <in-parameters>
-            <parameter name="categoryId" required="true"/>
+            <parameter name="categoryId" required="false" />
+            <parameter name="productCategoryId"  required="false"/><!-- deprecated -->
             <parameter name="locale"/>
         </in-parameters>
         <out-parameters>
@@ -575,6 +576,11 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="productCategoryId" />
         </out-parameters>
         <actions>
+            <!-- this can be here until the productCategoryId parameter is removed -->
+            <if condition="productCategoryId &amp;&amp; !categoryId">
+                <set field="categoryId" from="productCategoryId"/>
+            </if>
+
             <!-- first search for the category based on productCategoryId -->
             <entity-find-one entity-name="mantle.product.category.ProductCategory" value-field="productCategory" cache="true">
                 <field-map field-name="productCategoryId" from="categoryId"/></entity-find-one>
