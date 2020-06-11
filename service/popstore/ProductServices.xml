@@ -702,7 +702,7 @@ along with this software (see the LICENSE.md file). If not, see
                 <service-call name="mantle.product.PriceServices.get#ProductPrice" in-map="[productId:pcmp.productId, priceUomId:priceUomId, productStoreId:productStoreId, vendorPartyId:vendorPartyId, customerPartyId:customerPartyId]" out-map-add-to-existing="false" out-map="priceMap"/>
 
                 <service-call name="popstore.ProductServices.get#ProductContentCascading" 
-                        in-map="[productId:pcmp.productId, contentTypes:['PcntImageSmall', 'PcntImageMedium', 'PcntImageLarge']]" out-map-add-to-existing="false" out-map="imageMap" />
+                        in-map="[productId:pcmp.productId, contentTypes:['PcntListingImage', 'PcntImageSmall', 'PcntImageMedium', 'PcntImageLarge']]" out-map-add-to-existing="false" out-map="imageMap" />
 
                 <script>productList.add([productId:pcmp.productId, pseudoId:product.pseudoId, productName:product.productName,
                         description:product.description, price:priceMap.price, listPrice:priceMap.listPrice, priceUomId:priceMap.priceUomId,

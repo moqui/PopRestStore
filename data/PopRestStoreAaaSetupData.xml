@@ -59,4 +59,6 @@ along with this software (see the LICENSE.md file). If not, see
 
     <!-- store setting used for dynamically setting the productStoreId depending on the hostname -->
     <moqui.basic.Enumeration enumCode="product_store_id_from_hostname" description="Product Store ID From Hostname" enumId="PsstHostname" enumTypeId="ProductStoreSettingType"/>
+
+    <moqui.basic.Enumeration description="Product Listing Image" enumId="PcntListingImage" enumTypeId="ProductContentType"/>
 </entity-facade-xml>
