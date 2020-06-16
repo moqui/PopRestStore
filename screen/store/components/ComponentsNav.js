@@ -250,6 +250,7 @@ storeComps.ModalCreditCard = {
         },
         addCustomerPaymentMethod: function(event) {
             event.preventDefault();
+
             this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
             this.paymentMethod.countryGeoId = STORE_COUNTRY;
 
@@ -293,6 +294,10 @@ storeComps.ModalCreditCard = {
 
                 if (sensitiveDataIndex > -1) {
                     this.responseMessage = errorString.slice(0, sensitiveDataIndex);
+
+                    if (this.responseMessage.indexOf("not a valid") > -1){
+                        this.responseMessage += "<span style='font-size: 0.9em'><br/>- Must contain between 13 and 19 digits.<br/>- Do not use spaces.<br/>- Do not use the '-' character or any other to separate the numbers.</span>";
+                    }
                 }
 
                 this.disabled = false;
