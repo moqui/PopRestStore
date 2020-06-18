@@ -40,12 +40,8 @@
                                     <div class="d-block col-lg-3 col-12">
                                         <a class="category-product" href="/store/product/${product.productId}">
                                             <figure class="figure">
-                                                <#if product.mediumImageInfo??>
-                                                    <img width="90%" class="figure-img img-fluid" src="/store/content/productImage/${product.mediumImageInfo.productContentId}">
-                                                <#else>
-                                                    <#if product.smallImageInfo??>
-                                                        <img width="90%" class="figure-img img-fluid" src="/store/content/productImage/${product.smallImageInfo.productContentId}" >
-                                                    </#if>
+                                                <#if product.imageInfo??>
+                                                    <img width="90%" class="figure-img img-fluid" src="/store/content/productImage/${product.imageInfo.productContentId}">
                                                 </#if>
                                                 <figcaption class="text-left title-product-text figure-caption">
                                                     ${product.productName}
@@ -107,12 +103,8 @@
                                     <div class="d-block col-lg-3 col-12">
                                         <a class="category-product" href="/store/product/${product.productId}">
                                             <figure class="figure">
-                                                <#if product.mediumImageInfo??>
-                                                    <img width="90%" class="figure-img img-fluid" src="/store/content/productImage/${product.mediumImageInfo.productContentId}">
-                                                <#else>
-                                                    <#if product.smallImageInfo??>
-                                                        <img width="90%" class="figure-img img-fluid" src="/store/content/productImage/${product.smallImageInfo.productContentId}" >
-                                                    </#if>
+                                                <#if product.imageInfo??>
+                                                    <img width="90%" class="figure-img img-fluid" src="/store/content/productImage/${product.imageInfo.productContentId}">
                                                 </#if>
                                                 <figcaption class="text-left title-product-text figure-caption">
                                                     ${product.productName}
