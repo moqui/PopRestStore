@@ -101,27 +101,33 @@ along with this software (see the LICENSE.md file). If not, see
         <if condition="categoryId">
             <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="category" in-map="[categoryId:categoryId]"/>
         </if>
-        
+        <set field="canShow" from="''"/>
         <set field="specialInstrLocation" from="product.contentList.find({'PcntSpecialInstr' == it.productContentTypeEnumId})?.contentLocation"/>
         <if condition="specialInstrLocation">
             <set field="specialInstructions" from="ec.resource.getLocationText(specialInstrLocation, true)"/>
         </if>
+
         <set field="faqLocation" from="product.contentList.find({'PcntFAQ' == it.productContentTypeEnumId})?.contentLocation"/>
-        <if condition="faqLocation">
+        <script>canShow = faqLocation?.endsWith(".html") ? true : false;</script>
+        <if condition="faqLocation &amp;&amp; canShow">
             <set field="faq" from="ec.resource.getLocationText(faqLocation, true)"/>
         </if>
         <set field="lifestyleLocation" from="product.contentList.find({'PcntDirections' == it.productContentTypeEnumId})?.contentLocation"/>
-        <if condition="lifestyleLocation">
+        <script>canShow = lifestyleLocation?.endsWith(".html") ? true : false;</script>
+        <if condition="lifestyleLocation &amp;&amp; canShow">
             <set field="lifestyle" from="ec.resource.getLocationText(lifestyleLocation, true)"/>
         </if>
         <set field="labelLocation" from="product.contentList.find({'PcntLabelText' == it.productContentTypeEnumId})?.contentLocation"/>
-        <if condition="labelLocation">
+        <script>canShow = labelLocation?.endsWith(".html") ? true : false;</script>
+        <if condition="labelLocation &amp;&amp; canShow">
             <set field="label" from="ec.resource.getLocationText(labelLocation, true)"/>
         </if>
         <set field="imageLabel" from="product.contentList.find({'PcntLabelImage' == it.productContentTypeEnumId})"/>
         <set field="imageDetail" from="product.contentList.find({'PcntImageDetail' == it.productContentTypeEnumId})"/>
+
         <set field="transparencyLocation" from="product.contentList.find({'PcntProductTransparency' == it.productContentTypeEnumId})?.contentLocation"/>
-        <if condition="transparencyLocation">
+        <script>canShow = transparencyLocation?.endsWith(".html") ? true : false;</script>
+        <if condition="transparencyLocation &amp;&amp; canShow">
             <set field="transparency" from="ec.resource.getLocationText(transparencyLocation, true)"/>
         </if>
     </actions>
