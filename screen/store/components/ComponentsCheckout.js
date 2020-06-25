@@ -124,7 +124,6 @@ storeComps.CheckOutPage = {
         getCustomerShippingAddresses: function() {
             return new Promise(function(resolve){
                 CustomerService.getShippingAddresses(this.axiosConfig).then(function (data) {
-                    console.log(data)
                     this.listShippingAddress = data.postalAddressList || [];
                     resolve()
                 }.bind(this));
@@ -212,7 +211,6 @@ storeComps.CheckOutPage = {
                     }
 
                     this.productsInCart = data;
-                    console.log(this.productsInCart)
                     // Notify vue of property change
                     this.$set(this.productsInCart, 'orderItemList', this.productsInCart.orderItemList);
                     this.setShippingItemPrice();
