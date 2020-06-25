@@ -49,7 +49,7 @@
 
                 <!-- Optional Item Messages -->
                 <template v-if="showCheckoutMessages">
-                    <checkout-messages :item-list="productsInCart.orderItemList" :address="shippingAddressSelect"/>
+                    <checkout-messages :product-total="productTotal" :item-list="productsInCart.orderItemList" :address="shippingAddressSelect"/>
                 </template>
                 <hr>
                 <div class="row div-total">
