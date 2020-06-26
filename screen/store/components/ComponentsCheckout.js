@@ -515,7 +515,7 @@ storeComps.SuccessCheckOut = {
 
 storeComps.CheckoutMessages = {
     name: "checkout-messages",
-    props: { itemList: Array, address: Object }
+    props: { productTotal: Number, promoDiscount: Number, itemList: Array, address: Object }
 };
 
 storeComps.SuccessCheckOutTemplate = getPlaceholderRoute("template_client_checkoutSuccess", "SuccessCheckOut");
