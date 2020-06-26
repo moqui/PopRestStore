@@ -36,7 +36,7 @@
                     </div>
                     <div class="col col-3 col-sm-2">
                         <input class="input-quantity form-control" id="quantity" @change="updateProductQuantity(item)"
-                            type="text" v-model="item.quantity" v-show="item.itemTypeEnumId == 'ItemProduct'"/>
+                            type="text" v-model.lazy="item.quantity" v-show="item.itemTypeEnumId == 'ItemProduct'"/>
                     </div>
                     <div class="col col-3 col-sm-3 text-right">
                         <div class="place-order-total pr-4" v-if="item.itemTypeEnumId == 'ItemProduct'">${{item.unitAmount.toFixed(2)}}</div>
@@ -48,7 +48,7 @@
                 </div>
 
                 <!-- Optional Item Messages -->
-                <template v-if="showCheckoutMessages">
+                <template v-if="showCheckoutMessages && !loading">
                     <checkout-messages :product-total="productTotal" :promo-discount="promoDiscount" :item-list="productsInCart.orderItemList" :address="shippingAddressSelect"/>
                 </template>
                 <hr>
