@@ -177,8 +177,8 @@ storeComps.CheckOutPage = {
                             this.shippingOption = option.carrierPartyId + ':' + option.shipmentMethodEnumId;
                             this.shippingMethod = option;
                         }
+                        resolve();
                     }.bind(this));
-                resolve();
             }.bind(this))
         },
         getCartInfo: function() {
@@ -249,6 +249,8 @@ storeComps.CheckOutPage = {
             this.setCurrentStep(STEP_REVIEW)
         },
         addCartBillingShipping: function() {
+            var currentListShippingOptions = this.listShippingOptions.slice();
+            this.listShippingOptions = [];
             var info = {
                 "shippingPostalContactMechId":this.addressOption.split(':')[0],
                 "shippingTelecomContactMechId":this.addressOption.split(':')[1],
@@ -259,6 +261,10 @@ storeComps.CheckOutPage = {
             ProductService.addCartBillingShipping(info,this.axiosConfig).then(function (data) {
                 this.paymentId = data.paymentId;
                 this.getCartInfo();
+                this.getCartShippingOptions();
+            }.bind(this)).catch(function(e){
+                console.log(e);
+                this.listShippingOptions = currentListShippingOptions;
             }.bind(this));
         },
         getCustomerPaymentMethods: function() {
@@ -324,13 +330,13 @@ storeComps.CheckOutPage = {
                     Promise.all([
                         this.getCartInfo(),
                         this.getCartShippingOptions()
-                    ]).then(function () {
-                            this.getCartInfo();
-                        }.bind(this)
-                    ).finally(function () {
+                    ]).finally(function () {
                             this.loading = false;
                         }.bind(this)
                     )
+                }.bind(this)).catch(function (e) {
+                    console.log(e);
+                    this.loading = false;
                 }.bind(this));
         },
         afterDelete: function(){
