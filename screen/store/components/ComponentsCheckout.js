@@ -124,7 +124,6 @@ storeComps.CheckOutPage = {
         getCustomerShippingAddresses: function() {
             return new Promise(function(resolve){
                 CustomerService.getShippingAddresses(this.axiosConfig).then(function (data) {
-                    console.log(data)
                     this.listShippingAddress = data.postalAddressList || [];
                     resolve()
                 }.bind(this));
@@ -380,7 +379,7 @@ storeComps.CheckOutPage = {
             this.shippingAddress.attnName = address.postalAddress.attnName;
             this.shippingAddress.city = address.postalAddress.city;
             this.shippingAddress.countryGeoId = address.postalAddress.countryGeoId;
-            this.shippingAddress.contactNumber = address.telecomNumber.contactNumber;
+            this.shippingAddress.contactNumber = address.telecomNumber ? address.telecomNumber.contactNumber : null;
             this.shippingAddress.postalCode = address.postalAddress.postalCode;
             this.shippingAddress.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
             this.shippingAddress.postalContactMechId = address.postalContactMechId;

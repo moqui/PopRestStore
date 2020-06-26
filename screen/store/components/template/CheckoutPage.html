@@ -169,7 +169,7 @@
                                 </span>
                                 <span class="span-description">
                                     <i class="fa fa-phone phone-icon"></i>
-                                    {{option.telecomNumber.contactNumber}}
+                                    {{option.telecomNumber ? option.telecomNumber.contactNumber : ''}}
                                 </span>
                             </label>
                             <!-- Update and delete address icons -->
@@ -183,12 +183,16 @@
                             </span>
                         </div>
                     </div>
+                    <!-- In the addressOption string we search that the telecomContactMechId exist using split() function -->
+                    <div v-if="addressOption && addressOption.split(':')[1] == 'undefined'" class="alert alert-danger font-size-09">
+                        Your Shipping Addres must have a phone number to continue.
+                    </div>
                     <br>
                     <!-- Buttons    -->
                     <button
                         @click="addressContinue()" class="btn btn-continue float-right"
                         :disabled="addressOption == null || addressOption == ''
-                        || listShippingAddress == null || listShippingAddress.length == 0 ">
+                        || listShippingAddress == null || listShippingAddress.length == 0 || (addressOption && addressOption.split(':')[1] == 'undefined')">
                         Continue
                     </button>
                     <a data-toggle="modal" data-target="#addressFormModal" class="text-add" @click="resetData()">
