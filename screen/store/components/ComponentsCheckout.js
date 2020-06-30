@@ -124,7 +124,6 @@ storeComps.CheckOutPage = {
         getCustomerShippingAddresses: function() {
             return new Promise(function(resolve){
                 CustomerService.getShippingAddresses(this.axiosConfig).then(function (data) {
-                    console.log(data)
                     this.listShippingAddress = data.postalAddressList || [];
                     resolve()
                 }.bind(this));
@@ -178,8 +177,8 @@ storeComps.CheckOutPage = {
                             this.shippingOption = option.carrierPartyId + ':' + option.shipmentMethodEnumId;
                             this.shippingMethod = option;
                         }
+                        resolve();
                     }.bind(this));
-                resolve();
             }.bind(this))
         },
         getCartInfo: function() {
@@ -250,6 +249,8 @@ storeComps.CheckOutPage = {
             this.setCurrentStep(STEP_REVIEW)
         },
         addCartBillingShipping: function() {
+            var currentListShippingOptions = this.listShippingOptions.slice();
+            this.listShippingOptions = [];
             var info = {
                 "shippingPostalContactMechId":this.addressOption.split(':')[0],
                 "shippingTelecomContactMechId":this.addressOption.split(':')[1],
@@ -260,6 +261,10 @@ storeComps.CheckOutPage = {
             ProductService.addCartBillingShipping(info,this.axiosConfig).then(function (data) {
                 this.paymentId = data.paymentId;
                 this.getCartInfo();
+                this.getCartShippingOptions();
+            }.bind(this)).catch(function(e){
+                console.log(e);
+                this.listShippingOptions = currentListShippingOptions;
             }.bind(this));
         },
         getCustomerPaymentMethods: function() {
@@ -325,13 +330,13 @@ storeComps.CheckOutPage = {
                     Promise.all([
                         this.getCartInfo(),
                         this.getCartShippingOptions()
-                    ]).then(function () {
-                            this.getCartInfo();
-                        }.bind(this)
-                    ).finally(function () {
+                    ]).finally(function () {
                             this.loading = false;
                         }.bind(this)
                     )
+                }.bind(this)).catch(function (e) {
+                    console.log(e);
+                    this.loading = false;
                 }.bind(this));
         },
         afterDelete: function(){
@@ -380,7 +385,7 @@ storeComps.CheckOutPage = {
             this.shippingAddress.attnName = address.postalAddress.attnName;
             this.shippingAddress.city = address.postalAddress.city;
             this.shippingAddress.countryGeoId = address.postalAddress.countryGeoId;
-            this.shippingAddress.contactNumber = address.telecomNumber.contactNumber;
+            this.shippingAddress.contactNumber = address.telecomNumber ? address.telecomNumber.contactNumber : null;
             this.shippingAddress.postalCode = address.postalAddress.postalCode;
             this.shippingAddress.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
             this.shippingAddress.postalContactMechId = address.postalContactMechId;
@@ -510,7 +515,7 @@ storeComps.SuccessCheckOut = {
 
 storeComps.CheckoutMessages = {
     name: "checkout-messages",
-    props: { itemList: Array, address: Object }
+    props: { productTotal: Number, promoDiscount: Number, itemList: Array, address: Object }
 };
 
 storeComps.SuccessCheckOutTemplate = getPlaceholderRoute("template_client_checkoutSuccess", "SuccessCheckOut");

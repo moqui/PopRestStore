@@ -36,7 +36,7 @@
                     </div>
                     <div class="col col-3 col-sm-2">
                         <input class="input-quantity form-control" id="quantity" @change="updateProductQuantity(item)"
-                            type="text" v-model="item.quantity" v-show="item.itemTypeEnumId == 'ItemProduct'"/>
+                            type="text" v-model.lazy="item.quantity" v-show="item.itemTypeEnumId == 'ItemProduct'"/>
                     </div>
                     <div class="col col-3 col-sm-3 text-right">
                         <div class="place-order-total pr-4" v-if="item.itemTypeEnumId == 'ItemProduct'">${{item.unitAmount.toFixed(2)}}</div>
@@ -48,8 +48,8 @@
                 </div>
 
                 <!-- Optional Item Messages -->
-                <template v-if="showCheckoutMessages">
-                    <checkout-messages :item-list="productsInCart.orderItemList" :address="shippingAddressSelect"/>
+                <template v-if="showCheckoutMessages && !loading">
+                    <checkout-messages :product-total="productTotal" :promo-discount="promoDiscount" :item-list="productsInCart.orderItemList" :address="shippingAddressSelect"/>
                 </template>
                 <hr>
                 <div class="row div-total">
@@ -169,7 +169,7 @@
                                 </span>
                                 <span class="span-description">
                                     <i class="fa fa-phone phone-icon"></i>
-                                    {{option.telecomNumber.contactNumber}}
+                                    {{option.telecomNumber ? option.telecomNumber.contactNumber : ''}}
                                 </span>
                             </label>
                             <!-- Update and delete address icons -->
@@ -183,12 +183,16 @@
                             </span>
                         </div>
                     </div>
+                    <!-- In the addressOption string we search that the telecomContactMechId exist using split() function -->
+                    <div v-if="addressOption && addressOption.split(':')[1] == 'undefined'" class="alert alert-danger font-size-09">
+                        Your Shipping Addres must have a phone number to continue.
+                    </div>
                     <br>
                     <!-- Buttons    -->
                     <button
                         @click="addressContinue()" class="btn btn-continue float-right"
                         :disabled="addressOption == null || addressOption == ''
-                        || listShippingAddress == null || listShippingAddress.length == 0 ">
+                        || listShippingAddress == null || listShippingAddress.length == 0 || (addressOption && addressOption.split(':')[1] == 'undefined')">
                         Continue
                     </button>
                     <a data-toggle="modal" data-target="#addressFormModal" class="text-add" @click="resetData()">
