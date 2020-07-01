@@ -87,20 +87,18 @@ along with this software (see the LICENSE.md file). If not, see
             <order-by field-name="-fromDate"/>
         </entity-find>
 
-        <if condition="productStoreCategories.size() == 0">
-            <return error="true" message="No productStoreCategory found with productStoreId ${productStoreId}"/>
-        </if>
-
-        <set field="productCategoryId" from="productStoreCategories.get(0).productCategoryId" />
-        <entity-find-one entity-name="mantle.product.category.ProductCategoryMember" value-field="productCategoryMember">
-            <date-filter/>
-            <field-map field-name="productCategoryId"/>
-            <field-map field-name="productId"/>
-        </entity-find-one>
-        <if condition="!productCategoryMember">
-            <then>
-                <return error="true" message="Product not found with ID ${productId}"/>
-            </then>
+        <if condition="productStoreCategories.size() != 0">
+            <set field="productCategoryId" from="productStoreCategories.get(0).productCategoryId" />
+            <entity-find-one entity-name="mantle.product.category.ProductCategoryMember" value-field="productCategoryMember">
+                <date-filter/>
+                <field-map field-name="productCategoryId"/>
+                <field-map field-name="productId"/>
+            </entity-find-one>
+            <if condition="!productCategoryMember">
+                <then>
+                    <return error="true" message="Product not found with ID ${productId}"/>
+                </then>
+            </if>
         </if>
     </pre-actions>
     <actions>
