@@ -270,7 +270,9 @@ storeComps.CheckOutPage = {
         getCustomerPaymentMethods: function() {
             return new Promise(function(resolve){
                 CustomerService.getPaymentMethods(this.axiosConfig).then(function (data) {
-                    this.listPaymentMethods = data.methodInfoList;
+                    this.listPaymentMethods = data.methodInfoList.filter(function(method){
+                        return method.isCreditCard
+                    });
                     resolve()
                 }.bind(this));
             }.bind(this))
