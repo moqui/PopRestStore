@@ -11,8 +11,7 @@
                     <div class="modal-body">
                         <form id="modal-card-content" class="modal-body" @submit.prevent="addCustomerPaymentMethod" method="post">
                             <div v-if="responseMessage != null && responseMessage != ''" 
-                                class="alert alert-primary" role="alert">
-                                {{responseMessage}}
+                                class="alert alert-primary" role="alert"  v-html="responseMessage">
                             </div>
                             <div class="form-group row justify-content-between">
                                 <label for="nameCard" class="col-form-label modal-text ml-3">Name on Card</label>

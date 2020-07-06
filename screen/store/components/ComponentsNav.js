@@ -250,20 +250,28 @@ storeComps.ModalCreditCard = {
         },
         addCustomerPaymentMethod: function(event) {
             event.preventDefault();
+            this.responseMessage = "";
+
+            var cardNumberCleaned = this.paymentMethod.cardNumber.trim().replace(/\s/g, '').replace(/\-/g, '');
+
             this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
             this.paymentMethod.countryGeoId = STORE_COUNTRY;
 
             if (this.paymentMethod.titleOnAccount == null || this.paymentMethod.titleOnAccount.trim() === "") {
-                this.responseMessage = "Please privide the name on the card";
+                this.responseMessage = "Please provide the name on the card";
                 return;
             }
             if (this.paymentMethod.cardNumber == null || this.paymentMethod.cardNumber.trim() === "") {
-                this.responseMessage = "Please privide the card number";
+                this.responseMessage = "Please provide the card number";
+                return;
+            }
+            if (!this.validateCreditCard(cardNumberCleaned) && !this.isUpdate) {
+                this.responseMessage = "Please provide a valid credit card number:";
                 return;
             }
             if (this.paymentMethod.expireMonth == null || this.paymentMethod.expireMonth.trim() === ""
                 || this.paymentMethod.expireYear == null || this.paymentMethod.expireYear === "") {
-                this.responseMessage = "Please privide the card expiry month and year";
+                this.responseMessage = "Please provide the card expiry month and year";
                 return;
             }
             if (this.paymentMethod.address1 == null || this.paymentMethod.address1.trim() === "" ||
@@ -271,9 +279,9 @@ storeComps.ModalCreditCard = {
                 this.responseMessage = "Please provide a billing address";
                 return;
             }
-            if (this.paymentMethod.cardNumber.startsWith("5")) {
+            if (cardNumberCleaned.startsWith("5")) {
                 this.paymentMethod.creditCardTypeEnumId = "CctMastercard";
-            } else if (this.paymentMethod.cardNumber.startsWith("4")){
+            } else if (cardNumberCleaned.startsWith("4")){
                 this.paymentMethod.creditCardTypeEnumId = "CctVisa";
             }
            
@@ -281,7 +289,9 @@ storeComps.ModalCreditCard = {
                 this.paymentMethod.postalContactMechId = this.paymentAddressOption.postalContactMechId;
                 this.paymentMethod.telecomContactMechId = this.paymentAddressOption.telecomContactMechId;
             }
-            if (this.isUpdate) { this.paymentMethod.cardNumber = ""; }
+            if (this.isUpdate) { cardNumberCleaned = ""; }
+
+            this.paymentMethod.cardNumber = cardNumberCleaned;
 
             this.disabled = true;
             CustomerService.addPaymentMethod(this.paymentMethod,this.axiosConfig).then(function (data) {
@@ -303,6 +313,22 @@ storeComps.ModalCreditCard = {
           this.disabled = false;
           this.responseMessage = null;
           this.paymentAddressOption = "";
+        },
+        validateCreditCard: function(cardNumber){
+            // we use the Luhn algorithm to make the validation
+            var s = 0;
+            var doubleDigit = false;
+            for (var i = cardNumber.length - 1; i >= 0; i--) {
+                var digit = +cardNumber[i];
+                if (doubleDigit) {
+                    digit *= 2;
+                    if (digit > 9)
+                        digit -= 9;
+                }
+                s += digit;
+                doubleDigit = !doubleDigit;
+            }
+            return s % 10 == 0;
         }
     },
     mounted: function() {
