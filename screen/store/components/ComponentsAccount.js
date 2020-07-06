@@ -206,7 +206,12 @@ storeComps.AccountPage = {
         getCustomerAddresses: function() { CustomerService.getShippingAddresses(this.axiosConfig)
             .then(function (data) { this.shippingAddressList = data.postalAddressList; }.bind(this)); },
         getCustomerPaymentMethods: function() { CustomerService.getPaymentMethods(this.axiosConfig)
-            .then(function (data) { this.customerPaymentMethods = data.methodInfoList; }.bind(this)); },
+            .then(function (data) { 
+                this.customerPaymentMethods = data.methodInfoList.filter(function (method) {
+                    return method.isCreditCard
+                }); 
+            }.bind(this)); 
+        },
 
         resetData: function() {
             this.paymentMethod = {};

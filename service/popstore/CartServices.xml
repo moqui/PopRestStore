@@ -131,6 +131,8 @@ General Order Placement and eCommerce Usage
             <!-- get paymentList -->
             <entity-find-related value-field="orderHeader" relationship-name="mantle.account.payment.Payment"
                     list="paymentList" order-by-list="['paymentId']"/>
+            <set field="paymentList" from="paymentList.findAll{ it.method.paymentMethodTypeEnumId == 'PmtCreditCard'}"/>
+
             <script><![CDATA[
                 import org.moqui.entity.EntityList
                 import org.moqui.entity.EntityValue
