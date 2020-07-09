@@ -69,38 +69,7 @@ along with this software (see the LICENSE.md file). If not, see
         <service-call name="popstore.CartServices.get#CartInfo" in-map="context" out-map="productsInCart" />
         <service-call name="popstore.ProductServices.get#SortedProductList" in-map="context + [productCategoryId:categoryId]" out-map="context"/>
 
-        <!-- filter by View Allow -->
-        <entity-find entity-name="mantle.product.store.ProductStoreCategory" list="productStoreCategories">
-            <date-filter/>
-            <econdition field-name="productStoreId"/>
-            <econdition field-name="storeCategoryTypeEnumId" value="PsctViewAllow" />
-            <order-by field-name="-fromDate"/>
-        </entity-find>
-
-        <if condition="productStoreCategories.size() != 0">
-            <set field="productCategoryIdViewAllow" from="productStoreCategories.get(0).productCategoryId" />
-
-            <entity-find entity-name="mantle.product.category.ProductCategoryMember" list="viewAllowProductList">
-                <date-filter/>
-                <econdition field-name="productCategoryId" from="productCategoryIdViewAllow"/>
-            </entity-find>
-
-            <set field="viewAllowProductListIds" from="[]" />
-            <iterate list="viewAllowProductList" entry="product">
-                <script>
-                    viewAllowProductListIds.add(product.productId)
-                </script>
-            </iterate>
-            <set field="productListTemp" from="[]" />
-            <iterate list="context.productList" entry="product">
-                <script>
-                    if(viewAllowProductListIds.contains(product.productId)){
-                        productListTemp.add(product)
-                    }
-                </script>
-            </iterate>
-            <set field="context.productList" from="productListTemp" />
-        </if>
+        <service-call name="popstore.ProductServices.get#ViewAllowProducts" in-map="context" out-map="context"/>
 
         <set field="pageSize" from="pageSize ?: 100"/>
         <script>paginateList("productList", null, context)</script>
