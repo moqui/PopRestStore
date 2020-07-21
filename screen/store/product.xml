@@ -78,6 +78,21 @@ along with this software (see the LICENSE.md file). If not, see
             <set field="selectedOptionId" from="productId"/>
             <set field="productId" from="productAssocs[0].productId"/>
         </if>
+
+        <!-- View Allow -->
+        <entity-find-one entity-name="mantle.product.Product" value-field="productEntity">
+            <field-map field-name="productId"/>
+        </entity-find-one>
+
+        <service-call name="popstore.ProductServices.get#ViewAllowProducts"
+                      in-map="[productStoreId: productStoreId, productList: [productEntity]]"
+                      out-map="out"/>
+
+        <if condition="out.productList.size() == 0">
+            <then>
+                <return error="true" message="Product not found with ID ${productId}"/>
+            </then>
+        </if>
     </pre-actions>
     <actions>
         <service-call name="popstore.ProductServices.get#ProductInfo" out-map="product" in-map="[productId:productId]"/>

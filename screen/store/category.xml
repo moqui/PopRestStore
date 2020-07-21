@@ -57,16 +57,19 @@ along with this software (see the LICENSE.md file). If not, see
         </if>
     </pre-actions>
     <actions>
-        <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="products" 
+        <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="products"
             in-map="[productCategoryId:categoryId, orderBy: orderBy, pageIndex:pageIndex ? pageIndex : '0', pageSize:6]"/>
 
         <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="category" in-map="[productCategoryId:categoryId]"/>
-        
+
         <service-call name="popstore.ProductServices.find#ProductAvailability" in-map="context" out-map="context" />
+
         <set field="inStock" from="false"/>
 
         <service-call name="popstore.CartServices.get#CartInfo" in-map="context" out-map="productsInCart" />
         <service-call name="popstore.ProductServices.get#SortedProductList" in-map="context + [productCategoryId:categoryId]" out-map="context"/>
+
+        <service-call name="popstore.ProductServices.get#ViewAllowProducts" in-map="context" out-map="context"/>
 
         <set field="pageSize" from="pageSize ?: 100"/>
 
