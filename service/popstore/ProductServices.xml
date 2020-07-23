@@ -38,6 +38,11 @@ along with this software (see the LICENSE.md file). If not, see
             <parameter name="productRating"/>
             <parameter name="standardFeatureList" type="List"><parameter name="dimension" type="Map"/></parameter>
             <parameter name="dimensionList" type="List"><parameter name="dimension" type="Map"/></parameter>
+            <parameter name="isReadyForSales"/>
+            <parameter name="salesDates" type="Map">
+                <parameter name="salesIntroDate"/>
+                <parameter name="salesDiscontinueDate"/>
+            </parameter>
         </out-parameters>
         <actions>
             <entity-find-one entity-name="mantle.product.Product" value-field="product"/>
@@ -102,6 +107,10 @@ along with this software (see the LICENSE.md file). If not, see
             <set field="descSmallLocation" from="contentList.find({ 'PcntDescription' == it.productContentTypeEnumId })?.contentLocation"/>
             <if condition="descSmallLocation"><set field="descriptionSmall" from="ec.resource.getLocationText(descSmallLocation, true)"/></if>
             <!-- <set field="imageSmallList" from="contentList.findAll({ 'PcntImageSmall' == it.productContentTypeEnumId })"/> -->
+
+            <!-- Find product dates -->
+            <service-call name="popstore.ProductServices.find#ProductSalesDates" out-map="context"
+                        in-map="[productId:product.productId]"/>
         </actions>
     </service>
 
@@ -439,6 +448,9 @@ along with this software (see the LICENSE.md file). If not, see
                     <service-call name="popstore.ProductServices.find#ProductContentList" out-map="context" 
                         in-map="[productId:variantProductAssoc.toProductId]"/>
 
+                    <!-- Find product sales dates -->
+                    <service-call name="popstore.ProductServices.find#ProductSalesDates" out-map="context"
+                        in-map="[productId:variantProductAssoc.toProductId]"/>
 
                     <set field="item" from="[enumId:featureType.enumId, enumTypeId:featureType.enumTypeId, 
                         description:featureType.description, lastUpdatedStamp:featureType.lastUpdatedStamp]"/> 
@@ -475,10 +487,10 @@ along with this software (see the LICENSE.md file). If not, see
                         def optionSet = variantOptions.get(item)
                         if (!optionSet) {
                             variantOptions.put(item, [[productId: variantProductAssoc.toProductId, description:productFeature.description, quantity: productQuantity.productQuantity,
-                            prices:selectedPrices, contentList:productContentList]])
+                            prices:selectedPrices, contentList:productContentList, isReadyForSales:isReadyForSales, salesDates:salesDates]])
                         } else {
                             optionSet.add([productId: variantProductAssoc.toProductId, description:productFeature.description, quantity: productQuantity.productQuantity,
-                            prices:selectedPrices, contentList:productContentList])
+                            prices:selectedPrices, contentList:productContentList, isReadyForSales:isReadyForSales, salesDates:salesDates])
                         }
                         priceSet = null
                     ]]></script>
@@ -784,6 +796,44 @@ along with this software (see the LICENSE.md file). If not, see
                 <set field="langLocale" from="locale.contains('_') ? locale.substring(locale.indexOf('_')) : null"/>
                 <set field="productContentList" from="productContentList.findAll({ it.locale == null || it.locale == locale || it.locale == langLocale })"/>
             </if>
+        </actions>
+    </service>
+
+    <service verb="find" noun="ProductSalesDates">
+        <description>
+            Find Sales intro and Sales Discontinue dates for a specific product and tells if is ready for sales or not.
+        </description>
+        <in-parameters>
+            <parameter name="productId" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="isReadyForSales"/>
+            <parameter name="salesDates" type="Map">
+                <parameter name="salesIntroDate"/>
+                <parameter name="salesDiscontinueDate"/>
+            </parameter>
+        </out-parameters>
+        <actions>
+
+            <entity-find-one entity-name="mantle.product.Product" value-field="product"/>
+
+            <set field="now" from="ec.user.nowTimestamp"/>
+            <set field="introDate" from="product.salesIntroductionDate"/>
+            <set field="discontDate" from="product.salesDiscontinuationDate"/>
+            <set field="isReadyForSales" from="true"/>
+
+
+            <if condition="introDate &amp;&amp; discontDate">
+                <then>
+                    <set field="isReadyForSales" from="(now &gt; introDate) &amp;&amp; (now &lt; discontDate)"/>
+                </then>
+                <else>
+                    <if condition="introDate"><set field="isReadyForSales" from="now &gt; introDate"/></if>
+                    <if condition="discontDate"><set field="isReadyForSales" from="now &lt; discontDate"/></if>
+                </else>
+            </if>
+
+            <set field="salesDates" from="[salesIntroDate:introDate, salesDiscontinueDate:discontDate]"/>
         </actions>
     </service>
 </services>
