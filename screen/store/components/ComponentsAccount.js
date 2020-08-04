@@ -338,7 +338,7 @@ storeComps.AccountPage = {
             this.paymentMethod.toName = method.postalAddress.toName;
             this.paymentMethod.city = method.postalAddress.city;
             this.paymentMethod.countryGeoId = method.postalAddress.countryGeoId;
-            this.paymentMethod.contactNumber = method.telecomNumber.contactNumber;
+            this.paymentMethod.contactNumber = method.telecomNumber? method.telecomNumber.contactNumber : "";
             this.paymentMethod.postalCode = method.postalAddress.postalCode;
             this.paymentMethod.stateProvinceGeoId = method.postalAddress.stateProvinceGeoId;
 
