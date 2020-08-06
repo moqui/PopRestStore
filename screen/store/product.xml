@@ -145,6 +145,13 @@ along with this software (see the LICENSE.md file). If not, see
         <if condition="transparencyLocation &amp;&amp; canShow">
             <set field="transparency" from="ec.resource.getLocationText(transparencyLocation, true)"/>
         </if>
+
+        <!-- Awards Tab -->
+        <set field="awardsLocation" from="product.contentList.find({'PcntAwards' == it.productContentTypeEnumId})?.contentLocation"/>
+        <script>canShow = awardsLocation?.endsWith(".html") ? true : false;</script>
+        <if condition="awardsLocation &amp;&amp; canShow">
+            <set field="awards" from="ec.resource.getLocationText(awardsLocation, true)"/>
+        </if>
     </actions>
 
 
