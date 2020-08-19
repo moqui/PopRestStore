@@ -14,14 +14,12 @@ along with this software (see the LICENSE.md file). If not, see
 -->
 <screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/xml-screen-2.1.xsd"
         require-authentication="anonymous-view" allow-extra-path="true">
-    <parameter name="categoryId"/>
     <parameter name="orderBy"/>
-    <parameter name="productName"/>
-    <parameter name="pageIndex"/>
-    <parameter name="addedCorrect"/>
+    <parameter name="page"/>
 
     <transition name="addToCart">
         <actions>
+            <log message="addToCart!!" />
             <service-call name="popstore.CartServices.add#Product" out-map="addOut"
                 in-map="[productId:productId, quantity:quantity, currencyUomId:currencyUomId, productStoreId: productStoreId]"/> 
                 <set field="addedCorrect" from="false"/>
@@ -43,8 +41,7 @@ along with this software (see the LICENSE.md file). If not, see
     <pre-actions>
         <set field="pathParts" from="sri.screenUrlInfo.extraPathNameList"/>
         <set field="categoryId" from="pathParts[0]"/>
-        <set field="pageIndex" from="(pathParts.size() &gt; 1) ? pathParts[1] : 0"/>
-        <set field="orderBy" from="(pathParts.size() &gt; 2) ? pathParts[2] : 'default'"/>
+        <set field="productId" from="pathParts[1]"/>
     </pre-actions>
     <actions>
         <!-- if no category is passed in the url, we default to the browse root -->
@@ -52,18 +49,30 @@ along with this software (see the LICENSE.md file). If not, see
             <set field="categoryId" from="storeInfo.categoryByType.PsctBrowseRoot.productCategoryId"/>
         </if>
         
-        <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="context" in-map="[categoryId:categoryId]"/>
+        <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="category" in-map="[categoryId:categoryId]"/>
 
-        <set field="pageSize" from="storeInfo.settings.category_page_size ?: 6" />
-        <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="context" 
-            in-map="[productStoreId:productStoreId, productCategoryId:productCategoryId, orderBy: orderBy, pageIndex:pageIndex ? pageIndex : '0', pageSize:pageSize]"/>
+        <!-- no point in query products if we will display the product -->
+        <if condition="!productId">
+            <set field="pageSize" from="storeInfo.settings.category_page_size ?: 6" />
+            <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="context" 
+                in-map="[productStoreId:productStoreId, productCategoryId:category.productCategoryId, orderBy: orderBy, pageIndex:page ? page-1 : '0', pageSize:pageSize]"/>
 
-        <set field="productListPageCount" from="Math.ceil(productListCount/productListPageSize)"/>
+            <set field="productListPageCount" from="Math.ceil(productListCount/productListPageSize)"/>
+        </if>
     </actions>
 
     <widgets>
-        <render-mode><text type="html" location="${template_server_header}"/></render-mode>
-        <render-mode><text type="html" location="${template_server_category}"/></render-mode>
-        <render-mode><text type="html" location="${template_server_footer}"/></render-mode>
+        <section name="Product">
+            <condition><expression>productId != null</expression></condition>
+            <widgets><include-screen location="component://PopRestStore/screen/store/product.xml"/></widgets>
+        </section>
+        <section name="Category">
+            <condition><expression>productId == null</expression></condition>
+            <widgets>
+                <render-mode><text type="html" location="${template_server_header}"/></render-mode>
+                <render-mode><text type="html" location="${template_server_category}"/></render-mode>
+                <render-mode><text type="html" location="${template_server_footer}"/></render-mode>
+            </widgets>
+        </section>
     </widgets>
 </screen>

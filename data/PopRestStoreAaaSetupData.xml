@@ -61,4 +61,5 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.basic.Enumeration enumCode="product_store_id_from_hostname" description="Product Store ID From Hostname" enumId="PsstHostname" enumTypeId="ProductStoreSettingType"/>
 
     <moqui.basic.Enumeration description="Product Listing Image" enumId="PcntListingImage" enumTypeId="ProductContentType"/>
+    <moqui.basic.Enumeration description="Category Image" enumId="PcctImage" enumTypeId="ProductCategoryContentType"/>
 </entity-facade-xml>

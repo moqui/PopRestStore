@@ -128,10 +128,11 @@ General Order Placement and eCommerce Usage
                         orderItemList.move(orderItemList.indexMatching([orderItemSeqId:orderItem.orderItemSeqId]),
                                 orderItemList.indexMatching([orderItemSeqId:orderItem.parentItemSeqId])+1)
                     }
-
-                    cartItemsImage.put(orderItem.productId, ec.service.sync().name('popstore.ProductServices.get#ProductContentCascading')
-                        .parameters([productId:orderItem.productId, contentTypes:['PcntImageSmall', 'PcntImageMedium', 'PcntImageLarge']])
-                        .call().productContent);
+                    if (orderItem.itemTypeEnumId == 'ItemProduct') {
+                        cartItemsImage.put(orderItem.productId, ec.service.sync().name('popstore.ProductServices.get#ProductContentCascading')
+                            .parameters([productId:orderItem.productId, contentTypes:['PcntImageSmall', 'PcntImageMedium', 'PcntImageLarge']])
+                            .call().productContent);
+                    }
                 }
             ]]></script>
 
