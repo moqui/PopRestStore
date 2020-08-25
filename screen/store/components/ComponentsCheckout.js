@@ -175,15 +175,17 @@ storeComps.CheckOutPage = {
                             }
                         }
 
-                        // Look for shipping option
-                        var option = this.listShippingOptions ?
-                            this.listShippingOptions.find(function (item) { return item.shipmentMethodDescription == "Ground Parcel" }) : 0;
+                        if(this.shippingMethod.shipmentMethodDescription === undefined){
+                            // Look for shipping option
+                            var option = this.listShippingOptions ?
+                                this.listShippingOptions.find(function (item) { return item.shipmentMethodDescription == "Ground Parcel" }) : 0;
 
-                        // Update the shipping option value
-                        if (!!option) {
-                            option.shippingTotal = parseFloat(this.shippingItemPrice).toFixed(2);
-                            this.shippingOption = option.carrierPartyId + ':' + option.shipmentMethodEnumId;
-                            this.shippingMethod = option;
+                            // Update the shipping option value
+                            if (!!option) {
+                                option.shippingTotal = parseFloat(this.shippingItemPrice).toFixed(2);
+                                this.shippingOption = option.carrierPartyId + ':' + option.shipmentMethodEnumId;
+                                this.shippingMethod = option;
+                            }
                         }
                         resolve();
                     }.bind(this));
