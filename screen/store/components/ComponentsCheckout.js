@@ -283,6 +283,10 @@ storeComps.CheckOutPage = {
                     this.listPaymentMethods = data.methodInfoList.filter(function(method){
                         return method.isCreditCard
                     });
+                    if (this.listPaymentMethods.length) {
+                        // Preselect first payment option
+                        this.paymentOption = this.listPaymentMethods[0].paymentMethodId;
+                    }
                     resolve()
                 }.bind(this));
             }.bind(this))

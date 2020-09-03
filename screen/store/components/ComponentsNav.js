@@ -202,7 +202,11 @@ storeComps.ModalCreditCard = {
     data: function() { return { 
       axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
               "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken }},
-      responseMessage: "", 
+      responseMessage: "",
+      titleOnAccountErrorMessage: "",
+      cardNumberErrorMessage: "",
+      expirationDateErrorMessage: "",
+      selectAddressErrorMessage: "",
       paymentAddressOption: "",
       countryErrorMessage: "",
       addressErrorMessage: "",
@@ -211,7 +215,8 @@ storeComps.ModalCreditCard = {
       stateErrorMessage: "",
       contactNumberErrorMessage: "",
       regionsList: [],
-      disabled: true
+      disabled: true,
+      cardNumberIsInvalid: false,
     }; },
     props: ["paymentMethod", "isUpdate", "addressList", "cancelCallback", "completeCallback"],
     computed: {
@@ -223,17 +228,21 @@ storeComps.ModalCreditCard = {
         getRegions: function(geoId) { 
             GeoService.getRegions(geoId).then(function (data){ this.regionsList = data.resultList; }.bind(this));
         },
+        initializeAddress: function(){
+          this.$set(this.paymentMethod, 'address1', '');
+          this.$set(this.paymentMethod, 'address2', '');
+          this.$set(this.paymentMethod, 'toName', '');
+          this.$set(this.paymentMethod, 'attnName', '');
+          this.$set(this.paymentMethod, 'city', '');
+          this.$set(this.paymentMethod, 'countryGeoId', STORE_COUNTRY);
+          this.$set(this.paymentMethod, 'contactNumber', '');
+          this.$set(this.paymentMethod, 'postalCode', '');
+          this.$set(this.paymentMethod, 'stateProvinceGeoId', '');
+          this.$set(this.paymentMethod, 'address1', '');
+        },
         selectBillingAddress: function(address) {
             if (address == 'NEW_ADDRESS') {
-                this.paymentMethod.address1 = "";
-                this.paymentMethod.address2 = "";
-                this.paymentMethod.toName = "";
-                this.paymentMethod.attnName = "";
-                this.paymentMethod.city = "";
-                this.paymentMethod.countryGeoId = "";
-                this.paymentMethod.contactNumber = "";
-                this.paymentMethod.postalCode = "";
-                this.paymentMethod.stateProvinceGeoId = "";
+              this.initializeAddress()
             } else if (typeof address.postalAddress === 'object' && address.postalAddress !== null) {
                 this.paymentMethod.address1 = address.postalAddress.address1;
                 this.paymentMethod.address2 = address.postalAddress.address2;
@@ -249,42 +258,77 @@ storeComps.ModalCreditCard = {
             this.getRegions(STORE_COUNTRY);
         },
         addCustomerPaymentMethod: function(event) {
+            var error = false;
             event.preventDefault();
             this.responseMessage = "";
-
-            var cardNumberCleaned = this.paymentMethod.cardNumber.trim().replace(/\s/g, '').replace(/\-/g, '');
+            this.cardNumberIsInvalid = false;
 
             this.paymentMethod.paymentMethodTypeEnumId = "PmtCreditCard";
             this.paymentMethod.countryGeoId = STORE_COUNTRY;
 
             if (this.paymentMethod.titleOnAccount == null || this.paymentMethod.titleOnAccount.trim() === "") {
-                this.responseMessage = "Please provide the name on the card";
-                return;
+                this.titleOnAccountErrorMessage = "Please provide the name on the card";
+                error = true;
             }
             if (this.paymentMethod.cardNumber == null || this.paymentMethod.cardNumber.trim() === "") {
-                this.responseMessage = "Please provide the card number";
-                return;
+                this.cardNumberErrorMessage = "Please provide the card number";
+                this.cardNumberIsInvalid = true;
+                error = true;
             }
-            if (!this.validateCreditCard(cardNumberCleaned) && !this.isUpdate) {
-                this.responseMessage = "Please provide a valid credit card number:";
-                return;
+
+            if (!this.cardNumberIsInvalid){
+                var cardNumberCleaned = this.paymentMethod.cardNumber.trim().replace(/\s/g, '').replace(/\-/g, '');
+                if (!this.validateCreditCard(cardNumberCleaned) && !this.isUpdate) {
+                    this.cardNumberErrorMessage = "Please provide a valid credit card number";
+                    this.cardNumberIsInvalid = true;
+                    error = true;
+                }
             }
+
             if (this.paymentMethod.expireMonth == null || this.paymentMethod.expireMonth.trim() === ""
                 || this.paymentMethod.expireYear == null || this.paymentMethod.expireYear === "") {
-                this.responseMessage = "Please provide the card expiry month and year";
-                return;
+                this.expirationDateErrorMessage = "Please provide the card expiry month and year";
             }
             if (this.paymentMethod.address1 == null || this.paymentMethod.address1.trim() === "" ||
                 this.paymentMethod.city == null || this.paymentMethod.city.trim() === "") {
-                this.responseMessage = "Please provide a billing address";
+                this.selectAddressErrorMessage = "Please provide a billing address";
+            }
+
+            //'New Address' Validation
+            if (this.paymentAddressOption != 'NEW_ADDRESS' && error){
+                return
+            }
+            if (this.paymentMethod.address1 == null || this.paymentMethod.address1.trim() === "") {
+                this.addressErrorMessage = "Please enter a street address";
+                error = true;
+            }
+            if (this.paymentMethod.city == null || this.paymentMethod.city.trim() === "") {
+                this.cityErrorMessage = "Please enter a city";
+                error = true;
+            }
+            if (this.paymentMethod.stateProvinceGeoId == null || this.paymentMethod.stateProvinceGeoId.trim() === "") {
+                this.stateErrorMessage = "Please enter a state";
+                error = true;
+            }
+            if (this.paymentMethod.postalCode == null || this.paymentMethod.postalCode.trim() === "") {
+                this.postalCodeErrorMessage = "Please enter a postcode";
+                error = true;
+            }
+            if (this.paymentMethod.contactNumber == null || this.paymentMethod.contactNumber.trim() === "") {
+                this.contactNumberErrorMessage = "Please enter a phone number";
+                error = true;
+            }
+
+            if (error) {
                 return;
             }
+
             if (cardNumberCleaned.startsWith("5")) {
                 this.paymentMethod.creditCardTypeEnumId = "CctMastercard";
             } else if (cardNumberCleaned.startsWith("4")){
                 this.paymentMethod.creditCardTypeEnumId = "CctVisa";
             }
-           
+
             if (this.paymentMethod.postalContactMechId == null) {
                 this.paymentMethod.postalContactMechId = this.paymentAddressOption.postalContactMechId;
                 this.paymentMethod.telecomContactMechId = this.paymentAddressOption.telecomContactMechId;
@@ -334,6 +378,7 @@ storeComps.ModalCreditCard = {
     mounted: function() {
       var vm = this;
       this.disabled = false;
+      this.initializeAddress();
       $('#creditCardModal').on('show.bs.modal', function(e){ vm.reset() });
     }
 };
