@@ -385,7 +385,7 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
 
-    <service verb="delete" noun="paymentMethod">
+    <service verb="delete" noun="PaymentMethod">
         <in-parameters>
             <parameter name="paymentMethodId"/>
         </in-parameters>
