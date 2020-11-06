@@ -1,5 +1,8 @@
 /* This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. */
 var STORE_COUNTRY = "USA";
+var ACCOUNT_CREATED = "accountCreated";
+var ACCOUNT_UPDATED = "accountUpdated";
+
 
 storeComps.LoginPage = {
     name: "login",
@@ -241,6 +244,9 @@ storeComps.AccountPage = {
                 this.setCustomerInfo(data.customerInfo);
                 this.message.state = 1;
                 this.message.message = "Correct! Your data has been updated.";
+                var event = new CustomEvent(ACCOUNT_UPDATED, { detail : {"firstName": this.customerInfo.firstName.trim(), "lastName": this.customerInfo.lastName.trim(),
+                "emailAddress": this.customerInfo.emailAddress.trim()}});
+                window.dispatchEvent(event);
             }.bind(this));
         },
         setCustomerInfo: function(data) {
@@ -430,6 +436,9 @@ storeComps.CreateAccountPage = {
             this.accountInfo.newPasswordVerify = this.confirmPassword;
 
             LoginService.createAccount(this.accountInfo, this.axiosConfig).then(function (data) {
+                var event = new CustomEvent(ACCOUNT_CREATED, { detail : {"firstName": this.accountInfo.firstName.trim(), "lastName": this.accountInfo.lastName.trim(),
+                "emailAddress": this.accountInfo.emailAddress.trim()}});
+                window.dispatchEvent(event);
                 this.login(this.accountInfo.emailAddress, this.accountInfo.newPassword);
             }.bind(this)).catch(function (error) {
                 if(!!error.response && !!error.response.headers){
