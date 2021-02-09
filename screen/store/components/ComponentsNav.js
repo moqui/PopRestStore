@@ -167,7 +167,9 @@ storeComps.ModalAddress = {
             }
 
             this.disabled = true;
-            CustomerService.addShippingAddress(this.shippingAddress, this.axiosConfig).then(function (data) {
+            const axiosConfig = { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
+                                              "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
+            CustomerService.addShippingAddress(this.shippingAddress, axiosConfig).then(function (data) {
                 this.responseMessage = "";
                 this.completeCallback(data);
             }.bind(this));
