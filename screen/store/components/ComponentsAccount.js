@@ -1,5 +1,8 @@
 /* This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. */
 var STORE_COUNTRY = "USA";
+var ACCOUNT_CREATED = "accountCreated";
+var ACCOUNT_UPDATED = "accountUpdated";
+
 
 storeComps.LoginPage = {
     name: "login",
@@ -206,7 +209,12 @@ storeComps.AccountPage = {
         getCustomerAddresses: function() { CustomerService.getShippingAddresses(this.axiosConfig)
             .then(function (data) { this.shippingAddressList = data.postalAddressList; }.bind(this)); },
         getCustomerPaymentMethods: function() { CustomerService.getPaymentMethods(this.axiosConfig)
-            .then(function (data) { this.customerPaymentMethods = data.methodInfoList; }.bind(this)); },
+            .then(function (data) { 
+                this.customerPaymentMethods = data.methodInfoList.filter(function (method) {
+                    return method.isCreditCard
+                }); 
+            }.bind(this)); 
+        },
 
         resetData: function() {
             this.paymentMethod = {};
@@ -236,6 +244,9 @@ storeComps.AccountPage = {
                 this.setCustomerInfo(data.customerInfo);
                 this.message.state = 1;
                 this.message.message = "Correct! Your data has been updated.";
+                var event = new CustomEvent(ACCOUNT_UPDATED, { detail : {"firstName": this.customerInfo.firstName.trim(), "lastName": this.customerInfo.lastName.trim(),
+                "emailAddress": this.customerInfo.emailAddress.trim()}});
+                window.dispatchEvent(event);
             }.bind(this));
         },
         setCustomerInfo: function(data) {
@@ -333,7 +344,7 @@ storeComps.AccountPage = {
             this.paymentMethod.toName = method.postalAddress.toName;
             this.paymentMethod.city = method.postalAddress.city;
             this.paymentMethod.countryGeoId = method.postalAddress.countryGeoId;
-            this.paymentMethod.contactNumber = method.telecomNumber.contactNumber;
+            this.paymentMethod.contactNumber = method.telecomNumber? method.telecomNumber.contactNumber : "";
             this.paymentMethod.postalCode = method.postalAddress.postalCode;
             this.paymentMethod.stateProvinceGeoId = method.postalAddress.stateProvinceGeoId;
 
@@ -425,6 +436,9 @@ storeComps.CreateAccountPage = {
             this.accountInfo.newPasswordVerify = this.confirmPassword;
 
             LoginService.createAccount(this.accountInfo, this.axiosConfig).then(function (data) {
+                var event = new CustomEvent(ACCOUNT_CREATED, { detail : {"firstName": this.accountInfo.firstName.trim(), "lastName": this.accountInfo.lastName.trim(),
+                "emailAddress": this.accountInfo.emailAddress.trim()}});
+                window.dispatchEvent(event);
                 this.login(this.accountInfo.emailAddress, this.accountInfo.newPassword);
             }.bind(this)).catch(function (error) {
                 if(!!error.response && !!error.response.headers){

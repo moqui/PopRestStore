@@ -75,6 +75,9 @@ storeComps.CheckOutPage = {
         productTotal: function () {
             return this.productsInCart.orderItemList ? this.getCartValueByItemEnum('ItemProduct') : 0;
         },
+        productCount: function(){
+            return this.productsInCart.orderItemList ? this.getCartCountByItemEnum('ItemProduct') : 0;
+        },
         //TODO Getting the applied promo codes should be done server-side
         appliedPromoCodes: function () {
             return this.productsInCart.orderItemList ?
@@ -111,6 +114,11 @@ storeComps.CheckOutPage = {
             else
                 return "/store/assets/default.png";
         },
+        getCartCountByItemEnum: function(itemEnum){
+            return this.productsInCart.orderItemList.reduce(function (acc, item) {
+                return item.itemTypeEnumId == itemEnum ? acc + item.quantity : acc + 0;
+            }, 0)
+        },
         notAddressSeleted: function() {
             return (this.addressOption == null || this.addressOption == ''
                 || this.listShippingAddress == null || this.listShippingAddress.length == 0);
@@ -130,7 +138,6 @@ storeComps.CheckOutPage = {
         getCustomerShippingAddresses: function() {
             return new Promise(function(resolve){
                 CustomerService.getShippingAddresses(this.axiosConfig).then(function (data) {
-                    console.log(data)
                     this.listShippingAddress = data.postalAddressList || [];
                     resolve()
                 }.bind(this));
@@ -174,18 +181,20 @@ storeComps.CheckOutPage = {
                             }
                         }
 
-                        // Look for shipping option
-                        var option = this.listShippingOptions ?
-                            this.listShippingOptions.find(function (item) { return item.shipmentMethodDescription == "Ground Parcel" }) : 0;
+                        if(this.shippingMethod.shipmentMethodDescription === undefined){
+                            // Look for shipping option
+                            var option = this.listShippingOptions ?
+                                this.listShippingOptions.find(function (item) { return item.shipmentMethodDescription == "Ground Parcel" }) : 0;
 
-                        // Update the shipping option value
-                        if (!!option) {
-                            option.shippingTotal = parseFloat(this.shippingItemPrice).toFixed(2);
-                            this.shippingOption = option.carrierPartyId + ':' + option.shipmentMethodEnumId;
-                            this.shippingMethod = option;
+                            // Update the shipping option value
+                            if (!!option) {
+                                option.shippingTotal = parseFloat(this.shippingItemPrice).toFixed(2);
+                                this.shippingOption = option.carrierPartyId + ':' + option.shipmentMethodEnumId;
+                                this.shippingMethod = option;
+                            }
                         }
+                        resolve();
                     }.bind(this));
-                resolve();
             }.bind(this))
         },
         getCartInfo: function() {
@@ -257,6 +266,8 @@ storeComps.CheckOutPage = {
             this.setCurrentStep(STEP_REVIEW)
         },
         addCartBillingShipping: function() {
+            var currentListShippingOptions = this.listShippingOptions.slice();
+            this.listShippingOptions = [];
             var info = {
                 "shippingPostalContactMechId":this.addressOption.split(':')[0],
                 "shippingTelecomContactMechId":this.addressOption.split(':')[1],
@@ -267,12 +278,22 @@ storeComps.CheckOutPage = {
             ProductService.addCartBillingShipping(info,this.axiosConfig).then(function (data) {
                 this.paymentId = data.paymentId;
                 this.getCartInfo();
+                this.getCartShippingOptions();
+            }.bind(this)).catch(function(e){
+                console.log(e);
+                this.listShippingOptions = currentListShippingOptions;
             }.bind(this));
         },
         getCustomerPaymentMethods: function() {
             return new Promise(function(resolve){
                 CustomerService.getPaymentMethods(this.axiosConfig).then(function (data) {
-                    this.listPaymentMethods = data.methodInfoList;
+                    this.listPaymentMethods = data.methodInfoList.filter(function(method){
+                        return method.isCreditCard
+                    });
+                    if (this.listPaymentMethods.length) {
+                        // Preselect first payment option
+                        this.paymentOption = this.listPaymentMethods[0].paymentMethodId;
+                    }
                     resolve()
                 }.bind(this));
             }.bind(this))
@@ -332,13 +353,13 @@ storeComps.CheckOutPage = {
                     Promise.all([
                         this.getCartInfo(),
                         this.getCartShippingOptions()
-                    ]).then(function () {
-                            this.getCartInfo();
-                        }.bind(this)
-                    ).finally(function () {
+                    ]).finally(function () {
                             this.loading = false;
                         }.bind(this)
                     )
+                }.bind(this)).catch(function (e) {
+                    console.log(e);
+                    this.loading = false;
                 }.bind(this));
         },
         afterDelete: function(){
@@ -387,7 +408,7 @@ storeComps.CheckOutPage = {
             this.shippingAddress.attnName = address.postalAddress.attnName;
             this.shippingAddress.city = address.postalAddress.city;
             this.shippingAddress.countryGeoId = address.postalAddress.countryGeoId;
-            this.shippingAddress.contactNumber = address.telecomNumber.contactNumber;
+            this.shippingAddress.contactNumber = address.telecomNumber ? address.telecomNumber.contactNumber : null;
             this.shippingAddress.postalCode = address.postalAddress.postalCode;
             this.shippingAddress.stateProvinceGeoId = address.postalAddress.stateProvinceGeoId;
             this.shippingAddress.postalContactMechId = address.postalContactMechId;
@@ -517,7 +538,7 @@ storeComps.SuccessCheckOut = {
 
 storeComps.CheckoutMessages = {
     name: "checkout-messages",
-    props: { itemList: Array, address: Object }
+    props: { productTotal: Number, promoDiscount: Number, itemList: Array, address: Object }
 };
 
 storeComps.SuccessCheckOutTemplate = getPlaceholderRoute("template_client_checkoutSuccess", "SuccessCheckOut");

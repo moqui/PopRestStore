@@ -57,6 +57,8 @@ along with this software (see the LICENSE.md file). If not, see
             <service-call name="popstore.ProductServices.get#CategoryProducts" out-map="context" 
                 in-map="[productStoreId:productStoreId, productCategoryId:category.productCategoryId, orderBy: orderBy, pageIndex:page ? page-1 : '0', pageSize:pageSize]"/>
 
+            <service-call name="popstore.ProductServices.get#ViewAllowProducts" in-map="context" out-map="context"/>
+
             <set field="productListPageCount" from="Math.ceil(productListCount/productListPageSize)"/>
         </if>
     </actions>

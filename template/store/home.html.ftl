@@ -4,7 +4,7 @@
             <div class="feature-icon"><i class="fa fa-gift" aria-hidden="true"></i></div>
             <div class="feature-info">
                 <div class="title text-left">FAST SHIPPING</div>
-                <div class="subtitle">Nationwide delivery whitin 3 days</div>
+                <div class="subtitle">Nationwide delivery within 3 days</div>
             </div>
         </div>
         <div class="feature">

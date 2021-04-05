@@ -13,7 +13,7 @@
                     <div class="modal-body">
                         <!-- Recipient Field -->
                         <div class="form-group row justify-content-between">
-                            <label for="name" class="col-form-label modal-text ml-3">To<span>&nbsp;*</span></label>
+                            <label for="name" class="col-form-label modal-text ml-3">Name<span>&nbsp;*</span></label>
                             <div class="col-sm-8 col-xs-12">
                                 <input  id="name"
                                         class="form-control"
@@ -28,7 +28,7 @@
                         </div>
                         <!-- Attention Field-->
                         <div class="form-group row justify-content-between">
-                            <label for="attention" class="col-form-label modal-text ml-3">Attention of
+                            <label for="attention" class="col-form-label modal-text ml-3">Attention
                                 <small class="text-muted text-cyan">(Optional)</small>
                             </label>
                             <div class="col-sm-8 col-xs-12">
@@ -42,13 +42,12 @@
                         <div class="form-group row justify-content-between">
                             <label for="country" class="col-form-label modal-text ml-3">Country</label>
                             <div class="col-sm-8 col-xs-12">
-                                <select id="country"
+                                <input id="country"
+                                        type="hidden"
                                         v-model="shippingAddress.countryGeoId"
-                                        class="form-control"
                                         @change="getRegions(shippingAddress.countryGeoId)"
                                         @focus="resetCountryErrorMessage(shippingAddress.countryGeoId)">
-                                    <option value="USA" selected>United States</option>
-                                </select>
+                                <input class="form-control" type="text" value="United States" readonly/>
                                 <div v-if="countryErrorMessage != null && countryErrorMessage != ''">
                                     <small class="input-text form-text text-danger">{{countryErrorMessage}}</small>
                                 </div>
@@ -111,9 +110,9 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Postal code -->
+                        <!-- Zip/Postal code -->
                         <div class="form-group row justify-content-between">
-                            <label for="postalcode" class="col-form-label modal-text ml-3">Postcode<span>&nbsp;*</span></label>
+                            <label for="postalcode" class="col-form-label modal-text ml-3">{{shippingAddress.countryGeoId == 'USA' ? 'Zip Code' : 'Postal Code'}}<span>&nbsp;*</span></label>
                             <div class="col-sm-8 col-xs-12">
                                 <input id="postalcode"
                                        class="form-control"
