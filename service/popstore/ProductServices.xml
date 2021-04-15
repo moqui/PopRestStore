@@ -216,7 +216,7 @@ along with this software (see the LICENSE.md file). If not, see
             <set field="productAvailability" from="[:]"/>
             <iterate list="productAssetSumList" entry="assetSum">
                 <script>
-                    productAvailability.put(assetSum.productId, assetSum.availableToPromiseTotal)
+                    productAvailability.put(assetSum.productId, assetSum.availableToPromiseTotal>0)
                 </script>
             </iterate>
         </actions>
