@@ -17,8 +17,7 @@
                 <hr class="hr">
                 <div class="row" v-for="(item, i) in productsInCart.orderItemList" :key="item.itemTypeEnumId + '' + item.productId" v-if="item.itemTypeEnumId != 'ItemShipping'">
                     <div class="col col-sm-2 d-none d-sm-block">
-                        <product-image :productId="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'"
-                           class="mb-1"/>
+                        <img v-if="item.itemTypeEnumId=='ItemProduct'" width="80px" height="80px" :src="getProductImage(item.productId)" >
                     </div>
                     <div class="col col-6 col-sm-5">
                         <p class="item-text-desc">
