@@ -17,7 +17,8 @@ var appObjects = {
             { path: "/orders", name: "orders", component: storeComps.CustomerOrdersPageTemplate },
             { path: "/account", name: "account", component: storeComps.AccountPageTemplate },
             { path: "/account/create", name: "createaccount", component: storeComps.CreateAccountPageTemplate },
-            { path: "/resetPassword", name: "resetPassword", component: storeComps.ResetPasswordTemplate }
+            { path: "/resetPassword", name: "resetPassword", component: storeComps.ResetPasswordTemplate },
+            { path: "/", redirect: "/login" }
         ]
     }),
     App: {
