@@ -13,32 +13,56 @@
  */
 
 import java.nio.charset.StandardCharsets
-plugins {
-    id "com.eriwen.gradle.js" version "2.14.1"
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "org.gradle-webtools.minify:gradle-minify-plugin:1.3.1"
+    }
 }
+apply plugin: "org.gradlewebtools.minify"
 
 def compsPath = "screen/store/components"
 // source JS files in load order
 def compsJsFiles = [compsPath + "/utilities.js", compsPath + "/ApiServices.js", compsPath + "/ComponentsNav.js",
         compsPath + "/ComponentsProduct.js", compsPath + "/ComponentsAccount.js", compsPath + "/ComponentsCheckout.js", compsPath + "/main.js"]
 
-task combineBaseJs(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
-    encoding = "UTF-8"
-    source = compsJsFiles
-    dest = file("${compsPath}/combined.js")
-}
-task minifyCombined(type: com.eriwen.gradle.js.tasks.MinifyJsTask) {
-    source = file("${compsPath}/combined.js")
-    dest = file("${compsPath}/combined.min.js")
-    closure {
-        compilerOptions.setOutputCharset(StandardCharsets.UTF_8)
-        compilerOptions.setLanguageIn(com.google.javascript.jscomp.CompilerOptions.LanguageMode.fromString("ECMASCRIPT6"))
-        compilerOptions.setLanguageOut(com.google.javascript.jscomp.CompilerOptions.LanguageMode.fromString("ES5"))
+task combineBaseJs {
+    doLast {
+        def destFile = file("${compsPath}/combined.js")
+        destFile.write("")
+        compsJsFiles.each({
+            destFile.append(file(it).getText("UTF-8"))
+            destFile.append("\n")
+        })
     }
 }
-
-task clean { doLast { delete fileTree(dir: "${compsPath}", include: 'combined.*') }}
-task build {
+task minifyCombined(type: org.gradlewebtools.minify.JsMinifyTask) {
     dependsOn combineBaseJs
+
+    // see: https://github.com/gradle-webtools/gradle-minify-plugin
+    // NOTE: JsMinifyTask (and the css one, etc) always recursively minify in sub-directories, no way to disable! (based on source review 2022-04-05)
+    srcDir = file(compsPath)
+    dstDir = file(compsPath)
+    options.ignoreMinFiles = true
+    options.emitUseStrict = false
+    options.strictModeInput = false
+    options.compilationLevel = com.google.javascript.jscomp.CompilationLevel.SIMPLE_OPTIMIZATIONS
+    options.env = com.google.javascript.jscomp.CompilerOptions.Environment.BROWSER
+    options.warningLevel = com.google.javascript.jscomp.WarningLevel.QUIET
+    options.charset = StandardCharsets.UTF_8
+    // options.outputCharset = StandardCharsets.UTF_8
+    options.setLanguageIn(com.google.javascript.jscomp.CompilerOptions.LanguageMode.fromString("ECMASCRIPT6"))
+    options.setLanguageOut(com.google.javascript.jscomp.CompilerOptions.LanguageMode.fromString("ES5"))
+}
+
+task clean { doLast {
+    delete fileTree(dir: compsPath, include: 'combined.*')
+    delete fileTree(dir: compsPath, include: '*.min.js')
+}}
+task build {
     dependsOn minifyCombined
 }

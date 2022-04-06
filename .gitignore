@@ -1,5 +1,6 @@
 
 screen/store/components/combined.*
+screen/store/components/*.min.js
 
 # gradle/build files
 .gradle
