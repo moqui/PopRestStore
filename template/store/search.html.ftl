@@ -70,9 +70,9 @@ productListPageRangeHigh = productSearchResults.productListPageRangeHigh>
                                             </#if>-->
                                         </figcaption>
                                         <figcaption class="text-primary text-left figure-caption">
-                                            <span class="product-price-text">$${localProd.price}</span>
+                                            <span class="product-price-text">${ec.l10n.formatCurrency(localProd.price, product.priceUomId)}</span>
                                             <#if localProd.listPrice??>
-                                                <span class="product-last-price"><del>$${localProd.listPrice}</del></span>
+                                                <span class="product-last-price"><del>${ec.l10n.formatCurrency(localProd.listPrice, product.priceUomId)}</del></span>
                                             </#if>
                                         </figcaption>
                                    </figure>
