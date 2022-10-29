@@ -35,7 +35,7 @@ task combineBaseJs {
         def destFile = file("${compsPath}/combined.js")
         destFile.write("")
         compsJsFiles.each({
-            destFile.append(file(it).getText("UTF-8"))
+            destFile.append(file(it).getText("UTF-8"), "UTF-8")
             destFile.append("\n")
         })
     }
