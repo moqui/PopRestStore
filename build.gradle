@@ -28,7 +28,7 @@ apply plugin: "org.gradlewebtools.minify"
 def compsPath = "screen/store/components"
 // source JS files in load order
 def compsJsFiles = [compsPath + "/utilities.js", compsPath + "/ApiServices.js", compsPath + "/ComponentsNav.js",
-        compsPath + "/ComponentsProduct.js", compsPath + "/ComponentsAccount.js", compsPath + "/ComponentsCheckout.js", compsPath + "/main.js"]
+        compsPath + "/ComponentsAccount.js", compsPath + "/ComponentsCheckout.js", compsPath + "/main.js"]
 
 task combineBaseJs {
     doLast {
