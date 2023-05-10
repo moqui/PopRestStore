@@ -29,8 +29,9 @@ along with this software (see the LICENSE.md file). If not, see
 
     <resource name="login" require-authentication="anonymous-view">
         <method type="post"><service name="popstore.CustomerServices.login#Customer"/></method></resource>
-    <resource name="loginFB" require-authentication="anonymous-view">
-        <method type="post"><service name="popstore.CustomerServices.loginFB#Customer"/></method></resource>
+<!-- This endpoint is DANGEROUS! don't use this until the service is fixed! -->
+<!--    <resource name="loginFB" require-authentication="anonymous-view">-->
+<!--        <method type="post"><service name="popstore.CustomerServices.loginFB#Customer"/></method></resource>-->
     <resource name="logout" require-authentication="anonymous-view">
         <method type="get"><service name="popstore.CustomerServices.logout#Customer"/></method></resource>
     <resource name="register" require-authentication="anonymous-all">
