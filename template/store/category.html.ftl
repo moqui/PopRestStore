@@ -85,12 +85,12 @@
                         <li class="page-item <#if pageIndex?number == 0>disabled</#if>">
                             <a class="page-link" href="/store/category/${categoryId}?pageIndex=${pageIndex?number - 1}">Previous</a>
                         </li>
-                        <#list 0..(products.productListCount / products.productListPageSize)?floor as n>
+                        <#list 0..products.productListPageMaxIndex as n>
                             <li class="page-item <#if pageIndex?number == n>active</#if>">
                                 <a class="page-link" href="/store/category/${categoryId}?pageIndex=${n}">${n + 1}</a>
                             </li>
                         </#list>
-                        <li class="page-item <#if products.productListCount == products.productListPageRangeHigh>disabled</#if>">
+                        <li class="page-item <#if pageIndex?number == products.productListPageMaxIndex>disabled</#if>">
                             <a class="page-link" href="/store/category/${categoryId}?pageIndex=${pageIndex?number + 1}">Next</a>
                         </li>
                     </ul>

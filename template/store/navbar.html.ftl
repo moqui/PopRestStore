@@ -140,13 +140,12 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-        <div class="modal-body">
-            Add a product to your cart (or a few!) before going to the check out.
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-        </div>
+            <div class="modal-body">
+                Add a product to your cart (or a few!) before going to the check out.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
-</div>
 </div>

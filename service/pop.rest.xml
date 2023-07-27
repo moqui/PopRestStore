@@ -142,7 +142,7 @@ along with this software (see the LICENSE.md file). If not, see
             <method type="get"><service name="popstore.CustomerServices.get#PaymentMethods"/></method>
             <method type="put"><service name="popstore.CustomerServices.store#CreditCard"/></method>
             <id name="paymentMethodId">
-                <method type="delete"><service name="popstore.CustomerServices.delete#paymentMethod"/></method>
+                <method type="delete"><service name="popstore.CustomerServices.delete#PaymentMethod"/></method>
             </id>
         </resource>
         <resource name="shippingAddresses">
