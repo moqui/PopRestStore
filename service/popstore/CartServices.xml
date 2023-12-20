@@ -270,7 +270,7 @@ General Order Placement and eCommerce Usage
                 in-map="[partyId:customerPartyId, postalContactMechPurposeId:'PostalShippingDest',
                     telecomContactMechPurposeId:'PhoneShippingDest']"/>
 
-            <service-call name="mantle.product.StoreServices.get#StoreShippingOptions" in-map="[productStoreId:productStoreId, orderId:cartOrderId, orderPartSeqId:orderPart.orderPartSeqId,postalContactMechId:shippingContactListInfo.postalAddressList?.first?.postalContactMechId, getRates:true]" out-map="context"/>
+            <service-call name="mantle.product.StoreServices.get#StoreShippingOptions" in-map="[productStoreId:orderHeader.productStoreId, orderId:cartOrderId, orderPartSeqId:orderPart.orderPartSeqId,postalContactMechId:shippingContactListInfo.postalAddressList?.first?.postalContactMechId, getRates:true]" out-map="context"/>
         </actions>
     </service>
     <service verb="set" noun="BillingShippingInfo">
