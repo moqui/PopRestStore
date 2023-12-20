@@ -21,7 +21,7 @@ along with this software (see the LICENSE.md file). If not, see
     <transition name="addToCart">
         <actions>
             <service-call name="popstore.CartServices.add#Product" out-map="addOut"
-                in-map="[productId:productId, quantity:quantity, currencyUomId:currencyUomId, productStoreId: productStoreId]"/> 
+                    in-map="[productId:productId, quantity:quantity, currencyUomId:currencyUomId, productStoreId: productStoreId]"/>
                 <set field="addedCorrect" from="false"/>
                 <if condition="addOut.orderHeader != null">
                     <set field="addedCorrect" from="true"/>
@@ -51,7 +51,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <transition name="addReview">
         <actions>
-            <service-call name="popstore.ProductServices.create#ProductReview" 
+            <service-call name="popstore.ProductServices.create#ProductReview"
                 in-map="[productId:productId, productRating:productRating, productReview:productReview]"/>
         </actions>
         <default-response url="."/>
@@ -59,7 +59,7 @@ along with this software (see the LICENSE.md file). If not, see
     </transition>
 
     <pre-actions>
-     	<set field="star" from="5"/>
+      <set field="star" from="5"/>
         <set field="imgContent" from="[]"/>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
         <if condition="searchParameter"><set field="searchParameter" from="URLEncoder.encode(searchParameter, 'UTF-8')"/></if>
@@ -93,6 +93,16 @@ along with this software (see the LICENSE.md file). If not, see
                 <return error="true" message="Product not found with ID ${productId}"/>
             </then>
         </if>
+
+        <service-call name="popstore.ProductServices.get#ProductInfo" out-map="product" in-map="[productId:productId]"/>
+        <if condition="product.productName != null">
+            <set field="pageTitle" from="product.productName"/>
+        </if>
+        <if condition="product.description != null"><then>
+            <set field="pageDesc" from="product.description"/>
+        </then><else>
+            <set field="pageDesc" value=""/>
+        </else></if>
     </pre-actions>
     <actions>
         <service-call name="popstore.ProductServices.get#ProductInfo" out-map="product" in-map="[productId:productId]"/>
@@ -104,14 +114,13 @@ along with this software (see the LICENSE.md file). If not, see
 
         <set field="inStock" from="false"/>
         <if condition="product.productTypeEnumId == 'PtVirtual'">
-            <service-call name="popstore.ProductServices.get#ProductVariantsDisplayInfo" 
+            <service-call name="popstore.ProductServices.get#ProductVariantsDisplayInfo"
                 in-map="context" out-map="variantsList" />
         <else>
             <if condition="productAvailability.get(productId)">
                 <set field="inStock" from="true"/>
             </if>
-        </else>
-        </if>
+        </else></if>
 
         <if condition="categoryId">
             <service-call name="popstore.ProductServices.get#CategoryInfo" out-map="category" in-map="[productCategoryId:categoryId]"/>
