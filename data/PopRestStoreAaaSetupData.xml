@@ -50,6 +50,7 @@ along with this software (see the LICENSE.md file). If not, see
     <moqui.basic.Enumeration enumCode="template_server_product" description="Template Server Product" enumId="PsstTemplateServerProduct" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_search" description="Template Server Search" enumId="PsstTemplateServerSearch" enumTypeId="ProductStoreSettingType"/>
     <moqui.basic.Enumeration enumCode="template_server_category" description="Template Server Category" enumId="PsstTemplateServerCategory" enumTypeId="ProductStoreSettingType"/>
+    <moqui.basic.Enumeration enumCode="template_server_checkout" description="Template Server Checkout" enumId="PsstTemplateServerCheckout" enumTypeId="ProductStoreSettingType"/>
 
     <!-- store setting used for dynamically setting the productStoreId depending on the hostname -->
     <moqui.basic.Enumeration enumCode="product_store_id_from_hostname" description="Product Store ID From Hostname" enumId="PsstHostname" enumTypeId="ProductStoreSettingType"/>
