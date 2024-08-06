@@ -13,7 +13,7 @@
     <#if addedCorrect?? && addedCorrect == 'true'>
         <div class="alert alert-primary mt-3 mb-3" role="alert">
             <i class="far fa-check-square"></i> You added a ${product.productName} to your shopping cart.
-            <a class="float-right" href="/store/d#/checkout">Go to Checkout <i class="fas fa-arrow-right"></i></a>
+            <a class="float-right" href="/store/d/checkout">Go to Checkout <i class="fas fa-arrow-right"></i></a>
         </div>
     </#if>
     <#--  <div class="row d-flex justify-content-center">
