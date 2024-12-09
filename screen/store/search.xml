@@ -41,8 +41,6 @@ along with this software (see the LICENSE.md file). If not, see
         <service-call name="popstore.SearchServices.search#All" out-map="context"
             in-map="[searchParameter:searchParameter, productStoreId:productStoreId, pageIndex:pageIndex ? pageIndex : '0', pageSize:'12']"/>
 
-        <service-call name="popstore.CartServices.get#CartInfo" in-map="context" out-map="productsInCart" />
-
         <set field="productListCount" from="productListCount ?: 0"/>
         <set field="productListPageSize" from="productListPageSize ?: 0"/>
         <set field="productListPageRangeHigh" from="productListPageRangeHigh ?: 0"/>
