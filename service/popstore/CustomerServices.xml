@@ -298,8 +298,9 @@ along with this software (see the LICENSE.md file). If not, see
 
             <service-call name="mantle.party.PartyServices.update#Account" in-map="context"/>
 
-            <service-call name="mantle.party.ContactServices.store#PartyContactInfo" in-map="[partyId:partyId, telecomContactMechPurposeId: 'PhonePrimary', contactNumber: contactNumber, contactMechId: contactMechId]"
-                out-map="context"/>
+            <service-call name="mantle.party.ContactServices.store#PartyContactInfo"
+                in-map="[partyId:partyId, telecomContactMechPurposeId: 'PhonePrimary', contactNumber: contactNumber, contactMechId: contactMechId, replaceByPurpose: true]"
+                out-map="context" />
 
             <service-call name="popstore.CustomerServices.get#CustomerInfo" out-map="customerInfo"/>
         </actions>
