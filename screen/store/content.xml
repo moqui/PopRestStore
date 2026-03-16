@@ -84,6 +84,14 @@ along with this software (see the LICENSE.md file). If not, see
         <default-response url="."/>
     </transition>
 
+    <pre-actions>
+        <set field="pageTitle" from="sri.screenUrlInfo.extraPathNameList[sri.screenUrlInfo.extraPathNameList.size()-1]" />
+        <if condition="sri.screenUrlInfo.extraPathNameList[0] != null"><then>
+            <set field="pageDesc" from="pageTitle"/>
+        </then><else>
+            <set field="pageDesc" value=""/>
+        </else></if>
+    </pre-actions>
     <actions>
         <set field="extraPathNameList" from="sri.screenUrlInfo.extraPathNameList"/>
         <service-call name="org.moqui.impl.WikiServices.get#PublishedWikiPageText" out-map="context"
@@ -95,7 +103,7 @@ along with this software (see the LICENSE.md file). If not, see
         <section name="PageTextSection" condition="pageText">
             <widgets>
                 <render-mode><text type="html" location="${template_server_content}"/></render-mode>
-            </widgets> 
+            </widgets>
             <fail-widgets>
                 <render-mode><text type="html" location="component://PopRestStore/template/store/error.html.ftl"/></render-mode>
             </fail-widgets>
