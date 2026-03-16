@@ -111,7 +111,10 @@ along with this software (see the LICENSE.md file). If not, see
     ]]></script></pre-actions>
 
     <widgets>
-        <render-mode><text type="html"><![CDATA[<div id="app"></div>]]></text></render-mode>
+        <render-mode><text type="html"><![CDATA[
+            <input type="hidden" id="confLinkBasePath" value="${sri.currentScreenUrl.path}">
+            <div id="app"></div>
+        ]]></text></render-mode>
         <!-- TODO use server rendered footer to avoid redundant templates: <render-mode><text type="html" location="component://PopRestStore/template/store/footer.html.ftl"/></render-mode> -->
     </widgets>
 </screen>

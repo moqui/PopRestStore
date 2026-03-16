@@ -4,7 +4,7 @@ var appObjects = {
     // see https://router.vuejs.org/en/essentials/history-mode.html
     // for route path expressions see https://router.vuejs.org/en/essentials/dynamic-matching.html AND https://github.com/vuejs/vue-router/blob/dev/examples/route-matching/app.js
     router: new VueRouter({
-        // TODO sooner or later: base: storeConfig.basePath, mode: 'history',
+        mode: 'history', base: ($("#confLinkBasePath").val() || "/d"),
         routes: [
             { path: "/login", name: "login", component: storeComps.LoginPageTemplate, 
                beforeEnter: function(to, from, next){
@@ -38,8 +38,8 @@ const fixIdScrolling = {
                     document.querySelector(idToScrollTo).scrollIntoView();
                 }
             });
-        },
-    },
+        }
+    }
 };
 // TODO: leave this, reminder to use vue.min.js for production: Vue.config.productionTip = false;
 
