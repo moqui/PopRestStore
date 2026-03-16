@@ -291,12 +291,22 @@ along with this software (see the LICENSE.md file). If not, see
             </if>
 
             <!-- default sorting -->
-            <entity-find entity-name="ProductCategoryMemberProduct" list="productList">
-                <econdition field-name="productCategoryId"/>
-                <date-filter/>
-                <date-filter thru-field-name="salesDiscontinuationDate"/>
-                <order-by field-name="sequenceNum,productName"/>
-            </entity-find>
+            <if condition="productCategoryId">
+                <then>
+                    <entity-find entity-name="ProductCategoryMemberProduct" list="productList">
+                        <econdition field-name="productCategoryId"/>
+                        <date-filter/>
+                        <date-filter thru-field-name="salesDiscontinuationDate"/>
+                        <order-by field-name="sequenceNum,productName"/>
+                    </entity-find>
+                </then><else>
+                    <entity-find entity-name="ProductCategoryMemberProduct" list="productList">
+                        <date-filter/>
+                        <date-filter thru-field-name="salesDiscontinuationDate"/>
+                        <order-by field-name="sequenceNum,productName"/>
+                    </entity-find>
+                </else>
+            </if>
             <if condition="orderBy=='default'">
                 <script>ec.web.sessionAttributes.remove('defaultSorting')</script>
             </if>
