@@ -97,7 +97,7 @@ along with this software (see the LICENSE.md file). If not, see
                 <render-mode><text type="html" location="${template_server_content}"/></render-mode>
             </widgets> 
             <fail-widgets>
-                <render-mode><text type="html" location="component://PopRestStore/template/store/error.html.ftl"/></render-mode>
+                <render-mode><text type="html" location="${template_server_error}"/></render-mode>
             </fail-widgets>
         </section>
         <render-mode><text type="html" location="${template_server_footer}"/></render-mode>
