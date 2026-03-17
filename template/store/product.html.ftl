@@ -74,17 +74,17 @@
                     <#if product.listPrice??>
                         <span class="save-circle" v-if="product.listPrice">
                             <span class="save-circle-title">SAVE</span>
-                            <span class="save-circle-text">$${(product.listPrice - product.price)?string(",##0.00")}</span>
+                            <span class="save-circle-text">${ec.l10n.formatCurrency((product.listPrice - product.price)?string(",##0.00"), product.priceUomId)}</span>
                         </span>
                     </#if>
                     <div class="form-group col">
                         <div class="cart-form-price">
                             <p>
-                                <span class="price-text">${product.price}</span> 
+                                <span class="price-text">${ec.l10n.formatCurrency(product.price, product.priceUomId)}</span> 
                                 <#if product.listPrice??>
                                     <span>
                                         <span class="product-listprice-text">was</span>
-                                        <del>${product.listPrice}</del>
+                                        <del>${ec.l10n.formatCurrency(product.listPrice, product.priceUomId)}</del>
                                     </span>
                                 </#if>
                             </p>

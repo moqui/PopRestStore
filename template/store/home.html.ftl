@@ -64,10 +64,10 @@
                                                     </#if>
                                                 </figcaption>
                                                 <figcaption class="text-primary text-left figure-caption">
-                                                    <span class="product-price-text">$${product.price}</span>
+                                                    <span class="product-price-text">${ec.l10n.formatCurrency(product.price,product.priceUomId)}</span>
                                                     <span class="product-last-price">
                                                         <#if product.listPrice??>
-                                                            <del>$${product.listPrice}</del>
+                                                            <del>${ec.l10n.formatCurrency(product.listPrice,product.priceUomId)}</del>
                                                         </#if>
                                                     </span>
                                                 </figcaption>
@@ -131,10 +131,10 @@
                                                     </#if>
                                                 </figcaption>
                                                 <figcaption class="text-primary text-left figure-caption">
-                                                    <span class="product-price-text">$${product.price}</span>
+                                                    <span class="product-price-text">${ec.l10n.formatCurrency(product.price,product.priceUomId)}</span>
                                                     <span class="product-last-price">
                                                         <#if product.listPrice??>
-                                                            <del>$${product.listPrice}</del>
+                                                            <del>${ec.l10n.formatCurrency(product.listPrice, product.priceUomId)}</del>
                                                         </#if>
                                                     </span>
                                                 </figcaption>
